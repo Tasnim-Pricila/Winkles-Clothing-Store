@@ -3,6 +3,7 @@ import actionTypes from "./constants";
 const initialState = {
     products: [],
     cart: [],
+    filter: []
 }
 const singleState = {
     product: [],
@@ -45,6 +46,11 @@ const productReducer = (state = initialState, action) => {
                         { ...item, qty: action.payload.qty } :
                         item
                 )
+            }
+        case actionTypes.SEARCH_BY_FILTER:
+            return {
+                ...state,
+                products: action.payload,
             }
         default:
             return state

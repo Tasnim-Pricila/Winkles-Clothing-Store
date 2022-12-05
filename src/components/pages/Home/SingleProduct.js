@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 const SingleProduct = () => {
     const { id } = useParams()
     const product = useSelector(state => state.singleProduct.product);
+    console.log(product);
     const cart = useSelector(state => state.allProducts.cart);
     // console.log(cart)
     const dispatch = useDispatch();
@@ -63,39 +64,39 @@ const SingleProduct = () => {
                         <Grid container spacing={6}>
                             <Grid item>
                                 <ButtonBase sx={{ width: 200, height: 200 }}>
-                                    <Img alt="complex" src={product[0]?.image} />
+                                    <Img alt="complex" src={product.image} />
                                 </ButtonBase>
                             </Grid>
                             <Grid item xs={12} sm container>
                                 <Grid item xs container direction="column" spacing={2}>
                                     <Grid item xs>
                                         <Typography gutterBottom variant="h5" component="div">
-                                            {product[0]?.title}
+                                            {product.title}
                                         </Typography>
                                         <Typography variant="body2" gutterBottom sx={{
                                             textAlign: 'justify',
                                             mt: 2
                                         }}>
-                                            {product[0]?.description}
+                                            {product.description}
                                         </Typography>
                                         {/* <input type="number" value={quantity} onChange=
                                             {handleQty}
                                         /> */}
                                         <Typography variant="body2" color="text.secondary">
-                                            ID: {product[0]?._id}
+                                            ID: {product._id}
                                         </Typography>
                                     </Grid>
                                     <Grid item>
-                                        <Button size="small" variant="outlined" 
-                                        sx={{
-                                            mx: 'auto',
-                                            mr: 2
-                                        }} 
-                                        onClick={() => handleAddToCart(product[0]?._id)}>
+                                        <Button size="small" variant="outlined"
+                                            sx={{
+                                                mx: 'auto',
+                                                mr: 2
+                                            }}
+                                            onClick={() => handleAddToCart(product[0]?._id)}>
                                             Add To Cart</Button>
 
                                         <Button size="small" variant="contained"
-                                            onClick={() => handleRemove(product[0]?._id)}
+                                            onClick={() => handleRemove(product._id)}
                                             sx={{
                                                 mx: 'auto'
                                             }}>
@@ -105,7 +106,7 @@ const SingleProduct = () => {
                                 </Grid>
                                 <Grid item>
                                     <Typography variant="h5" component="div">
-                                        ${product[0]?.price}
+                                        ${product.price}
                                     </Typography>
                                 </Grid>
                             </Grid>

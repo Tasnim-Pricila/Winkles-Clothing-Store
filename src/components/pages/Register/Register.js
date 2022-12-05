@@ -1,62 +1,48 @@
-import { Avatar, Button, Checkbox, Container, CssBaseline, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
+import { Button, Container, CssBaseline, Grid, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import Api from '../../../Axios/Api';
-import { getUsers } from '../../../Redux/actions';
+import useUsers from '../../../Custom Hook/useUsers';
 
 const Register = () => {
+
     const navigate = useNavigate();
+    const [token, setToken] = useState('');
     const [email, setEmail] = useState([])
+    const [users, setUsers] = useUsers([])
     const [userInfo, setUserInfo] = useState({
         firstName: '',
         lastName: '',
         email: '',
         password: ''
     })
-    const [token, setToken] = useState('');
-    const dispatch = useDispatch();
-    const userss = useSelector(state => state.allUsers.users);
 
     useEffect(() => {
-        dispatch(getUsers());
-        const findEmail = userss.find(user => user.email === userInfo.email)
+        const findEmail = users.find(user => user.email === userInfo.email)
         setEmail(findEmail);
-    }, [userInfo.email, setEmail])
-
-    // useEffect(() => {
-    //     const user = async () => {
-    //         await axios.get(`http://localhost:5000/users`)
-    //             .then(res => {
-    //                 // console.log(res.data);
-    //                 setUsers(res.data);
-    //             })
-    //             .catch(err => {
-    //                 console.log(err.message)
-    //             })
-    //         const findEmail = users.find(user => user.email === userInfo.email)
-    //         setEmail(findEmail);
-    //         // console.log(email)
-    //     }
-    //     user();
-    // }, [userInfo.email, users])
+    }, [users, userInfo.email])
 
     const handleClick = async (e) => {
         e.preventDefault();
         console.log(userInfo);
-        if (email !== undefined) {
+
+        if (email) {
             console.log('Email Exists')
+            console.log(email);
         }
-        else {
-            await Api.post(`/user/${userInfo.email}`, userInfo)
+        if (!email) {
+            await Api.put(`/user/${userInfo.email}`, userInfo)
+
                 .then(res => {
                     console.log('Inserted')
-                    // const accessToken = res.data.accessToken;
-                    // console.log(accessToken)
-                    // localStorage.setItem('accessToken', accessToken);
-                    // setToken(accessToken);
+                    const accessToken = res.data.accessToken;
+                    console.log(accessToken)
+                    localStorage.setItem('accessToken', accessToken);
+                    setToken(accessToken);
                 })
                 .catch(err => console.log(err.message))
+            console.log(email);
+            navigate('/')
         }
         e.target.reset();
     }
@@ -68,7 +54,7 @@ const Register = () => {
                     <Typography component="h1" variant="h5">
                         Sign up
                     </Typography>
-                    <form noValidate onSubmit={handleClick}>
+                    <form onSubmit={handleClick}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
@@ -130,7 +116,6 @@ const Register = () => {
                             fullWidth
                             variant="contained"
                             color="primary"
-
                         >
                             Sign Up
                         </Button>

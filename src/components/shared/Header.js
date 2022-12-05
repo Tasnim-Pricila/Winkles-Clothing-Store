@@ -1,4 +1,4 @@
-import { AppBar, Avatar, Button, IconButton, Link, Menu, MenuItem, Toolbar, Tooltip, Typography } from '@mui/material';
+import { AppBar, Avatar, Button, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Box, Container } from '@mui/system';
 import React, { useEffect, useState } from 'react';
@@ -7,7 +7,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Badge from '@mui/material/Badge';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
+import styled from '@emotion/styled';
 
 const Header = () => {
     const pages = ['Home', 'Shop', 'Blog', 'About', 'Contact'];
@@ -50,18 +51,18 @@ const Header = () => {
     const handleCart = () => {
         navigate('/cart');
     };
+
     return (
         <div>
             <AppBar position="static">
                 <Container maxWidth="xl" >
                     <Toolbar>
-
                         {/* Large screen logo  */}
                         <Typography
                             variant="h6"
                             noWrap
-                            component="a"
-                            href="/"
+                            component={Link}
+                            to="/"
                             sx={{
                                 mr: 2,
                                 display: { xs: 'none', md: 'flex' },
@@ -76,7 +77,7 @@ const Header = () => {
                             Winkles
                         </Typography>
 
-                        {/* Snmall screen menu icon  */}
+                        {/* Small screen menu icon  */}
                         <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                             <IconButton
                                 size="large"
@@ -118,8 +119,8 @@ const Header = () => {
                         <Typography
                             variant="h5"
                             noWrap
-                            component="a"
-                            href=""
+                            component={Link}
+                            to="/"
                             sx={{
                                 mr: 2,
                                 display: { xs: 'flex', md: 'none' },
@@ -138,10 +139,10 @@ const Header = () => {
                         <Box sx={{
                             flexGrow: 1,
                             display: { xs: 'none', md: 'flex' },
-                            // border: 2,
+                            gap: 2,
                             justifyContent: 'center'
                         }}>
-                            {pages.map((page) => (
+                            {/* {pages.map((page) => (
                                 <Button
                                     key={page}
                                     onClick={handleCloseNavMenu}
@@ -149,7 +150,25 @@ const Header = () => {
                                 >
                                     {page}
                                 </Button>
-                            ))}
+                            ))} */}
+
+                            <Typography component={NavLink}
+                                to='/shop'
+                                className={({ isActive }) => (isActive ? "" : "")}
+                                sx={{
+                                    textDecoration: 'none',
+                                    fontWeight: 'bold',
+                                    color: 'white',
+                                    textTransform: 'uppercase',
+                                }}>Shop</Typography>
+
+                            <Typography component={NavLink} to='/blog'
+                                sx={{
+                                    textDecoration: 'none',
+                                    color: 'white',
+                                    fontWeight: 'bold',
+                                    textTransform: 'uppercase',
+                                }}>Blog</Typography>
                         </Box>
 
                         {/* Settings  */}
@@ -159,7 +178,6 @@ const Header = () => {
                             gap: 2,
                             alignItems: 'center'
                         }}>
-
                             <Menu
                                 sx={{ mt: '45px' }}
                                 id="menu-appbar"
@@ -205,12 +223,10 @@ const Header = () => {
 
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                    <Avatar src="/broken-image.jpg" />
                                 </IconButton>
                             </Tooltip>
                         </Box>
-
-
                     </Toolbar>
                 </Container>
             </AppBar>

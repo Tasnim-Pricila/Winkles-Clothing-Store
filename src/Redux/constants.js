@@ -5,7 +5,8 @@ const actionTypes = {
     ADD_TO_CART: "ADD_TO_CART",
     REMOVE_FROM_CART: "REMOVE_FROM_CART",
     ADJUST_QTY: "ADJUST_QTY",
-    GET_USERS: "GET_USERS"
+    GET_USERS: "GET_USERS",
+    SEARCH_BY_FILTER : "SEARCH_BY_FILTER",
 };
 
 export default actionTypes;

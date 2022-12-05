@@ -2,13 +2,12 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../../Redux/actions';
 import Grid from '@mui/material/Grid';
-import { experimentalStyled as styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
 
 import Product from './Product';
 
 const Products = () => {
     const products = useSelector(state => state.allProducts.products)
+    // console.log(products)
     const dispatch = useDispatch();
 
     useEffect(() => {

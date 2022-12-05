@@ -1,39 +1,45 @@
 import { Button, Container, CssBaseline, Grid, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { getUsers } from '../../../Redux/actions';
+import { Link, useNavigate } from 'react-router-dom';
+import Api from '../../../Axios/Api';
+import useUsers from '../../../Custom Hook/useUsers';
 
 const Login = () => {
     const navigate = useNavigate();
-    const [email, setEmail] = useState([])
+    const [email, setEmail] = useState([]);
     const [token, setToken] = useState('');
-    const dispatch = useDispatch();
+    const [users] = useUsers([]);
     const [userInfo, setUserInfo] = useState({
         email: '',
         password: ''
     })
-    const userss = useSelector(state => state.allUsers.users);
 
     useEffect(() => {
-        dispatch(getUsers());
-        const findEmail = userss.find(user => user.email === userInfo.email)
+        const findEmail = users.find(user => user.email === userInfo.email)
         setEmail(findEmail);
-    }, [userInfo.email, setEmail])
+    }, [users, userInfo.email])
 
     const handleClick = async (e) => {
         e.preventDefault();
         if (email) {
-            // console.log("exists", email);
+            // console.log(email)
             if (email.password === userInfo.password) {
                 navigate('/cart')
             }
             else {
+                await Api.put(`/user/${userInfo.email}`, userInfo)
+                    .then(res => {
+                        const accessToken = res.data.accessToken;
+                        // console.log(accessToken)
+                        localStorage.setItem('accessToken', accessToken);
+                        setToken(accessToken);
+                    })
+                    .catch(err => console.log(err.message))
                 console.log("pass not match", userInfo.password, email.password);
             }
         }
         else {
-            console.log("Not exists")
+            console.log("Not exists", email)
         }
     }
 
@@ -45,13 +51,12 @@ const Login = () => {
                     <Typography component="h1" variant="h5">
                         Log in
                     </Typography>
-                    <form noValidate onSubmit={handleClick}>
+                    <form onSubmit={handleClick}>
                         <Grid container spacing={2}>
-
                             <Grid item xs={12}>
-                                <TextField
+                                <TextField required
                                     variant="outlined"
-                                    required
+                                    
                                     fullWidth
                                     id="emaill"
                                     label="Email Address"
@@ -75,7 +80,6 @@ const Login = () => {
                                     {(e) => setUserInfo({ ...userInfo, password: e.target.value })}
                                 />
                             </Grid>
-
                         </Grid>
                         <Button
                             type="submit"
@@ -85,6 +89,13 @@ const Login = () => {
                         >
                             Login
                         </Button>
+                        <Grid container justify="flex-end">
+                            <Grid item>
+                                <Link to="/register" variant="body2">
+                                    New? Register
+                                </Link>
+                            </Grid>
+                        </Grid>
                     </form>
                 </div>
             </Container>

@@ -4,19 +4,21 @@ import actionTypes from "./constants"
 export const fetchProducts = () => {
     return async (dispatch) => {
         const response = await Api.get('/products')
+        // console.log(response);
         dispatch({
             type: actionTypes.FETCH_PRODUCTS,
-            payload: response.data
+            payload: response.data?.data?.result
         })
     }
 }
 
 export const fetchProduct = (id) => {
     return async (dispatch) => {
-        const response = await Api.get(`/product/${id}`)
+        const response = await Api.get(`/products/${id}`)
+        console.log(response.data.data);
         dispatch({
             type: actionTypes.FETCH_PRODUCT,
-            payload: response.data
+            payload: response.data?.data
         })
     }
 }
@@ -35,6 +37,7 @@ export const addToCart = (itemID) => {
         }
     }
 }
+
 export const removeFromCart = (itemID) => {
     return {
         type: actionTypes.REMOVE_FROM_CART,
@@ -43,6 +46,7 @@ export const removeFromCart = (itemID) => {
         }
     }
 }
+
 export const adjustQty = (itemID, qty) => {
     return {
         type: actionTypes.ADJUST_QTY,
@@ -52,6 +56,7 @@ export const adjustQty = (itemID, qty) => {
         }
     }
 }
+
 export const getUsers = () => {
     return async (dispatch) => {
         const response = await Api.get(`/users`)
@@ -63,3 +68,13 @@ export const getUsers = () => {
     }
 }
 
+export const searchByFilter = (url) => {
+    return async (dispatch) => {
+        console.log(url);
+        const response = await Api.get(url)
+        dispatch({
+            type: actionTypes.SEARCH_BY_FILTER,
+            payload: response.data?.data?.result
+        })
+    }
+}

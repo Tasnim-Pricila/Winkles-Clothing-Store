@@ -6,7 +6,10 @@
     "quantity":"25",
     "addedBy":"Tasnim Tanzim Pricila",
     "email":"tasnimpricila27@gmail.com",
-    "image":"https://i.ibb.co/p0qGNVB/parts-4.jpg"
+    "image":"https://i.ibb.co/p0qGNVB/parts-4.jpg",
+    "category": "Women",
+    "brand": "Arong",
+    "stock": "2"
    },
     {
       "title":"USB-C Digital AV Multiport Adapter",
@@ -15,7 +18,10 @@
       "quantity": 4,
       "name":"Tasnim Tanzim Pricila",
       "email":"tasnimpricila27@gmail.com",
-      "img":"https://i.ibb.co/b28RfgQ/34-977-603-Z01.jpg"
+      "image":"https://i.ibb.co/b28RfgQ/34-977-603-Z01.jpg",
+      "category": "Men",
+      "brand": "Style Echo",
+      "stock": "0"
     },
     {
       "title":"Deepcool Multi Core X6 5 VDC ",
@@ -23,7 +29,9 @@
       "quantity":"20",
       "addedBy":"Tasnim Tanzim Pricila",
       "email":"tasnimpricila27@gmail.com",
-      "image":"https://i.ibb.co/0JQ0TcM/parts-3.jpg"
-    }
-    
+      "image":"https://i.ibb.co/0JQ0TcM/parts-3.jpg",
+      "category": "Kids",
+      "brand": "Shorodindu",
+      "stock": "2"
+    }  
 ]
