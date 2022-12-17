@@ -1,4 +1,4 @@
-import { AppBar, Avatar, Button, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from '@mui/material';
+import { AppBar, Avatar, Backdrop, Button, Fade, IconButton, InputAdornment, Menu, MenuItem, Modal, TextField, Toolbar, Tooltip, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Box, Container } from '@mui/system';
 import React, { useEffect, useState } from 'react';
@@ -6,30 +6,26 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Badge from '@mui/material/Badge';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link, NavLink, useNavigate } from 'react-router-dom'
-import styled from '@emotion/styled';
+import logout from '../pages/Auth/logout';
 
-const Header = () => {
+const Header = ({ setSearchText, searchText }) => {
     const pages = ['Home', 'Shop', 'Blog', 'About', 'Contact'];
-    const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+    // const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
     const cart = useSelector(state => state.allProducts.cart);
     const [countCart, setCountCart] = useState(0);
-    // const [total, setTotal] = useState(0);
     const navigate = useNavigate();
 
     useEffect(() => {
         let count = 0;
-        let total = 0;
         cart.forEach(item => {
             count = count + item.qty;
-            total = parseFloat(total) + parseFloat(item.price) * parseFloat(item.qty);
-            total = total.toFixed(2);
         })
         setCountCart(count);
-        // setTotal(total);
     }, [cart, countCart])
+
 
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
@@ -51,10 +47,64 @@ const Header = () => {
     const handleCart = () => {
         navigate('/cart');
     };
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'white',
+        boxShadow: 24,
+        p: 4,
+    };
+    const handleSearch = (e) => {
+        setSearchText(e.target.value);
+        if (e.key === 'Enter') {
+            setOpen(!open)
+            navigate('/')
+        }
+    }
+    const handleLogout = () => {
+        logout();
+    }
+    const token = localStorage.getItem('accessToken')
 
     return (
         <div>
-            <AppBar position="static">
+            <div>
+                <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    open={open}
+                    onClose={handleClose}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                        timeout: 500,
+                    }}
+                >
+                    <Fade in={open}>
+                        <Box sx={style}>
+                            <TextField id="outlined-basic" variant="outlined"
+                                sx={{ width: '100%' }}
+                                name='search'
+                                onKeyUp={handleSearch}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <SearchIcon />
+                                        </InputAdornment>
+                                    )
+                                }}
+                            />
+                        </Box>
+                    </Fade>
+                </Modal>
+            </div>
+            <AppBar position="static" sx={{ px: 10}}>
                 <Container maxWidth="xl" >
                     <Toolbar>
                         {/* Large screen logo  */}
@@ -142,16 +192,18 @@ const Header = () => {
                             gap: 2,
                             justifyContent: 'center'
                         }}>
-                            {/* {pages.map((page) => (
-                                <Button
-                                    key={page}
-                                    onClick={handleCloseNavMenu}
-                                    sx={{ my: 2, color: 'white', display: 'block' }}
-                                >
-                                    {page}
-                                </Button>
-                            ))} */}
+                            
 
+                            <Typography component={NavLink}
+                                to='/'
+                                className={({ isActive }) => (isActive ? "" : "")}
+                                sx={{
+                                    textDecoration: 'none',
+                                    fontWeight: 'bold',
+                                    color: 'white',
+                                    textTransform: 'uppercase',
+                                }}> Home
+                            </Typography>
                             <Typography component={NavLink}
                                 to='/shop'
                                 className={({ isActive }) => (isActive ? "" : "")}
@@ -160,15 +212,32 @@ const Header = () => {
                                     fontWeight: 'bold',
                                     color: 'white',
                                     textTransform: 'uppercase',
-                                }}>Shop</Typography>
-
-                            <Typography component={NavLink} to='/blog'
+                                }}>Shop
+                            </Typography>
+                            <Typography component={NavLink} to='/blogs'
                                 sx={{
                                     textDecoration: 'none',
                                     color: 'white',
                                     fontWeight: 'bold',
                                     textTransform: 'uppercase',
-                                }}>Blog</Typography>
+                                }}>Blog
+                            </Typography>
+                            <Typography component={NavLink} to='/about'
+                                sx={{
+                                    textDecoration: 'none',
+                                    color: 'white',
+                                    fontWeight: 'bold',
+                                    textTransform: 'uppercase',
+                                }}>About
+                            </Typography>
+                            <Typography component={NavLink} to='/contact'
+                                sx={{
+                                    textDecoration: 'none',
+                                    color: 'white',
+                                    fontWeight: 'bold',
+                                    textTransform: 'uppercase',
+                                }}>Contact
+                            </Typography>
                         </Box>
 
                         {/* Settings  */}
@@ -203,13 +272,26 @@ const Header = () => {
                                     display: 'flex',
                                     flexDirection: 'column'
                                 }}>
-                                    <NavLink to='/login'>Login</NavLink>
-                                    <NavLink to='/register'>Register</NavLink>
+                                    {
+                                        !token ?
+                                            <>
+                                                <NavLink to='/login'>Login</NavLink>
+                                                <NavLink to='/register'>Register</NavLink>
+                                            </>
+                                            :
+                                            <>
+                                                <NavLink to='/login'><Button onClick={handleLogout}> Logout </Button></NavLink>
+                                                <NavLink to='/dashboard'>My Dashboard</NavLink>
+                                            </>
+
+                                    }
+
+
                                 </MenuItem>
 
                             </Menu>
                             <IconButton sx={{ p: 0 }}>
-                                <SearchIcon />
+                                <SearchIcon onClick={handleOpen} />
                             </IconButton>
                             <IconButton sx={{ p: 0 }}>
                                 <FavoriteBorderIcon />

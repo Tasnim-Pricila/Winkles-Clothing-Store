@@ -4,114 +4,128 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import ButtonBase from '@mui/material/ButtonBase';
 import Button from '@mui/material/Button';
+import { Divider } from '@mui/material';
+import { CheckCircle, ShoppingCart } from '@mui/icons-material';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 const SingleProduct = () => {
     const { id } = useParams()
     const product = useSelector(state => state.singleProduct.product);
-    console.log(product);
-    const cart = useSelector(state => state.allProducts.cart);
-    // console.log(cart)
-    const dispatch = useDispatch();
-    // const [quantity, setQty] = useState(0);
+    console.log(product)
 
+    const dispatch = useDispatch();
     useEffect(() => {
         dispatch(fetchProduct(id))
         return () => {
             dispatch(removeSelectedProduct())
         }
-    }, [])
+    }, [id, dispatch])
 
-    const handleRemove = (id) => {
-        dispatch(removeFromCart(id));
-    }
+    // const [purchaseQuantity, setQty] = useState(product?.qty);
 
-    // const handleQty = (e) => {
-    //     let input = parseInt(e.target.value);
-    //     setQty(input);
-    //     dispatch(adjustQty(product[0]?._id, input));
+    // const increase = () => {
+    //     setQty(parseInt(purchaseQuantity) + 1);
+    //     const q = product?.quantity - 1;
+    //     if (purchaseQuantity === q) {
+    //         console.log('no') //toast
+    //     }
+    //     dispatch(adjustQty(id, purchaseQuantity + 1))
     // }
+
+    // const decrease = () => {
+    //     setQty(parseInt(purchaseQuantity) - 1);
+    //     if (purchaseQuantity === 1) {
+    //         dispatch(removeFromCart(id))
+    //     }
+    //     dispatch(adjustQty(id, purchaseQuantity - 1))
+    // }
+
     const handleAddToCart = (id) => {
         dispatch(addToCart(id));
     }
 
-
     const Img = styled('img')({
-        margin: 'auto',
-        display: 'block',
-        maxWidth: '100%',
-        maxHeight: '100%',
+        width: '100%',
     });
+
+    const stock = {
+        backgroundColor: 'green',
+        color: 'white',
+        padding: '5px 10px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 0,
+
+    }
+    const cart = {
+        backgroundColor: 'green',
+        color: 'white',
+        padding: '5px 10px',
+        borderRadius: 0,
+        marginTop: '20px'
+
+    }
 
     return (
         <div>
             {
                 product ?
-                    <Paper
-                        sx={{
-                            p: 4,
-                            margin: 'auto',
-                            mt: 10,
-                            maxWidth: 900,
-                            flexGrow: 1,
-                            backgroundColor: (theme) =>
-                                theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-                        }}
-                    >
-                        <Grid container spacing={6}>
-                            <Grid item>
-                                <ButtonBase sx={{ width: 200, height: 200 }}>
-                                    <Img alt="complex" src={product.image} />
-                                </ButtonBase>
-                            </Grid>
-                            <Grid item xs={12} sm container>
-                                <Grid item xs container direction="column" spacing={2}>
-                                    <Grid item xs>
-                                        <Typography gutterBottom variant="h5" component="div">
-                                            {product.title}
-                                        </Typography>
-                                        <Typography variant="body2" gutterBottom sx={{
-                                            textAlign: 'justify',
-                                            mt: 2
-                                        }}>
-                                            {product.description}
-                                        </Typography>
-                                        {/* <input type="number" value={quantity} onChange=
-                                            {handleQty}
-                                        /> */}
-                                        <Typography variant="body2" color="text.secondary">
-                                            ID: {product._id}
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item>
-                                        <Button size="small" variant="outlined"
-                                            sx={{
-                                                mx: 'auto',
-                                                mr: 2
-                                            }}
-                                            onClick={() => handleAddToCart(product[0]?._id)}>
-                                            Add To Cart</Button>
-
-                                        <Button size="small" variant="contained"
-                                            onClick={() => handleRemove(product._id)}
-                                            sx={{
-                                                mx: 'auto'
-                                            }}>
-                                            Remove
-                                        </Button>
-                                    </Grid>
-                                </Grid>
-                                <Grid item>
-                                    <Typography variant="h5" component="div">
-                                        ${product.price}
-                                    </Typography>
-                                </Grid>
-                            </Grid>
+                    <Grid container direction="row" columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                        sx={{ px: 16, mt: 10 }}>
+                        <Grid item xs={4} >
+                            <Img alt="complex" src={product.image} />
                         </Grid>
-                    </Paper>
+                        <Grid item xs={8}>
+                            <Typography gutterBottom variant="h4" sx={{ textTransform: 'uppercase', fontWeight: 'bold', color: 'black' }}>
+                                {product.title}
+                            </Typography>
+                            <Divider />
+
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', }}>
+                                <Typography variant="h5" sx={{ py: 2, fontWeight: 'bold' }}>
+                                    Tk. {product.price}
+                                </Typography>
+                                <Typography variant="subtitle2" sx={stock}
+                                >
+                                    <CheckCircle fontSize='small' sx={{ pr: 1 }} /> {product.stock}
+                                </Typography>
+                            </div>
+                            <Divider />
+
+                            <Typography variant="body2" sx={{ py: 2, fontWeight: 'bold', color: 'gray' }}>
+                                Brand: {product.brand}
+                            </Typography>
+                            <Divider />
+
+                            <Typography variant="body2" gutterBottom sx={{
+                                textAlign: 'justify',
+                                my: 2
+                            }}>
+                                <b style={{ marginBottom: '4px', display: 'inline-block' }}>Description:</b> <br /> {product.description}
+                            </Typography>
+                            <Divider />
+
+                            {/* <Button disabled={purchaseQuantity === product?.quantity} onClick={increase}>
+                                <AddIcon />
+                            </Button>
+                            <input type="number" value={purchaseQuantity} readOnly style={{ width: '40px', textAlign: 'center' }}
+                                onChange={(e) => setQty(e.target.value)}
+                            />
+                            <Button onClick={decrease}>
+                                <RemoveIcon />
+                            </Button> */}
+
+                            <Button size="small" variant="outlined" 
+                                sx={cart}
+                                onClick={() => handleAddToCart(product._id)}
+                                startIcon={<ShoppingCart/>} >
+                                Add To Cart</Button>
+                        </Grid>
+                    </Grid>
                     : <p>Loading...</p>
             }
 

@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Api from '../Axios/Api';
 
 const useUsers = () => {
-    const [users, setUsers] = useState([])
+    const [user, setUser] = useState([]);
 
     useEffect(() => {
-        const getUsers = async () => {
-            await Api.get('/users')
-                .then(res => {
-                    setUsers(res.data);
-                })
-                .catch(err => {
-                    console.log(err.message)
-                })
+        const getUser = async () => {
+            const data = await Api.get('/users/me', {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('accessToken')}`
+                }
+            });
+            if (data.data.status === 'success') {
+                setUser(data?.data?.data)
+            }
         }
-        getUsers();
+        getUser();
+        
     }, [])
-
-    return [users, setUsers];
+    // console.log(user);
+    return [user, setUser];
 };
 
 export default useUsers;

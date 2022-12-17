@@ -3,12 +3,22 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { FormControl, FormControlLabel, InputAdornment, InputLabel, OutlinedInput, Radio, RadioGroup } from '@mui/material';
+import { Button, FormControl, FormControlLabel, Grid, InputAdornment, InputLabel, OutlinedInput, Radio, RadioGroup } from '@mui/material';
 
 
-const LeftSidebar = ({ setCategory, setGtPrice, setStock, brand, setBrand, setLtPrice }) => {
+const LeftSidebar = ({ setCategory, setGtPrice, setStock, brand, setBrand, setLtPrice,handleClear }) => {
     return (
         <div>
+            <Grid container>
+                <Grid item xs={6}>
+                    <Typography>Search Results: </Typography>
+                </Grid>
+                <Grid item xs={6} sx={{ textAlign: 'right'}}>
+                    <Button onClick={handleClear}> Clear Filters: </Button>
+
+                </Grid>
+            </Grid>
+            <Typography>Filters: </Typography>
             <Accordion defaultExpanded>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}

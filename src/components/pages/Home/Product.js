@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import React, { useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -12,7 +13,7 @@ import { useDispatch } from 'react-redux';
 import { addToCart } from '../../../Redux/actions';
 
 const Product = ({ product }) => {
-   
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const handleDetails = (id) => {
@@ -23,29 +24,32 @@ const Product = ({ product }) => {
     }
 
     return (
-        <Grid item xs={4}>
-            <Card sx={{
-                p: 2
-            }}>
+        <Grid item xs={3}>
+            <Card sx={{ border: 0}}>
                 <CardMedia
                     component="img"
-                    // height="140"
+                    height="auto"
                     image={product.image}
                     alt="green iguana"
                 />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                        {product.title}
+
+                <CardContent sx={{ pt: 2 }}>
+                    <Typography gutterBottom variant="h6" sx={{ textAlign: 'center', textTransform: 'capitalize'}}>
+                        {
+                            product.title.length > 24 ? `${product.title.slice(0, 24)}...`
+                            : product.title
+                        }
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        {product.description.slice(0, 150)}
+                    <Typography gutterBottom variant="h6" sx={{ textAlign: 'center', fontWeight: 'bold'}}>
+                        Tk. {product.price}
                     </Typography>
                 </CardContent>
-                <CardActions>
+
+                <CardActions sx={{ pb: 2}}>
                     <Button size="small" variant="contained" onClick={() => handleDetails(product._id)}
-                    sx={{
-                        mx: 'auto'
-                    }}>
+                        sx={{
+                            mx: 'auto'
+                        }}>
                         Details
                     </Button>
                     <Button size="small" variant="outlined" sx={{
@@ -54,7 +58,7 @@ const Product = ({ product }) => {
                         Add To Cart</Button>
                 </CardActions>
             </Card>
-           
+
         </Grid>
 
     );

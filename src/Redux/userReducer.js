@@ -2,6 +2,7 @@ import actionTypes from "./constants";
 
 const initialState = {
    users : [],
+   user:[]
 }
 
 const userReducer = (state = initialState, action) => {
@@ -11,6 +12,13 @@ const userReducer = (state = initialState, action) => {
                 ...state,
                 users: action.payload
             }
+        case actionTypes.GET_ME:
+            console.log(action.payload);
+            return {
+                ...state,
+                user: action.payload
+            }
+      
        
         default:
             return state

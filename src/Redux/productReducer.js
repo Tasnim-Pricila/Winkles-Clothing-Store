@@ -1,9 +1,11 @@
+import { searchProducts } from "./actions";
 import actionTypes from "./constants";
 
 const initialState = {
     products: [],
     cart: [],
-    filter: []
+    filter: [],
+    searchProducts: []
 }
 const singleState = {
     product: [],
@@ -51,6 +53,13 @@ const productReducer = (state = initialState, action) => {
             return {
                 ...state,
                 products: action.payload,
+            }
+        case actionTypes.SEARCH_PRODUCT:
+            return {
+                ...state,
+                searchProducts: state.products.filter(
+                    product => product.title.includes(action.payload.searchText))
+        
             }
         default:
             return state

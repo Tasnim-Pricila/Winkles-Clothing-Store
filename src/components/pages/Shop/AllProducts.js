@@ -24,34 +24,36 @@ const AllProducts = ({ product }) => {
 
     return (
         <Grid item xs={4} md={4} >
-            <Card sx={{
-                p: 2
-            }}>
+             <Card>
                 <CardMedia
                     component="img"
-                    // height="140"
-                    image={product?.image}
+                    height="auto"
+                    image={product.image}
                     alt="green iguana"
                 />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="div" sx={{
-                        minHeight: '80px'
-                    }}>
-                        {product.title}
+
+                <CardContent sx={{ pt: 2, px: 0 }}>
+                    <Typography gutterBottom variant="h6" sx={{ textAlign: 'center', textTransform: 'capitalize'}}>
+                        {
+                            product.title.length > 24 ? `${product.title.slice(0, 24)}...`
+                            : product.title
+                        }
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        {product.description.slice(0, 150)}
+                    <Typography gutterBottom variant="h6" sx={{ textAlign: 'center', fontWeight: 'bold'}}>
+                        Tk. {product.price}
                     </Typography>
                 </CardContent>
-                <CardActions sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                }}>
-                    <Button size="small" variant="contained" onClick={() => handleDetails(product._id)}>
-                       
+
+                <CardActions sx={{ pb: 2}}>
+                    <Button size="small" variant="contained" onClick={() => handleDetails(product._id)}
+                        sx={{
+                            mx: 'auto'
+                        }}>
                         Details
                     </Button>
-                    <Button size="small" variant="outlined" onClick={() => handleAddToCart(product._id)}>
+                    <Button size="small" variant="outlined" sx={{
+                        mx: 'auto'
+                    }} onClick={() => handleAddToCart(product._id)}>
                         Add To Cart</Button>
                 </CardActions>
             </Card>

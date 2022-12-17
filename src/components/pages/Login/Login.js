@@ -1,47 +1,35 @@
 import { Button, Container, CssBaseline, Grid, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Api from '../../../Axios/Api';
-import useUsers from '../../../Custom Hook/useUsers';
 
 const Login = () => {
+    const location = useLocation();
     const navigate = useNavigate();
-    const [email, setEmail] = useState([]);
     const [token, setToken] = useState('');
-    const [users] = useUsers([]);
     const [userInfo, setUserInfo] = useState({
         email: '',
         password: ''
     })
-
-    useEffect(() => {
-        const findEmail = users.find(user => user.email === userInfo.email)
-        setEmail(findEmail);
-    }, [users, userInfo.email])
-
+ 
     const handleClick = async (e) => {
         e.preventDefault();
-        if (email) {
-            // console.log(email)
-            if (email.password === userInfo.password) {
-                navigate('/cart')
-            }
-            else {
-                await Api.put(`/user/${userInfo.email}`, userInfo)
-                    .then(res => {
-                        const accessToken = res.data.accessToken;
-                        // console.log(accessToken)
-                        localStorage.setItem('accessToken', accessToken);
-                        setToken(accessToken);
-                    })
-                    .catch(err => console.log(err.message))
-                console.log("pass not match", userInfo.password, email.password);
-            }
-        }
-        else {
-            console.log("Not exists", email)
-        }
+        await Api.post(`/users/login`, userInfo)
+            .then(res => {
+                // console.log(res)
+                const accessToken = res.data?.data?.token;
+                localStorage.setItem('accessToken', accessToken);
+                setToken(accessToken);
+                
+            })
+            .catch(err => console.log(err.response.data.error))
     }
+    const from = location.state?.from?.pathname || '/shop';
+    useEffect(() => {
+        if(token){
+            navigate(from, { replace: true });
+        }
+    },[token])
 
     return (
         <div>
@@ -56,7 +44,7 @@ const Login = () => {
                             <Grid item xs={12}>
                                 <TextField required
                                     variant="outlined"
-                                    
+
                                     fullWidth
                                     id="emaill"
                                     label="Email Address"

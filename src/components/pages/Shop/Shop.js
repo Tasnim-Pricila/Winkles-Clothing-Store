@@ -1,6 +1,7 @@
 import { Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import useUsers from '../../../Custom Hook/useUsers';
 import { fetchProducts, searchByFilter } from '../../../Redux/actions';
 import AllProducts from './AllProducts';
 import LeftSidebar from './LeftSidebar';
@@ -13,6 +14,12 @@ const Shop = () => {
     const [gtPrice, setGtPrice] = useState('');
     const [ltPrice, setLtPrice] = useState('');
     const [stock, setStock] = useState('');
+    const [user] = useUsers();
+
+    const handleClear = () => {
+        dispatch(fetchProducts())
+    }
+    console.log(user)
 
     useEffect(() => {
         if (!gtPrice && !ltPrice && !stock && !brand && !category) {
@@ -73,10 +80,11 @@ const Shop = () => {
     return (
         <div>
             <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-                sx={{ mt: 2, px: 6, }}>
+                sx={{ mt: 2, px: 16, }}>
                 <Grid item xs={2} md={3} >
-                    <LeftSidebar category={category} setCategory={setCategory} gtPrice={gtPrice} setGtPrice={setGtPrice} stock={stock} setStock={setStock} brand={brand} setBrand={setBrand} setLtPrice={setLtPrice} ltPrice={ltPrice} />
+                    <LeftSidebar category={category} setCategory={setCategory} gtPrice={gtPrice} setGtPrice={setGtPrice} stock={stock} setStock={setStock} brand={brand} setBrand={setBrand} setLtPrice={setLtPrice} ltPrice={ltPrice} handleClear={handleClear} />
                 </Grid>
+
                 <Grid item xs={4} md={9} >
                     <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{
                         mt: 2,
@@ -88,6 +96,7 @@ const Shop = () => {
                                 products.map(product =>
                                     <AllProducts key={product._id}
                                         product={product}
+                                        
                                     />
                                 )
                                 :

@@ -1,31 +1,52 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchProducts } from '../../../Redux/actions';
+import React from 'react';
 import Grid from '@mui/material/Grid';
-
 import Product from './Product';
+import { Button, Typography } from '@mui/material';
 
-const Products = () => {
-    const products = useSelector(state => state.allProducts.products)
-    // console.log(products)
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(fetchProducts())
-    }, [])
+const Products = ({ searchText, products, searched, setSearchText }) => {
+    const handleReset = () => {
+        setSearchText('');
+    }
 
     return (
         <div>
-            <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{
+            <Grid container sx={{
                 mt: 2,
-                px: 6
+                px: 16
+            }}>
+                <Grid item xs={6}>
+                    <Typography>Search Results: </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                    <Button variant='filled' onClick={handleReset}>Reset Search Results</Button>
+
+                </Grid>
+            </Grid>
+
+            <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 4 }} sx={{
+                mt: 2,
+                px: 16,
+                py: 16
             }}>
                 {
-                    products.map(product =>
-                        <Product key={product._id}
-                         product= {product}
-                         dispatch={dispatch} />   
-                    )
+                    searchText === '' ?
+                        <>
+                            {
+                                products.map(product =>
+                                    <Product key={product._id}
+                                        product={product}
+                                    />
+                                )}
+                        </>
+                        :
+                        <>
+                            {
+                                searched.map(product =>
+                                    <Product key={product._id}
+                                        product={product}
+                                    />
+                                )}
+                        </>
                 }
 
 
