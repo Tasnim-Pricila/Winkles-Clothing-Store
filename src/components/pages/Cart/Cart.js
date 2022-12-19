@@ -92,7 +92,6 @@ const Cart = () => {
                             Proceed to Checkout
                         </Button>
                     </div>
-
                 }
             </Box>
         </div>

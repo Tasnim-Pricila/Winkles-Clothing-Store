@@ -1,57 +1,40 @@
 import React from 'react';
 import Grid from '@mui/material/Grid';
 import Product from './Product';
-import { Button, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 
-const Products = ({ searchText, products, searched, setSearchText }) => {
-    const handleReset = () => {
-        setSearchText('');
-    }
-
+const Products = ({ products }) => {
     return (
         <div>
-            <Grid container sx={{
-                mt: 2,
-                px: 16
-            }}>
-                <Grid item xs={6}>
-                    <Typography>Search Results: </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                    <Button variant='filled' onClick={handleReset}>Reset Search Results</Button>
-
-                </Grid>
-            </Grid>
-
+            <Typography variant='h4' sx={{ textAlign: 'center', pt: 16, textTransform: 'uppercase' }}>
+                Products</Typography>
             <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 4 }} sx={{
-                mt: 2,
+                mt: 4,
                 px: 16,
-                py: 16
+                mb: 16
             }}>
+
                 {
-                    searchText === '' ?
+                    products.length > 0 ?
                         <>
                             {
+
                                 products.map(product =>
                                     <Product key={product._id}
                                         product={product}
-                                    />
-                                )}
+                                    />)
+
+
+                            }
                         </>
                         :
                         <>
-                            {
-                                searched.map(product =>
-                                    <Product key={product._id}
-                                        product={product}
-                                    />
-                                )}
+                            <p> Loading...</p>
                         </>
+
                 }
-
-
             </Grid>
-        </div>
+        </div >
     );
 };
 

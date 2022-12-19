@@ -64,7 +64,7 @@ const Header = ({ setSearchText, searchText }) => {
         setSearchText(e.target.value);
         if (e.key === 'Enter') {
             setOpen(!open)
-            navigate('/')
+            navigate('/shop')
         }
     }
     const handleLogout = () => {

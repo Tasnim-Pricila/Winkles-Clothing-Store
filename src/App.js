@@ -18,6 +18,7 @@ import RequireAuth from './components/pages/Auth/RequireAuth';
 import Dashboard from './components/pages/Dashboard/Dashboard';
 import MyOrders from './components/pages/Dashboard/User/MyOrders';
 import MyProfile from './components/pages/Dashboard/MyProfile';
+import Footer from './components/shared/Footer';
 
 function App() {
   const [searchText, setSearchText] = useState('')
@@ -25,7 +26,7 @@ function App() {
     <div>
       <Header setSearchText={setSearchText} searchText={searchText} />
       <Routes>
-        <Route path='/' element={<Home searchText={searchText} setSearchText={setSearchText} />}></Route>
+        <Route path='/' element={<Home/>}></Route>
         <Route path='/cart' element={
           <RequireAuth>
             <Cart />
@@ -34,7 +35,8 @@ function App() {
         <Route path='/product/:id' element={<SingleProduct />}></Route>
         <Route path='/login' element={<Login />}></Route>
         <Route path='/register' element={<Register />}></Route>
-        <Route path='/shop' element={<Shop />}></Route>
+        <Route path='/shop' element={
+          <Shop searchText={searchText} setSearchText={setSearchText} />}></Route>
         <Route path='/blogs' element={<Blogs />}></Route>
         <Route path='/about' element={<About />}></Route>
         <Route path='/contact' element={<Contact />}></Route>
@@ -43,10 +45,11 @@ function App() {
         <Route path='/*' element={<Error />}></Route>
         <Route path='/dashboard' element={
           <Dashboard />}>
-            <Route index element={<MyOrders/>}></Route>
-            <Route path='profile' element={<MyProfile/>}></Route>
+          <Route index element={<MyOrders />}></Route>
+          <Route path='profile' element={<MyProfile />}></Route>
         </Route>
       </Routes>
+      <Footer/>
     </div>
   );
 }

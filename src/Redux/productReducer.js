@@ -1,4 +1,3 @@
-import { searchProducts } from "./actions";
 import actionTypes from "./constants";
 
 const initialState = {
@@ -59,7 +58,6 @@ const productReducer = (state = initialState, action) => {
                 ...state,
                 searchProducts: state.products.filter(
                     product => product.title.includes(action.payload.searchText))
-        
             }
         default:
             return state

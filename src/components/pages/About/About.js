@@ -1,10 +1,19 @@
+import { Typography } from '@mui/material';
+import { Box } from '@mui/system';
 import React from 'react';
 
 const About = () => {
     return (
-        <div>
-            
-        </div>
+
+        <Box sx={{ px: 16 }}>
+            <Typography variant='h4' sx={{ textAlign: 'center', pt: 6, textTransform: 'uppercase' }}>
+                Who we are
+            </Typography>
+            <Typography sx={{ py: 8 }}>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur voluptatum assumenda dolorum hic magni repellendus blanditiis mollitia! Nihil, nostrum modi? Odit quae alias reprehenderit omnis assumenda minima enim ex id! Quasi accusantium voluptates sunt vero sit ex ipsam nam ad, voluptatibus omnis veritatis consectetur voluptas similique corrupti consequuntur sint velit? Eaque nobis itaque tenetur ullam repellat reprehenderit veritatis numquam omnis, sint, nesciunt eveniet sit, unde quia molestias molestiae maiores velit dolor id cumque. Beatae ducimus ullam, quos fuga labore incidunt neque eligendi aperiam. Cum corporis omnis est ipsa voluptatum ducimus distinctio molestias placeat, enim adipisci sint maxime ullam modi voluptate?
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem ducimus recusandae doloremque nisi aliquam, dolores, impedit eligendi vel vitae eius repudiandae. Eum aspernatur debitis adipisci velit illum iusto mollitia, voluptate consequatur, deserunt molestiae dolor ex qui sint nisi quod incidunt vitae dignissimos. Illo explicabo quae minus aspernatur sunt? Magni accusantium ut sit quisquam soluta. Reiciendis quidem similique perspiciatis maxime commodi ea accusantium accusamus voluptates vero labore quia aliquid, laborum dicta in quo error optio dolor blanditiis. Placeat, similique dolorem tempore a temporibus hic amet. Dignissimos veritatis repellat officiis minima. Minus ipsum qui neque provident quas temporibus distinctio expedita assumenda natus sequi eius, nisi saepe aut atque quisquam nemo. Accusamus blanditiis consequatur eos officia cumque vero unde saepe laborum at mollitia alias exercitationem, aut aliquam. Cumque optio, itaque, veritatis, provident laborum rerum iusto laboriosam est veniam aperiam officiis facere aspernatur voluptatibus officia neque. Quo, reprehenderit? Consectetur, eaque commodi! Quisquam expedita modi incidunt debitis deleniti aspernatur unde voluptatem ipsum nihil, vero, amet accusantium perspiciatis, tempore explicabo? Quisquam, quaerat sunt minima blanditiis aliquid earum, nihil, distinctio nemo eius sit vitae accusamus repellat atque voluptas explicabo magni nostrum dolores sed consectetur delectus numquam laborum saepe doloremque eveniet? Iste ducimus eligendi cumque distinctio quo dolores eum vel qui dolore asperiores, delectus doloremque! Similique veritatis, consequuntur ipsum dicta eaque iusto nostrum qui optio? Praesentium maiores delectus minima culpa sunt est nisi blanditiis tempore sit. Eaque cum deleniti, mollitia accusamus, repudiandae iure labore totam ratione beatae aperiam pariatur nemo! Quos mollitia molestiae nihil similique nulla, inventore quidem, quae, possimus quo eius libero vel adipisci totam incidunt magni repellat at atque nostrum excepturi? Maiores dolores possimus recusandae. Ab nulla optio cumque sint molestiae autem, ullam possimus eius quia! Excepturi laudantium beatae minima voluptatibus reprehenderit incidunt tempore officiis culpa dolorum quasi dolorem ab veniam illum esse repellendus dolor doloremque perspiciatis provident quas, eum veritatis! Animi ratione sunt nobis ad officiis natus voluptatibus at! Aliquam labore nihil impedit harum, voluptate itaque laudantium dolorem voluptas quisquam. Ullam quaerat a deserunt beatae voluptatem temporibus eius in necessitatibus facilis, minus dignissimos quod magnam aut et, laudantium voluptate voluptatum, quis numquam corrupti soluta aperiam eum officia? Facere nam animi iste harum repudiandae ducimus non, laboriosam accusamus maxime saepe, omnis illo magni. Illum earum accusamus, eum recusandae quo in sed voluptate beatae eligendi harum, asperiores ut fuga corporis deserunt sapiente quos hic dicta impedit! Quos eum ipsam quod quis cupiditate in soluta rerum q
+            </Typography>
+        </Box>
     );
 };
 

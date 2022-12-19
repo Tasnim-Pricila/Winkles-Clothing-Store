@@ -1,10 +1,128 @@
+import { Box, Divider, Grid, Typography } from '@mui/material';
 import React from 'react';
+import Link from '@mui/material/Link';
+import { Email, LocationOn, Message, NavigateNext, Phone } from '@mui/icons-material';
 
 const Footer = () => {
+
+    const footerBtn = {
+        textTransform: 'capitalize',
+        fontSize: '14px',
+        color: '#e2e2e2',
+        fontWeight: 500,
+        display: 'flex',
+        alignItems: 'center',
+        // border: '2px solid white',
+        paddingBottom: '10px',
+        '&:hover': {
+            color: 'green'
+        }
+    }
+    const style = {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 12,
+        paddingTop: '15px'
+    }
+
     return (
-        <div>
-            
-        </div>
+        <>
+            <Box sx={{ px: 16, py: 10, backgroundColor: '#333333', color: 'white' }}>
+                <Grid container>
+                    <Grid item md={3}>
+                        <Typography sx={{ pb: 2 }}>CUSTOMER SERVICE</Typography>
+                        <Link href="#" underline="none" sx={footerBtn}>
+                            <NavigateNext /> Contact Us
+                        </Link>
+                        <Link href="#" underline="none" sx={footerBtn}>
+                            <NavigateNext /> Returns
+                        </Link>
+                        <Link href="#" underline="none" sx={footerBtn}>
+                            <NavigateNext /> Order History
+                        </Link>
+                        <Link href="#" underline="none" sx={footerBtn}>
+                            <NavigateNext /> Site Map
+                        </Link>
+                        <Link href="#" underline="none" sx={footerBtn}>
+                            <NavigateNext /> Testimonials
+                        </Link>
+                        <Link href="#" underline="none" sx={footerBtn}>
+                            <NavigateNext /> My Account
+                        </Link>
+                    </Grid>
+                    <Grid item md={3}>
+                        <Typography sx={{ pb: 2 }}>EXTRAS</Typography>
+                        <Link href="#" underline="none" sx={footerBtn}>
+                            <NavigateNext /> Brands
+                        </Link>
+                        <Link href="#" underline="none" sx={footerBtn}>
+                            <NavigateNext /> Gift Certificates
+                        </Link>
+                        <Link href="#" underline="none" sx={footerBtn}>
+                            <NavigateNext /> Affiliates
+                        </Link>
+                        <Link href="#" underline="none" sx={footerBtn}>
+                            <NavigateNext /> Wish List
+                        </Link>
+                        <Link href="#" underline="none" sx={footerBtn}>
+                            <NavigateNext /> Blog
+                        </Link>
+                        <Link href="#" underline="none" sx={footerBtn}>
+                            <NavigateNext /> Specials
+                        </Link>
+                    </Grid>
+                    <Grid item md={3}>
+                        <Typography sx={{ pb: 2 }}>CUSTOMER SERVICE</Typography>
+                        <Link href="#" underline="none" sx={footerBtn}>
+                            <NavigateNext /> About Us
+                        </Link>
+                        <Link href="#" underline="none" sx={footerBtn}>
+                            <NavigateNext /> Delivery Information
+                        </Link>
+                        <Link href="#" underline="none" sx={footerBtn}>
+                            <NavigateNext /> Privacy Policy
+                        </Link>
+                        <Link href="#" underline="none" sx={footerBtn}>
+                            <NavigateNext /> Terms & Conditions
+                        </Link>
+                        <Link href="#" underline="none" sx={footerBtn}>
+                            <NavigateNext /> Suppliers
+                        </Link>
+                        <Link href="#" underline="none" sx={footerBtn}>
+                            <NavigateNext /> Our Store
+                        </Link>
+                    </Grid>
+                    <Grid item md={3}>
+                        <Typography sx={{ pb: 2 }}>CONTACT US</Typography>
+                        <div style={style}>
+                            <LocationOn sx={{ borderRadius: '50%', p: 1, bgcolor: 'green', }} />
+                            <Typography>123 Main Street, Anytown,
+                                CA 12345 USA</Typography>
+                        </div>
+                        <div style={style}>
+                            <Phone sx={{ borderRadius: '50%', p: 1, bgcolor: 'green', }} />
+                            <Typography> +1 800 123 1234 </Typography>
+                        </div>
+                        <div style={style}>
+                            <Email sx={{ borderRadius: '50%', p: 1, bgcolor: 'green', }} />
+                            <Typography> abc@example.com </Typography>
+                        </div>
+                    </Grid>
+                </Grid>
+            </Box>
+            <Grid container sx={{ py: 2 , borderTop: 1, borderColor: '#444444', backgroundColor: '#555555', px: 16, color: 'white'}}>
+                <Grid item md={6}>
+                    <Typography>&copy; 2016 Magikcommerce. All Rights Reserved.</Typography>
+                </Grid>
+                <Grid item md={6} sx={{ display: 'flex', gap: 4, justifyContent: 'end' }}>
+                    <Link href="#" underline="none" sx={footerBtn}>OpenCart Extensions</Link>
+                    <Link href="#" underline="none" sx={footerBtn}> Responsive Themes</Link>
+                    <Link href="#" underline="none" sx={footerBtn}>Premium  Themes</Link>
+                    <Link href="#" underline="none" sx={footerBtn}>OpenCart Extensions</Link>
+                </Grid>
+            </Grid>
+        </>
+
     );
 };
 

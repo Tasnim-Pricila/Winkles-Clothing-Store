@@ -1,13 +1,15 @@
 import { Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import useUsers from '../../../Custom Hook/useUsers';
-import { fetchProducts, searchByFilter } from '../../../Redux/actions';
+import { fetchProducts, searchByFilter, searchProducts } from '../../../Redux/actions';
 import AllProducts from './AllProducts';
 import LeftSidebar from './LeftSidebar';
 
-const Shop = () => {
+const Shop = ({ searchText, setSearchText }) => {
     const products = useSelector(state => state.allProducts.products)
+    const searched = useSelector(state => state.allProducts.searchProducts)
     const dispatch = useDispatch();
     const [category, setCategory] = useState('');
     const [brand, setBrand] = useState('');
@@ -17,65 +19,89 @@ const Shop = () => {
     const [user] = useUsers();
 
     const handleClear = () => {
+        setSearchText('');
+        // setCategory('');
+        // setStock('');
+        // setGtPrice('');
+        // setLtPrice('');
         dispatch(fetchProducts())
     }
-    console.log(user)
+    // console.log(searched)
 
     useEffect(() => {
         if (!gtPrice && !ltPrice && !stock && !brand && !category) {
             dispatch(fetchProducts())
         }
         else if (stock && gtPrice && ltPrice && category && brand) {
+            setSearchText('');
             const url = `/products?stock=${stock}&price[gte]=${gtPrice}&price[lte]=${ltPrice}&category=${category}&brand=${brand}`;
             dispatch(searchByFilter(url))
         }
         else if (gtPrice && ltPrice && category && brand) {
+            setSearchText('');
             const url = `/products?price[gte]=${gtPrice}&price[lte]=${ltPrice}&category=${category}&brand=${brand}`;
             dispatch(searchByFilter(url))
         }
         else if (gtPrice && ltPrice && category) {
+            setSearchText('');
             const url = `/products?price[gte]=${gtPrice}&price[lte]=${ltPrice}&category=${category}`;
             dispatch(searchByFilter(url))
         }
         else if (stock && gtPrice && ltPrice) {
+            setSearchText('');
             const url = `/products?stock=${stock}&price[gte]=${gtPrice}&price[lte]=${ltPrice}`;
             dispatch(searchByFilter(url))
         }
         else if (gtPrice && ltPrice) {
+            setSearchText('');
             const url = `/products?price[gte]=${gtPrice}&price[lte]=${ltPrice}`;
             dispatch(searchByFilter(url))
         }
         else if (gtPrice) {
+            setSearchText('');
             const url = `/products?price[gte]=${gtPrice}`;
             dispatch(searchByFilter(url))
         }
         else if (ltPrice) {
+            setSearchText('');
             const url = `/products?price[lte]=${ltPrice}`;
             dispatch(searchByFilter(url))
         }
         else if (stock && category && brand) {
+            setSearchText('');
             const url = `/products?stock=${stock}&category=${category}&brand=${brand}`;
             dispatch(searchByFilter(url))
         }
         else if (stock) {
+            setSearchText('');
             const url = `/products?stock=${stock}`;
             dispatch(searchByFilter(url))
         }
         else if (category && brand) {
+            setSearchText('');
             const url = `/products?category=${category}&brand=${brand}`;
             dispatch(searchByFilter(url))
         }
         else if (category) {
+            setSearchText('');
             const url = `/products?category=${category}`;
             dispatch(searchByFilter(url))
         }
         else if (brand) {
+            setSearchText('');
             const url = `/products?brand=${brand}`;
             dispatch(searchByFilter(url))
         }
-        
+    }, [dispatch, stock, gtPrice, ltPrice, category, brand, setSearchText])
 
-    }, [dispatch, stock, gtPrice, ltPrice, category, brand])
+    useEffect(() => {
+        if (searchText === '')
+            dispatch(fetchProducts())
+        else{
+            dispatch(searchProducts(searchText))
+        }
+    }, [searchText, dispatch])
+
 
     return (
         <div>
@@ -92,16 +118,51 @@ const Shop = () => {
 
                     }}>
                         {
-                            products.length > 0 ?
-                                products.map(product =>
-                                    <AllProducts key={product._id}
-                                        product={product}
-                                        
-                                    />
-                                )
+                            searchText === '' ?
+                                <>
+                                    {
+                                        products.length > 0 ?
+                                            products.map(product =>
+                                                <AllProducts key={product._id}
+                                                    product={product}
+
+                                                />
+                                            )
+                                            :
+                                            <p> No results found </p>
+                                    }
+                                </>
                                 :
-                                <p> No results found </p>
+
+                                <>
+                                    {
+                                        searched.length > 0 ?
+                                            searched.map(product =>
+                                                <AllProducts key={product._id}
+                                                    product={product}
+
+                                                />
+                                            )
+                                            :
+                                            <p> No search results found </p>
+                                    }
+                                </>
+
+
                         }
+
+                        {/* // {
+                        //     products.length > 0 ?
+                        //         products.map(product =>
+                        //             <AllProducts key={product._id}
+                        //                 product={product}
+
+                        //             />
+                        //         )
+                        //         :
+                        //         <p> No results found </p>
+                        // } */}
+
                     </Grid>
                 </Grid>
             </Grid>
