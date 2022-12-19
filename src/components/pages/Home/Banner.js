@@ -23,32 +23,29 @@ const Banner = () => {
 
     }
     return (
-        <div>
-            <Box>
-                <div style={{
-                    backgroundImage: `url(${banner})`,
-                    backgroundSize: 'cover',
-                    height: '90vh',
-                    // width: '100vw',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'top',
-                }}>
-                    <Grid container sx={{ height: '100%', display: 'grid', justifyContent: 'center', alignItems: 'center'}}>
-                        <Grid md={6} sx={{px: 16}}>
-                            <Typography variant="overline" sx={{ fontSize: 16 }}> Fashion 2022  </Typography>
-                            <Typography variant="h3" gutterBottom> New Season </Typography>
-                            <Typography variant="body2" gutterBottom> Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, labore quo repellat sed asperiores architecto laudantium unde, amet ratione rerum, cum culpa. Sint aperiam asperiores quibusdam necessitatibus, obcaecati autem explicabo!  </Typography>
-                            <Button variant="outlined" endIcon={<LocalGroceryStore />}
-                                sx={buttonStyle}>
-                                Shop
-                            </Button>
-                        </Grid>
-                    </Grid>
 
-                </div>
+        <Box sx={{
+            backgroundImage: `url(${banner})`,
+            backgroundSize: 'cover',
+            height: '90vh',
+            // width: '100vw',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'top',
+            // border: 2
+        }}>
+            <Grid container sx={{ height: '100%', display: 'grid', justifyContent: 'center', alignItems: 'center' }}>
+                <Grid md={6} sx={{ px: 16 }}>
+                    <Typography variant="overline" sx={{ fontSize: 16 }}> Fashion 2022  </Typography>
+                    <Typography variant="h3" gutterBottom> New Season </Typography>
+                    <Typography variant="body2" gutterBottom> Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, labore quo repellat sed asperiores architecto laudantium unde, amet ratione rerum, cum culpa. Sint aperiam asperiores quibusdam necessitatibus, obcaecati autem explicabo!  </Typography>
+                    <Button variant="outlined" endIcon={<LocalGroceryStore />}
+                        sx={buttonStyle}>
+                        Shop
+                    </Button>
+                </Grid>
+            </Grid>
+        </Box>
 
-            </Box>
-        </div>
     );
 };
 

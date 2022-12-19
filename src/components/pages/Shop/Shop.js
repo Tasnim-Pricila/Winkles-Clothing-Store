@@ -16,20 +16,21 @@ const Shop = ({ searchText, setSearchText }) => {
     const [gtPrice, setGtPrice] = useState('');
     const [ltPrice, setLtPrice] = useState('');
     const [stock, setStock] = useState('');
-    const [user] = useUsers();
+    // const [user] = useUsers();
+    const location = useLocation();
 
     const handleClear = () => {
         setSearchText('');
-        // setCategory('');
-        // setStock('');
-        // setGtPrice('');
-        // setLtPrice('');
         dispatch(fetchProducts())
     }
-    // console.log(searched)
+    // console.log(location?.state?.value)
 
     useEffect(() => {
-        if (!gtPrice && !ltPrice && !stock && !brand && !category) {
+        if (location?.state?.value && !stock && !gtPrice && !ltPrice && !category && !brand && searchText === '') {
+            const url = `/products?category=${location?.state?.value}`;
+            dispatch(searchByFilter(url))
+        }
+        else if (!gtPrice && !ltPrice && !stock && !brand && !category) {
             dispatch(fetchProducts())
         }
         else if (stock && gtPrice && ltPrice && category && brand) {
@@ -92,15 +93,16 @@ const Shop = ({ searchText, setSearchText }) => {
             const url = `/products?brand=${brand}`;
             dispatch(searchByFilter(url))
         }
-    }, [dispatch, stock, gtPrice, ltPrice, category, brand, setSearchText])
+    }, 
+    [dispatch,stock,gtPrice,ltPrice,category, brand,setSearchText,location?.state?.value ])
 
     useEffect(() => {
-        if (searchText === '')
+        if (searchText === '' && !location?.state?.value)
             dispatch(fetchProducts())
-        else{
+        else {
             dispatch(searchProducts(searchText))
         }
-    }, [searchText, dispatch])
+    }, [searchText, dispatch, location?.state?.value])
 
 
     return (
