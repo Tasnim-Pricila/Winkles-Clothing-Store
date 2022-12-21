@@ -93,8 +93,8 @@ const Shop = ({ searchText, setSearchText }) => {
             const url = `/products?brand=${brand}`;
             dispatch(searchByFilter(url))
         }
-    }, 
-    [dispatch,stock,gtPrice,ltPrice,category, brand,setSearchText,location?.state?.value ])
+    },
+        [dispatch, stock, gtPrice, ltPrice, category, brand, setSearchText, location?.state?.value])
 
     useEffect(() => {
         if (searchText === '' && !location?.state?.value)
@@ -106,7 +106,7 @@ const Shop = ({ searchText, setSearchText }) => {
 
 
     return (
-        <div>
+        <>
             <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 3 }}
                 sx={{ mt: 2, px: 16, }}>
                 <Grid item xs={2} md={3} >
@@ -121,54 +121,28 @@ const Shop = ({ searchText, setSearchText }) => {
                     }}>
                         {
                             searchText === '' ?
-                                <>
-                                    {
-                                        products.length > 0 ?
-                                            products.map(product =>
-                                                <AllProducts key={product._id}
-                                                    product={product}
-
-                                                />
-                                            )
-                                            :
-                                            <p> No results found </p>
-                                    }
-                                </>
+                                products.length > 0 ?
+                                    products.map(product =>
+                                        <AllProducts key={product._id}
+                                            product={product}
+                                        />
+                                    )
+                                    :
+                                    <p> No results found </p>
                                 :
-
-                                <>
-                                    {
-                                        searched.length > 0 ?
-                                            searched.map(product =>
-                                                <AllProducts key={product._id}
-                                                    product={product}
-
-                                                />
-                                            )
-                                            :
-                                            <p> No search results found </p>
-                                    }
-                                </>
-
-
+                                searched.length > 0 ?
+                                    searched.map(product =>
+                                        <AllProducts key={product._id}
+                                            product={product}
+                                        />
+                                    )
+                                    :
+                                    <p> No search results found </p>
                         }
-
-                        {/* // {
-                        //     products.length > 0 ?
-                        //         products.map(product =>
-                        //             <AllProducts key={product._id}
-                        //                 product={product}
-
-                        //             />
-                        //         )
-                        //         :
-                        //         <p> No results found </p>
-                        // } */}
-
                     </Grid>
                 </Grid>
             </Grid>
-        </div>
+        </>
     );
 };
 

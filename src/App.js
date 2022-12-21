@@ -19,6 +19,8 @@ import Dashboard from './components/pages/Dashboard/Dashboard';
 import MyOrders from './components/pages/Dashboard/User/MyOrders';
 import MyProfile from './components/pages/Dashboard/MyProfile';
 import Footer from './components/shared/Footer';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 function App() {
   const [searchText, setSearchText] = useState('')
