@@ -1,6 +1,7 @@
 import Api from "../Axios/Api"
 import actionTypes from "./constants"
 
+// Product 
 export const fetchProducts = () => {
     return async (dispatch) => {
         const response = await Api.get('/products')
@@ -19,6 +20,42 @@ export const fetchProduct = (id) => {
         dispatch({
             type: actionTypes.FETCH_PRODUCT,
             payload: response.data?.data
+        })
+    }
+}
+
+export const postProduct = (data) => {
+    return async (dispatch) => {
+        const response = await Api.post(`/products`, data)
+        console.log(response)
+        dispatch({
+            type: actionTypes.ADD_PRODUCT,
+            payload: response.data?.data
+        })
+    }
+}
+
+export const updateProduct = (id, data) => {
+    return async (dispatch) => {
+        const response = await Api.patch(`/products/${id}`, data)
+        console.log(response)
+        dispatch({
+            type: actionTypes.UPDATE_PRODUCT,
+            payload: response.data?.data
+        })
+    }
+}
+
+export const deleteProduct = (id) => {
+    return async (dispatch) => {
+        const response = await Api.delete(`/products/${id}`)
+        console.log(response)
+        dispatch({
+            type: actionTypes.DELETE_PRODUCT,
+            payload: {
+                res: response.data.data,
+                id: id
+            } 
         })
     }
 }
@@ -57,17 +94,6 @@ export const adjustQty = (itemID, qty) => {
     }
 }
 
-export const getUsers = () => {
-    return async (dispatch) => {
-        const response = await Api.get(`/users`)
-        dispatch({
-            type: actionTypes.GET_USERS,
-            payload: response.data
-        })
-
-    }
-}
-
 export const searchProducts = (text) => {
     return {
         type: actionTypes.SEARCH_PRODUCT,
@@ -76,6 +102,7 @@ export const searchProducts = (text) => {
         }
     }
 }
+
 export const searchByFilter = (url) => {
     return async (dispatch) => {
         console.log(url);
@@ -87,6 +114,8 @@ export const searchByFilter = (url) => {
     }
 }
 
+// Orders 
+
 export const postOrders = (data) => {
     return async (dispatch) => {
         const response = await Api.post(`/orders`, data)
@@ -96,6 +125,41 @@ export const postOrders = (data) => {
         })
     }
 }
+
+export const getAllOrders = () => {
+    return async (dispatch) => {
+        const response = await Api.get(`/orders`,)
+        console.log(response.data.data);
+        dispatch({
+            type: actionTypes.GET_ALL_ORDER,
+            payload: response.data.data
+        })
+    }
+}
+
+export const getOrdersByEmail = (email) => {
+    return async (dispatch) => {
+        const response = await Api.get(`/orders/${email}`,)
+        console.log(response.data.data);
+        dispatch({
+            type: actionTypes.GET_ORDER_BY_EMAIl,
+            payload: response.data.data
+        })
+    }
+}
+
+// Users 
+export const getUsers = () => {
+    return async (dispatch) => {
+        const response = await Api.get(`/users`)
+        dispatch({
+            type: actionTypes.GET_USERS,
+            payload: response.data.data.result
+        })
+
+    }
+}
+
 export const getMe = () => {
     return async (dispatch) => {
         try {
@@ -125,3 +189,6 @@ export const getMe = () => {
 
     }
 }
+
+
+

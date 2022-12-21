@@ -2,6 +2,7 @@ import { Button, Container, CssBaseline, Grid, TextField, Typography } from '@mu
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Api from '../../../Axios/Api';
+import Footer from '../../shared/Footer';
 
 const Register = () => {
 
@@ -125,6 +126,7 @@ const Register = () => {
                 </div>
 
             </Container>
+            <Footer></Footer>
         </div>
     );
 };

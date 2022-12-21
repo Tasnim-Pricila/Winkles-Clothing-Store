@@ -21,6 +21,10 @@ import MyProfile from './components/pages/Dashboard/MyProfile';
 import Footer from './components/shared/Footer';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import AllOrders from './components/pages/Dashboard/Admin/AllOrders';
+import CreateProduct from './components/pages/Dashboard/Admin/CreateProduct';
+import ManageProducts from './components/pages/Dashboard/Admin/ManageProducts';
+import AllUsers from './components/pages/Dashboard/Admin/AllUsers';
 
 function App() {
   const [searchText, setSearchText] = useState('')
@@ -38,20 +42,25 @@ function App() {
         <Route path='/login' element={<Login />}></Route>
         <Route path='/register' element={<Register />}></Route>
         <Route path='/shop' element={
-          <Shop searchText={searchText} setSearchText={setSearchText} />}></Route>
+          <Shop searchText={searchText} setSearchText={setSearchText} />}>
+        </Route>
         <Route path='/blogs' element={<Blogs />}></Route>
         <Route path='/about' element={<About />}></Route>
         <Route path='/contact' element={<Contact />}></Route>
         <Route path='/checkout' element={<Checkout />}></Route>
         <Route path='/orderComplete' element={<OrderComplete />}></Route>
         <Route path='/*' element={<Error />}></Route>
-        <Route path='/dashboard' element={
-          <Dashboard />}>
+        
+        <Route path='/dashboard' element={<Dashboard/>}>
           <Route index element={<MyOrders />}></Route>
+          <Route path='orderDetails' element={<AllOrders/>}></Route>
+          <Route path='addProduct' element={<CreateProduct/>}></Route>
+          <Route path='manageProducts' element={<ManageProducts/>}></Route>
+          <Route path='allUsers' element={<AllUsers/>}></Route>
           <Route path='profile' element={<MyProfile />}></Route>
         </Route>
       </Routes>
-      <Footer/>
+      
     </div>
   );
 }

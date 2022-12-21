@@ -1,10 +1,12 @@
 import React from 'react';
+import Footer from '../../shared/Footer';
 
 const Blogs = () => {
     return (
-        <div>
-            
-        </div>
+        <>
+            <Footer></Footer>
+        </>
+        
     );
 };
 

@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMe } from '../../../Redux/actions';
-const MyProfile = () => {
+import { getAllOrders } from '../../../../Redux/actions';
 
-    const user = useSelector( state => state.allUsers.user );
+const AllOrders = () => {
+    const orders = useSelector( state => state.orders.allOrder );
     // const [user] = useUsers();
     const dispatch = useDispatch();
     // console.log(user?.email);
-    console.log(user);
+    console.log(orders);
 
     useEffect( () => {
-        dispatch(getMe())
+        dispatch(getAllOrders())
     }, [dispatch])
-
+    
     return (
         <div>
             
@@ -20,4 +20,4 @@ const MyProfile = () => {
     );
 };
 
-export default MyProfile;
+export default AllOrders;

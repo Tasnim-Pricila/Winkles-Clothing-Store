@@ -1,6 +1,7 @@
 import { Drafts, LocalPhoneOutlined, LocationOn } from '@mui/icons-material';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import React from 'react';
+import Footer from '../../shared/Footer';
 
 const Contact = () => {
     return (
@@ -60,8 +61,7 @@ const Contact = () => {
                     </Button>
                 </div>
             </Box>
-
-
+            <Footer></Footer>
         </div>
     );
 };

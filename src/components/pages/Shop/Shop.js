@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import useUsers from '../../../Custom Hook/useUsers';
 import { fetchProducts, searchByFilter, searchProducts } from '../../../Redux/actions';
+import Footer from '../../shared/Footer';
 import AllProducts from './AllProducts';
 import LeftSidebar from './LeftSidebar';
 
@@ -142,6 +143,7 @@ const Shop = ({ searchText, setSearchText }) => {
                     </Grid>
                 </Grid>
             </Grid>
+            <Footer></Footer>
         </>
     );
 };

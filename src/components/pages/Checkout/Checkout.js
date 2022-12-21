@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { postOrders } from '../../../Redux/actions';
+import Footer from '../../shared/Footer';
 
 const Checkout = () => {
     const navigate = useNavigate();
@@ -138,7 +139,7 @@ const Checkout = () => {
                     </CardContent>
                 </Grid>
             </Grid>
-
+            <Footer></Footer>
         </div >
     );
 };

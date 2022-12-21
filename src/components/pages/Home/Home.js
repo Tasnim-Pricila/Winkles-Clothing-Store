@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../../Redux/actions';
+import Footer from '../../shared/Footer';
 import Article from './Article';
 import Banner from './Banner';
 import Brand from './Brand';
@@ -24,6 +25,7 @@ const Home = () => {
             <Delivery></Delivery>
             <Article></Article>
             <Brand></Brand>
+            <Footer/>
         </>
     );
 };

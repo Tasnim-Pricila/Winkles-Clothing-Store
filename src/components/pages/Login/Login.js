@@ -2,6 +2,7 @@ import { Button, Container, CssBaseline, Grid, TextField, Typography } from '@mu
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Api from '../../../Axios/Api';
+import Footer from '../../shared/Footer';
 
 const Login = () => {
     const location = useLocation();
@@ -87,6 +88,7 @@ const Login = () => {
                     </form>
                 </div>
             </Container>
+            <Footer></Footer>
         </div>
     );
 };

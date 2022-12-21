@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import CartItem from './CartItem';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, } from '@mui/material';
 import { Done, Loop } from '@mui/icons-material';
+import Footer from '../../shared/Footer';
 
 
 const Cart = () => {
@@ -94,6 +95,7 @@ const Cart = () => {
                     </div>
                 }
             </Box>
+            <Footer></Footer>
         </div>
     );
 };

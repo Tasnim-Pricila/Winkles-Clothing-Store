@@ -7,6 +7,7 @@ import one from '../../../images/About/1.png'
 import two from '../../../images/About/2.png'
 import three from '../../../images/About/3.png'
 import four from '../../../images/About/4.png'
+import Footer from '../../shared/Footer';
 
 const About = () => {
     return (
@@ -94,6 +95,7 @@ const About = () => {
                     </Grid>
                 </Grid>
             </Box>
+            <Footer></Footer>
         </>
 
     );

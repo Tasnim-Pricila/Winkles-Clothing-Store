@@ -4,7 +4,8 @@ const initialState = {
     products: [],
     cart: [],
     filter: [],
-    searchProducts: []
+    searchProducts: [],
+    addProduct: []
 }
 const singleState = {
     product: [],
@@ -16,6 +17,21 @@ const productReducer = (state = initialState, action) => {
             return {
                 ...state,
                 products: action.payload
+            }
+        case actionTypes.ADD_PRODUCT:
+            return {
+                ...state,
+                addProduct: action.payload
+            }
+        case actionTypes.UPDATE_PRODUCT:
+            return {
+                ...state,
+                addProduct: action.payload
+            }
+        case actionTypes.DELETE_PRODUCT:
+            return {
+                ...state,
+                products: state.products.filter( product => product._id !== action.payload.id)
             }
         case actionTypes.ADD_TO_CART:
             // get the items data from the products array
