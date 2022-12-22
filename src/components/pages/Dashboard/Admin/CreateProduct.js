@@ -1,4 +1,5 @@
-import { Grid, TextField, Typography } from '@mui/material';
+import { Button, Card, Divider, Grid, InputAdornment, InputLabel, MenuItem, Select, TextField, Toolbar, Typography } from '@mui/material';
+import { Box } from '@mui/system';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { postProduct } from '../../../../Redux/actions';
@@ -25,98 +26,207 @@ const CreateProduct = () => {
     }
 
     return (
-        <>
-            <form onSubmit={addProduct}>
-                <Grid container sx={{ mt: 4, px: 6 }}>
-                    <Grid xs={6} md={8} sx={{ py: 6, px: 4 }}>
-                        <Typography sx={{ pb: 4 }} variant='h5'>Shipping Details</Typography>
-                        <Typography variant='body2'>Your Name</Typography>
-                        <TextField sx={{ width: '100%' }}
-                            hiddenLabel
-                            id="filled-hidden-label-small"
-                            size="small"
-                            required
-                            onChange={(e) => setProductDetails({ ...productDetails, title: e.target.value })}
-                        />
-                        <Grid container columnSpacing={{ md: 0 }} sx={{ py: 2 }} >
-                            <Grid xs={6} md={6} sx={{ pr: 2 }}>
-                                <Typography variant='body2'>Email</Typography>
-                                <TextField sx={{ width: '100%' }}
+        <Box mb={4}>
+            <Toolbar sx={{
+                boxShadow: '0 3px 3px rgba(56,65,74,0.1)',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                color: '#495057',
+                letterSpacing: '-0.5px'
+            }}>
+                Add Product
+            </Toolbar>
+            <Box p={3}>
+                <Grid container spacing={2}>
+                    <Grid item md={7} height='100%'>
+                        <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
+                            <Box>
+                                <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Product Title</Typography>
+                                <TextField sx={{
+                                    width: '100%',
+                                    '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
+                                        fontSize: '13px', color: '#212529'
+                                    }
+                                }}
                                     hiddenLabel
                                     required
+                                    type="text"
                                     id="filled-hidden-label-small"
                                     size="small"
-                                    onChange={(e) => setProductDetails({ ...productDetails, description: e.target.value })}
+                                    placeholder='Enter product title'
                                 />
-                            </Grid>
-                            <Grid xs={6} md={6} sx={{ pl: 2 }} >
-                                <Typography variant='body2'>Phone Number</Typography>
-                                <TextField sx={{ width: '100%' }}
-                                    hiddenLabel
+                            </Box>
+                            <Box mt={2}>
+                                <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Product Description</Typography>
+                                <TextField sx={{
+                                    width: '100%',
+                                    '.css-1qxw4jt-MuiInputBase-root-MuiOutlinedInput-root': {
+                                        fontSize: '13px', color: '#212529'
+                                    }
+                                }}
+                                    multiline
+                                    rows={7}
                                     required
-                                    type="Number"
+                                    type="text"
                                     id="filled-hidden-label-small"
                                     size="small"
-                                    onChange={(e) => setProductDetails({ ...productDetails, price: e.target.value })}
+                                    placeholder='Enter product description'
                                 />
-                            </Grid>
-                        </Grid>
-                        <Typography variant='body2'>Shipping Address</Typography>
-                        <TextField sx={{ width: '100%' }}
-                            // hiddenLabel
-                            id="filled-hidden-label-small"
-                            multiline
-                            required
-                            rows={2}
-                            placeholder='House Number and street no'
-                            onChange={(e) => setProductDetails({ ...productDetails, quantity: e.target.value })}
-                        />
-                        <Typography sx={{ pt: 2 }} variant='body2'>Order notes (if any)</Typography>
-                        <TextField sx={{ width: '100%' }}
-                            id="filled-multiline-static"
-                            multiline
-                            rows={4}
-                            placeholder='Notes about your order, e.g. special notes for delivery'
-                            onChange={(e) => setProductDetails({ ...productDetails, unit: e.target.value })}
-                        />
-                        <TextField sx={{ width: '100%' }}
-                            hiddenLabel
-                            id="filled-hidden-label-small"
-                            size="small"
-                            required
-                            placeholder='img link'
-                            onChange={(e) => setProductDetails({ ...productDetails, image: e.target.value })}
-                        />
-                        <TextField sx={{ width: '100%' }}
-                            hiddenLabel
-                            id="filled-hidden-label-small"
-                            size="small"
-                            required
-                            placeholder='category'
-                            onChange={(e) => setProductDetails({ ...productDetails, category: e.target.value })}
-                        />
-                        <TextField sx={{ width: '100%' }}
-                            hiddenLabel
-                            id="filled-hidden-label-small"
-                            size="small"
-                            required
-                            placeholder='brand'
-                            onChange={(e) => setProductDetails({ ...productDetails, brand: e.target.value })}
-                        />
-                        <TextField sx={{ width: '100%' }}
-                            hiddenLabel
-                            id="filled-hidden-label-small"
-                            size="small"
-                            required
-                            placeholder='stock'
-                            onChange={(e) => setProductDetails({ ...productDetails, stock: e.target.value })}
-                        />
-                    </Grid>
-                    <button type='submit'>add</button>
-                </Grid>
-            </form>
+                            </Box>
+                            <Box mt={2}>
+                                <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Product Image</Typography>
+                                <TextField sx={{
+                                    width: '100%',
+                                    '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
+                                        fontSize: '13px', color: '#212529'
+                                    }
+                                }}
+                                    required
+                                    type="text"
+                                    id="filled-hidden-label-small"
+                                    size="small"
+                                    placeholder='Enter product image link'
+                                />
+                            </Box>
+                        </Card>
 
-        </>
+                        <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)', mt: 3 }}>
+                            <Typography pb={1}>General Info</Typography>
+                            <Divider></Divider>
+                            <Grid container spacing={2} mt={1}>
+                                <Grid item md={4}>
+                                    <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Stock</Typography>
+                                    <TextField sx={{
+                                        width: '100%',
+                                        '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
+                                            fontSize: '13px', color: '#212529'
+                                        }
+                                    }}
+                                        hiddenLabel
+                                        required
+                                        type="number"
+                                        id="filled-hidden-label-small"
+                                        size="small"
+                                        placeholder='Enter stocks'
+                                    />
+                                </Grid>
+                                <Grid item md={4}>
+                                    <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Unit</Typography>
+                                    <TextField sx={{
+                                        width: '100%',
+                                        '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
+                                            fontSize: '13px', color: '#212529'
+                                        }
+                                    }}
+                                        hiddenLabel
+                                        required
+                                        type="text"
+                                        id="filled-hidden-label-small"
+                                        size="small"
+                                        placeholder='Enter unit'
+                                    />
+                                </Grid>
+                                <Grid item md={4}>
+                                    <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Price</Typography>
+                                    <TextField sx={{
+                                        width: '100%',
+                                        '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
+                                            fontSize: '13px', color: '#212529'
+                                        }
+                                    }}
+                                        hiddenLabel
+                                        required
+                                        type="number"
+                                        id="filled-hidden-label-small"
+                                        size="small"
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    $
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                        placeholder='Enter price'
+                                    />
+                                </Grid>
+                            </Grid>
+
+                        </Card>
+
+                    </Grid>
+                    <Grid item md={5} height='100%'>
+                        <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
+                            <Typography pb={1}>Product Brands </Typography>
+                            <Divider></Divider>
+                            <Typography variant='body2' py={2} fontWeight='600' color='#212529eb'>Select product brand</Typography>
+                            <Select
+                                labelId="demo-simple-select-helper-label"
+                                id="demo-simple-select-helper"
+                                placeholder="Select Brand"
+                                displayEmpty
+                                label="Age"
+                                value={productDetails.brand}
+                                onChange={(e) => setProductDetails({ ...productDetails, brand: e.target.value })}
+                                sx={{ width: '100%' }}
+                            >
+                                <MenuItem disabled selected value="">
+                                    <em>Select Brand</em>
+                                </MenuItem>
+                                {/* brand map hobe  */}
+                            </Select>
+                        </Card>
+
+                        <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)', mt: 2 }} >
+                            <Typography pb={1}> Product Categories </Typography>
+                            <Divider></Divider>
+                            <Typography variant='body2' py={2} fontWeight='600' color='#212529eb'>Select product category</Typography>
+                            <Select
+                                labelId="demo-simple-select-helper-label"
+                                id="demo-simple-select-helper"
+                                placeholder="Select category"
+                                displayEmpty
+                                label="Age"
+                                value={productDetails.brand}
+                                onChange={(e) => setProductDetails({ ...productDetails, brand: e.target.value })}
+                                sx={{ width: '100%' }}
+                            >
+                                <MenuItem disabled selected value="">
+                                    <em>Select Category</em>
+                                </MenuItem>
+                                {/* brand map hobe  */}
+                            </Select>
+                        </Card>
+
+                        <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)', mt: 2 }} >
+                            <Typography pb={1}> Product Availability </Typography>
+                            <Divider></Divider>
+                            <Typography variant='body2' py={2} fontWeight='600' color='#212529eb'> Status </Typography>
+                            <Select
+                                displayEmpty
+                                labelId="demo-simple-select-helper-label"
+                                id="demo-simple-select-helper"
+                                placeholder="Select category"
+                                sx={{ width: '100%' }}
+                            >
+                                <MenuItem disabled selected value="">
+                                    <em>Select stock</em>
+                                </MenuItem>
+                                <MenuItem value="In Stock">
+                                    In stock
+                                </MenuItem>
+                                <MenuItem value="Out of stock">
+                                    Out of stock
+                                </MenuItem>
+                            </Select>
+                        </Card>
+                    </Grid>
+                </Grid>
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2}}>
+                    <Button variant='contained' onClick={addProduct}> Add Product </Button>
+                </Box>
+
+            </Box>
+        </Box>
     );
 };
 
