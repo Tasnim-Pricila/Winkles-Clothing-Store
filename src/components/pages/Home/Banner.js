@@ -6,7 +6,6 @@ import { LocalGroceryStore } from '@mui/icons-material';
 const Banner = () => {
     const buttonStyle = {
         color: 'black',
-        // border: '0px solid black',
         marginTop: 3,
         paddingTop: '10px',
         paddingBottom: '10px',
@@ -16,7 +15,6 @@ const Banner = () => {
             color: 'white',
             backgroundColor: 'black',
             transitionDuration: '.5s',
-            // border: '2px solid black',
         },
         transitionDuration: '.5s',
         boxShadow: 'rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;'
@@ -28,10 +26,8 @@ const Banner = () => {
             backgroundImage: `url(${banner})`,
             backgroundSize: 'cover',
             height: '90vh',
-            // width: '100vw',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'top',
-            // border: 2
         }}>
             <Grid container sx={{ height: '100%', display: 'grid', justifyContent: 'center', alignItems: 'center' }}>
                 <Grid md={6} sx={{ px: 16 }}>

@@ -25,6 +25,7 @@ import AllOrders from './components/pages/Dashboard/Admin/AllOrders';
 import CreateProduct from './components/pages/Dashboard/Admin/CreateProduct';
 import ManageProducts from './components/pages/Dashboard/Admin/ManageProducts';
 import AllUsers from './components/pages/Dashboard/Admin/AllUsers';
+import EditProfile from './components/pages/Dashboard/EditProfile';
 
 function App() {
   const [searchText, setSearchText] = useState('')
@@ -58,6 +59,7 @@ function App() {
           <Route path='manageProducts' element={<ManageProducts/>}></Route>
           <Route path='allUsers' element={<AllUsers/>}></Route>
           <Route path='profile' element={<MyProfile />}></Route>
+          <Route path='profile/edit' element={<EditProfile />}></Route>
         </Route>
       </Routes>
       

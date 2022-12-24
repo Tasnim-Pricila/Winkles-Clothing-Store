@@ -1,11 +1,24 @@
 import { Drafts, LocalPhoneOutlined, LocationOn } from '@mui/icons-material';
-import { Box, Button, Grid, TextField, Typography } from '@mui/material';
+import { Box, Breadcrumbs, Button, Grid, Link, TextField, Typography } from '@mui/material';
 import React from 'react';
 import Footer from '../../shared/Footer';
+import { Link as Routerlink } from 'react-router-dom';
+
 
 const Contact = () => {
     return (
         <div>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', px: 16, py: 5, bgcolor: '#FF8E78' }}>
+                <Typography variant='h5' sx={{ textTransform: 'uppercase', fontWeight: 600 }}>
+                Contact
+                </Typography>
+                <Breadcrumbs aria-label="breadcrumb">
+                    <Link to="/" underline="hover" color="inherit" component={Routerlink}>
+                        Home
+                    </Link>
+                    <Typography color="text.primary">Contact</Typography>
+                </Breadcrumbs>
+            </Box>
             <Box sx={{ px: 16, pb: 16 }} >
                 <Typography variant='h4' sx={{ textAlign: 'center', py: 8, textTransform: 'uppercase' }}>
                     CONTACT US FOR ANY QUERY

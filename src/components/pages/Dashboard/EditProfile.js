@@ -6,23 +6,7 @@ import avatar from '../../../images/avatar.png'
 import { Edit } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
-const MyProfile = () => {
-
-    const user = useSelector(state => state.allUsers.user);
-    // const [user] = useUsers();
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    // console.log(user?.email);
-    console.log(user);
-
-    useEffect(() => {
-        dispatch(getMe())
-    }, [dispatch])
-
-    const handleEdit = () => {
-        navigate('/dashboard/profile/edit')
-    }
-
+const EditProfile = () => {
     return (
         <Box mb={4}>
             <Toolbar sx={{
@@ -43,12 +27,7 @@ const MyProfile = () => {
                                 <img src={avatar} alt="" style={{ border: '5px solid #eee8e8', borderRadius: '50%', width: '100px' }} />
                                 <Typography width='100%' textTransform='uppercase' fontWeight='bold'> Tasnim Pricila </Typography>
 
-                                <Box sx={{ display: 'flex', justifyContent: 'end', width: '100%' }}>
-                                    <Button variant='contained' size='small' sx={{ textTransform: 'capitalize', border: '1px solid', }} startIcon={<Edit fontSize='small' />} 
-                                    onClick={handleEdit}>
-                                        Edit Profile
-                                    </Button>
-                                </Box>
+                               
 
                             </Box>
 
@@ -63,9 +42,9 @@ const MyProfile = () => {
                                             fontSize: '13px', color: '#212529'
                                         }
                                     }}
-                                        InputProps={{
-                                            readOnly: true,
-                                        }}
+
+
+
                                         defaultValue='Tasnim'
                                         id="filled-hidden-label-small"
                                         size="small"
@@ -84,9 +63,9 @@ const MyProfile = () => {
                                             fontSize: '13px', color: '#212529'
                                         }
                                     }}
-                                        InputProps={{
-                                            readOnly: true,
-                                        }}
+
+
+
                                         defaultValue='fff'
                                         id="filled-hidden-label-small"
                                         size="small"
@@ -105,9 +84,9 @@ const MyProfile = () => {
                                             fontSize: '13px', color: '#212529'
                                         }
                                     }}
-                                        InputProps={{
-                                            readOnly: true,
-                                        }}
+
+
+
                                         defaultValue='fff'
                                         id="filled-hidden-label-small"
                                         size="small"
@@ -126,9 +105,9 @@ const MyProfile = () => {
                                             fontSize: '13px', color: '#212529'
                                         }
                                     }}
-                                        InputProps={{
-                                            readOnly: true,
-                                        }}
+
+
+
                                         defaultValue='fff'
                                         id="filled-hidden-label-small"
                                         size="small"
@@ -147,9 +126,9 @@ const MyProfile = () => {
                                             fontSize: '13px', color: '#212529'
                                         }
                                     }}
-                                        InputProps={{
-                                            readOnly: true,
-                                        }}
+
+
+
                                         defaultValue='fff'
                                         id="filled-hidden-label-small"
                                         size="small"
@@ -168,15 +147,19 @@ const MyProfile = () => {
                                             fontSize: '13px', color: '#212529'
                                         }
                                     }}
-                                        InputProps={{
-                                            readOnly: true,
-                                        }}
+
+
+
                                         defaultValue='fff'
                                         id="filled-hidden-label-small"
                                         size="small"
                                     />
                                 </Grid>
                             </Grid>
+                            <Box mt={3} sx={{ display: 'flex', justifyContent: 'flex-end', gap: '12px'}}>
+                                <Button variant='contained'> Save </Button>
+                                <Button variant='contained'> Cancel </Button>
+                            </Box>
 
                         </Card>
                     </Grid>
@@ -186,4 +169,4 @@ const MyProfile = () => {
     );
 };
 
-export default MyProfile;
+export default EditProfile;

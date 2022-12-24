@@ -2,8 +2,7 @@ import { Grid, Link, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import one from '../../../images/Article/1.png';
-import two from '../../../images/Article/2.png';
-import three from '../../../images/Article/3.png';
+
 
 const Article = () => {
     return (
@@ -40,7 +39,6 @@ const Article = () => {
                         Read More
                     </Link>
                 </Grid>
-               
             </Grid>
         </div>
     );
