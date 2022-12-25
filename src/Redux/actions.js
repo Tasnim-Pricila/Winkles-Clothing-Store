@@ -168,7 +168,7 @@ export const getMe = () => {
                     authorization: `Bearer ${localStorage.getItem('accessToken')}`
                 }
             })
-            console.log(response);
+            // console.log(response);
             if (response.data.status === 'success') {
                 dispatch({
                     type: actionTypes.GET_ME,

@@ -13,7 +13,6 @@ const userReducer = (state = initialState, action) => {
                 users: action.payload
             }
         case actionTypes.GET_ME:
-            console.log(action.payload);
             return {
                 ...state,
                 user: action.payload

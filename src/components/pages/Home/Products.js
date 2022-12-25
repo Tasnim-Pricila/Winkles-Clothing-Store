@@ -16,7 +16,7 @@ const Products = ({ products }) => {
                 mb: 10
             }}>
                 {
-                    products.length > 0 ?
+                    products?.length > 0 ?
                         products.map(product =>
                             <Product key={product._id}
                                 product={product}

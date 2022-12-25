@@ -32,11 +32,11 @@ const AllOrders = () => {
                     <Grid item md={12}>
                         <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pb: 2 }}>
-                                <Button variant='contained' sx={{ textTransform: 'capitalize' }}> + Add Product </Button>
+                                <Button variant='contained' sx={{ textTransform: 'capitalize' }}> + Add Order </Button>
                                 <TextField
                                     id="standard-search"
                                     type="search"
-                                    placeholder='Search Products...'
+                                    placeholder='Search Orders...'
                                     size='small'
                                     InputProps={{
                                         startAdornment: (
@@ -56,6 +56,7 @@ const AllOrders = () => {
                             <Table aria-label="simple table">
                                 <TableHead>
                                     <TableRow>
+                                        <TableCell sx={{ fontWeight: 'bold' }}> # </TableCell>
                                         <TableCell sx={{ fontWeight: 'bold' }}> Order ID </TableCell>
                                         <TableCell sx={{ fontWeight: 'bold' }}> Customer </TableCell>
                                         <TableCell sx={{ fontWeight: 'bold' }}> Product </TableCell>
@@ -68,15 +69,13 @@ const AllOrders = () => {
                                 </TableHead>
                                 <TableBody>
                                     {
-                                        orders?.result?.map(order =>
+                                        orders?.result?.map((order, index) =>
                                             <TableRow>
-                                                <TableCell>
-                                                    
-
-                                                </TableCell>
+                                                <TableCell> {index + 1} </TableCell>
+                                                    <TableCell> {order._id} </TableCell>
+                                                    <TableCell> {order.name} </TableCell>
                                                 <TableCell>  </TableCell>
-                                                <TableCell>  </TableCell>
-                                                <TableCell>  </TableCell>
+                                                <TableCell> {order.createdAt} </TableCell>
                                                 <TableCell>  </TableCell>
                                                 <TableCell>  </TableCell>
                                                 <TableCell>  </TableCell>

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { postProduct } from '../../../../Redux/actions';
 
 const CreateProduct = () => {
-    const product = useSelector(state => state.orders.allOrder);
+    // const product = useSelector(state => state.orders.allOrder);
     const dispatch = useDispatch();
     const [productDetails, setProductDetails] = useState({
         title: '',
@@ -54,6 +54,7 @@ const CreateProduct = () => {
                                     id="filled-hidden-label-small"
                                     size="small"
                                     placeholder='Enter product title'
+                                    onChange={(e) => setProductDetails({ ...productDetails, title: e.target.value})}
                                 />
                             </Box>
                             <Box mt={2}>
@@ -71,6 +72,7 @@ const CreateProduct = () => {
                                     id="filled-hidden-label-small"
                                     size="small"
                                     placeholder='Enter product description'
+                                    onChange={(e) => setProductDetails({ ...productDetails, description: e.target.value})}
                                 />
                             </Box>
                             <Box mt={2}>
@@ -86,6 +88,7 @@ const CreateProduct = () => {
                                     id="filled-hidden-label-small"
                                     size="small"
                                     placeholder='Enter product image link'
+                                    onChange={(e) => setProductDetails({ ...productDetails, image: e.target.value})}
                                 />
                             </Box>
                         </Card>
@@ -108,6 +111,7 @@ const CreateProduct = () => {
                                         id="filled-hidden-label-small"
                                         size="small"
                                         placeholder='Enter stocks'
+                                        onChange={(e) => setProductDetails({ ...productDetails, quantity: e.target.value})}
                                     />
                                 </Grid>
                                 <Grid item md={4}>
@@ -124,6 +128,7 @@ const CreateProduct = () => {
                                         id="filled-hidden-label-small"
                                         size="small"
                                         placeholder='Enter unit'
+                                        onChange={(e) => setProductDetails({ ...productDetails, unit: e.target.value})}
                                     />
                                 </Grid>
                                 <Grid item md={4}>
@@ -147,6 +152,7 @@ const CreateProduct = () => {
                                             ),
                                         }}
                                         placeholder='Enter price'
+                                        onChange={(e) => setProductDetails({ ...productDetails, price: e.target.value})}
                                     />
                                 </Grid>
                             </Grid>
@@ -172,6 +178,9 @@ const CreateProduct = () => {
                                 <MenuItem disabled selected value="">
                                     <em>Select Brand</em>
                                 </MenuItem>
+                                <MenuItem value="Style Echo">
+                                    <em>Style Echo</em>
+                                </MenuItem>
                                 {/* brand map hobe  */}
                             </Select>
                         </Card>
@@ -186,12 +195,15 @@ const CreateProduct = () => {
                                 placeholder="Select category"
                                 displayEmpty
                                 label="Age"
-                                value={productDetails.brand}
-                                onChange={(e) => setProductDetails({ ...productDetails, brand: e.target.value })}
+                                value={productDetails.category}
+                                onChange={(e) => setProductDetails({ ...productDetails, category: e.target.value })}
                                 sx={{ width: '100%' }}
                             >
                                 <MenuItem disabled selected value="">
                                     <em>Select Category</em>
+                                </MenuItem>
+                                <MenuItem value="Women">
+                                    <em>Women</em>
                                 </MenuItem>
                                 {/* brand map hobe  */}
                             </Select>
@@ -207,6 +219,8 @@ const CreateProduct = () => {
                                 id="demo-simple-select-helper"
                                 placeholder="Select category"
                                 sx={{ width: '100%' }}
+                                value={productDetails.stock}
+                                onChange={(e) => setProductDetails({ ...productDetails, stock: e.target.value})}
                             >
                                 <MenuItem disabled selected value="">
                                     <em>Select stock</em>
@@ -221,7 +235,7 @@ const CreateProduct = () => {
                         </Card>
                     </Grid>
                 </Grid>
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2}}>
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
                     <Button variant='contained' onClick={addProduct}> Add Product </Button>
                 </Box>
 

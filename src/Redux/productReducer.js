@@ -5,11 +5,12 @@ const initialState = {
     cart: [],
     filter: [],
     searchProducts: [],
-    addProduct: []
+    addProduct: [],
+    product: []
 }
-const singleState = {
-    product: [],
-}
+// const singleState = {
+//     product: [],
+// }
 
 const productReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -17,6 +18,16 @@ const productReducer = (state = initialState, action) => {
             return {
                 ...state,
                 products: action.payload
+            }
+        case actionTypes.FETCH_PRODUCT:
+            return {
+                ...state,
+                product: action.payload
+            }
+        case actionTypes.REMOVE_SELECTED_PRODUCT:
+            return {
+                ...state, 
+                product: []
             }
         case actionTypes.ADD_PRODUCT:
             return {
@@ -31,7 +42,7 @@ const productReducer = (state = initialState, action) => {
         case actionTypes.DELETE_PRODUCT:
             return {
                 ...state,
-                products: state.products.filter( product => product._id !== action.payload.id)
+                products: state.products.filter(product => product._id !== action.payload.id)
             }
         case actionTypes.ADD_TO_CART:
             // get the items data from the products array
@@ -80,20 +91,21 @@ const productReducer = (state = initialState, action) => {
     }
 };
 
-const singleProductReducer = (state = singleState, action) => {
-    switch (action.type) {
-        case actionTypes.FETCH_PRODUCT:
-            return {
-                ...state,
-                product: action.payload
-            }
-        case actionTypes.REMOVE_SELECTED_PRODUCT:
-            return {
+// const singleProductReducer = (state = singleState, action) => {
+//     switch (action.type) {
+//         case actionTypes.FETCH_PRODUCT:
+//             return {
+//                 ...state,
+//                 product: action.payload
+//             }
+//         case actionTypes.REMOVE_SELECTED_PRODUCT:
+//             return {
 
-            }
-        default:
-            return state
-    }
-}
+//             }
+//         default:
+//             return state
+//     }
+// }
 
-export { productReducer, singleProductReducer };
+export { productReducer}
+    // , singleProductReducer };

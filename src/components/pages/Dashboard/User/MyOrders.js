@@ -34,31 +34,12 @@ const MyOrders = () => {
                     <Grid container spacing={2}>
                         <Grid item md={12}>
                             <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
-                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pb: 2 }}>
-                                    <Button variant='contained' sx={{ textTransform: 'capitalize' }}> + Add Product </Button>
-                                    <TextField
-                                        id="standard-search"
-                                        type="search"
-                                        placeholder='Search Products...'
-                                        size='small'
-                                        InputProps={{
-                                            startAdornment: (
-                                                <InputAdornment position="start">
-                                                    <SearchOutlined />
-                                                </InputAdornment>
-                                            ),
-                                        }}
-                                        sx={{
-                                            '.css-1xp6qmi-MuiInputBase-input-MuiOutlinedInput-input': {
-                                                fontSize: '14px'
-                                            }
-                                        }}
-                                    />
-                                </Box>
+                               
                                 <Divider />
                                 <Table aria-label="simple table">
                                     <TableHead>
                                         <TableRow>
+                                            <TableCell sx={{ fontWeight: 'bold' }}> # </TableCell>
                                             <TableCell sx={{ fontWeight: 'bold' }}> Order ID </TableCell>
                                             <TableCell sx={{ fontWeight: 'bold' }}> Customer </TableCell>
                                             <TableCell sx={{ fontWeight: 'bold' }}> Product </TableCell>
@@ -70,27 +51,25 @@ const MyOrders = () => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {/* {
-                                            orders.map(order => */}
+                                        {
+                                            orders?.map((order, index) =>
                                                 <TableRow>
-                                                    <TableCell>
-
-
-                                                    </TableCell>
+                                                    <TableCell> {index + 1} </TableCell>
+                                                    <TableCell> {order._id} </TableCell>
+                                                    <TableCell> {order.name} </TableCell>
                                                     <TableCell>  </TableCell>
-                                                    <TableCell>  </TableCell>
-                                                    <TableCell>  </TableCell>
+                                                    <TableCell> {order.createdAt} </TableCell>
                                                     <TableCell>  </TableCell>
                                                     <TableCell>  </TableCell>
                                                     <TableCell>  </TableCell>
                                                     <TableCell>
                                                         <Button variant='outlined' size='small' sx={{ textTransform: 'capitalize' }} endIcon={<Cancel fontSize='small' />} >
-                                                           Cancel Order 
+                                                            Cancel Order
                                                         </Button>
 
                                                     </TableCell>
                                                 </TableRow>
-                                                {/* )} */}
+                                            )}
 
 
                                     </TableBody>

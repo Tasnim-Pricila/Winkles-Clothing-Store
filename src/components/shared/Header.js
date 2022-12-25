@@ -17,10 +17,11 @@ const Header = ({ setSearchText, searchText }) => {
     const cart = useSelector(state => state.allProducts.cart);
     const [countCart, setCountCart] = useState(0);
     const navigate = useNavigate();
+    // console.log(cart)
 
     useEffect(() => {
         let count = 0;
-        cart.forEach(item => {
+        cart?.length > 0 && cart.forEach(item => {
             count = count + item.qty;
         })
         setCountCart(count);

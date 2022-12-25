@@ -5,7 +5,7 @@ import { userReducer } from './userReducer';
 
 const rootReducer = combineReducers({
     allProducts: productReducer,
-    singleProduct: singleProductReducer,
+    // singleProduct: singleProductReducer,
     allUsers: userReducer,
     orders: orderReducer
 })
