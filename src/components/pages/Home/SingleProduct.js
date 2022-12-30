@@ -69,7 +69,7 @@ const SingleProduct = () => {
     });
 
     const stock = {
-        backgroundColor: 'green',
+        backgroundColor: ' #FF8E78',
         color: 'white',
         padding: '5px 10px',
         display: 'flex',
@@ -79,10 +79,15 @@ const SingleProduct = () => {
 
     }
     const cart = {
-        backgroundColor: 'green',
-        color: 'white',
+        border: '1px solid #FF8E78',
+        color: '#FF8E78',
         padding: '5px 10px',
         borderRadius: 0,
+        fontWeight: 'bold',
+        '&:hover': {
+            backgroundColor: '#FF8E78',
+            color: 'white'
+        }
     }
 
     return (
@@ -112,7 +117,7 @@ const SingleProduct = () => {
                             </Box>
                             <Divider />
 
-                            <Typography variant="body2" sx={{ py: 2, fontWeight: 'bold', color: 'gray' }}>
+                            <Typography variant="body2" sx={{ py: 2, fontWeight: 'bold', color: 'gray', textTransform: 'capitalize' }}>
                                 Brand: {product.brand}
                             </Typography>
                             <Divider />
@@ -150,11 +155,11 @@ const SingleProduct = () => {
                                     />
 
                                 <Button onClick={decrease} sx={{ border: '2px solid' }}
-                                    variant='outlined' disabled={purchaseQuantity === 0}>
+                                    variant='outlined' disabled={ purchaseQuantity === 0 }>
                                     <RemoveIcon />
                                 </Button>
 
-                                <Button size="small" variant="outlined"
+                                <Button size="small" 
                                     sx={cart}
                                     onClick={() => handleAddToCart(product._id)}
                                     startIcon={<ShoppingCart />} >

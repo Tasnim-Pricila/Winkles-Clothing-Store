@@ -11,7 +11,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom'
 import logout from '../pages/Auth/logout';
 
 const Header = ({ setSearchText, searchText }) => {
-    const pages = ['Home', 'Shop', 'Blog', 'About', 'Contact'];
+    const pages = ['home', 'shop', 'blog', 'about', 'contact'];
     // const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
     const cart = useSelector(state => state.allProducts.cart);
@@ -41,7 +41,6 @@ const Header = ({ setSearchText, searchText }) => {
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
-
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
@@ -69,8 +68,10 @@ const Header = ({ setSearchText, searchText }) => {
         }
     }
     const handleLogout = () => {
+        handleCloseUserMenu();
         logout();
     }
+
     const token = localStorage.getItem('accessToken')
 
     return (
@@ -105,7 +106,7 @@ const Header = ({ setSearchText, searchText }) => {
                     </Fade>
                 </Modal>
             </div>
-            <AppBar position="static" sx={{ px: 10}}>
+            <AppBar position="static" sx={{ px: 10 }}>
                 <Container maxWidth="xl" >
                     <Toolbar>
                         {/* Large screen logo  */}
@@ -159,9 +160,19 @@ const Header = ({ setSearchText, searchText }) => {
                                 }}
                             >
                                 {pages.map((page) => (
-                                    <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                        <Typography textAlign="center">{page}</Typography>
-                                    </MenuItem>
+                                    <Typography component={NavLink} onClick={handleCloseNavMenu}
+                                        to={`/${page}`}
+                                        className={({ isActive }) => (isActive ? "" : "")}
+                                        sx={{
+                                            textDecoration: 'none',
+                                            fontWeight: 'bold',
+                                            color: 'black',
+                                            textTransform: 'capitalize',
+                                            display: 'block',
+                                            py: 1,
+                                            px: 6,
+                                        }}> {page}
+                                    </Typography>
                                 ))}
                             </Menu>
                         </Box>
@@ -193,52 +204,19 @@ const Header = ({ setSearchText, searchText }) => {
                             gap: 2,
                             justifyContent: 'center'
                         }}>
-                            
 
-                            <Typography component={NavLink}
-                                to='/'
-                                className={({ isActive }) => (isActive ? "" : "")}
-                                sx={{
-                                    textDecoration: 'none',
-                                    fontWeight: 'bold',
-                                    color: 'white',
-                                    textTransform: 'uppercase',
-                                }}> Home
-                            </Typography>
-                            <Typography component={NavLink}
-                                to='/shop'
-                                className={({ isActive }) => (isActive ? "" : "")}
-                                sx={{
-                                    textDecoration: 'none',
-                                    fontWeight: 'bold',
-                                    color: 'white',
-                                    textTransform: 'uppercase',
-                                }}>Shop
-                            </Typography>
-                            <Typography component={NavLink} to='/blogs'
-                                sx={{
-                                    textDecoration: 'none',
-                                    color: 'white',
-                                    fontWeight: 'bold',
-                                    textTransform: 'uppercase',
-                                }}>Blog
-                            </Typography>
-                            <Typography component={NavLink} to='/about'
-                                sx={{
-                                    textDecoration: 'none',
-                                    color: 'white',
-                                    fontWeight: 'bold',
-                                    textTransform: 'uppercase',
-                                }}>About
-                            </Typography>
-                            <Typography component={NavLink} to='/contact'
-                                sx={{
-                                    textDecoration: 'none',
-                                    color: 'white',
-                                    fontWeight: 'bold',
-                                    textTransform: 'uppercase',
-                                }}>Contact
-                            </Typography>
+                            { pages.map((page) => (
+                                <Typography component={NavLink}
+                                to={`/${page}`}
+                                    className={({ isActive }) => (isActive ? "" : "")}
+                                    sx={{
+                                        textDecoration: 'none',
+                                        fontWeight: 'bold',
+                                        color: 'white',
+                                        textTransform: 'uppercase',
+                                    }}> {page}
+                                </Typography>
+                            ))}
                         </Box>
 
                         {/* Settings  */}
@@ -264,11 +242,6 @@ const Header = ({ setSearchText, searchText }) => {
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
                             >
-                                {/* {settings.map((setting) => (
-                                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                        <Typography textAlign="center">{setting}</Typography>
-                                    </MenuItem>
-                                ))} */}
                                 <MenuItem sx={{
                                     display: 'flex',
                                     flexDirection: 'column'
@@ -276,13 +249,16 @@ const Header = ({ setSearchText, searchText }) => {
                                     {
                                         !token ?
                                             <>
-                                                <NavLink to='/login'>Login</NavLink>
-                                                <NavLink to='/register'>Register</NavLink>
+                                                <NavLink to='/login'
+                                                    onClick={handleCloseUserMenu}>Login</NavLink>
+                                                <NavLink to='/register'
+                                                    onClick={handleCloseUserMenu}>Register</NavLink>
                                             </>
                                             :
                                             <>
                                                 <NavLink to='/login'><Button onClick={handleLogout}> Logout </Button></NavLink>
-                                                <NavLink to='/dashboard'>My Dashboard</NavLink>
+                                                <NavLink to='/dashboard'
+                                                    onClick={handleCloseUserMenu}>My Dashboard</NavLink>
                                             </>
 
                                     }

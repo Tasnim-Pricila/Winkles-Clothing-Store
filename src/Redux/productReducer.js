@@ -8,9 +8,6 @@ const initialState = {
     addProduct: [],
     product: []
 }
-// const singleState = {
-//     product: [],
-// }
 
 const productReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -91,21 +88,5 @@ const productReducer = (state = initialState, action) => {
     }
 };
 
-// const singleProductReducer = (state = singleState, action) => {
-//     switch (action.type) {
-//         case actionTypes.FETCH_PRODUCT:
-//             return {
-//                 ...state,
-//                 product: action.payload
-//             }
-//         case actionTypes.REMOVE_SELECTED_PRODUCT:
-//             return {
 
-//             }
-//         default:
-//             return state
-//     }
-// }
-
-export { productReducer}
-    // , singleProductReducer };
+export { productReducer} ;

@@ -1,11 +1,10 @@
 import { AppBar, Box, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemText, Toolbar, Typography } from '@mui/material';
 import React from 'react';
-import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import { NavLink, Outlet } from 'react-router-dom';
+import { Add, ManageHistory, PeopleAlt, Person, ShoppingBasket, ShoppingCart } from '@mui/icons-material';
 
 const Dashboard = (props) => {
     const { window } = props;
@@ -16,18 +15,23 @@ const Dashboard = (props) => {
     };
     const container = window !== undefined ? () => window().document.body : undefined;
     const drawer = (
-        <div>
+        <Box
+            sx={{ bgcolor: '#212529', minHeight: '100vh' }}
+        >
             <Toolbar>
                 <Typography component={NavLink}
                     to='/'
-                    className={({ isActive }) => (isActive ? "" : "")}
                     sx={{
                         textDecoration: 'none',
                         fontWeight: 'bold',
                         textTransform: 'uppercase',
                         textAlign: 'center',
-                        width: '100%'
-                    }}> Winkles
+                        width: '100%',
+                        color: '#980aeb',
+                        letterSpacing: '2px',
+                        fontSize: '20px'
+                    }}>
+                    Winkles
                 </Typography>
             </Toolbar>
             <Divider />
@@ -35,9 +39,17 @@ const Dashboard = (props) => {
                 {/* User  */}
                 <ListItem disablePadding>
                     <ListItemButton>
-                        <ListItemIcon> <InboxIcon /> </ListItemIcon>
-                        <ListItemText >
-                            <NavLink to='/dashboard'>My Orders</NavLink>
+                        <ListItemIcon sx={{ color: 'white' }}> <ShoppingBasket /> </ListItemIcon>
+                        <ListItemText>
+                            <Typography component={NavLink} to='/dashboard'
+                                sx={{
+                                    textDecoration: 'none',
+                                    // fontWeight: 'bold',
+                                    color: 'white',
+                                    // textTransform: 'uppercase',
+                                }}>
+                                My Orders
+                            </Typography>
                         </ListItemText>
                         <ListItemText />
                     </ListItemButton>
@@ -46,36 +58,62 @@ const Dashboard = (props) => {
                 {/* Admin  */}
                 <ListItem disablePadding>
                     <ListItemButton>
-                        <ListItemIcon> <InboxIcon /> </ListItemIcon>
-                        <ListItemText >
-                            <NavLink to='/dashboard/addProduct'>Add Product</NavLink>
+                        <ListItemIcon sx={{ color: 'white' }}> <Add /> </ListItemIcon>
+                        <ListItemText>
+                            <Typography component={NavLink} to='/dashboard/addProduct'
+                                sx={{
+                                    textDecoration: 'none',
+                                    // fontWeight: 'bold',
+                                    color: 'white',
+                                    // textTransform: 'uppercase',
+                                }}>
+                                Add Product
+                            </Typography>
                         </ListItemText>
                         <ListItemText />
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
                     <ListItemButton>
-                        <ListItemIcon> <InboxIcon /> </ListItemIcon>
+                        <ListItemIcon sx={{ color: 'white' }}> <ManageHistory /> </ListItemIcon>
                         <ListItemText >
-                            <NavLink to='/dashboard/manageProducts'>Manage Products</NavLink>
+                            <Typography component={NavLink} to='/dashboard/manageProducts'
+                                sx={{
+                                    textDecoration: 'none',
+                                    // fontWeight: 'bold',
+                                    color: 'white',
+                                    // textTransform: 'uppercase',
+                                }}>Manage Products</Typography>
                         </ListItemText>
                         <ListItemText />
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
                     <ListItemButton>
-                        <ListItemIcon> <InboxIcon /> </ListItemIcon>
+                        <ListItemIcon sx={{ color: 'white' }}> <ShoppingCart /> </ListItemIcon>
                         <ListItemText >
-                            <NavLink to='/dashboard/orderDetails'>Order Details</NavLink>
+                            <Typography component={NavLink} to='/dashboard/orderDetails'
+                                sx={{
+                                    textDecoration: 'none',
+                                    // fontWeight: 'bold',
+                                    color: 'white',
+                                    // textTransform: 'uppercase',
+                                }}>Order Details</Typography>
                         </ListItemText>
                         <ListItemText />
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
                     <ListItemButton>
-                        <ListItemIcon> <InboxIcon /> </ListItemIcon>
+                        <ListItemIcon sx={{ color: 'white' }}> <PeopleAlt /> </ListItemIcon>
                         <ListItemText >
-                            <NavLink to='/dashboard/allUsers'>All Users</NavLink>
+                            <Typography component={NavLink} to='/dashboard/allUsers'
+                                sx={{
+                                    textDecoration: 'none',
+                                    // fontWeight: 'bold',
+                                    color: 'white',
+                                    // textTransform: 'uppercase',
+                                }}>All Users</Typography>
                         </ListItemText>
                         <ListItemText />
                     </ListItemButton>
@@ -84,16 +122,22 @@ const Dashboard = (props) => {
                 {/* All  */}
                 <ListItem disablePadding>
                     <ListItemButton>
-                        <ListItemIcon><InboxIcon /></ListItemIcon>
-                        <ListItemText >
-                            <NavLink to='/dashboard/profile'>My Profile</NavLink>
+                        <ListItemIcon sx={{ color: 'white' }}><Person /></ListItemIcon>
+                        <ListItemText>
+                            <Typography component={NavLink} to='/dashboard/profile'
+                                sx={{
+                                    textDecoration: 'none',
+                                    // fontWeight: 'bold',
+                                    color: 'white',
+                                    // textTransform: 'uppercase',
+                                }}>My Profile</Typography>
                         </ListItemText>
                         <ListItemText />
                     </ListItemButton>
                 </ListItem>
             </List>
 
-        </div>
+        </Box>
     );
     return (
         <div>
@@ -124,7 +168,10 @@ const Dashboard = (props) => {
                 </AppBar>
                 <Box
                     component="nav"
-                    sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+                    sx={{
+                        width: { sm: drawerWidth },
+                        flexShrink: { sm: 0 },
+                    }}
                     aria-label="mailbox folders"
                 >
                     {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
@@ -139,6 +186,7 @@ const Dashboard = (props) => {
                         sx={{
                             display: { xs: 'block', sm: 'none' },
                             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+
                         }}
                     >
                         {drawer}
@@ -149,7 +197,7 @@ const Dashboard = (props) => {
                         variant="permanent"
                         sx={{
                             display: { xs: 'none', sm: 'block' },
-                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
                         }}
                         open
                     >

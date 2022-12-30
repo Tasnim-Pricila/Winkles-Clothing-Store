@@ -67,7 +67,6 @@ const Login = () => {
                                     <Grid item xs={12}>
                                         <TextField required
                                             variant="outlined"
-
                                             fullWidth
                                             id="emaill"
                                             label="Email Address"
@@ -82,7 +81,7 @@ const Login = () => {
                                             variant="outlined"
                                             required
                                             fullWidth
-                                            name="password"
+                                            // name="password"
                                             label="Password"
                                             type="password"
                                             id="passwordd"

@@ -26,6 +26,7 @@ import CreateProduct from './components/pages/Dashboard/Admin/CreateProduct';
 import ManageProducts from './components/pages/Dashboard/Admin/ManageProducts';
 import AllUsers from './components/pages/Dashboard/Admin/AllUsers';
 import EditProfile from './components/pages/Dashboard/EditProfile';
+import EditProduct from './components/pages/Dashboard/Admin/EditProduct';
 
 function App() {
   const [searchText, setSearchText] = useState('')
@@ -34,6 +35,7 @@ function App() {
       <Header setSearchText={setSearchText} searchText={searchText} />
       <Routes>
         <Route path='/' element={<Home/>}></Route>
+        <Route path='/home' element={<Home/>}></Route>
         <Route path='/cart' element={
           <RequireAuth>
             <Cart />
@@ -45,7 +47,7 @@ function App() {
         <Route path='/shop' element={
           <Shop searchText={searchText} setSearchText={setSearchText} />}>
         </Route>
-        <Route path='/blogs' element={<Blogs />}></Route>
+        <Route path='/blog' element={<Blogs />}></Route>
         <Route path='/about' element={<About />}></Route>
         <Route path='/contact' element={<Contact />}></Route>
         <Route path='/checkout' element={<Checkout />}></Route>
@@ -60,6 +62,7 @@ function App() {
           <Route path='allUsers' element={<AllUsers/>}></Route>
           <Route path='profile' element={<MyProfile />}></Route>
           <Route path='profile/edit' element={<EditProfile />}></Route>
+          <Route path='editProduct/:id' element={<EditProduct />}></Route>
         </Route>
       </Routes>
       

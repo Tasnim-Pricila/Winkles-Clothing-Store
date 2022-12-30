@@ -13,7 +13,7 @@ import { addToCart } from '../../../Redux/actions';
 import { ShoppingCart } from '@mui/icons-material';
 
 const AllProducts = ({ product }) => {
-    // console.log(product);
+    console.log(product);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const handleDetails = (id) => {
@@ -23,7 +23,7 @@ const AllProducts = ({ product }) => {
         dispatch(addToCart(id));
     }
     const cart = {
-        backgroundColor: 'green',
+        backgroundColor: '#FF8E78',
         color: 'white',
         padding: '5px 10px',
         borderRadius: 0,
@@ -38,10 +38,17 @@ const AllProducts = ({ product }) => {
         <Grid item xs={4} md={4} >
              <Card>
                 <CardMedia
-                    component="img"
-                    height="auto"
-                    image={product.image}
-                    alt="green iguana"
+                    // component="img"
+                    // height="auto"
+                    // image={product.image}
+                    // alt="green iguana"
+                    sx={{
+                        backgroundImage: `url(${product?.image})`,
+                        backgroundSize: 'cover',
+                        height: '40vh',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'top',
+                    }}
                 />
                 <CardContent sx={{ pt: 2, px: 0 }}>
                     <Typography gutterBottom variant="h6" sx={{ textAlign: 'center', textTransform: 'capitalize'}}>

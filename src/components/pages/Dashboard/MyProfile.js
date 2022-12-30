@@ -1,4 +1,4 @@
-import { Box, Button, Card, Grid, TextField, Toolbar, Typography } from '@mui/material';
+import { Box, Button, Card, Grid, Toolbar, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMe } from '../../../Redux/actions';
@@ -11,9 +11,9 @@ const MyProfile = () => {
     const user = useSelector(state => state.allUsers.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    console.log(user);
+    // console.log(user);
     const { firstName, lastName, email, status, createdAt } = user;
-    console.log(firstName);
+    // console.log(firstName);
 
 
     useEffect(() => {
@@ -23,7 +23,16 @@ const MyProfile = () => {
     const handleEdit = () => {
         navigate('/dashboard/profile/edit')
     }
-
+    const addBtn = {
+        color: 'white',
+        backgroundColor: '#45CB85',
+        padding: '5px 10px',
+        textTransform: 'capitalize',
+        boxShadow: '0 3px 3px rgba(56,65,74,0.1)',
+        '&:hover': {
+            backgroundColor: '#3bad71',
+        }
+    }
     return (
         <Box mb={4}>
             <Toolbar sx={{
@@ -45,7 +54,7 @@ const MyProfile = () => {
                                 <Typography width='100%' textTransform='uppercase' fontWeight='bold'> {firstName} {lastName} </Typography>
 
                                 <Box sx={{ display: 'flex', justifyContent: 'end', width: '100%' }}>
-                                    <Button variant='contained' size='small' sx={{ textTransform: 'capitalize', border: '1px solid', }} startIcon={<Edit fontSize='small' />}
+                                    <Button variant='contained' size='small' sx={addBtn} startIcon={<Edit fontSize='small' />}
                                         onClick={handleEdit}>
                                         Edit Profile
                                     </Button>
@@ -78,7 +87,7 @@ const MyProfile = () => {
                                     </Grid>
                                     <Grid item md={4}>
                                         <Typography>
-                                            user?.phone
+                                           { user?.phone}
 
                                         </Typography>
                                     </Grid>
@@ -92,7 +101,7 @@ const MyProfile = () => {
                                     </Grid>
                                     <Grid item md={4}>
                                         <Typography>
-                                            user?.address
+                                           { user?.address }
 
                                         </Typography>
                                     </Grid>
@@ -106,7 +115,7 @@ const MyProfile = () => {
                                     </Grid>
                                     <Grid item md={4}>
                                         <Typography>
-                                            user?.country
+                                           { user?.country }
 
                                         </Typography>
                                     </Grid>

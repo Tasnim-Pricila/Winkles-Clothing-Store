@@ -36,7 +36,7 @@ const Categories = () => {
                         <Box p={3}>
                             <Typography variant='h4' sx={{ textTransform: 'uppercase', color: 'white', transitionDuration: '1s' }}> Women </Typography>
                             <Typography pt={1} variant='h6' color='white' sx={{ transitionDuration: '1s' }}> Collection </Typography>
-                            <Typography pt={2} sx={{ cursor: 'pointer' }} onClick={() => handleCollections('Women')}> view collection </Typography>
+                            <Typography pt={2} sx={{ cursor: 'pointer' }} onClick={() => handleCollections('women')}> view collection </Typography>
                         </Box>
                     </Box>
                 </Grid>
@@ -61,7 +61,7 @@ const Categories = () => {
                         <Box p={3}>
                             <Typography variant='h4' sx={{ textTransform: 'uppercase', color: 'white', transitionDuration: '1s' }}> Men </Typography>
                             <Typography pt={1} variant='h6' color='white' sx={{ transitionDuration: '1s' }}> Collection </Typography>
-                            <Typography pt={2} sx={{ cursor: 'pointer' }} onClick={() => handleCollections('Men')} > view collection </Typography>
+                            <Typography pt={2} sx={{ cursor: 'pointer' }} onClick={() => handleCollections('men')} > view collection </Typography>
                         </Box>
                     </Box>
                 </Grid>
@@ -86,7 +86,7 @@ const Categories = () => {
                         <Box p={3}>
                             <Typography variant='h4' sx={{ textTransform: 'uppercase', color: 'white', transitionDuration: '1s' }}> Kids </Typography>
                             <Typography pt={1} variant='h6' color='white' sx={{ transitionDuration: '1s' }}> Collection </Typography>
-                            <Typography pt={2} sx={{ cursor: 'pointer' }} onClick={() => handleCollections('Kids')}> view collection </Typography>
+                            <Typography pt={2} sx={{ cursor: 'pointer' }} onClick={() => handleCollections('kids')}> view collection </Typography>
                         </Box>
                     </Box>
                 </Grid>

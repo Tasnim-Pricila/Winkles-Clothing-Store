@@ -23,38 +23,52 @@ const Product = ({ product }) => {
         dispatch(addToCart(id));
     }
 
+    const cart = {
+        backgroundColor: '#FF8E78',
+        color: 'white',
+        padding: '5px 10px',
+        borderRadius: 0,
+        border: 0,
+    }
+    const details = {
+        padding: '5px 10px',
+        borderRadius: 0,
+    }
+
     return (
         <Grid item xs={3}>
-            <Card sx={{ border: 0}}>
+            <Card sx={{ border: 0 }}>
                 <CardMedia
-                    component="img"
-                    height="auto"
-                    image={product.image}
-                    alt="green iguana"
+                    // component="img"
+                    // image={product.image}
+                    // alt="green iguana"
+                    sx={{
+                        backgroundImage: `url(${product?.image})`,
+                        backgroundSize: 'cover',
+                        height: '40vh',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'top',
+                    }}
                 />
 
                 <CardContent sx={{ pt: 2 }}>
-                    <Typography gutterBottom variant="h6" sx={{ textAlign: 'center', textTransform: 'capitalize'}}>
+                    <Typography gutterBottom variant="h6" sx={{ textAlign: 'center', textTransform: 'capitalize' }}>
                         {
                             product.title.length > 24 ? `${product.title.slice(0, 24)}...`
-                            : product.title
+                                : product.title
                         }
                     </Typography>
-                    <Typography gutterBottom variant="h6" sx={{ textAlign: 'center', fontWeight: 'bold'}}>
+                    <Typography gutterBottom variant="h6" sx={{ textAlign: 'center', fontWeight: 'bold' }}>
                         Tk. {product.price}
                     </Typography>
                 </CardContent>
 
-                <CardActions sx={{ pb: 2}}>
+                <CardActions sx={{ pb: 2, display: 'flex', justifyContent: 'space-around' }}>
                     <Button size="small" variant="contained" onClick={() => handleDetails(product._id)}
-                        sx={{
-                            mx: 'auto'
-                        }}>
+                        sx={details}>
                         Details
                     </Button>
-                    <Button size="small" variant="outlined" sx={{
-                        mx: 'auto'
-                    }} onClick={() => handleAddToCart(product._id)}>
+                    <Button size="small" variant="outlined" sx={cart} onClick={() => handleAddToCart(product._id)}>
                         Add To Cart</Button>
                 </CardActions>
             </Card>

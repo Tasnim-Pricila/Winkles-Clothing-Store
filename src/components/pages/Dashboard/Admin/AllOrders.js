@@ -1,23 +1,91 @@
-import { BorderColor, Delete, SearchOutlined } from '@mui/icons-material';
-import { Box, Button, Card, Divider, Grid, InputAdornment, Table, TableBody, TableCell, TableHead, TableRow, TextField, Toolbar } from '@mui/material';
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllOrders } from '../../../../Redux/actions';
+import { SearchOutlined } from '@mui/icons-material';
+import { Box, Button, Card, Divider, Grid, InputAdornment, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, TextField, Toolbar } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+import React from 'react';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { deleteOrder, updateorder } from '../../../../Redux/actions';
+import OrdersTable from './OrdersTable';
 
 const AllOrders = () => {
-    const orders = useSelector( state => state.orders.allOrder );
-    // const [user] = useUsers();
     const dispatch = useDispatch();
-    // console.log(user?.email);
-    console.log(orders);
+    const [allOrders, setAllOrders] = useState(true);
+    const [paid, setPaid] = useState([]);
+    const [orders, setOrders] = useState([]);
+    const [pending, setPending] = useState([]);
 
-    useEffect( () => {
-        dispatch(getAllOrders())
-    }, [dispatch])
-    
+    const { isLoading, refetch } = useQuery({
+        queryKey: ['orders'],
+        queryFn: () =>
+            fetch(`https://winkles-server.onrender.com/orders`)
+                .then(res => res.json())
+                .then(data => setOrders(data?.data?.result))
+    })
+
+    // console.log(orders);
+
+    if (isLoading) {
+        console.log('loading...');
+    }
+
+    const handleDelete = (id) => {
+        dispatch(deleteOrder(id))
+    }
+
+    const handleDelivery = (id) => {
+        refetch();
+        dispatch(updateorder(id, {
+            deliveryStatus: 'Shipped'
+        }))
+        refetch();
+    }
+
+    const handlePayment = (id) => {
+        refetch();
+        dispatch(updateorder(id, {
+            paymentStatus: 'Paid'
+        }))
+        refetch();
+    }
+    const [value, setValue] = React.useState('one');
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+    const handleAllOrders = () => {
+        setAllOrders(true);
+        setPending([]);
+        setPaid([]);
+    }
+
+    const handlePaid = () => {
+        setPending([]);
+        setAllOrders(false)
+        const paidOrder = orders?.filter(order => order.paymentStatus === 'Paid');
+        setPaid(paidOrder);
+    }
+    const handlePending = () => {
+        setPaid([]);
+        setAllOrders(false);
+        const pendingOrder = orders?.filter(order => order.paymentStatus === 'Pending');
+        setPending(pendingOrder);
+    }
+
+    const addBtn = {
+        color: 'white',
+        backgroundColor: '#45CB85',
+        padding: '5px 10px',
+        textTransform: 'capitalize',
+        boxShadow: '0 3px 3px rgba(56,65,74,0.1)',
+        '&:hover': {
+            backgroundColor: '#3bad71',
+        }
+    }
+
+
     return (
         <Box
-         mb={4}>
+            mb={4}>
             <Toolbar sx={{
                 boxShadow: '0 3px 3px rgba(56,65,74,0.1)',
                 fontWeight: 'bold',
@@ -32,7 +100,7 @@ const AllOrders = () => {
                     <Grid item md={12}>
                         <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pb: 2 }}>
-                                <Button variant='contained' sx={{ textTransform: 'capitalize' }}> + Add Order </Button>
+                                <Button variant='contained' sx={addBtn}> + Create Order </Button>
                                 <TextField
                                     id="standard-search"
                                     type="search"
@@ -41,7 +109,7 @@ const AllOrders = () => {
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
-                                                <SearchOutlined/>
+                                                <SearchOutlined />
                                             </InputAdornment>
                                         ),
                                     }}
@@ -52,46 +120,73 @@ const AllOrders = () => {
                                     }}
                                 />
                             </Box>
-                            <Divider/>
-                            <Table aria-label="simple table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell sx={{ fontWeight: 'bold' }}> # </TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold' }}> Order ID </TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold' }}> Customer </TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold' }}> Product </TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold' }}> Order Date </TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold' }}> Amount </TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold' }}> Payment Method </TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold' }}> Delivery Status  </TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold' }}> Action </TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {
-                                        orders?.result?.map((order, index) =>
-                                            <TableRow>
-                                                <TableCell> {index + 1} </TableCell>
-                                                    <TableCell> {order._id} </TableCell>
-                                                    <TableCell> {order.name} </TableCell>
-                                                <TableCell>  </TableCell>
-                                                <TableCell> {order.createdAt} </TableCell>
-                                                <TableCell>  </TableCell>
-                                                <TableCell>  </TableCell>
-                                                <TableCell>  </TableCell>
-                                                <TableCell>
-                                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                                        <BorderColor fontSize='small' />
-                                                        <Delete fontSize='small' />
-                                                    </Box>
+                            <Divider />
 
-                                                </TableCell>
-                                            </TableRow>)
-                                    }
+                            <Tabs
+                                value={value}
+                                onChange={handleChange}
+                                // textColor="secondary"
+                                // indicatorColor="secondary"
+                                aria-label="secondary tabs example"
+                            >
+                                <Tab value="one" label="All Orders" onClick={handleAllOrders} />
+                                <Tab value="two" label="Paid" onClick={handlePaid} />
+                                <Tab value="three" label="Pending" onClick={handlePending} />
+                            </Tabs>
 
+                            <TableContainer sx={{ maxHeight: 440 }}>
+                                <Table stickyHeader aria-label="sticky table">
+                                    <TableHead sx={{ bgcolor: '#f3f6f9' }}>
+                                        <TableRow sx={{
+                                            '.MuiTableCell-root': {
+                                                color: '#878a99',
+                                                fontWeight: 'bold'
+                                            }
+                                        }}>
+                                            <TableCell> # </TableCell>
+                                            <TableCell> Order ID </TableCell>
+                                            <TableCell> Customer </TableCell>
+                                            <TableCell sx={{ fontWeight: 'bold', minWidth: '150px' }}> Product </TableCell>
+                                            <TableCell> Order Date </TableCell>
+                                            <TableCell> Amount </TableCell>
+                                            <TableCell> Payment Method </TableCell>
+                                            <TableCell> Payment Status </TableCell>
+                                            <TableCell> Delivery Status  </TableCell>
+                                            <TableCell> Order Status  </TableCell>
+                                            <TableCell> Action </TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody sx={{ fontSize: '12px' }}>
+                                        {
+                                            allOrders &&
+                                            orders?.map((order, index) =>
 
-                                </TableBody>
-                            </Table>
+                                                <OrdersTable order={order} index={index}
+                                                    handlePayment={handlePayment} handleDelete={handleDelete} handleDelivery={handleDelivery} handlePaid={handlePaid} paid={paid}
+                                                ></OrdersTable>
+                                            )
+                                        }
+                                        {
+                                            paid &&
+                                            paid?.map((order, index) =>
+
+                                                <OrdersTable order={order} index={index}
+                                                    handlePayment={handlePayment} handleDelete={handleDelete} handleDelivery={handleDelivery} handlePaid={handlePaid} paid={paid}
+                                                ></OrdersTable>
+                                            )
+                                        }
+                                        {
+                                            pending &&
+                                            pending?.map((order, index) =>
+
+                                                <OrdersTable order={order} index={index}
+                                                    handlePayment={handlePayment} handleDelete={handleDelete} handleDelivery={handleDelivery} handlePaid={handlePaid} paid={paid}
+                                                ></OrdersTable>
+                                            )
+                                        }
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
                         </Card>
                     </Grid>
                 </Grid>

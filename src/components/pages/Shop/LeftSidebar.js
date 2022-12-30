@@ -4,16 +4,29 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Button, FormControl, FormControlLabel, Grid, InputAdornment, InputLabel, OutlinedInput, Radio, RadioGroup } from '@mui/material';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchBrands, fetchCategories } from '../../../Redux/actions';
+import { Box } from '@mui/system';
 
 
-const LeftSidebar = ({ setCategory, setGtPrice, setStock, brand, setBrand, setLtPrice,handleClear }) => {
+const LeftSidebar = ({ setCategory, setGtPrice, setStock, brand, setBrand, setLtPrice, handleClear }) => {
+    const brands = useSelector(state => state.brands.brands);
+    const categories = useSelector(state => state.category.categories);
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(fetchBrands())
+        dispatch(fetchCategories())
+    }, [dispatch])
+
     return (
-        <div>
+        <Box mb={6}>
             <Grid container>
                 <Grid item xs={6}>
                     <Typography>Search Results: </Typography>
                 </Grid>
-                <Grid item xs={6} sx={{ textAlign: 'right'}}>
+                <Grid item xs={6} sx={{ textAlign: 'right' }}>
                     <Button onClick={handleClear}> Clear Filters: </Button>
 
                 </Grid>
@@ -88,9 +101,11 @@ const LeftSidebar = ({ setCategory, setGtPrice, setStock, brand, setBrand, setLt
                             defaultValue="female"
                             name="radio-buttons-group"
                         >
-                            <FormControlLabel value="Men" label="Men" control={<Radio />} onChange={(e) => setCategory(e.target.value)} />
-                            <FormControlLabel value="Women" label="Women" control={<Radio />} onChange={(e) => setCategory(e.target.value)} />
-                            <FormControlLabel value="Kids" label="Kids" control={<Radio />} onChange={(e) => setCategory(e.target.value)} />
+                            {
+                                categories.map(category =>
+                                    <FormControlLabel value={category.name} label={category.name} sx={{ textTransform: 'capitalize' }} control={<Radio />} onChange={(e) => setCategory(e.target.value)} />
+                                )
+                            }
                         </RadioGroup>
                     </FormControl>
                 </AccordionDetails>
@@ -109,15 +124,16 @@ const LeftSidebar = ({ setCategory, setGtPrice, setStock, brand, setBrand, setLt
                         defaultValue="female"
                         name="radio-buttons-group"
                     >
-                        <FormControlLabel value="Style Echo" label="Style Echo" control={<Radio />} onChange={(e) => setBrand(e.target.value)} />
-                        <FormControlLabel value="Arong" label="Arong" control={<Radio />} onChange={(e) => setBrand(e.target.value)} />
-                        <FormControlLabel value="Shorodindu" label="Shorodindu" control={<Radio />} onChange={(e) => setBrand(e.target.value)} />
-                        <FormControlLabel value="Jens" label="Jens" control={<Radio />} onChange={(e) => setBrand(e.target.value)} />
-                        <FormControlLabel value="Cloth Villa" label="Cloth Villa" control={<Radio />} onChange={(e) => setBrand(e.target.value)} />
+                        {
+                            brands.map(brand =>
+                                <FormControlLabel value={brand.name} label={brand.name} sx={{ textTransform: 'capitalize' }} control={<Radio />} 
+                                onChange={(e) => setBrand(e.target.value)} />
+                            )
+                        }
                     </RadioGroup>
                 </AccordionDetails>
             </Accordion>
-        </div>
+        </Box>
     );
 };
 

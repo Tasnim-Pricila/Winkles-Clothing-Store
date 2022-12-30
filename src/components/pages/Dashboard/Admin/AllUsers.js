@@ -1,17 +1,53 @@
-import { Block, BorderColor, Delete, SearchOutlined } from '@mui/icons-material';
-import { Box, Button, Card, Grid, InputAdornment, TextField, Toolbar, Table, TableBody, TableCell, TableHead, TableRow, Typography, Divider } from '@mui/material';
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUsers } from '../../../../Redux/actions';
+import { Block, SearchOutlined } from '@mui/icons-material';
+import { Box, Button, Card, Grid, InputAdornment, TextField, Toolbar, Table, TableBody, TableCell, TableHead, TableRow, Divider } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { updateUserById } from '../../../../Redux/actions';
 
 const AllUsers = () => {
-    const users = useSelector(state => state.allUsers.users);
-    const dispatch = useDispatch();
-    console.log(users)
+    const { data, isLoading, refetch } = useQuery({
+        queryKey: ['users'],
+        queryFn: () =>
+            fetch(`https://winkles-server.onrender.com/users`)
+                .then(res => res.json())
 
-    useEffect(() => {
-        dispatch(getUsers())
-    }, [dispatch])
+    })
+    if (isLoading) {
+        console.log('dddd');
+    }
+    console.log(data)
+    // const users = useSelector(state => state.allUsers.users);
+    const dispatch = useDispatch();
+
+    // useEffect(() => {
+    //     dispatch(getUsers())
+    // }, [dispatch])
+
+    const handleBlock = (id) => {
+        refetch();
+        dispatch(updateUserById(id, {
+            status: 'blocked'
+        }))
+        refetch();
+    }
+    const handleActive = (id) => {
+        refetch();
+        dispatch(updateUserById(id, {
+            status: 'active'
+        }))
+        refetch();
+    }
+    const addBtn = {
+        color: 'white',
+        backgroundColor: '#45CB85',
+        padding: '5px 10px',
+        textTransform: 'capitalize',
+        boxShadow: '0 3px 3px rgba(56,65,74,0.1)',
+        '&:hover': {
+            backgroundColor: '#3bad71',
+        }
+    }
 
     return (
         <Box mb={4}>
@@ -29,7 +65,7 @@ const AllUsers = () => {
                     <Grid item md={12}>
                         <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pb: 2 }}>
-                                <Button variant='contained' sx={{ textTransform: 'capitalize' }}> + Add User </Button>
+                                <Button variant='contained' sx={addBtn}> + Add User </Button>
                                 <TextField
                                     id="standard-search"
                                     type="search"
@@ -38,7 +74,7 @@ const AllUsers = () => {
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start">
-                                                <SearchOutlined/>
+                                                <SearchOutlined />
                                             </InputAdornment>
                                         ),
                                     }}
@@ -49,10 +85,16 @@ const AllUsers = () => {
                                     }}
                                 />
                             </Box>
-                            <Divider/>
+                            <Divider />
                             <Table aria-label="simple table">
-                                <TableHead>
-                                    <TableRow>
+                                <TableHead sx={{ bgcolor: '#f3f6f9' }}>
+                                    <TableRow sx={{
+                                        '.MuiTableCell-root': {
+                                            color: '#878a99',
+                                            fontWeight: 'bold',
+                                            textTransform: 'uppercase'
+                                        }
+                                    }} >
                                         <TableCell sx={{ fontWeight: 'bold' }}> # </TableCell>
                                         <TableCell sx={{ fontWeight: 'bold' }}> User </TableCell>
                                         <TableCell sx={{ fontWeight: 'bold' }}> Email </TableCell>
@@ -64,7 +106,7 @@ const AllUsers = () => {
                                 </TableHead>
                                 <TableBody>
                                     {
-                                        users.map((user, i) =>
+                                        data?.data?.result.map((user, i) =>
                                             <TableRow>
                                                 <TableCell> {i + 1} </TableCell>
                                                 <TableCell> {user.firstName} {user.lastName} </TableCell>
@@ -72,22 +114,33 @@ const AllUsers = () => {
                                                 <TableCell> {user?.phone}  </TableCell>
                                                 <TableCell> {user.createdAt} </TableCell>
                                                 <TableCell> {user.status} </TableCell>
-                                                <TableCell>
-                                                    <Button variant='contained' size='small' sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                                        Block <Block fontSize='small' />
-                                                    </Button>
-                                                </TableCell>
+                                                {
+                                                    user?.status === 'active' ?
+                                                        <TableCell>
+                                                            <Button variant='contained' size='small' endIcon={<Block fontSize='small' />}
+                                                                onClick={() => handleBlock(user._id)}>
+                                                                Block
+                                                            </Button>
+                                                        </TableCell>
+                                                        :
+                                                        <TableCell>
+                                                            <Button variant='contained' size='small'
+                                                                endIcon={<Block fontSize='small' />}
+                                                                onClick={() => handleActive(user._id)}>
+                                                                Activate
+                                                            </Button>
+                                                        </TableCell>
+                                                }
+
                                             </TableRow>)
                                     }
-
-
                                 </TableBody>
                             </Table>
                         </Card>
                     </Grid>
                 </Grid>
             </Box>
-        </Box>
+        </Box >
     );
 };
 

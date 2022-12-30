@@ -1,32 +1,34 @@
 import { Box, Button, Card, Grid, TextField, Toolbar, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMe } from '../../../Redux/actions';
+import { getMe, updateUserAction } from '../../../Redux/actions';
 import avatar from '../../../images/avatar.png'
-import { Edit } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+
 
 const EditProfile = () => {
     const user = useSelector(state => state.allUsers.user);
-    const [updateUser, setUser] = useState({
-        firstName: '',
-        lastName: '',
-        phone: '',
-        country: '',
-        address: '',
-    });
     const dispatch = useDispatch();
-    console.log(typeof(user));
-    console.log(user)
+    const navigate = useNavigate();
     const { firstName, lastName, email, status, createdAt } = user;
 
     useEffect(() => {
         dispatch(getMe())
     }, [dispatch])
 
-    const handleUpdate = () => {
-        console.log(updateUser);
+    const handleUpdate = (e) => {
+        e.preventDefault();
+        dispatch(updateUserAction({
+            firstName: e.target.firstName.value,
+            lastName: e.target.lastName.value,
+            phone: e.target.phone.value,
+            address: e.target.address.value,
+            country: e.target.country.value,
+        }))
+        navigate('/dashboard/profile')
+    }
+    const handleCancel = () => {
+        navigate('/dashboard/profile')
     }
 
     return (
@@ -52,145 +54,152 @@ const EditProfile = () => {
                             {
                                 user?.length !== 0 &&
                                 <>
-                                    <Grid container spacing={2} mt={2} sx={{ display: 'flex', alignItems: 'center' }}>
-                                        <Grid item md={4}>
-                                            <Typography textAlign='right' pr={20}> First Name </Typography>
+                                    <form onSubmit={handleUpdate}>
+                                        <Grid container spacing={2} mt={2} sx={{ display: 'flex', alignItems: 'center' }}>
+                                            <Grid item md={4}>
+                                                <Typography textAlign='right' pr={20}> First Name </Typography>
+                                            </Grid>
+                                            <Grid item md={4}>
+                                                <TextField sx={{
+                                                    width: '100%',
+                                                    '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
+                                                        fontSize: '13px', color: '#212529'
+                                                    }
+                                                }}
+                                                    defaultValue={user?.firstName && user?.firstName}
+                                                    autoComplete='off'
+                                                    id="filled-hidden-label-small"
+                                                    size="small"
+                                                    name='firstName'
+                                                />
+                                            </Grid>
                                         </Grid>
-                                        <Grid item md={4}>
-                                            <TextField sx={{
-                                                width: '100%',
-                                                '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
-                                                    fontSize: '13px', color: '#212529'
-                                                }
-                                            }}
-                                                defaultValue={user?.firstName && user?.firstName}
-                                                id="filled-hidden-label-small"
-                                                size="small"
-                                                onChange={(e) => setUser({ ...updateUser, firstName: e.target.value })}
-                                            />
+                                        <Grid container spacing={2} mt={2} sx={{ display: 'flex', alignItems: 'center' }}>
+                                            <Grid item md={4}>
+                                                <Typography textAlign='right' pr={20}>Last Name </Typography>
+                                            </Grid>
+                                            <Grid item md={4}>
+                                                <TextField sx={{
+                                                    width: '100%',
+                                                    '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
+                                                        fontSize: '13px', color: '#212529'
+                                                    }
+                                                }}
+                                                    defaultValue={user?.lastName && user?.lastName}
+                                                    id="filled-hidden-label-small"
+                                                    name='lastName'
+                                                    size="small"
+                                                />
+                                            </Grid>
                                         </Grid>
-                                    </Grid>
-                                    <Grid container spacing={2} mt={2} sx={{ display: 'flex', alignItems: 'center' }}>
-                                        <Grid item md={4}>
-                                            <Typography textAlign='right' pr={20}>Last Name </Typography>
-                                        </Grid>
-                                        <Grid item md={4}>
-                                            <TextField sx={{
-                                                width: '100%',
-                                                '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
-                                                    fontSize: '13px', color: '#212529'
-                                                }
-                                            }}
-                                                defaultValue={user?.lastName && user?.lastName}
-                                                id="filled-hidden-label-small"
-                                                size="small"
-                                                onChange={(e) => setUser({ ...updateUser, lastName: e.target.value })}
-                                            />
-                                        </Grid>
-                                    </Grid>
 
-                                    <Grid container spacing={2} mt={2} sx={{ display: 'flex', alignItems: 'center' }}>
-                                        <Grid item md={4}>
-                                            <Typography textAlign='right' pr={20}> Email </Typography>
-                                        </Grid>
-                                        <Grid item md={4}>
-                                            <TextField sx={{
-                                                width: '100%',
-                                                '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
-                                                    fontSize: '13px', color: '#212529'
-                                                }
-                                            }}
-                                                value={email}
-                                                id="filled-hidden-label-small"
-                                                size="small"
-                                                disabled
-                                            />
-                                        </Grid>
-                                    </Grid>
+                                        <Grid container spacing={2} mt={2} sx={{ display: 'flex', alignItems: 'center' }}>
+                                            <Grid item md={4}>
+                                                <Typography textAlign='right' pr={20}> Email </Typography>
+                                            </Grid>
+                                            <Grid item md={4}>
+                                                <TextField sx={{
+                                                    width: '100%',
+                                                    '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
+                                                        fontSize: '13px', color: '#212529'
+                                                    }
+                                                }}
+                                                    value={email}
+                                                    id="filled-hidden-label-small"
+                                                    size="small"
+                                                    disabled
 
-                                    <Grid container spacing={2} mt={2} sx={{ display: 'flex', alignItems: 'center' }}>
-                                        <Grid item md={4}>
-                                            <Typography textAlign='right' pr={20}> Phone </Typography>
+                                                />
+                                            </Grid>
                                         </Grid>
-                                        <Grid item md={4}>
-                                            <TextField sx={{
-                                                width: '100%',
-                                                '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
-                                                    fontSize: '13px', color: '#212529'
-                                                }
-                                            }}
-                                                defaultValue={user?.phone ? user.phone : 'Enter Phone'}
-                                                id="filled-hidden-label-small"
-                                                size="small"
-                                                onChange={(e) => setUser({ ...updateUser, phone: e.target.value })}
-                                            />
-                                        </Grid>
-                                    </Grid>
 
-                                    <Grid container spacing={2} mt={2} sx={{ display: 'flex', alignItems: 'center' }}>
-                                        <Grid item md={4}>
-                                            <Typography textAlign='right' pr={20}> Address </Typography>
+                                        <Grid container spacing={2} mt={2} sx={{ display: 'flex', alignItems: 'center' }}>
+                                            <Grid item md={4}>
+                                                <Typography textAlign='right' pr={20}> Phone </Typography>
+                                            </Grid>
+                                            <Grid item md={4}>
+                                                <TextField sx={{
+                                                    width: '100%',
+                                                    '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
+                                                        fontSize: '13px', color: '#212529'
+                                                    }
+                                                }}
+                                                    defaultValue={user?.phone && user?.phone}
+                                                    id="filled-hidden-label-small"
+                                                    size="small"
+                                                    name='phone'
+                                                />
+                                            </Grid>
                                         </Grid>
-                                        <Grid item md={4}>
-                                            <TextField sx={{
-                                                width: '100%',
-                                                '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
-                                                    fontSize: '13px', color: '#212529'
-                                                }
-                                            }}
-                                                defaultValue={user?.address ? user.address : 'Enter Address'}
-                                                id="filled-hidden-label-small"
-                                                size="small"
-                                                onChange={(e) => setUser({ ...updateUser, address: e.target.value })}
-                                            />
-                                        </Grid>
-                                    </Grid>
 
-                                    <Grid container spacing={2} mt={2} sx={{ display: 'flex', alignItems: 'center' }}>
-                                        <Grid item md={4}>
-                                            <Typography textAlign='right' pr={20}> Country </Typography>
+                                        <Grid container spacing={2} mt={2} sx={{ display: 'flex', alignItems: 'center' }}>
+                                            <Grid item md={4}>
+                                                <Typography textAlign='right' pr={20}> Address </Typography>
+                                            </Grid>
+                                            <Grid item md={4}>
+                                                <TextField sx={{
+                                                    width: '100%',
+                                                    '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
+                                                        fontSize: '13px', color: '#212529'
+                                                    }
+                                                }}
+                                                    defaultValue={user?.address && user?.address }
+                                                    id="filled-hidden-label-small"
+                                                    size="small"
+                                                    name='address'
+                                                />
+                                            </Grid>
                                         </Grid>
-                                        <Grid item md={4}>
-                                            <TextField sx={{
-                                                width: '100%',
-                                                '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
-                                                    fontSize: '13px', color: '#212529'
-                                                }
-                                            }}
-                                                defaultValue={user?.country ? user.country : 'Enter Country'}
-                                                id="filled-hidden-label-small"
-                                                size="small"
-                                                onChange={(e) => setUser({ ...updateUser, country: e.target.value })}
-                                            />
-                                        </Grid>
-                                    </Grid>
 
-                                    <Grid container spacing={2} mt={2} sx={{ display: 'flex', alignItems: 'center' }}>
-                                        <Grid item md={4}>
-                                            <Typography textAlign='right' pr={20}> Joined on </Typography>
+                                        <Grid container spacing={2} mt={2} sx={{ display: 'flex', alignItems: 'center' }}>
+                                            <Grid item md={4}>
+                                                <Typography textAlign='right' pr={20}> Country </Typography>
+                                            </Grid>
+                                            <Grid item md={4}>
+                                                <TextField sx={{
+                                                    width: '100%',
+                                                    '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
+                                                        fontSize: '13px', color: '#212529'
+                                                    }
+                                                }}
+                                                    defaultValue={user?.country && user.country }
+                                                    id="filled-hidden-label-small"
+                                                    size="small"
+                                                    name='country'
+                                                />
+                                            </Grid>
                                         </Grid>
-                                        <Grid item md={4}>
-                                            <TextField sx={{
-                                                width: '100%',
-                                                '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
-                                                    fontSize: '13px', color: '#212529'
-                                                }
-                                            }}
-                                                value={createdAt}
-                                                id="filled-hidden-label-small"
-                                                size="small"
-                                                disabled
-                                            />
+
+                                        <Grid container spacing={2} mt={2} sx={{ display: 'flex', alignItems: 'center' }}>
+                                            <Grid item md={4}>
+                                                <Typography textAlign='right' pr={20}> Joined on </Typography>
+                                            </Grid>
+                                            <Grid item md={4}>
+                                                <TextField sx={{
+                                                    width: '100%',
+                                                    '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
+                                                        fontSize: '13px', color: '#212529'
+                                                    }
+                                                }}
+                                                    value={createdAt}
+                                                    id="filled-hidden-label-small"
+                                                    size="small"
+                                                    disabled
+                                                />
+                                            </Grid>
                                         </Grid>
-                                    </Grid>
+
+                                        <Box mt={3} sx={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+                                            <Button variant='contained' type='submit '> Save </Button>
+                                            <Button variant='contained' onClick={handleCancel}> Cancel </Button>
+                                        </Box>
+                                    </form>
+
                                 </>
                             }
 
 
-                            <Box mt={3} sx={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
-                                <Button variant='contained' onClick={handleUpdate}> Save </Button>
-                                <Button variant='contained'> Cancel </Button>
-                            </Box>
+
 
                         </Card>
                     </Grid>

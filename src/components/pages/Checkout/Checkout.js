@@ -1,4 +1,4 @@
-import { Button, CardContent, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { Button, CardContent, FormControl, FormControlLabel, Grid, Radio, RadioGroup, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -10,22 +10,32 @@ const Checkout = () => {
     const { state } = useLocation();
     const { total, cart } = state;
     const dispatch = useDispatch();
+
     const [shippingDetails, setShippingDetails] = useState({
         name: '',
         email: '',
         phone: '',
         address: '',
-        notes: ''
+        notes: '',
+        products: cart,
+        amount: total,
+        paymentMethod: '',
+        paymentStatus: '',
+        deliveryStatus: 'Pending',
+        orderStatus: 'Pending'
     })
     const shipping = 100;
     const subtotal = parseFloat(shipping) + parseFloat(total);
 
-    const placeOrder = () => {
+    const placeOrder = (e) => {
+        e.preventDefault();
+        console.log(shippingDetails)
         dispatch(postOrders(shippingDetails))
-        navigate(`/orderComplete`, { state: { shippingDetails } })
+        // navigate(`/orderComplete`, { state: { shippingDetails } })
+        navigate(`/dashboard`)
     }
     return (
-        <div>
+        <form onSubmit={placeOrder}>
             <Grid container sx={{ mt: 4, px: 6 }}>
                 <Grid xs={6} md={8} sx={{ py: 6, px: 4 }}>
                     <Typography sx={{ pb: 4 }} variant='h5'>Shipping Details</Typography>
@@ -43,6 +53,7 @@ const Checkout = () => {
                             <TextField sx={{ width: '100%' }}
                                 hiddenLabel
                                 required
+                                name="email"
                                 type="email"
                                 id="filled-hidden-label-small"
                                 size="small"
@@ -54,7 +65,11 @@ const Checkout = () => {
                             <TextField sx={{ width: '100%' }}
                                 hiddenLabel
                                 required
-                                type="Number"
+                                type='number'
+                                inputProps={{
+                                    inputMode: 'numeric',
+                                    pattern: '[0-9]*'
+                                }}
                                 id="filled-hidden-label-small"
                                 size="small"
                                 onChange={(e) => setShippingDetails({ ...shippingDetails, phone: e.target.value })}
@@ -79,6 +94,19 @@ const Checkout = () => {
                         placeholder='Notes about your order, e.g. special notes for delivery'
                         onChange={(e) => setShippingDetails({ ...shippingDetails, notes: e.target.value })}
                     />
+                    <Typography sx={{ pt: 2 }} variant='body2'> Payment Method </Typography>
+                    <FormControl>
+                        <RadioGroup
+                            row
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            defaultValue="female"
+                            name="radio-buttons-group"
+                        >
+                            <FormControlLabel value="Card" label="Card" control={<Radio required />} onChange={(e) => setShippingDetails({ ...shippingDetails, paymentMethod: e.target.value, paymentStatus: 'Paid' })} />
+                            <FormControlLabel value="COD" label="Cash on Delivery" control={<Radio required />} onChange={(e) => setShippingDetails({ ...shippingDetails, paymentMethod: e.target.value, paymentStatus: 'Pending' })} />
+                        </RadioGroup>
+                    </FormControl>
+
                 </Grid>
                 <Grid xs={6} md={4} >
                     <CardContent sx={{ mx: 2, my: 8, borderRadius: 2, boxShadow: 2 }}>
@@ -132,15 +160,15 @@ const Checkout = () => {
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                        <Button variant="outlined" sx={{ mt: 2, width: '100%' }}
-                            onClick={placeOrder}>
+                        <Button variant="outlined" type='submit' sx={{ mt: 2, width: '100%' }}
+                        >
                             Place Order
                         </Button>
                     </CardContent>
                 </Grid>
             </Grid>
             <Footer></Footer>
-        </div >
+        </form>
     );
 };
 

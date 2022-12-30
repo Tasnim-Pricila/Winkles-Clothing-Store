@@ -2,7 +2,8 @@ import actionTypes from "./constants";
 
 const initialState = {
    users : [],
-   user:[]
+   user:[],
+   updateUser: [],
 }
 
 const userReducer = (state = initialState, action) => {
@@ -17,8 +18,12 @@ const userReducer = (state = initialState, action) => {
                 ...state,
                 user: action.payload
             }
+        case actionTypes.UPDATE_USER:
+            return {
+                ...state,
+                updateUser: action.payload
+            }
       
-       
         default:
             return state
     }

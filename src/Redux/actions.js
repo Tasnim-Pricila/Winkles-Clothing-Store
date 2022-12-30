@@ -55,7 +55,7 @@ export const deleteProduct = (id) => {
             payload: {
                 res: response.data.data,
                 id: id
-            } 
+            }
         })
     }
 }
@@ -114,6 +114,7 @@ export const searchByFilter = (url) => {
     }
 }
 
+
 // Orders 
 
 export const postOrders = (data) => {
@@ -132,7 +133,7 @@ export const getAllOrders = () => {
         console.log(response.data.data);
         dispatch({
             type: actionTypes.GET_ALL_ORDER,
-            payload: response.data.data
+            payload: response.data.data.result
         })
     }
 }
@@ -144,6 +145,31 @@ export const getOrdersByEmail = (email) => {
         dispatch({
             type: actionTypes.GET_ORDER_BY_EMAIl,
             payload: response.data.data
+        })
+    }
+}
+
+export const updateorder = (id, data) => {
+    return async (dispatch) => {
+        const response = await Api.patch(`/orders/${id}`, data)
+        console.log(response)
+        dispatch({
+            type: actionTypes.UPDATE_ORDER,
+            payload: response.data?.data
+        })
+    }
+}
+
+export const deleteOrder = (id) => {
+    return async (dispatch) => {
+        const response = await Api.delete(`/orders/${id}`)
+        console.log(response)
+        dispatch({
+            type: actionTypes.DELETE_ORDER,
+            payload: {
+                res: response.data.data,
+                id: id
+            }
         })
     }
 }
@@ -168,7 +194,6 @@ export const getMe = () => {
                     authorization: `Bearer ${localStorage.getItem('accessToken')}`
                 }
             })
-            // console.log(response);
             if (response.data.status === 'success') {
                 dispatch({
                     type: actionTypes.GET_ME,
@@ -177,18 +202,114 @@ export const getMe = () => {
             }
         } catch (error) {
             console.log(error.response.data.status)
-            if(error.response.data.status === 'fail'){
+            if (error.response.data.status === 'fail') {
                 dispatch({
                     type: actionTypes.GET_ME,
                     payload: []
                 })
             }
         }
-
-
-
     }
 }
+
+export const updateUserAction = (data) => {
+    return async (dispatch) => {
+        const response = await Api.patch(`/users/me`, data, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+        console.log(response)
+        dispatch({
+            type: actionTypes.UPDATE_USER,
+            payload: response.data?.data
+        })
+    }
+}
+
+export const updateUserById = (id, data) => {
+    return async (dispatch) => {
+        const response = await Api.patch(`/users/update/${id}`, data)
+        console.log(response)
+        dispatch({
+            type: actionTypes.UPDATE_USER,
+            payload: response.data?.data
+        })
+    }
+}
+
+// Brand 
+
+export const fetchBrands = () => {
+    return async (dispatch) => {
+        const response = await Api.get('/brands')
+        // console.log(response);
+        dispatch({
+            type: actionTypes.FETCH_BRANDS,
+            payload: response.data?.data?.result
+        })
+    }
+}
+
+export const fetchBrand = (id) => {
+    return async (dispatch) => {
+        const response = await Api.get(`/brands/${id}`)
+        // console.log(response.data.data);
+        dispatch({
+            type: actionTypes.FETCH_BRAND,
+            payload: response.data?.data
+        })
+    }
+}
+
+export const createBrand = (data) => {
+    return async (dispatch) => {
+        const response = await Api.post(`/brands`, data)
+        console.log(response)
+        dispatch({
+            type: actionTypes.CREATE_BRAND,
+            payload: response.data?.data
+        })
+    }
+}
+
+// Category 
+
+export const fetchCategories = () => {
+    return async (dispatch) => {
+        const response = await Api.get('/categories')
+        // console.log(response);
+        dispatch({
+            type: actionTypes.FETCH_CATEGORIES,
+            payload: response.data?.data?.result
+        })
+    }
+}
+
+export const fetchCategory = (id) => {
+    return async (dispatch) => {
+        const response = await Api.get(`/categories/${id}`)
+        // console.log(response);
+        dispatch({
+            type: actionTypes.FETCH_CATEGORY,
+            payload: response.data?.data?.result
+        })
+    }
+}
+
+export const createCategory = (data) => {
+    return async (dispatch) => {
+        const response = await Api.post(`/categories`, data)
+        console.log(response)
+        dispatch({
+            type: actionTypes.CREATE_CATEGORY,
+            payload: response.data?.data
+        })
+    }
+}
+
+
+
 
 
 
