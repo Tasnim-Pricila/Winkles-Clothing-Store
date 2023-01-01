@@ -18,7 +18,6 @@ import RequireAuth from './components/pages/Auth/RequireAuth';
 import Dashboard from './components/pages/Dashboard/Dashboard';
 import MyOrders from './components/pages/Dashboard/User/MyOrders';
 import MyProfile from './components/pages/Dashboard/MyProfile';
-import Footer from './components/shared/Footer';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import AllOrders from './components/pages/Dashboard/Admin/AllOrders';
@@ -27,46 +26,62 @@ import ManageProducts from './components/pages/Dashboard/Admin/ManageProducts';
 import AllUsers from './components/pages/Dashboard/Admin/AllUsers';
 import EditProfile from './components/pages/Dashboard/EditProfile';
 import EditProduct from './components/pages/Dashboard/Admin/EditProduct';
+import { createTheme, ThemeProvider } from '@mui/material';
 
 function App() {
+
+  const theme = createTheme({
+    typography: {
+      allVariants: {
+        fontFamily: 'Mulish'
+      },
+    },
+  });
+
+
   const [searchText, setSearchText] = useState('')
+
+
   return (
-    <div>
-      <Header setSearchText={setSearchText} searchText={searchText} />
-      <Routes>
-        <Route path='/' element={<Home/>}></Route>
-        <Route path='/home' element={<Home/>}></Route>
-        <Route path='/cart' element={
-          <RequireAuth>
-            <Cart />
-          </RequireAuth>
-        }></Route>
-        <Route path='/product/:id' element={<SingleProduct />}></Route>
-        <Route path='/login' element={<Login />}></Route>
-        <Route path='/register' element={<Register />}></Route>
-        <Route path='/shop' element={
-          <Shop searchText={searchText} setSearchText={setSearchText} />}>
-        </Route>
-        <Route path='/blog' element={<Blogs />}></Route>
-        <Route path='/about' element={<About />}></Route>
-        <Route path='/contact' element={<Contact />}></Route>
-        <Route path='/checkout' element={<Checkout />}></Route>
-        <Route path='/orderComplete' element={<OrderComplete />}></Route>
-        <Route path='/*' element={<Error />}></Route>
-        
-        <Route path='/dashboard' element={<Dashboard/>}>
-          <Route index element={<MyOrders />}></Route>
-          <Route path='orderDetails' element={<AllOrders/>}></Route>
-          <Route path='addProduct' element={<CreateProduct/>}></Route>
-          <Route path='manageProducts' element={<ManageProducts/>}></Route>
-          <Route path='allUsers' element={<AllUsers/>}></Route>
-          <Route path='profile' element={<MyProfile />}></Route>
-          <Route path='profile/edit' element={<EditProfile />}></Route>
-          <Route path='editProduct/:id' element={<EditProduct />}></Route>
-        </Route>
-      </Routes>
-      
-    </div>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <Header setSearchText={setSearchText} searchText={searchText} />
+        <Routes>
+          <Route path='/' element={<Home />}></Route>
+          <Route path='/home' element={<Home />}></Route>
+          <Route path='/cart' element={
+            <RequireAuth>
+              <Cart />
+            </RequireAuth>
+          }></Route>
+          <Route path='/product/:id' element={<SingleProduct />}></Route>
+          <Route path='/login' element={<Login />}></Route>
+          <Route path='/register' element={<Register />}></Route>
+          <Route path='/shop' element={
+            <Shop searchText={searchText} setSearchText={setSearchText} />}>
+          </Route>
+          <Route path='/blog' element={<Blogs />}></Route>
+          <Route path='/about' element={<About />}></Route>
+          <Route path='/contact' element={<Contact />}></Route>
+          <Route path='/checkout' element={<Checkout />}></Route>
+          <Route path='/orderComplete' element={<OrderComplete />}></Route>
+          <Route path='/*' element={<Error />}></Route>
+
+          <Route path='/dashboard' element={<Dashboard />}>
+            <Route index element={<MyOrders />}></Route>
+            <Route path='orderDetails' element={<AllOrders />}></Route>
+            <Route path='addProduct' element={<CreateProduct />}></Route>
+            <Route path='manageProducts' element={<ManageProducts />}></Route>
+            <Route path='allUsers' element={<AllUsers />}></Route>
+            <Route path='profile' element={<MyProfile />}></Route>
+            <Route path='profile/edit' element={<EditProfile />}></Route>
+            <Route path='editProduct/:id' element={<EditProduct />}></Route>
+          </Route>
+        </Routes>
+
+      </div>
+    </ThemeProvider>
+
   );
 }
 

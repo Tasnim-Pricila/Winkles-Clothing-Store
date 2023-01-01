@@ -16,7 +16,7 @@ const AllUsers = () => {
     if (isLoading) {
         console.log('dddd');
     }
-    console.log(data)
+    // console.log(data)
     // const users = useSelector(state => state.allUsers.users);
     const dispatch = useDispatch();
 
@@ -117,7 +117,15 @@ const AllUsers = () => {
                                                 {
                                                     user?.status === 'active' ?
                                                         <TableCell>
-                                                            <Button variant='contained' size='small' endIcon={<Block fontSize='small' />}
+                                                            <Button variant='contained' 
+                                                            size='small'
+                                                            sx={{
+                                                                bgcolor: '#f06548',
+                                                                '&:hover': {
+                                                                    bgcolor: '#f06548',
+                                                                }
+                                                            }}
+                                                            endIcon={<Block fontSize='small' />}
                                                                 onClick={() => handleBlock(user._id)}>
                                                                 Block
                                                             </Button>

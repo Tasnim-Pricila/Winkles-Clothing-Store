@@ -1,8 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Ruthie&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mulish&display=swap');
 
 .App {
-  text-align: center;
   box-sizing: border-box;
+  font-family: 'Mulish', 'sans-serif' !important;
 }
 
 .App-logo {

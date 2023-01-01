@@ -130,10 +130,21 @@ export const postOrders = (data) => {
 export const getAllOrders = () => {
     return async (dispatch) => {
         const response = await Api.get(`/orders`,)
-        console.log(response.data.data);
+        // console.log(response.data.data);
         dispatch({
             type: actionTypes.GET_ALL_ORDER,
             payload: response.data.data.result
+        })
+    }
+}
+
+export const orderByFilter = (url) => {
+    return async (dispatch) => {
+        console.log(url);
+        const response = await Api.get(url)
+        dispatch({
+            type: actionTypes.ORDER_BY_FILTER,
+            payload: response.data?.data?.result
         })
     }
 }
@@ -157,6 +168,12 @@ export const updateorder = (id, data) => {
             type: actionTypes.UPDATE_ORDER,
             payload: response.data?.data
         })
+    }
+}
+
+export const removeUpdatedProduct = () => {
+    return {
+        type: actionTypes.REMOVE_UPDATED_PRODUCT,
     }
 }
 

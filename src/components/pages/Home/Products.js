@@ -17,7 +17,7 @@ const Products = ({ products }) => {
             }}>
                 {
                     products?.length > 0 ?
-                        products.map(product =>
+                        products.slice(-4).reverse().map(product =>
                             <Product key={product._id}
                                 product={product}
                             />)

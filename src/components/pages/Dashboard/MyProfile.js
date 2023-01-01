@@ -11,7 +11,7 @@ const MyProfile = () => {
     const user = useSelector(state => state.allUsers.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    // console.log(user);
+    console.log(user);
     const { firstName, lastName, email, status, createdAt } = user;
     // console.log(firstName);
 

@@ -3,7 +3,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Button, FormControl, FormControlLabel, Grid, InputAdornment, InputLabel, OutlinedInput, Radio, RadioGroup } from '@mui/material';
+import { Button, FormControl, FormControlLabel, Grid, InputAdornment, InputLabel, Link, OutlinedInput, Radio, RadioGroup } from '@mui/material';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBrands, fetchCategories } from '../../../Redux/actions';
@@ -24,14 +24,12 @@ const LeftSidebar = ({ setCategory, setGtPrice, setStock, brand, setBrand, setLt
         <Box mb={6}>
             <Grid container>
                 <Grid item xs={6}>
-                    <Typography>Search Results: </Typography>
+                    <Typography>Filters </Typography>
                 </Grid>
                 <Grid item xs={6} sx={{ textAlign: 'right' }}>
-                    <Button onClick={handleClear}> Clear Filters: </Button>
-
+                    <Link sx={{ cursor: 'pointer', color: '#4b38b3', fontSize: '14px', textDecorationColor: '#4b38b3' }} onClick={handleClear}>Clear All</Link>
                 </Grid>
             </Grid>
-            <Typography>Filters: </Typography>
             <Accordion defaultExpanded>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
@@ -126,8 +124,8 @@ const LeftSidebar = ({ setCategory, setGtPrice, setStock, brand, setBrand, setLt
                     >
                         {
                             brands.map(brand =>
-                                <FormControlLabel value={brand.name} label={brand.name} sx={{ textTransform: 'capitalize' }} control={<Radio />} 
-                                onChange={(e) => setBrand(e.target.value)} />
+                                <FormControlLabel value={brand.name} label={brand.name} sx={{ textTransform: 'capitalize' }} control={<Radio />}
+                                    onChange={(e) => setBrand(e.target.value)} />
                             )
                         }
                     </RadioGroup>

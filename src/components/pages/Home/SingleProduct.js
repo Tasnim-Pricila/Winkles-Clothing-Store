@@ -10,6 +10,8 @@ import { Box, Divider, TextField } from '@mui/material';
 import { CheckCircle, ShoppingCart } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { Carousel } from 'react-responsive-carousel';
+import "./carousel.min.css";
 
 const SingleProduct = () => {
     const { id } = useParams();
@@ -91,16 +93,21 @@ const SingleProduct = () => {
     }
 
     return (
-        <div>
+        <>
             {
                 product ?
                     <Grid container direction="row" columnSpacing={{ xs: 1, sm: 2, md: 3 }}
                         sx={{ px: 16, mt: 10 }}>
-                        <Grid item xs={4} >
-                            <Img alt="complex" src={product.image} />
+                        <Grid item xs={4}>
+
+                            <Carousel>
+                                <img src={product.image} alt='' style={{ objectFit: 'cover' }} />
+                                <img src={product.image} alt='' />
+                                <img src={product.image} alt='' />
+                            </Carousel>
                         </Grid>
                         <Grid item xs={8}>
-                            <Typography gutterBottom variant="h4" sx={{ textTransform: 'uppercase', fontWeight: 'bold', color: 'black' }}>
+                            <Typography gutterBottom variant="h4" sx={{ textTransform: 'uppercase', fontWeight: 'bold', color: 'black', mt: 2 }}>
                                 {product.title}
                             </Typography>
                             <Divider />
@@ -136,30 +143,30 @@ const SingleProduct = () => {
                                 <Button disabled={purchaseQuantity === quantity} onClick={increase} variant='outlined' sx={{ border: '2px solid' }}>
                                     <AddIcon />
                                 </Button>
-                                    <TextField
-                                        label = { purchaseQuantity }
-                                        onChange={(e) => setQty(e.target.value)}
-                                        size='small'
-                                        InputProps={{
-                                            readOnly: true,
-                                            inputMode: 'numeric',
-                                            pattern: '[0-9]*'
-                                        }}
-                                        disabled
-                                        sx={{
-                                            textAlign: 'center', width: '60px',
-                                            '.css-1pysi21-MuiFormLabel-root-MuiInputLabel-root.Mui-disabled': {
-                                                color: "black",
-                                            }
-                                        }}
-                                    />
+                                <TextField
+                                    label={purchaseQuantity}
+                                    onChange={(e) => setQty(e.target.value)}
+                                    size='small'
+                                    InputProps={{
+                                        readOnly: true,
+                                        inputMode: 'numeric',
+                                        pattern: '[0-9]*'
+                                    }}
+                                    disabled
+                                    sx={{
+                                        textAlign: 'center', width: '60px',
+                                        '.css-1pysi21-MuiFormLabel-root-MuiInputLabel-root.Mui-disabled': {
+                                            color: "black",
+                                        }
+                                    }}
+                                />
 
                                 <Button onClick={decrease} sx={{ border: '2px solid' }}
-                                    variant='outlined' disabled={ purchaseQuantity === 0 }>
+                                    variant='outlined' disabled={purchaseQuantity === 0}>
                                     <RemoveIcon />
                                 </Button>
 
-                                <Button size="small" 
+                                <Button size="small"
                                     sx={cart}
                                     onClick={() => handleAddToCart(product._id)}
                                     startIcon={<ShoppingCart />} >
@@ -174,7 +181,8 @@ const SingleProduct = () => {
                     : <p>Loading...</p>
             }
 
-        </div>
+
+        </>
     );
 };
 

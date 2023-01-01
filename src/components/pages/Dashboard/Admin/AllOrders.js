@@ -1,76 +1,44 @@
 import { SearchOutlined } from '@mui/icons-material';
 import { Box, Button, Card, Divider, Grid, InputAdornment, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, TextField, Toolbar } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { deleteOrder, updateorder } from '../../../../Redux/actions';
+import React, { useEffect } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllOrders, orderByFilter, updateorder } from '../../../../Redux/actions';
 import OrdersTable from './OrdersTable';
 
 const AllOrders = () => {
     const dispatch = useDispatch();
-    const [allOrders, setAllOrders] = useState(true);
-    const [paid, setPaid] = useState([]);
-    const [orders, setOrders] = useState([]);
-    const [pending, setPending] = useState([]);
+    const orders = useSelector(state => state.orders.allOrder)
+    // const { data, isLoading, refetch } = useQuery({
+    //     queryKey: ['orders'],
+    //     queryFn: () =>
+    //         fetch(`https://winkles-server.onrender.com/orders`)
+    //             .then(res => res.json())
 
-    const { isLoading, refetch } = useQuery({
-        queryKey: ['orders'],
-        queryFn: () =>
-            fetch(`https://winkles-server.onrender.com/orders`)
-                .then(res => res.json())
-                .then(data => setOrders(data?.data?.result))
-    })
+    // })
 
-    // console.log(orders);
+    // if (isLoading) {
+    //     console.log('Loading...');
+    // }
+    useEffect(() => {
+        dispatch(getAllOrders())
+    },[dispatch])
 
-    if (isLoading) {
-        console.log('loading...');
-    }
-
-    const handleDelete = (id) => {
-        dispatch(deleteOrder(id))
-    }
-
-    const handleDelivery = (id) => {
-        refetch();
-        dispatch(updateorder(id, {
-            deliveryStatus: 'Shipped'
-        }))
-        refetch();
-    }
-
-    const handlePayment = (id) => {
-        refetch();
-        dispatch(updateorder(id, {
-            paymentStatus: 'Paid'
-        }))
-        refetch();
-    }
     const [value, setValue] = React.useState('one');
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
     const handleAllOrders = () => {
-        setAllOrders(true);
-        setPending([]);
-        setPaid([]);
+        dispatch(getAllOrders())
     }
-
     const handlePaid = () => {
-        setPending([]);
-        setAllOrders(false)
-        const paidOrder = orders?.filter(order => order.paymentStatus === 'Paid');
-        setPaid(paidOrder);
+        dispatch(orderByFilter("/orders?paymentStatus=Paid"))
     }
     const handlePending = () => {
-        setPaid([]);
-        setAllOrders(false);
-        const pendingOrder = orders?.filter(order => order.paymentStatus === 'Pending');
-        setPending(pendingOrder);
+        dispatch(orderByFilter("/orders?paymentStatus=Pending"))
     }
-
     const addBtn = {
         color: 'white',
         backgroundColor: '#45CB85',
@@ -81,7 +49,21 @@ const AllOrders = () => {
             backgroundColor: '#3bad71',
         }
     }
+    const handleDelivery = (id) => {
+        // refetch();
+        dispatch(updateorder(id, {
+            deliveryStatus: 'Shipped'
+        }))
+        // refetch();
+    }
 
+    const handlePayment = (id) => {
+        // refetch();
+        dispatch(updateorder(id, {
+            paymentStatus: 'Paid'
+        }))
+        // refetch();
+    }
 
     return (
         <Box
@@ -125,8 +107,6 @@ const AllOrders = () => {
                             <Tabs
                                 value={value}
                                 onChange={handleChange}
-                                // textColor="secondary"
-                                // indicatorColor="secondary"
                                 aria-label="secondary tabs example"
                             >
                                 <Tab value="one" label="All Orders" onClick={handleAllOrders} />
@@ -158,29 +138,9 @@ const AllOrders = () => {
                                     </TableHead>
                                     <TableBody sx={{ fontSize: '12px' }}>
                                         {
-                                            allOrders &&
-                                            orders?.map((order, index) =>
-
+                                            orders.map((order, index) =>
                                                 <OrdersTable order={order} index={index}
-                                                    handlePayment={handlePayment} handleDelete={handleDelete} handleDelivery={handleDelivery} handlePaid={handlePaid} paid={paid}
-                                                ></OrdersTable>
-                                            )
-                                        }
-                                        {
-                                            paid &&
-                                            paid?.map((order, index) =>
-
-                                                <OrdersTable order={order} index={index}
-                                                    handlePayment={handlePayment} handleDelete={handleDelete} handleDelivery={handleDelivery} handlePaid={handlePaid} paid={paid}
-                                                ></OrdersTable>
-                                            )
-                                        }
-                                        {
-                                            pending &&
-                                            pending?.map((order, index) =>
-
-                                                <OrdersTable order={order} index={index}
-                                                    handlePayment={handlePayment} handleDelete={handleDelete} handleDelivery={handleDelivery} handlePaid={handlePaid} paid={paid}
+                                                    handleDelivery={handleDelivery} handlePayment={handlePayment}
                                                 ></OrdersTable>
                                             )
                                         }

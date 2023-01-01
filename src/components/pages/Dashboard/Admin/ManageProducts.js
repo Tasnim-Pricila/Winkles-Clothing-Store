@@ -1,19 +1,22 @@
-import { BorderColor, Delete, DeleteForever, Edit, SearchOutlined } from '@mui/icons-material';
+import { SearchOutlined } from '@mui/icons-material';
 import { Box, Button, Card, Divider, Grid, InputAdornment, Link, Table, TableBody, TableCell, TableHead, TableRow, TextField, Toolbar, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { deleteProduct, fetchBrands, fetchCategories, fetchProducts, searchByFilter, searchProducts } from '../../../../Redux/actions';
+import { fetchBrands, fetchCategories, fetchProducts, searchByFilter, searchProducts } from '../../../../Redux/actions';
+import ProductTable from './ProductTable';
 
 const ManageProducts = () => {
     const products = useSelector(state => state.allProducts.products);
     const brands = useSelector(state => state.brands.brands);
     const categories = useSelector(state => state.category.categories);
     const searched = useSelector(state => state.allProducts.searchProducts)
+    const nav = useNavigate();
 
     const dispatch = useDispatch();
-    const nav = useNavigate();
+    const [value, setValue] = useState('')
+
     const [search, setSearch] = useState('')
 
 
@@ -35,27 +38,25 @@ const ManageProducts = () => {
     const handleAddproduct = () => {
         nav('/dashboard/addProduct')
     }
-    const handleEditProduct = (id) => {
-        nav(`/dashboard/editProduct/${id}`)
-    }
-    const handleDeleteproduct = (id) => {
-        dispatch(deleteProduct(id))
-    }
+
     const handleClear = () => {
         dispatch(fetchProducts())
     }
+
     const handleCategory = (e) => {
+        setValue(e.target.value)
         document.getElementById("standard-search").value = '';
         setSearch('');
         const url = `/products?category=${e.target.value}`;
         dispatch(searchByFilter(url))
     }
+
     const handleBrand = (e) => {
+        setValue(e.target.value)
         document.getElementById("standard-search").value = '';
         setSearch('');
         const url = `/products?brand=${e.target.value}`;
         dispatch(searchByFilter(url))
-        console.log(e.target.value);
     }
     const addBtn = {
         color: 'white',
@@ -93,7 +94,13 @@ const ManageProducts = () => {
                                 {
                                     categories.map(cat =>
                                         <Button variant='text'
-                                            sx={{ color: '#495057', fontSize: '14px', display: 'block', textTransform: 'capitalize', minWidth: 0, paddingBottom: '0' }} value={cat?.name}
+                                            sx={{
+                                                color: value === cat?.name ? '#4b38b3' : '#495057',
+                                                fontWeight: value === cat?.name && '700',
+                                                fontSize: '14px', display: 'block', textTransform: 'capitalize', minWidth: 0, paddingBottom: '0',
+
+                                            }}
+                                            value={cat?.name}
                                             onClick={handleCategory}>
                                             {cat?.name}
                                         </Button>
@@ -105,7 +112,13 @@ const ManageProducts = () => {
                                 <Typography pb={1} sx={{ fontWeight: '600' }}>Brands</Typography>
                                 {
                                     brands.map(brand =>
-                                        <Button sx={{ color: '#495057', fontSize: '14px', display: 'block', textTransform: 'capitalize', minWidth: 0, paddingBottom: '0' }} value={brand?.name} onClick={handleBrand}>
+                                        <Button sx={{
+                                            color: value === brand?.name ? '#4b38b3' : '#495057',
+                                            fontWeight: value === brand?.name && '700',
+                                            fontSize: '14px', display: 'block', textTransform: 'capitalize', minWidth: 0, paddingBottom: '0'
+                                        }}
+                                            value={brand?.name}
+                                            onClick={handleBrand}>
                                             {brand?.name}
                                         </Button>
                                     )
@@ -161,58 +174,18 @@ const ManageProducts = () => {
                                         search === '' ?
                                             products?.length > 0 ?
                                                 products?.map(product =>
-                                                    <TableRow>
-                                                        <TableCell>
-                                                            <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                                                <img src={product.image} alt="" width='40px' height='40px' />
-                                                                <Box >
-                                                                    <Typography> {product.title} </Typography>
-                                                                    <Typography variant='caption' sx={{ color: '#878a99', textTransform: 'capitalize' }}> Category: {product.category} </Typography>
-                                                                </Box>
-
-                                                            </Box>
-
-                                                        </TableCell>
-                                                        <TableCell> {product.quantity} </TableCell>
-                                                        <TableCell> {product.price} </TableCell>
-                                                        <TableCell sx={{ textTransform: 'capitalize' }}> {product.brand} </TableCell>
-                                                        <TableCell>
-                                                            <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                                                <Edit fontSize='small' onClick={() => handleEditProduct(product._id)} sx={{ color: '#4b38b3' }} />
-                                                                <DeleteForever fontSize='small' onClick={() => handleDeleteproduct(product._id)} sx={{ color: '#f06548' }} />
-                                                            </Box>
-
-                                                        </TableCell>
-                                                    </TableRow>
+                                                    <ProductTable
+                                                        product={product}
+                                                    ></ProductTable>
                                                 )
                                                 :
                                                 <Typography> No results found </Typography>
                                             :
                                             searched?.length > 0 ?
                                                 searched?.map(product =>
-                                                    <TableRow>
-                                                        <TableCell>
-                                                            <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                                                <img src={product.image} alt="" width='40px' height='40px' />
-                                                                <Box >
-                                                                    <Typography> {product.title} </Typography>
-                                                                    <Typography variant='caption' sx={{ color: '#878a99', textTransform: 'capitalize' }}> Category: {product.category} </Typography>
-                                                                </Box>
-
-                                                            </Box>
-
-                                                        </TableCell>
-                                                        <TableCell> {product.quantity} </TableCell>
-                                                        <TableCell> {product.price} </TableCell>
-                                                        <TableCell sx={{ textTransform: 'capitalize' }}> {product.brand} </TableCell>
-                                                        <TableCell>
-                                                            <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                                                <BorderColor fontSize='small' onClick={() => handleEditProduct(product._id)} />
-                                                                <Delete fontSize='small' onClick={() => handleDeleteproduct(product._id)} />
-                                                            </Box>
-
-                                                        </TableCell>
-                                                    </TableRow>
+                                                    <ProductTable
+                                                        product={product}
+                                                    ></ProductTable>
                                                 )
                                                 :
                                                 <Typography> No results found </Typography>

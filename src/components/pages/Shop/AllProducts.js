@@ -13,7 +13,7 @@ import { addToCart } from '../../../Redux/actions';
 import { ShoppingCart } from '@mui/icons-material';
 
 const AllProducts = ({ product }) => {
-    console.log(product);
+    // console.log(product);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const handleDetails = (id) => {
@@ -22,16 +22,31 @@ const AllProducts = ({ product }) => {
     const handleAddToCart = (id) => {
         dispatch(addToCart(id));
     }
+
     const cart = {
         backgroundColor: '#FF8E78',
         color: 'white',
         padding: '5px 10px',
         borderRadius: 0,
         border: 0,
+        '&:hover': {
+            backgroundColor: '#df6750',
+            color: 'white',
+            border: 0
+        }
     }
+
     const details = {
-        padding: '5px 10px',
+        padding: '5px 14px',
         borderRadius: 0,
+        border: 1,
+        borderColor: '#4b38b3',
+        fontWeight: 600,
+        color: '#4b38b3',
+        '&:hover': {
+            backgroundColor: '#4b38b3',
+            color: 'white',
+        }
     }
 
     return (
@@ -63,18 +78,16 @@ const AllProducts = ({ product }) => {
                 </CardContent>
 
                 <CardActions sx={{ pb: 2}} style={{ display: 'flex', justifyContent: 'space-around'}}>
-                    <Button size="small" variant="contained" sx={details}
+                    <Button size="small" sx={details}
                     onClick={() => handleDetails(product._id)}>
                         Details
                     </Button>
-                    <Button size="small" variant="outlined"  sx={cart}
+                    <Button size="small" sx={cart}
                     onClick={() => handleAddToCart(product._id)} startIcon={<ShoppingCart/>}>
                         Add To Cart</Button>
                 </CardActions>
             </Card>
-
         </Grid>
-
     );
 };
 

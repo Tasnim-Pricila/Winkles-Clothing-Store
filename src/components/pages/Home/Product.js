@@ -11,6 +11,7 @@ import Grid from '@mui/material/Grid';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../../Redux/actions';
+import { ShoppingCart } from '@mui/icons-material';
 
 const Product = ({ product }) => {
 
@@ -29,10 +30,23 @@ const Product = ({ product }) => {
         padding: '5px 10px',
         borderRadius: 0,
         border: 0,
+        '&:hover': {
+            backgroundColor: '#df6750',
+            color: 'white',
+            border: 0
+        }
     }
     const details = {
-        padding: '5px 10px',
+        padding: '5px 14px',
         borderRadius: 0,
+        border: 1,
+        borderColor: '#4b38b3',
+        fontWeight: 600,
+        color: '#4b38b3',
+        '&:hover': {
+            backgroundColor: '#4b38b3',
+            color: 'white',
+        }
     }
 
     return (
@@ -64,12 +78,12 @@ const Product = ({ product }) => {
                 </CardContent>
 
                 <CardActions sx={{ pb: 2, display: 'flex', justifyContent: 'space-around' }}>
-                    <Button size="small" variant="contained" onClick={() => handleDetails(product._id)}
+                    <Button size="small" onClick={() => handleDetails(product._id)}
                         sx={details}>
                         Details
                     </Button>
-                    <Button size="small" variant="outlined" sx={cart} onClick={() => handleAddToCart(product._id)}>
-                        Add To Cart</Button>
+                    <Button size="small" variant="outlined" sx={cart} onClick={() => handleAddToCart(product._id)} startIcon={<ShoppingCart/>}>
+                       Add To Cart</Button>
                 </CardActions>
             </Card>
 

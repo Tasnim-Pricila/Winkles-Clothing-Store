@@ -45,7 +45,7 @@ const Footer = () => {
 
     return (
         <>
-            <Box sx={{ pt: 10, backgroundColor: '#333333', color: 'white' }}>
+            <Box sx={{ py: 10, backgroundColor: '#333333', color: 'white' }}>
                 <Grid container px={16}>
                     <Grid item md={3}>
                         <Typography sx={{ pb: 2 }}>CUSTOMER SERVICE</Typography>

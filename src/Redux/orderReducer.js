@@ -24,6 +24,11 @@ export const orderReducer = (state = initialState, action) => {
                 ...state,
                 allOrder: action.payload
             }
+        case actionTypes.ORDER_BY_FILTER:
+            return {
+                ...state,
+                allOrder: action.payload,
+            }
         case actionTypes.DELETE_ORDER:
             return {
                 ...state,
@@ -33,6 +38,11 @@ export const orderReducer = (state = initialState, action) => {
             return {
                 ...state,
                 updateOrder: action.payload
+            }
+        case actionTypes.REMOVE_UPDATED_PRODUCT:
+            return {
+                ...state,
+                updateOrder: []
             }
         default:
             return state

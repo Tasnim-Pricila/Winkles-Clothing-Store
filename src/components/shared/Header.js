@@ -7,8 +7,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Badge from '@mui/material/Badge';
 import { useSelector } from 'react-redux';
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import logout from '../pages/Auth/logout';
+import { HowToReg, Login, Logout } from '@mui/icons-material';
 
 const Header = ({ setSearchText, searchText }) => {
     const pages = ['home', 'shop', 'blog', 'about', 'contact'];
@@ -56,9 +57,11 @@ const Header = ({ setSearchText, searchText }) => {
         left: '50%',
         transform: 'translate(-50%, -50%)',
         width: 400,
-        bgcolor: 'white',
+        bgcolor: '#ffffff0f',
         boxShadow: 24,
-        p: 4,
+        py: 30,
+        px: 60
+        // border: '5px solid red'
     };
     const handleSearch = (e) => {
         setSearchText(e.target.value);
@@ -71,12 +74,13 @@ const Header = ({ setSearchText, searchText }) => {
         handleCloseUserMenu();
         logout();
     }
+    const location = useLocation();
 
     const token = localStorage.getItem('accessToken')
 
     return (
-        <div>
-            <div>
+        <Box>
+            <Box>
                 <Modal
                     aria-labelledby="transition-modal-title"
                     aria-describedby="transition-modal-description"
@@ -91,8 +95,9 @@ const Header = ({ setSearchText, searchText }) => {
                     <Fade in={open}>
                         <Box sx={style}>
                             <TextField id="outlined-basic" variant="outlined"
-                                sx={{ width: '100%' }}
+                                sx={{ width: '100%', bgcolor: 'white', borderRadius: '0%' }}
                                 name='search'
+                                placeholder='Search.....'
                                 onKeyUp={handleSearch}
                                 InputProps={{
                                     startAdornment: (
@@ -105,8 +110,11 @@ const Header = ({ setSearchText, searchText }) => {
                         </Box>
                     </Fade>
                 </Modal>
-            </div>
-            <AppBar position="static" sx={{ px: 10 }}>
+            </Box>
+            <AppBar position="static" sx={{
+                px: 10,
+                bgcolor: '#4b38b3'
+            }}>
                 <Container maxWidth="xl" >
                     <Toolbar>
                         {/* Large screen logo  */}
@@ -118,7 +126,6 @@ const Header = ({ setSearchText, searchText }) => {
                             sx={{
                                 mr: 2,
                                 display: { xs: 'none', md: 'flex' },
-                                fontFamily: 'monospace',
                                 fontWeight: 700,
                                 letterSpacing: '.3rem',
                                 color: 'inherit',
@@ -162,7 +169,6 @@ const Header = ({ setSearchText, searchText }) => {
                                 {pages.map((page) => (
                                     <Typography component={NavLink} onClick={handleCloseNavMenu}
                                         to={`/${page}`}
-                                        className={({ isActive }) => (isActive ? "" : "")}
                                         sx={{
                                             textDecoration: 'none',
                                             fontWeight: 'bold',
@@ -171,6 +177,9 @@ const Header = ({ setSearchText, searchText }) => {
                                             display: 'block',
                                             py: 1,
                                             px: 6,
+                                            ...(location.pathname === `/${page}`) && {
+                                                color: '#FF8E78'
+                                            }
                                         }}> {page}
                                     </Typography>
                                 ))}
@@ -205,15 +214,17 @@ const Header = ({ setSearchText, searchText }) => {
                             justifyContent: 'center'
                         }}>
 
-                            { pages.map((page) => (
+                            {pages.map((page) => (
                                 <Typography component={NavLink}
-                                to={`/${page}`}
-                                    className={({ isActive }) => (isActive ? "" : "")}
+                                    to={`/${page}`}
                                     sx={{
                                         textDecoration: 'none',
                                         fontWeight: 'bold',
                                         color: 'white',
                                         textTransform: 'uppercase',
+                                        ...(location.pathname === `/${page}`) && {
+                                            color: '#FF8E78'
+                                        }
                                     }}> {page}
                                 </Typography>
                             ))}
@@ -248,17 +259,53 @@ const Header = ({ setSearchText, searchText }) => {
                                 }}>
                                     {
                                         !token ?
-                                            <>
-                                                <NavLink to='/login'
-                                                    onClick={handleCloseUserMenu}>Login</NavLink>
-                                                <NavLink to='/register'
-                                                    onClick={handleCloseUserMenu}>Register</NavLink>
-                                            </>
+                                            <Box sx={{ width: '100px' }}>
+                                                <NavLink to='/login' style={{
+                                                    textDecoration: 'none',
+                                                    textTransform: 'uppercase',
+                                                    color: 'black',
+                                                    display: 'block',
+                                                }}
+                                                    onClick={handleCloseUserMenu}>
+                                                    <Button sx={{
+                                                        color: 'black'
+                                                    }} startIcon={<Login sx={{ color: '#878a99' }}/> }> Login </Button>
+                                                    
+                                                </NavLink>
+                                                <NavLink to='/register' style={{
+                                                    textDecoration: 'none',
+                                                    textTransform: 'uppercase',
+                                                    color: 'black'
+                                                }}
+                                                    onClick={handleCloseUserMenu}>
+                                                    <Button sx={{
+                                                        color: 'black'
+                                                    }} startIcon={<HowToReg sx={{ color: '#878a99' }}/> }> Register </Button>
+                                                </NavLink>
+                                            </Box>
                                             :
                                             <>
-                                                <NavLink to='/login'><Button onClick={handleLogout}> Logout </Button></NavLink>
-                                                <NavLink to='/dashboard'
-                                                    onClick={handleCloseUserMenu}>My Dashboard</NavLink>
+                                                <NavLink to='/dashboard' style={{
+                                                    textDecoration: 'none',
+                                                    textTransform: 'uppercase',
+                                                    color: 'black'
+                                                }}>
+                                                    <Typography onClick={handleCloseUserMenu}>
+                                                        My Dashboard
+                                                    </Typography>
+                                                </NavLink>
+                                                <NavLink to='/login' style={{
+                                                    textDecoration: 'none',
+                                                    textTransform: 'uppercase',
+                                                    color: 'black'
+                                                }}>
+                                                    <Button onClick={handleLogout} sx={{
+                                                        color: 'black'
+                                                    }}
+                                                        startIcon={<Logout sx={{ color: '#878a99' }} />} >
+                                                        Logout
+                                                    </Button>
+                                                </NavLink>
                                             </>
 
                                     }
@@ -267,15 +314,16 @@ const Header = ({ setSearchText, searchText }) => {
                                 </MenuItem>
 
                             </Menu>
-                            <IconButton sx={{ p: 0 }}>
+
+                            <IconButton sx={{ p: 0 , color: 'white'}}>
                                 <SearchIcon onClick={handleOpen} />
                             </IconButton>
-                            <IconButton sx={{ p: 0 }}>
+                            <IconButton sx={{ p: 0 , color: 'white'}}>
                                 <FavoriteBorderIcon />
                             </IconButton>
-                            <IconButton sx={{ p: 0 }} onClick={handleCart}>
-                                <Badge badgeContent={countCart} color="secondary">
-                                    <ShoppingCartIcon color="action">
+                            <IconButton sx={{ p: 0, color: 'white' }} onClick={handleCart}>
+                                <Badge badgeContent={countCart} color='warning' sx={{ }}>
+                                    <ShoppingCartIcon color="white">
                                     </ShoppingCartIcon>
                                 </Badge>
                             </IconButton>
@@ -289,7 +337,7 @@ const Header = ({ setSearchText, searchText }) => {
                     </Toolbar>
                 </Container>
             </AppBar>
-        </div>
+        </Box>
     );
 };
 

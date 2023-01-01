@@ -31,9 +31,9 @@ const Banner = () => {
         }}>
             <Grid container sx={{ height: '100%', display: 'grid', justifyContent: 'center', alignItems: 'center' }}>
                 <Grid md={6} sx={{ px: 16 }}>
-                    <Typography variant="overline" sx={{ fontSize: 16 }}> Fashion 2022  </Typography>
+                    <Typography variant="overline" sx={{ fontSize: 20, textTransform: 'uppercase' }}> Fashion 2022  </Typography>
                     <Typography variant="h3" gutterBottom> New Season </Typography>
-                    <Typography variant="body2" gutterBottom> Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, labore quo repellat sed asperiores architecto laudantium unde, amet ratione rerum, cum culpa. Sint aperiam asperiores quibusdam necessitatibus, obcaecati autem explicabo!  </Typography>
+                    <Typography variant="body1" gutterBottom> Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, labore quo repellat sed asperiores architecto laudantium unde, amet ratione rerum, cum culpa. Sint aperiam asperiores quibusdam necessitatibus, obcaecati autem explicabo!  </Typography>
                     <Button variant="outlined" endIcon={<LocalGroceryStore />}
                         sx={buttonStyle}>
                         Shop
