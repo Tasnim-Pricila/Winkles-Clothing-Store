@@ -1,5 +1,6 @@
 import { Button, Card, Divider, Grid, InputAdornment, InputLabel, MenuItem, Select, TextField, Toolbar, Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import { Editor } from '@tinymce/tinymce-react';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBrands, fetchCategories, postProduct } from '../../../../Redux/actions';
@@ -29,7 +30,7 @@ const CreateProduct = () => {
         dispatch(fetchBrands())
         dispatch(fetchCategories())
     }, [dispatch])
-
+   
     return (
         <Box mb={4}>
             <Toolbar sx={{
@@ -64,20 +65,22 @@ const CreateProduct = () => {
                             </Box>
                             <Box mt={2}>
                                 <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Product Description</Typography>
-                                <TextField sx={{
-                                    width: '100%',
-                                    '.css-1qxw4jt-MuiInputBase-root-MuiOutlinedInput-root': {
-                                        fontSize: '13px', color: '#212529'
-                                    }
-                                }}
-                                    multiline
-                                    rows={7}
-                                    required
-                                    type="text"
-                                    id="filled-hidden-label-small"
-                                    size="small"
-                                    placeholder='Enter product description'
-                                    onChange={(e) => setProductDetails({ ...productDetails, description: e.target.value })}
+                                <Editor
+                                    onEditorChange ={(e) => setProductDetails({ ...productDetails, description: e })}
+                                    init={{
+                                        height: 500,
+                                        menubar: false,
+                                        plugins: [
+                                            'advlist autolink lists link image charmap print preview anchor',
+                                            'searchreplace visualblocks code fullscreen',
+                                            'insertdatetime media table paste code help wordcount'
+                                        ],
+                                        toolbar: 'undo redo | formatselect | ' +
+                                            'bold italic backcolor | alignleft aligncenter ' +
+                                            'alignright alignjustify | bullist numlist outdent indent | ' +
+                                            'removeformat | help',
+                                        content_style: 'body { font-family:Mulish,Helvetica,Arial,sans-serif; font-size:14px }'
+                                    }}
                                 />
                             </Box>
                             <Box mt={2}>
@@ -184,7 +187,7 @@ const CreateProduct = () => {
                                 </MenuItem>
                                 {
                                     brands?.map(brand =>
-                                        <MenuItem value = { brand?.name } sx={{ textTransform: 'capitalize'}}>
+                                        <MenuItem value={brand?.name} sx={{ textTransform: 'capitalize' }}>
                                             {brand?.name}
                                         </MenuItem>
                                     )
@@ -210,12 +213,12 @@ const CreateProduct = () => {
                                 </MenuItem>
                                 {
                                     categories?.map(category =>
-                                        <MenuItem value = { category?.name } sx={{ textTransform: 'capitalize'}}>
+                                        <MenuItem value={category?.name} sx={{ textTransform: 'capitalize' }}>
                                             {category?.name}
                                         </MenuItem>
                                     )
                                 }
-                                </Select>
+                            </Select>
                         </Card>
 
                         <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)', mt: 2 }} >
@@ -235,10 +238,10 @@ const CreateProduct = () => {
                                     <em>Select stock</em>
                                 </MenuItem>
                                 <MenuItem value="In Stock">
-                                    In stock
+                                    In Stock
                                 </MenuItem>
-                                <MenuItem value="Out of stock">
-                                    Out of stock
+                                <MenuItem value="Out of Stock">
+                                    Out of Stock
                                 </MenuItem>
                             </Select>
                         </Card>
@@ -247,7 +250,6 @@ const CreateProduct = () => {
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
                     <Button variant='contained' onClick={addProduct}> Add Product </Button>
                 </Box>
-
             </Box>
         </Box>
     );

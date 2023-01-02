@@ -27,6 +27,7 @@ import AllUsers from './components/pages/Dashboard/Admin/AllUsers';
 import EditProfile from './components/pages/Dashboard/EditProfile';
 import EditProduct from './components/pages/Dashboard/Admin/EditProduct';
 import { createTheme, ThemeProvider } from '@mui/material';
+import SingleArticle from './components/pages/Home/SingleArticle';
 
 function App() {
 
@@ -61,6 +62,7 @@ function App() {
             <Shop searchText={searchText} setSearchText={setSearchText} />}>
           </Route>
           <Route path='/blog' element={<Blogs />}></Route>
+          <Route path='/blog/:id' element={<SingleArticle />}></Route>
           <Route path='/about' element={<About />}></Route>
           <Route path='/contact' element={<Contact />}></Route>
           <Route path='/checkout' element={<Checkout />}></Route>

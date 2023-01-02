@@ -5,6 +5,8 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { fetchBrands, fetchCategories, fetchProduct, removeSelectedProduct, updateProduct } from '../../../../Redux/actions';
+import { Editor } from '@tinymce/tinymce-react';
+
 
 const EditProduct = () => {
     const { id } = useParams();
@@ -13,6 +15,7 @@ const EditProduct = () => {
     const product = useSelector(state => state.allProducts.product);
     const brands = useSelector(state => state.brands.brands);
     const categories = useSelector(state => state.category.categories);
+    const [des, setDes ] = useState('');
 
     useEffect(() => {
         dispatch(fetchProduct(id));
@@ -30,7 +33,7 @@ const EditProduct = () => {
         e.preventDefault();
         dispatch(updateProduct(id, {
             title: e.target.title.value,
-            description: e.target.description.value,
+            description: des,
             price: e.target.price.value,
             quantity: e.target.quantity.value,
             unit: e.target.unit.value,
@@ -61,7 +64,6 @@ const EditProduct = () => {
                             <Grid container spacing={2}>
                                 <Grid item md={7} height='100%'>
                                     <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
-
                                         <Box>
                                             <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Product Title</Typography>
                                             <TextField sx={{
@@ -82,21 +84,23 @@ const EditProduct = () => {
                                         </Box>
                                         <Box mt={2}>
                                             <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Product Description</Typography>
-                                            <TextField sx={{
-                                                width: '100%',
-                                                '.css-1qxw4jt-MuiInputBase-root-MuiOutlinedInput-root': {
-                                                    fontSize: '13px', color: '#212529'
-                                                }
-                                            }}
-                                                multiline
-                                                rows={7}
-                                                required
-                                                type="text"
-                                                id="filled-hidden-label-small"
-                                                size="small"
-                                                placeholder='Enter product description'
-                                                name='description'
-                                                defaultValue={product?.description}
+                                            <Editor
+                                                initialValue = {product?.description}
+                                                onEditorChange={(newValue, editor) => setDes(newValue)}
+                                                init={{
+                                                    height: 500,
+                                                    menubar: false,
+                                                    plugins: [
+                                                        'advlist autolink lists link image charmap print preview anchor',
+                                                        'searchreplace visualblocks code fullscreen',
+                                                        'insertdatetime media table paste code help wordcount'
+                                                    ],
+                                                    toolbar: 'undo redo | formatselect | ' +
+                                                        'bold italic backcolor | alignleft aligncenter ' +
+                                                        'alignright alignjustify | bullist numlist outdent indent | ' +
+                                                        'removeformat | help',
+                                                    content_style: 'body { font-family:Mulish,Helvetica,Arial,sans-serif; font-size:14px }'
+                                                }}
                                             />
                                         </Box>
                                         <Box mt={2}>
