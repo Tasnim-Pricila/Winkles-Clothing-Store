@@ -50,8 +50,7 @@ const Dashboard = (props) => {
             <Divider />
             <List>
 
-
-                {/* Admin  */}
+                {/* Admin   */}
                 {
                     user?.role === 'admin' ?
                         <>
@@ -59,16 +58,16 @@ const Dashboard = (props) => {
                                 <ListItemButton>
                                     <ListItemIcon sx={{
                                         color: '#A3A6B7',
-                                        ...(location.pathname === "/dashboard/addProduct") && {
+                                        ...(location.pathname === "/dashboard") && {
                                             color: 'white'
                                         }
                                     }}> <Add /> </ListItemIcon>
                                     <ListItemText>
-                                        <Typography component={NavLink} to='/dashboard/addProduct'
+                                        <Typography component={NavLink} to='/dashboard'
                                             sx={{
                                                 textDecoration: 'none',
                                                 color: '#A3A6B7',
-                                                ...(location.pathname === "/dashboard/addProduct") && {
+                                                ...(location.pathname === "/dashboard") && {
                                                     color: 'white',
                                                     fontWeight: '600',
                                                     letterSpacing: '1px'

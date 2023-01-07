@@ -22,7 +22,7 @@ const SingleProduct = () => {
 
     const quantity = product?.quantity;
     const qty = getCart?.qty;
-    // console.log(qty);
+    // console.log(product?.image);
 
     const [purchaseQuantity, setQty] = useState(qty);
 
@@ -43,7 +43,7 @@ const SingleProduct = () => {
         }
         dispatch(adjustQty(id, purchaseQuantity - 1))
     }
-    console.log(qty);
+    // console.log(qty);
 
     useEffect(() => {
         dispatch(fetchProduct(id))
@@ -91,6 +91,16 @@ const SingleProduct = () => {
             color: 'white'
         }
     }
+    let allImg = [];
+    const mainImg =[ product?.image ];
+    const galleryImg = product?.imageGallery?.filter( image => image)
+    if(mainImg && galleryImg){
+        allImg = [...mainImg , ...galleryImg]
+        
+    }
+    console.log(allImg);
+  
+
 
     return (
         <>
@@ -99,16 +109,23 @@ const SingleProduct = () => {
                     <Grid container direction="row" columnSpacing={{ xs: 1, sm: 2, md: 3 }}
                         sx={{ px: 16, mt: 10 }}>
                         <Grid item xs={4}>
-
                             <Carousel>
-                                <img src={product.image} alt='' style={{ objectFit: 'cover' }} />
-                                <img src={product.image} alt='' />
-                                <img src={product.image} alt='' />
+                                { allImg &&
+                                    allImg.map( (image, i) => {
+                                        return (
+                                            <img src={image} alt={image} key={i} 
+                                            style={{ 
+                                                objectFit: 'cover'
+                                            }} />
+                                        )
+                                    })
+                                    
+                                }
                             </Carousel>
                         </Grid>
                         <Grid item xs={8}>
                             <Typography gutterBottom variant="h4" sx={{ textTransform: 'uppercase', fontWeight: 'bold', color: 'black', mt: 2 }}>
-                                {product.title}
+                                { product.title }
                             </Typography>
                             <Divider />
 

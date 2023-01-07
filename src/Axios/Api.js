@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const Api = axios.create({
-    baseURL : 'https://winkles-server.onrender.com/'
+    baseURL : 'http://localhost:5000/'
 })
 
 export default Api;

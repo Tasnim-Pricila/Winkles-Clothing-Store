@@ -13,7 +13,7 @@ import Shop from './components/pages/Shop/Shop';
 import Checkout from './components/pages/Checkout/Checkout';
 import Error from './components/pages/NotFound/Error';
 import OrderComplete from './components/pages/Checkout/OrderComplete';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import RequireAuth from './components/pages/Auth/RequireAuth';
 import Dashboard from './components/pages/Dashboard/Dashboard';
 import MyOrders from './components/pages/Dashboard/User/MyOrders';
@@ -28,6 +28,8 @@ import EditProfile from './components/pages/Dashboard/EditProfile';
 import EditProduct from './components/pages/Dashboard/Admin/EditProduct';
 import { createTheme, ThemeProvider } from '@mui/material';
 import SingleArticle from './components/pages/Home/SingleArticle';
+import { useDispatch, useSelector } from 'react-redux';
+import { getMe } from './Redux/actions';
 
 function App() {
 
@@ -41,6 +43,12 @@ function App() {
 
 
   const [searchText, setSearchText] = useState('')
+
+  const user = useSelector(state => state.allUsers.user);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getMe())
+  }, [dispatch])
 
 
   return (
@@ -70,14 +78,20 @@ function App() {
           <Route path='/*' element={<Error />}></Route>
 
           <Route path='/dashboard' element={<Dashboard />}>
-            <Route index element={<MyOrders />}></Route>
-            <Route path='orderDetails' element={<AllOrders />}></Route>
-            <Route path='addProduct' element={<CreateProduct />}></Route>
-            <Route path='manageProducts' element={<ManageProducts />}></Route>
-            <Route path='allUsers' element={<AllUsers />}></Route>
+            {
+              user?.role === 'admin' ?
+                <>
+                  <Route index element={<CreateProduct />}></Route>
+                  <Route path='orderDetails' element={<AllOrders />}></Route>
+                  <Route path='manageProducts' element={<ManageProducts />}></Route>
+                  <Route path='allUsers' element={<AllUsers />}></Route>
+                  <Route path='editProduct/:id' element={<EditProduct />}></Route>
+                </>
+                :
+                <Route index element={<MyOrders />}></Route>
+            }
             <Route path='profile' element={<MyProfile />}></Route>
             <Route path='profile/edit' element={<EditProfile />}></Route>
-            <Route path='editProduct/:id' element={<EditProduct />}></Route>
           </Route>
         </Routes>
 

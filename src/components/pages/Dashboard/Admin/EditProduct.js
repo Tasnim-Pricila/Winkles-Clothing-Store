@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { fetchBrands, fetchCategories, fetchProduct, removeSelectedProduct, updateProduct } from '../../../../Redux/actions';
 import { Editor } from '@tinymce/tinymce-react';
+import { CameraAlt, CloudUpload } from '@mui/icons-material';
+import axios from 'axios';
 
 
 const EditProduct = () => {
@@ -15,8 +17,10 @@ const EditProduct = () => {
     const product = useSelector(state => state.allProducts.product);
     const brands = useSelector(state => state.brands.brands);
     const categories = useSelector(state => state.category.categories);
-    const [des, setDes ] = useState('');
-
+    const [des, setDes] = useState('');
+    
+    console.log(product);
+    const { image } = product;
     useEffect(() => {
         dispatch(fetchProduct(id));
         return () => {
@@ -29,20 +33,98 @@ const EditProduct = () => {
         dispatch(fetchCategories())
     }, [dispatch])
 
-    const handleEdit = (e) => {
+    const images = product?.imageGallery?.filter(image => image)
+
+    const [myImage, setImage] = useState('');
+    const [imagePreview, setPreview] = useState(image);
+    console.log(myImage)   
+    console.log(imagePreview)
+     
+
+    const getImage = (e) => {
+        setImage(e.target.files[0]);
+        setPreview(URL.createObjectURL(e.target.files[0]));//set preview
+    }
+
+    const [galleryImg, setGalleryImg] = useState([{
+        gallery: '',
+        galleryPreview: ''
+    }]);
+    let gallery = [];
+    let galleryPreview = [];
+    
+    const galleryImage = (e) => {
+        for (var i = 0; i < e.target.files.length; i++) {
+            galleryPreview.push(URL.createObjectURL(e.target.files[i]))
+            gallery.push(e.target.files[i])
+        }
+        setGalleryImg({ gallery, galleryPreview })
+    }
+
+    const imgStorageKey = '966d2411c1e18d4935625f7409fb75e7';
+    const url = `https://api.imgbb.com/1/upload?key=${imgStorageKey}`;
+
+    const handleEdit = async (e) => {
         e.preventDefault();
-        dispatch(updateProduct(id, {
-            title: e.target.title.value,
-            description: des,
-            price: e.target.price.value,
-            quantity: e.target.quantity.value,
-            unit: e.target.unit.value,
-            image: e.target.image.value,
-            category: e.target.category.value,
-            brand: e.target.brand.value,
-            stock: e.target.stock.value,
-        }))
-        nav('/dashboard/manageProducts')
+        let imgGalleryUrl = [];
+        let imgUrl = '';
+
+        const formData = new FormData();
+        formData.append('image', myImage);
+        await axios.post(url, formData)
+            .then(response => {
+                // console.log('first one', response)
+                if (response?.data?.success) {
+                    imgUrl = response?.data?.data?.url;
+
+                    // gallery image 
+                    const formGallery = new FormData();
+                    [...galleryImg?.gallery].forEach((image, i) => {
+                        // console.log(i)
+                        formGallery.append('image', image)
+                        axios.post(url, formGallery)
+                            .then(response => {
+                                console.log('second one', response)
+                                if (response?.data?.success) {
+                                    imgGalleryUrl.push(response?.data?.data?.url);
+                                    if (i === galleryImg?.gallery?.length - 1) {
+                                        console.log(imgUrl)
+                                        console.log(imgGalleryUrl)
+                                        const data = {
+                                            title: e.target.title.value,
+                                            description: des,
+                                            price: e.target.price.value,
+                                            quantity: e.target.quantity.value,
+                                            unit: e.target.unit.value,
+                                            image: imgUrl,
+                                            imageGallery: imgGalleryUrl,
+                                            category: e.target.category.value,
+                                            brand: e.target.brand.value,
+                                            stock: e.target.stock.value,
+                                        }
+                                       
+                                        dispatch(updateProduct(id, data ))
+                                        // nav('/dashboard/manageProducts')
+                                    }
+                                }
+                            })
+                            
+                    })
+                }
+            })
+            const data = {
+                title: e.target.title.value,
+                description: des,
+                price: e.target.price.value,
+                quantity: e.target.quantity.value,
+                unit: e.target.unit.value,
+                image: imgUrl,
+                imageGallery: imgGalleryUrl,
+                category: e.target.category.value,
+                brand: e.target.brand.value,
+                stock: e.target.stock.value,
+            }
+            console.log(data)
     }
 
     return (
@@ -85,10 +167,10 @@ const EditProduct = () => {
                                         <Box mt={2}>
                                             <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Product Description</Typography>
                                             <Editor
-                                                initialValue = {product?.description}
+                                                initialValue={product?.description}
                                                 onEditorChange={(newValue, editor) => setDes(newValue)}
                                                 init={{
-                                                    height: 500,
+                                                    height: 300,
                                                     menubar: false,
                                                     plugins: [
                                                         'advlist autolink lists link image charmap print preview anchor',
@@ -103,22 +185,130 @@ const EditProduct = () => {
                                                 }}
                                             />
                                         </Box>
+                                    </Card>
+
+                                    <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)', mt: 3 }}>
+                                        <Typography pb={1}>Product Gallery</Typography>
+                                        <Divider></Divider>
                                         <Box mt={2}>
                                             <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Product Image</Typography>
-                                            <TextField sx={{
-                                                width: '100%',
-                                                '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
-                                                    fontSize: '13px', color: '#212529'
+                                            <Typography variant='caption' sx={{
+                                                fontSize: '13px',
+                                                color: 'GrayText'
+                                            }}>
+                                                Add Product main Image.
+                                            </Typography>
+
+                                            <Box p={10} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
+                                                <Box>
+                                                    <img src={imagePreview} alt="" style={{
+                                                        width: '100px',
+                                                        height: '100px',
+                                                        display: 'inline-block',
+                                                        backgroundColor: '#878a997a',
+                                                        padding: '10px',
+                                                        objectFit: 'cover'
+                                                    }} />
+                                                </Box>
+                                                <Button variant='outlined' component="label" for='image'
+                                                    sx={{
+                                                        borderRadius: '50%',
+                                                        minWidth: '0px',
+                                                        px: 0,
+                                                        py: 0,
+                                                        p: 3,
+                                                        width: '24px',
+                                                        height: '24px',
+                                                        bgcolor: '#aaacb8',
+                                                        borderColor: 'transparent',
+                                                        '&:hover': {
+                                                            bgcolor: '#aaacb8',
+                                                            borderColor: 'transparent',
+                                                        },
+                                                        position: 'absolute',
+                                                        bottom: '22%',
+                                                        right: '39%',
+                                                        zIndex: 999
+                                                    }}>
+                                                    <CameraAlt sx={{ color: '#4b38b3' }} />
+                                                    <input type="file" name="image" id='image' hidden
+                                                        onChange={getImage}
+                                                    />
+                                                </Button>
+                                            </Box>
+                                        </Box>
+                                        <Box>
+                                            <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Product Image</Typography>
+                                            <Typography variant='caption' sx={{
+                                                fontSize: '13px',
+                                                color: 'GrayText'
+                                            }}>
+                                                Add Product Gallery Images.
+                                            </Typography>
+                                            <Box mt={2} p={6} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', position: 'relative', border: '1px solid gray', borderStyle: 'dashed', borderRadius: '1%' }}>
+                                                {
+                                                    !galleryImg?.galleryPreview &&
+                                                    <Box sx={{ display: 'flex', }}>
+                                                        {
+                                                            images.map(image =>
+
+                                                                <img src={image} alt='' style={{
+                                                                    width: '100px',
+                                                                    height: '100px',
+                                                                }} />
+
+
+                                                            )
+                                                        }
+                                                    </Box>
                                                 }
-                                            }}
-                                                required
-                                                type="text"
-                                                id="filled-hidden-label-small"
-                                                size="small"
-                                                placeholder='Enter product image link'
-                                                name='image'
-                                                defaultValue={product?.image}
-                                            />
+
+                                                <Button variant='outlined' component="label" for='gallery'
+                                                    sx={{
+                                                        borderColor: 'transparent',
+                                                        '&:hover': {
+                                                            borderColor: 'transparent',
+                                                            bgColor: 'transparent'
+                                                        },
+                                                    }}>
+                                                    <CloudUpload sx={{ fontSize: '50px', color: '#4b38b3' }} />
+                                                    <input type="file" name="image1" id='gallery' multiple hidden accpet='image/jpg'
+                                                        onChange={galleryImage}
+                                                    />
+                                                </Button>
+                                                <Typography> Click to upload photos </Typography>
+                                            </Box>
+
+                                            {
+                                                galleryImg?.gallery ?
+                                                    galleryImg?.galleryPreview?.map((g, i) =>
+                                                        <Box sx={{ display: 'flex', gap: '5px', mt: 1, border: '1px solid #ded8d8', borderRadius: '5px', p: 1 }}>
+                                                            <Box sx={{ display: 'flex', gap: '10px' }}>
+                                                                <Box>
+                                                                    <img src={g} alt=""
+                                                                        style={{
+                                                                            width: '50px',
+                                                                            height: '50px',
+                                                                            display: 'inline-block',
+                                                                        }} />
+
+                                                                </Box>
+                                                                <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
+                                                                    <Typography variant='body2'>
+                                                                        {galleryImg?.gallery[i]?.name}
+                                                                    </Typography>
+                                                                    <Typography variant='subtitle2' fontWeight='bold'>
+                                                                        {galleryImg?.gallery[i]?.size / 1000} KB
+                                                                    </Typography>
+                                                                </Box>
+                                                            </Box>
+                                                        </Box>
+                                                    )
+                                                    :
+                                                    <>
+
+                                                    </>
+                                            }
                                         </Box>
                                     </Card>
 

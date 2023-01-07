@@ -27,6 +27,7 @@ export const fetchProduct = (id) => {
 export const postProduct = (data) => {
     return async (dispatch) => {
         const response = await Api.post(`/products`, data)
+        console.log(data)
         console.log(response)
         dispatch({
             type: actionTypes.ADD_PRODUCT,
