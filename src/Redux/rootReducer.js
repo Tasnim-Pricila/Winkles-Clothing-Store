@@ -4,6 +4,7 @@ import { brandReducer } from './brandReducer';
 import { categoryReducer } from './categoryReducer';
 import { orderReducer } from './orderReducer';
 import { productReducer } from './productReducer';
+import { reviewReducer } from './reviewReducer';
 import { userReducer } from './userReducer';
 
 const rootReducer = combineReducers({
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     orders: orderReducer,
     brands: brandReducer,
     category: categoryReducer,
-    blogs: blogReducer
+    blogs: blogReducer,
+    reviews: reviewReducer
 })
 
 export default rootReducer;

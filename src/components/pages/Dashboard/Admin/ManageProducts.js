@@ -1,5 +1,5 @@
 import { SearchOutlined } from '@mui/icons-material';
-import { Box, Button, Card, Divider, Grid, InputAdornment, Link, Table, TableBody, TableCell, TableHead, TableRow, TextField, Toolbar, Typography } from '@mui/material';
+import { Box, Button, Card, Divider, Grid, InputAdornment, Link, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Toolbar, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -153,45 +153,47 @@ const ManageProducts = () => {
                                     }}
                                 />
                             </Box>
-                            <Table aria-label="simple table">
-                                <TableHead sx={{ bgcolor: '#f3f6f9' }}>
-                                    <TableRow sx={{
-                                        '.MuiTableCell-root': {
-                                            color: '#878a99',
-                                            fontWeight: 'bold',
-                                            textTransform: 'uppercase'
+                            <TableContainer sx={{ maxHeight: 440 }}>
+                                <Table aria-label="simple table" stickyHeader >
+                                    <TableHead sx={{ bgcolor: '#f3f6f9' }}>
+                                        <TableRow sx={{
+                                            '.MuiTableCell-root': {
+                                                color: '#878a99',
+                                                fontWeight: 'bold',
+                                                textTransform: 'uppercase'
+                                            }
+                                        }}>
+                                            <TableCell> Product </TableCell>
+                                            <TableCell> Stock </TableCell>
+                                            <TableCell> Price </TableCell>
+                                            <TableCell> Brand </TableCell>
+                                            <TableCell> Action </TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {
+                                            search === '' ?
+                                                products?.length > 0 ?
+                                                    products?.map(product =>
+                                                        <ProductTable
+                                                            product={product}
+                                                        ></ProductTable>
+                                                    )
+                                                    :
+                                                    <Typography> No results found </Typography>
+                                                :
+                                                searched?.length > 0 ?
+                                                    searched?.map(product =>
+                                                        <ProductTable
+                                                            product={product}
+                                                        ></ProductTable>
+                                                    )
+                                                    :
+                                                    <Typography> No results found </Typography>
                                         }
-                                    }}>
-                                        <TableCell> Product </TableCell>
-                                        <TableCell> Stock </TableCell>
-                                        <TableCell> Price </TableCell>
-                                        <TableCell> Brand </TableCell>
-                                        <TableCell> Action </TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {
-                                        search === '' ?
-                                            products?.length > 0 ?
-                                                products?.map(product =>
-                                                    <ProductTable
-                                                        product={product}
-                                                    ></ProductTable>
-                                                )
-                                                :
-                                                <Typography> No results found </Typography>
-                                            :
-                                            searched?.length > 0 ?
-                                                searched?.map(product =>
-                                                    <ProductTable
-                                                        product={product}
-                                                    ></ProductTable>
-                                                )
-                                                :
-                                                <Typography> No results found </Typography>
-                                    }
-                                </TableBody>
-                            </Table>
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
                         </Card>
                     </Grid>
                 </Grid>

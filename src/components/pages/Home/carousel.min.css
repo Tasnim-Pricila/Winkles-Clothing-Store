@@ -121,6 +121,8 @@
     overflow: hidden;
     /* border: 1px solid white; */
     /* padding: 2px */
+    width: "80px";
+    height: "80px" !important;
 }
 
 .carousel .thumb:focus {

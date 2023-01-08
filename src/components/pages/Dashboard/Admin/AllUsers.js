@@ -1,5 +1,5 @@
 import { Block, SearchOutlined } from '@mui/icons-material';
-import { Box, Button, Card, Grid, InputAdornment, TextField, Toolbar, Table, TableBody, TableCell, TableHead, TableRow, Divider } from '@mui/material';
+import { Box, Button, Card, Grid, InputAdornment, TextField, Toolbar, Table, TableBody, TableCell, TableHead, TableRow, Divider, TableContainer } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useDispatch } from 'react-redux';
@@ -86,64 +86,66 @@ const AllUsers = () => {
                                 />
                             </Box>
                             <Divider />
-                            <Table aria-label="simple table">
-                                <TableHead sx={{ bgcolor: '#f3f6f9' }}>
-                                    <TableRow sx={{
-                                        '.MuiTableCell-root': {
-                                            color: '#878a99',
-                                            fontWeight: 'bold',
-                                            textTransform: 'uppercase'
-                                        }
-                                    }} >
-                                        <TableCell sx={{ fontWeight: 'bold' }}> # </TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold' }}> User </TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold' }}> Email </TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold' }}> Phone </TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold' }}> Joining Date </TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold' }}> Status </TableCell>
-                                        <TableCell sx={{ fontWeight: 'bold' }}> Action </TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {
-                                        data?.data?.result.map((user, i) =>
-                                            <TableRow>
-                                                <TableCell> {i + 1} </TableCell>
-                                                <TableCell> {user.firstName} {user.lastName} </TableCell>
-                                                <TableCell> {user.email} </TableCell>
-                                                <TableCell> {user?.phone}  </TableCell>
-                                                <TableCell> {user.createdAt} </TableCell>
-                                                <TableCell> {user.status} </TableCell>
-                                                {
-                                                    user?.status === 'active' ?
-                                                        <TableCell>
-                                                            <Button variant='contained' 
-                                                            size='small'
-                                                            sx={{
-                                                                bgcolor: '#f06548',
-                                                                '&:hover': {
-                                                                    bgcolor: '#f06548',
-                                                                }
-                                                            }}
-                                                            endIcon={<Block fontSize='small' />}
-                                                                onClick={() => handleBlock(user._id)}>
-                                                                Block
-                                                            </Button>
-                                                        </TableCell>
-                                                        :
-                                                        <TableCell>
-                                                            <Button variant='contained' size='small'
-                                                                endIcon={<Block fontSize='small' />}
-                                                                onClick={() => handleActive(user._id)}>
-                                                                Activate
-                                                            </Button>
-                                                        </TableCell>
-                                                }
+                            <TableContainer sx={{ maxHeight: 500 }}>
+                                <Table stickyHeader aria-label="simple table">
+                                    <TableHead sx={{ bgcolor: '#f3f6f9' }}>
+                                        <TableRow sx={{
+                                            '.MuiTableCell-root': {
+                                                color: '#878a99',
+                                                fontWeight: 'bold',
+                                                textTransform: 'uppercase'
+                                            }
+                                        }} >
+                                            <TableCell sx={{ fontWeight: 'bold' }}> # </TableCell>
+                                            <TableCell sx={{ fontWeight: 'bold' }}> User </TableCell>
+                                            <TableCell sx={{ fontWeight: 'bold' }}> Email </TableCell>
+                                            <TableCell sx={{ fontWeight: 'bold' }}> Phone </TableCell>
+                                            <TableCell sx={{ fontWeight: 'bold' }}> Joining Date </TableCell>
+                                            <TableCell sx={{ fontWeight: 'bold' }}> Status </TableCell>
+                                            <TableCell sx={{ fontWeight: 'bold' }}> Action </TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {
+                                            data?.data?.result.map((user, i) =>
+                                                <TableRow>
+                                                    <TableCell> {i + 1} </TableCell>
+                                                    <TableCell> {user.firstName} {user.lastName} </TableCell>
+                                                    <TableCell> {user.email} </TableCell>
+                                                    <TableCell> {user?.phone}  </TableCell>
+                                                    <TableCell> {user.createdAt} </TableCell>
+                                                    <TableCell> {user.status} </TableCell>
+                                                    {
+                                                        user?.status === 'active' ?
+                                                            <TableCell>
+                                                                <Button variant='contained'
+                                                                    size='small'
+                                                                    sx={{
+                                                                        bgcolor: '#f06548',
+                                                                        '&:hover': {
+                                                                            bgcolor: '#f06548',
+                                                                        }
+                                                                    }}
+                                                                    endIcon={<Block fontSize='small' />}
+                                                                    onClick={() => handleBlock(user._id)}>
+                                                                    Block
+                                                                </Button>
+                                                            </TableCell>
+                                                            :
+                                                            <TableCell>
+                                                                <Button variant='contained' size='small'
+                                                                    endIcon={<Block fontSize='small' />}
+                                                                    onClick={() => handleActive(user._id)}>
+                                                                    Activate
+                                                                </Button>
+                                                            </TableCell>
+                                                    }
 
-                                            </TableRow>)
-                                    }
-                                </TableBody>
-                            </Table>
+                                                </TableRow>)
+                                        }
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
                         </Card>
                     </Grid>
                 </Grid>

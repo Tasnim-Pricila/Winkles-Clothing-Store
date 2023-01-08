@@ -18,9 +18,9 @@ const EditProduct = () => {
     const brands = useSelector(state => state.brands.brands);
     const categories = useSelector(state => state.category.categories);
     const [des, setDes] = useState('');
-    
-    console.log(product);
-    const { image } = product;
+
+    // console.log(product);
+
     useEffect(() => {
         dispatch(fetchProduct(id));
         return () => {
@@ -36,10 +36,7 @@ const EditProduct = () => {
     const images = product?.imageGallery?.filter(image => image)
 
     const [myImage, setImage] = useState('');
-    const [imagePreview, setPreview] = useState(image);
-    console.log(myImage)   
-    console.log(imagePreview)
-     
+    const [imagePreview, setPreview] = useState('');
 
     const getImage = (e) => {
         setImage(e.target.files[0]);
@@ -50,9 +47,10 @@ const EditProduct = () => {
         gallery: '',
         galleryPreview: ''
     }]);
+
     let gallery = [];
     let galleryPreview = [];
-    
+
     const galleryImage = (e) => {
         for (var i = 0; i < e.target.files.length; i++) {
             galleryPreview.push(URL.createObjectURL(e.target.files[i]))
@@ -71,60 +69,116 @@ const EditProduct = () => {
 
         const formData = new FormData();
         formData.append('image', myImage);
-        await axios.post(url, formData)
-            .then(response => {
-                // console.log('first one', response)
-                if (response?.data?.success) {
-                    imgUrl = response?.data?.data?.url;
 
-                    // gallery image 
-                    const formGallery = new FormData();
-                    [...galleryImg?.gallery].forEach((image, i) => {
-                        // console.log(i)
-                        formGallery.append('image', image)
-                        axios.post(url, formGallery)
-                            .then(response => {
-                                console.log('second one', response)
-                                if (response?.data?.success) {
-                                    imgGalleryUrl.push(response?.data?.data?.url);
-                                    if (i === galleryImg?.gallery?.length - 1) {
-                                        console.log(imgUrl)
-                                        console.log(imgGalleryUrl)
-                                        const data = {
-                                            title: e.target.title.value,
-                                            description: des,
-                                            price: e.target.price.value,
-                                            quantity: e.target.quantity.value,
-                                            unit: e.target.unit.value,
-                                            image: imgUrl,
-                                            imageGallery: imgGalleryUrl,
-                                            category: e.target.category.value,
-                                            brand: e.target.brand.value,
-                                            stock: e.target.stock.value,
+        if (myImage && galleryImg?.gallery) {
+            await axios.post(url, formData)
+                .then(response => {
+                    if (response?.data?.success) {
+                        imgUrl = response?.data?.data?.url;
+                        const formGallery = new FormData();
+                        [...galleryImg?.gallery].forEach((image, i) => {
+                            formGallery.append('image', image)
+                            axios.post(url, formGallery)
+                                .then(response => {
+                                    if (response?.data?.success) {
+                                        imgGalleryUrl.push(response?.data?.data?.url);
+                                        if (i === galleryImg?.gallery?.length - 1) {
+                                            const data = {
+                                                title: e.target.title.value,
+                                                description: e.target.description.value,
+                                                price: e.target.price.value,
+                                                quantity: e.target.quantity.value,
+                                                unit: e.target.unit.value,
+                                                image: imgUrl,
+                                                imageGallery: imgGalleryUrl,
+                                                category: e.target.category.value,
+                                                brand: e.target.brand.value,
+                                                stock: e.target.stock.value,
+                                            }
+                                            console.log(data)
+                                            dispatch(updateProduct(id, data))
+                                            nav('/dashboard/manageProducts')
                                         }
-                                       
-                                        dispatch(updateProduct(id, data ))
-                                        // nav('/dashboard/manageProducts')
                                     }
+                                })
+                        })
+                    }
+                })
+        }
+
+        else if (myImage) {
+            await axios.post(url, formData)
+                .then(response => {
+                    if (response?.data?.success) {
+                        imgUrl = response?.data?.data?.url;
+                        const data = {
+                            title: e.target.title.value,
+                            description: e.target.description.value,
+                            price: e.target.price.value,
+                            quantity: e.target.quantity.value,
+                            unit: e.target.unit.value,
+                            image: imgUrl,
+                            imageGallery: images,
+                            category: e.target.category.value,
+                            brand: e.target.brand.value,
+                            stock: e.target.stock.value,
+                        }
+                        console.log(data)
+                        dispatch(updateProduct(id, data))
+                        nav('/dashboard/manageProducts')
+                    }
+                })
+        }
+
+        else if (galleryImg?.gallery) {
+            const formGallery = new FormData();
+            [...galleryImg?.gallery].forEach((image, i) => {
+                formGallery.append('image', image)
+                axios.post(url, formGallery)
+                    .then(response => {
+                        console.log('second one', response)
+                        if (response?.data?.success) {
+                            imgGalleryUrl.push(response?.data?.data?.url);
+                            if (i === galleryImg?.gallery?.length - 1) {
+                                const data = {
+                                    title: e.target.title.value,
+                                    description: e.target.description.value,
+                                    price: e.target.price.value,
+                                    quantity: e.target.quantity.value,
+                                    unit: e.target.unit.value,
+                                    image: product?.image,
+                                    imageGallery: imgGalleryUrl,
+                                    category: e.target.category.value,
+                                    brand: e.target.brand.value,
+                                    stock: e.target.stock.value,
                                 }
-                            })
-                            
+                                console.log(data)
+                                dispatch(updateProduct(id, data))
+                                nav('/dashboard/manageProducts')
+                            }
+                        }
                     })
-                }
+
             })
+        }
+
+        else {
             const data = {
                 title: e.target.title.value,
-                description: des,
+                description: e.target.description.value,
                 price: e.target.price.value,
                 quantity: e.target.quantity.value,
                 unit: e.target.unit.value,
-                image: imgUrl,
-                imageGallery: imgGalleryUrl,
+                image: product?.image,
+                imageGallery: images,
                 category: e.target.category.value,
                 brand: e.target.brand.value,
                 stock: e.target.stock.value,
             }
             console.log(data)
+            dispatch(updateProduct(id, data))
+            nav('/dashboard/manageProducts')
+        }
     }
 
     return (
@@ -167,6 +221,7 @@ const EditProduct = () => {
                                         <Box mt={2}>
                                             <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Product Description</Typography>
                                             <Editor
+                                                textareaName='description'
                                                 initialValue={product?.description}
                                                 onEditorChange={(newValue, editor) => setDes(newValue)}
                                                 init={{
@@ -201,14 +256,29 @@ const EditProduct = () => {
 
                                             <Box p={10} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
                                                 <Box>
-                                                    <img src={imagePreview} alt="" style={{
-                                                        width: '100px',
-                                                        height: '100px',
-                                                        display: 'inline-block',
-                                                        backgroundColor: '#878a997a',
-                                                        padding: '10px',
-                                                        objectFit: 'cover'
-                                                    }} />
+                                                    {
+                                                        myImage ?
+                                                            <img src=
+                                                                {imagePreview} alt="" style={{
+                                                                    width: '100px',
+                                                                    height: '100px',
+                                                                    display: 'inline-block',
+                                                                    backgroundColor: '#878a997a',
+                                                                    padding: '10px',
+                                                                    objectFit: 'cover'
+                                                                }} />
+                                                            :
+                                                            <img src={product?.image} alt="" style={{
+                                                                width: '100px',
+                                                                height: '100px',
+                                                                display: 'inline-block',
+                                                                backgroundColor: '#878a997a',
+                                                                padding: '10px',
+                                                                objectFit: 'cover'
+                                                            }} />
+
+                                                    }
+
                                                 </Box>
                                                 <Button variant='outlined' component="label" for='image'
                                                     sx={{
