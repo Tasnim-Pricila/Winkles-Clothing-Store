@@ -121,9 +121,10 @@ export const searchByFilter = (url) => {
 export const postOrders = (data) => {
     return async (dispatch) => {
         const response = await Api.post(`/orders`, data)
+        console.log(response)
         dispatch({
             type: actionTypes.POST_ORDER,
-            payload: response.data?.data
+            payload: response
         })
     }
 }

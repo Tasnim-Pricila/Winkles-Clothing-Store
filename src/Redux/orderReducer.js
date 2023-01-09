@@ -9,6 +9,7 @@ const initialState = {
 
 export const orderReducer = (state = initialState, action) => {
     switch (action.type) {
+        
         case actionTypes.POST_ORDER:
             return {
                 ...state,

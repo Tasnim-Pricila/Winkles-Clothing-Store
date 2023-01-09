@@ -1,15 +1,22 @@
 import { Button, CardContent, FormControl, FormControlLabel, Grid, Radio, RadioGroup, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { Box } from '@mui/system';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { postOrders } from '../../../Redux/actions';
 import Footer from '../../shared/Footer';
+import Payment from './Payment';
 
 const Checkout = () => {
     const navigate = useNavigate();
     const { state } = useLocation();
     const { total, cart } = state;
     const dispatch = useDispatch();
+    const createdOrder = useSelector(state => state.orders.orders)
+    
+    const stripePromise = loadStripe('pk_test_51L2D2EKZuhtVgyM7S2CeyD5YrpaY7x1Ab3pNWv4hqTyRbvblNQ2KZhgUz71r0JbCZCytaYDey0oYNYlZ1t3QNseW00ZewuwFk9');
 
     const [shippingDetails, setShippingDetails] = useState({
         name: '',
@@ -24,16 +31,18 @@ const Checkout = () => {
         deliveryStatus: 'Pending',
         orderStatus: 'Pending'
     })
+    // console.log(shippingDetails);
     const shipping = 100;
     const subtotal = parseFloat(shipping) + parseFloat(total);
 
     const placeOrder = (e) => {
         e.preventDefault();
-        console.log(shippingDetails)
+        // console.log(shippingDetails)
         dispatch(postOrders(shippingDetails))
         // navigate(`/orderComplete`, { state: { shippingDetails } })
-        navigate(`/dashboard`)
+        // navigate(`/dashboard`)
     }
+    console.log(createdOrder)
     return (
         <form onSubmit={placeOrder}>
             <Grid container sx={{ mt: 4, px: 6 }}>
@@ -106,6 +115,12 @@ const Checkout = () => {
                             <FormControlLabel value="COD" label="Cash on Delivery" control={<Radio required />} onChange={(e) => setShippingDetails({ ...shippingDetails, paymentMethod: e.target.value, paymentStatus: 'Pending' })} />
                         </RadioGroup>
                     </FormControl>
+                    <Box mt={4}>
+                        <Elements stripe={stripePromise}>
+                            <Payment total={total} shippingDetails={shippingDetails} createdOrder={createdOrder} />
+                        </Elements>
+                    </Box>
+
 
                 </Grid>
                 <Grid xs={6} md={4} >

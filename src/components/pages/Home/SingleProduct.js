@@ -201,21 +201,27 @@ const SingleProduct = () => {
                             </Box>
                             <Box mt={4}>
                                 {
-                                    reviews?.map((review, i) =>
-                                        <Box sx={{ display: 'flex', justifyContent: '', alignItems: 'center', gap: '16px', pb: 4 }}>
-                                            <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-                                            <Box>
-                                                <Typography sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                                    <Rating name="read-only" value={review.rating} precision={0.5} readOnly />
-                                                    {review.summary}
-                                                </Typography>
-                                                <Typography fontWeight='bold'> By {review.postedBy} </Typography>
-                                                <Typography> {review.review} </Typography>
+                                    reviews?.length > 0 ?
+                                        reviews?.map((review, i) =>
+                                            <Box mb={3}>
+                                                <Box sx={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                                                    <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+
+                                                    <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                                                        <Typography fontWeight='bold' sx={{ fontSize: '15px' }}>
+                                                            {review.postedBy}
+                                                        </Typography>
+                                                        <Typography sx={{ display: 'flex', fontSize: '14px', alignItems: 'center', gap: '10px' }}>
+                                                            <Rating name="read-only" size="small" value={review.rating} precision={0.5} readOnly />
+                                                            {review.summary}
+                                                        </Typography>
+                                                    </Box>
+                                                </Box>
+                                                <Typography mt={1} sx={{ fontSize: '15px' }}> {review?.review} </Typography>
                                             </Box>
-
-                                        </Box>
-
-                                    )
+                                        )
+                                        :
+                                        <Typography sx={{ textAlign: 'center', fontWeight: 'bold' }}> No Reviews </Typography>
                                 }
                             </Box>
                         </Card>
