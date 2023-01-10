@@ -2,25 +2,27 @@ import { Button, CardContent, FormControl, FormControlLabel, Grid, Radio, RadioG
 import { Box } from '@mui/system';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { postOrders } from '../../../Redux/actions';
+import useUsers from '../../../Custom Hook/useUsers';
+import { getMe, postOrders } from '../../../Redux/actions';
 import Footer from '../../shared/Footer';
 import Payment from './Payment';
 
 const Checkout = () => {
+    const [user] = useUsers();
     const navigate = useNavigate();
     const { state } = useLocation();
-    const { total, cart } = state;
     const dispatch = useDispatch();
+    const { total, cart } = state;
+
     const createdOrder = useSelector(state => state.orders.orders)
-    
+
     const stripePromise = loadStripe('pk_test_51L2D2EKZuhtVgyM7S2CeyD5YrpaY7x1Ab3pNWv4hqTyRbvblNQ2KZhgUz71r0JbCZCytaYDey0oYNYlZ1t3QNseW00ZewuwFk9');
 
     const [shippingDetails, setShippingDetails] = useState({
-        name: '',
-        email: '',
         phone: '',
         address: '',
         notes: '',
@@ -31,34 +33,41 @@ const Checkout = () => {
         deliveryStatus: 'Pending',
         orderStatus: 'Pending'
     })
-    // console.log(shippingDetails);
+    // console.log(user);
+
     const shipping = 100;
     const subtotal = parseFloat(shipping) + parseFloat(total);
 
     const placeOrder = (e) => {
         e.preventDefault();
-        // console.log(shippingDetails)
-        dispatch(postOrders(shippingDetails))
+        const userInfo = {
+            name: user?.firstName + ' ' + user?.lastName,
+            email: user?.email
+        }
+        const orderData = { ...shippingDetails, ...userInfo}
+        // console.log(orderData);
+        dispatch(postOrders(orderData))
         // navigate(`/orderComplete`, { state: { shippingDetails } })
-        // navigate(`/dashboard`)
+        navigate(`/dashboard`)
     }
-    console.log(createdOrder)
+
     return (
-        <form onSubmit={placeOrder}>
-            <Grid container sx={{ mt: 4, px: 6 }}>
+        // <form onSubmit={placeOrder}>
+        <>
+            <Grid container sx={{ mt: 2, px: 6 }}>
                 <Grid xs={6} md={8} sx={{ py: 6, px: 4 }}>
                     <Typography sx={{ pb: 4 }} variant='h5'>Shipping Details</Typography>
-                    <Typography variant='body2'>Your Name</Typography>
+                    <Typography variant='body1' pb={1}>Your Name</Typography>
                     <TextField sx={{ width: '100%' }}
                         hiddenLabel
                         id="filled-hidden-label-small"
                         size="small"
                         required
-                        onChange={(e) => setShippingDetails({ ...shippingDetails, name: e.target.value })}
+                        value={user?.firstName + ' ' + user?.lastName}
                     />
-                    <Grid container columnSpacing={{ md: 0 }} sx={{ py: 2 }} >
+                    <Grid container columnSpacing={{ md: 0 }} sx={{ py: 4 }} >
                         <Grid xs={6} md={6} sx={{ pr: 2 }}>
-                            <Typography variant='body2'>Email</Typography>
+                            <Typography variant='body1' pb={1}>Email</Typography>
                             <TextField sx={{ width: '100%' }}
                                 hiddenLabel
                                 required
@@ -66,11 +75,11 @@ const Checkout = () => {
                                 type="email"
                                 id="filled-hidden-label-small"
                                 size="small"
-                                onChange={(e) => setShippingDetails({ ...shippingDetails, email: e.target.value })}
+                                value={user?.email}
                             />
                         </Grid>
                         <Grid xs={6} md={6} sx={{ pl: 2 }} >
-                            <Typography variant='body2'>Phone Number</Typography>
+                            <Typography variant='body1' pb={1}>Phone Number</Typography>
                             <TextField sx={{ width: '100%' }}
                                 hiddenLabel
                                 required
@@ -85,7 +94,7 @@ const Checkout = () => {
                             />
                         </Grid>
                     </Grid>
-                    <Typography variant='body2'>Shipping Address</Typography>
+                    <Typography variant='body1' pb={1}>Shipping Address</Typography>
                     <TextField sx={{ width: '100%' }}
                         // hiddenLabel
                         id="filled-hidden-label-small"
@@ -95,7 +104,7 @@ const Checkout = () => {
                         placeholder='House Number and street no'
                         onChange={(e) => setShippingDetails({ ...shippingDetails, address: e.target.value })}
                     />
-                    <Typography sx={{ pt: 2 }} variant='body2'>Order notes (if any)</Typography>
+                    <Typography sx={{ pt: 4 }} variant='body1' pb={1}>Order notes (if any)</Typography>
                     <TextField sx={{ width: '100%' }}
                         id="filled-multiline-static"
                         multiline
@@ -103,7 +112,7 @@ const Checkout = () => {
                         placeholder='Notes about your order, e.g. special notes for delivery'
                         onChange={(e) => setShippingDetails({ ...shippingDetails, notes: e.target.value })}
                     />
-                    <Typography sx={{ pt: 2 }} variant='body2'> Payment Method </Typography>
+                    <Typography sx={{ pt: 4 }} variant='body1' pb={1}> Payment Method </Typography>
                     <FormControl>
                         <RadioGroup
                             row
@@ -115,12 +124,20 @@ const Checkout = () => {
                             <FormControlLabel value="COD" label="Cash on Delivery" control={<Radio required />} onChange={(e) => setShippingDetails({ ...shippingDetails, paymentMethod: e.target.value, paymentStatus: 'Pending' })} />
                         </RadioGroup>
                     </FormControl>
-                    <Box mt={4}>
-                        <Elements stripe={stripePromise}>
-                            <Payment total={total} shippingDetails={shippingDetails} createdOrder={createdOrder} />
-                        </Elements>
-                    </Box>
-
+                    {
+                        shippingDetails.paymentMethod === "Card" ?
+                            <Box mt={4}>
+                                <Elements stripe={stripePromise}>
+                                    <Payment total={total} shippingDetails={shippingDetails} createdOrder={createdOrder} setShippingDetails={setShippingDetails} />
+                                </Elements>
+                            </Box>
+                            :
+                            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                <Button type="submit" variant='contained' onClick={placeOrder} sx={{ mt: 6 }}>
+                                    Place Order
+                                </Button>
+                            </Box>
+                    }
 
                 </Grid>
                 <Grid xs={6} md={4} >
@@ -175,15 +192,11 @@ const Checkout = () => {
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                        <Button variant="outlined" type='submit' sx={{ mt: 2, width: '100%' }}
-                        >
-                            Place Order
-                        </Button>
                     </CardContent>
                 </Grid>
             </Grid>
             <Footer></Footer>
-        </form>
+        </>
     );
 };
 

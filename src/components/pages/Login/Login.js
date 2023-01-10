@@ -25,7 +25,7 @@ const Login = () => {
                 setToken(accessToken);
 
             })
-            .catch(err => console.log(err.response.data.error))
+            .catch(err => console.log(err))
     }
     const from = location.state?.from?.pathname || '/shop';
     useEffect(() => {

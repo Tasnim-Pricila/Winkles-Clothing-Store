@@ -115,13 +115,12 @@ export const searchByFilter = (url) => {
     }
 }
 
-
 // Orders 
 
 export const postOrders = (data) => {
     return async (dispatch) => {
         const response = await Api.post(`/orders`, data)
-        console.log(response)
+        // console.log(response)
         dispatch({
             type: actionTypes.POST_ORDER,
             payload: response

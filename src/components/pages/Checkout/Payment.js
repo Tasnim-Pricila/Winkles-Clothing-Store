@@ -1,11 +1,14 @@
-import { Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import useUsers from '../../../Custom Hook/useUsers';
+import { postOrders } from '../../../Redux/actions';
 
-const Payment = ({ total, shippingDetails, createdOrder }) => {
-
+const Payment = ({ total, shippingDetails, createdOrder, setShippingDetails }) => {
+    const dispatch = useDispatch();
     const stripe = useStripe();
     const elements = useElements();
     const [cardError, setCardError] = useState('');
@@ -13,17 +16,18 @@ const Payment = ({ total, shippingDetails, createdOrder }) => {
     const [transactionID, setTransactionID] = useState('');
     const [clientSecret, setClientSecret] = useState('');
     const [processing, setProcessing] = useState(false);
-    // const { name, email } = shippingDetails;
-    console.log(shippingDetails)
-    const t = parseInt(total)
-    // console.log(typeof(t))
+    const [user] = useUsers();
+
+    // console.log(createdOrder)
+    const amount = parseInt(total)
+
     useEffect(() => {
-        fetch("http://localhost:5000/create-payment-intent", {
+        fetch("http://localhost:5000/payment/create-payment-intent", {
             method: "POST",
             headers: {
                 "content-type": "application/json",
             },
-            body: JSON.stringify({ t }),
+            body: JSON.stringify({ amount }),
         })
             .then((res) => res.json())
             .then((data) => {
@@ -32,10 +36,15 @@ const Payment = ({ total, shippingDetails, createdOrder }) => {
                     setClientSecret(data.data.clientSecret);
                 }
             })
-    }, [t]);
+    }, [amount]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const userInfo = {
+            name: user?.firstName + ' ' + user?.lastName,
+            email: user?.email
+        }
+
         if (!stripe || !elements) {
             return;
         }
@@ -62,32 +71,36 @@ const Payment = ({ total, shippingDetails, createdOrder }) => {
             },
         })
             .then(function (result) {
-                console.log(result)
+                // console.log(result)
                 // Handle result.error or result.paymentIntent
                 if (result.paymentIntent) {
                     setCardError('');
                     setSuccess('Your payment is completed');
                     setTransactionID(result.paymentIntent.id);
-
                     const payment = {
-                        orderId: createdOrder.data.data._id,
                         transactionID: result.paymentIntent.id,
-                        // status: 'Pending'
+                    }
+                    // console.log(payment);
+                    const orderData = {
+                        ...shippingDetails, ...userInfo, payment
                     }
 
-                    // fetch(`https://techfly-api.onrender.com/purchase/${_id}`, {
-                    //     method: 'PATCH',
-                    //     headers: {
-                    //         'content-type': 'application/json',
-                    //         authorization: `Bearer ${localStorage.getItem('accessToken')}`
-                    //     },
-                    //     body: JSON.stringify(payment)
-                    // })
-                    //     .then(res => res.json())
-                    //     .then(data => {
-                    //         setProcessing(false);
-                    //     });
+                    fetch(`http://localhost:5000/payment`, {
+                        method: 'POST',
+                        headers: {
+                            'content-type': 'application/json',
+                        },
+                        body: JSON.stringify(payment)
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            // console.log(orderData)
+
+                            dispatch(postOrders(orderData))
+                            setProcessing(false);
+                        });
                 }
+
                 if (result.error) {
                     setCardError(result.error.message);
                     setProcessing(false);
@@ -98,35 +111,40 @@ const Payment = ({ total, shippingDetails, createdOrder }) => {
     return (
         <>
             <form onSubmit={handleSubmit}>
-                <CardElement
-                    options={{
-                        style: {
-                            base: {
-                                fontSize: '16px',
-                                color: '#424770',
-                                '::placeholder': {
-                                    color: '#aab7c4',
+                <Box sx={{ border: '2px solid #4b38b3', p: 2, borderRadius: '5px' }}>
+                    <CardElement
+                        options={{
+                            style: {
+                                base: {
+                                    fontSize: '16px',
+                                    color: '#424770',
+                                    '::placeholder': {
+                                        color: '#43444a',
+                                    },
+                                    border: '2px solid violet'
+                                },
+                                invalid: {
+                                    color: '#9e2146',
                                 },
                             },
-                            invalid: {
-                                color: '#9e2146',
-                            },
-                        },
-                    }}
-                />
-                <Button type="submit"
-                    disabled={!stripe || !clientSecret || success}
-                >
-                    Pay
-                </Button>
-
+                        }}
+                    />
+                </Box>
+                {
+                    cardError && <Typography color="#f06548" mt={1}> {cardError} </Typography> 
+                }
+                {
+                    success && <Typography color="#45cb85" mt={1}> {success} <br /> Transaction ID: {transactionID} </Typography>
+                }
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Button type="submit" variant='contained' sx={{ mt: 6 }}
+                        disabled={!stripe || !clientSecret || success}
+                    >
+                        Pay & Place Order
+                    </Button>
+                </Box>
             </form>
-            {
-                cardError && <p className='text-error font-semibold pt-1'>{cardError}</p>
-            }
-            {
-                success && <p className='text-success font-semibold pt-1'>{success} <br /> Transaction ID: {transactionID} </p>
-            }
+
         </>
     );
 };
