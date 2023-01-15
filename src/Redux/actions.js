@@ -12,6 +12,16 @@ export const fetchProducts = () => {
         })
     }
 }
+export const fetchProductsByPagination = (page) => {
+    return async (dispatch) => {
+        const response = await Api.get(`/products?page=${page}&limit=12`)
+        // console.log(response);
+        dispatch({
+            type: actionTypes.FETCH_PRODUCTS_ByPAGINATION,
+            payload: response.data?.data
+        })
+    }
+}
 
 export const fetchProduct = (id) => {
     return async (dispatch) => {

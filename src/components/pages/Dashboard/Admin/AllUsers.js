@@ -14,15 +14,10 @@ const AllUsers = () => {
 
     })
     if (isLoading) {
-        console.log('dddd');
+        console.log('loading');
     }
-    // console.log(data)
-    // const users = useSelector(state => state.allUsers.users);
-    const dispatch = useDispatch();
 
-    // useEffect(() => {
-    //     dispatch(getUsers())
-    // }, [dispatch])
+    const dispatch = useDispatch();
 
     const handleBlock = (id) => {
         refetch();

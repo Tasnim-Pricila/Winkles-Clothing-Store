@@ -1,14 +1,28 @@
-import { Button, Card, Container, CssBaseline, Grid, Link, TextField, Typography } from '@mui/material';
+import { Button, Card, Container, CssBaseline, FormControl, Grid, IconButton, InputAdornment, InputLabel, Link, OutlinedInput, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link as ReactLink, useNavigate } from 'react-router-dom';
 import Api from '../../../Axios/Api';
 import Footer from '../../shared/Footer';
 import login from '../../../images/login.jpg'
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const Register = () => {
 
     const navigate = useNavigate();
+
+    const [showPassword, setShowPassword] = useState(false);
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show);
+    const handleMouseDownConfirmPassword = (event) => {
+        event.preventDefault();
+    };
+
     const [userInfo, setUserInfo] = useState({
         firstName: '',
         lastName: '',
@@ -16,18 +30,70 @@ const Register = () => {
         password: '',
         confirmPassword: ''
     })
+    const [error, setError] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        others: ''
+    })
 
     const handleClick = async (e) => {
         e.preventDefault();
         console.log(userInfo);
-        await Api.post(`/users/signup`, userInfo)
-            .then(res => {
-                console.log(res);
-                if (res.data.status === 'success') {
-                    navigate('/login')
-                }
-            })
-            .catch(err => console.log(err.response.data.error))
+
+        if (userInfo.firstName === '') {
+            setError({ firstName: 'This field is required' })
+        }
+        else if (userInfo.lastName === '') {
+            setError({ lastName: 'This field is required' })
+        }
+        else if (userInfo.email === '') {
+            setError({ email: 'This field is required' })
+        }
+        else if (userInfo.password === '') {
+            setError({ password: 'This field is required' })
+        }
+        else if (userInfo.confirmPassword === '') {
+            setError({ confirmPassword: 'This field is required' })
+        }
+        else if (userInfo.firstName.length < 3) {
+            setError({ firstName: 'Name must be at least 3 characters' })
+        }
+        else if (userInfo.lastName.length < 3) {
+            setError({ lastName: 'Name must be at least 3 characters' })
+        }
+        else {
+            await Api.post(`/users/signup`, userInfo)
+                .then(res => {
+                    console.log(res);
+                    if (res.data.status === 'success') {
+                        navigate('/login')
+                    }
+                })
+                .catch(err => {
+                    console.log(err.response.data.error)
+                    if (err.response.data.error.toLowerCase().includes('email')) {
+                        setError({ email: err.response.data.error })
+                    }
+                    else if (err.response.data.error.toLowerCase().includes('firstname')) {
+                        setError({ firstName: err.response.data.error })
+                    }
+                    else if (err.response.data.error.toLowerCase().includes('lastname')) {
+                        setError({ lastName: err.response.data.error })
+                    }
+                    else if (err.response.data.error.toLowerCase().includes('confirmpassword')) {
+                        setError({ confirmPassword: err.response.data.error })
+                    }
+                    else if (err.response.data.error.toLowerCase().includes('password')) {
+                        setError({ password: err.response.data.error })
+                    }
+                    else {
+                        setError({ others: err.response.data.error })
+                    }
+                })
+        }
     }
     return (
         <>
@@ -44,52 +110,59 @@ const Register = () => {
                                 position: 'relative'
                             }}>
                                 <Box sx={{ position: 'absolute', height: '100%', width: '100%', background: '#41319ce3' }}>
-
+                                    <Box sx={{ p: 4, color: 'white' }}>
+                                        <Typography sx={{ textTransform: 'uppercase', fontSize: '20px', letterSpacing: '2px', fontWeight: 'bold'}}> Winkles </Typography>
+                                        <Typography variant='h4' mt={20} sx={{ fontStyle: 'italic', textAlign: 'center'}}>
+                                            Welcome to our <br/>
+                                            Community
+                                        </Typography>
+                                        <Typography sx={{ textAlign: 'center', mt: 2 }}>
+                                            Sign up to use all features of this website and discover a great amount of new opportunities...
+                                        </Typography>
+                                    </Box>
                                 </Box>
                             </Box>
                         </Grid>
                         <Grid item md={6} p={6}>
-                            <Typography variant="h5" sx={{}}>
-                                Register Account
+                            <Typography variant="h5" sx={{ textAlign: 'center', fontWeight: 'bold' }} >
+                                Sign Up to Winkles
                             </Typography>
-                            <Typography variant="caption" sx={{}}>
-                                Get your Free Winkles account now.
+                            <Typography sx={{ fontSize: '14px', textAlign: 'center', pt: 1 }}>
+                                Get your Free Winkles account now....
                             </Typography>
                             <form onSubmit={handleClick}>
                                 <Grid container spacing={2} mt={3}>
                                     <Grid item xs={12} sm={6}>
                                         <TextField
-                                            autoComplete="fname"
                                             name="firstName"
                                             variant="outlined"
-                                            required
                                             fullWidth
                                             id="firstName"
-                                            label="First Name"
+                                            label="First Name*"
                                             autoFocus
                                             onKeyUp=
                                             {(e) => setUserInfo({ ...userInfo, firstName: e.target.value })}
                                         />
+                                        <Typography sx={{ color: '#d32f2f', fontSize: '13px' }}> {error.firstName} </Typography>
                                     </Grid>
 
                                     <Grid item xs={12} sm={6}>
                                         <TextField
                                             variant="outlined"
-                                            required
                                             fullWidth
                                             id="lastName"
-                                            label="Last Name"
+                                            label="Last Name*"
                                             name="lastName"
                                             autoComplete="lname"
-                                            onBlur=
+                                            onKeyUp=
                                             {(e) => setUserInfo({ ...userInfo, lastName: e.target.value })}
                                         />
+                                        <Typography sx={{ color: '#d32f2f', fontSize: '13px' }}> {error.lastName} </Typography>
                                     </Grid>
 
                                     <Grid item xs={12}>
                                         <TextField
                                             variant="outlined"
-                                            required
                                             fullWidth
                                             id="email"
                                             type='email'
@@ -99,49 +172,73 @@ const Register = () => {
                                             onKeyUp=
                                             {(e) => setUserInfo({ ...userInfo, email: e.target.value })}
                                         />
+                                        <Typography sx={{ color: '#d32f2f', fontSize: '13px' }}> {error.email} </Typography>
                                     </Grid>
 
                                     <Grid item xs={12}>
-                                        <TextField
-                                            variant="outlined"
-                                            required
-                                            fullWidth
-                                            name="password"
-                                            label="Password"
-                                            type="password"
-                                            id="password"
-                                            autoComplete="current-password"
-                                            onBlur=
-                                            {(e) => setUserInfo({ ...userInfo, password: e.target.value })}
-                                        />
+                                        <FormControl fullWidth>
+                                            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                                            <OutlinedInput
+                                                variant="outlined"
+                                                id="outlined-adornment-password"
+                                                label="Password"
+                                                type={showPassword ? 'text' : 'password'}
+                                                onKeyUp={(e) => setUserInfo({ ...userInfo, password: e.target.value })}
+                                                endAdornment={
+                                                    <InputAdornment position="end">
+                                                        <IconButton
+                                                            onClick={handleClickShowPassword}
+                                                            onMouseDown={handleMouseDownPassword}
+                                                            edge="end"
+                                                        >
+                                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                }
+                                            />
+                                            <Typography sx={{ color: '#d32f2f', fontSize: '13px' }}> {error.password} </Typography>
+                                        </FormControl>
                                     </Grid>
 
                                     <Grid item xs={12}>
-                                        <TextField
-                                            variant="outlined"
-                                            required
-                                            fullWidth
-                                            name="cpassword"
-                                            label="Confirm Password"
-                                            type="password"
-                                            id="password"
-                                            autoComplete="current-password"
-                                            onBlur=
-                                            {(e) => setUserInfo({ ...userInfo, confirmPassword: e.target.value })}
-                                        />
+                                        <FormControl fullWidth>
+                                            <InputLabel htmlFor="outlined-adornment-confirm-password">
+                                                Confirm Password</InputLabel>
+                                            <OutlinedInput
+                                                variant="outlined"
+                                                id="outlined-adornment-confirm-password"
+                                                label="Confirm Password"
+                                                type={showConfirmPassword ? 'text' : 'password'}
+                                                onKeyUp={(e) => setUserInfo({ ...userInfo, confirmPassword: e.target.value })}
+                                                endAdornment={
+                                                    <InputAdornment position="end">
+                                                        <IconButton
+                                                            onClick={handleClickShowConfirmPassword}
+                                                            onMouseDown={handleMouseDownConfirmPassword}
+                                                            edge="end"
+                                                        >
+                                                            {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                }
+                                            />
+                                            <Typography sx={{ color: '#d32f2f', fontSize: '13px' }}> {error.confirmPassword} </Typography>
+                                            <Typography sx={{ color: '#d32f2f', fontSize: '14px', textAlign: 'center', mt: 1 }}> {error.others} </Typography>
+                                        </FormControl>
                                     </Grid>
                                 </Grid>
-                                <Typography variant='caption' sx={{ display: 'block', padding: '20px 0' }}>By registering you agree to the Velzon
-                                    <Link href="#" underline='none' pl={1}>
+                                <Typography sx={{ display: 'block', padding: '20px 0', fontSize: '14px' }}>By registering you agree to the Velzon
+                                    <Link conponent={ReactLink} to="#" underline='none' pl={1}>
                                         Terms of Use
                                     </Link>
                                 </Typography>
+
                                 <Button type="submit" fullWidth variant="contained">
                                     Sign Up
                                 </Button>
                             </form>
                             <Typography sx={{ textAlign: 'center', mt: 2 }}>Already have an account?
-                                <Link href="/login" underline='none' pl={1}>
+                                <Link component={ReactLink} to="/login" underline='none' pl={1} fontWeight='bold' >
                                     Login
                                 </Link>
                             </Typography>

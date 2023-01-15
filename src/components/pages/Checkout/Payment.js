@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import useUsers from '../../../Custom Hook/useUsers';
 import { postOrders } from '../../../Redux/actions';
 
-const Payment = ({ total, shippingDetails, createdOrder, setShippingDetails }) => {
+const Payment = ({ total, shippingDetails, createdOrder, setShippingDetails, setError }) => {
     const dispatch = useDispatch();
     const stripe = useStripe();
     const elements = useElements();
@@ -44,68 +44,78 @@ const Payment = ({ total, shippingDetails, createdOrder, setShippingDetails }) =
             name: user?.firstName + ' ' + user?.lastName,
             email: user?.email
         }
-
-        if (!stripe || !elements) {
-            return;
+        if (shippingDetails.phone === '') {
+            setError({ phone: 'This field is required' })
         }
-        const card = elements.getElement(CardElement);
-        if (card === null) {
-            return;
+        else if (shippingDetails.address === '') {
+            setError({ address: 'This field is required' })
         }
-        const { error, paymentMethod } = await stripe.createPaymentMethod({
-            type: 'card',
-            card,
-        });
-
-        setCardError(error?.message || '');
-        setSuccess('');
-        setProcessing(true);
-
-        stripe.confirmCardPayment(clientSecret, {
-            payment_method: {
-                card: card,
-                billing_details: {
-                    name: shippingDetails.name,
-                    email: shippingDetails.email
-                },
-            },
-        })
-            .then(function (result) {
-                // console.log(result)
-                // Handle result.error or result.paymentIntent
-                if (result.paymentIntent) {
-                    setCardError('');
-                    setSuccess('Your payment is completed');
-                    setTransactionID(result.paymentIntent.id);
-                    const payment = {
-                        transactionID: result.paymentIntent.id,
-                    }
-                    // console.log(payment);
-                    const orderData = {
-                        ...shippingDetails, ...userInfo, payment
-                    }
-
-                    fetch(`http://localhost:5000/payment`, {
-                        method: 'POST',
-                        headers: {
-                            'content-type': 'application/json',
-                        },
-                        body: JSON.stringify(payment)
-                    })
-                        .then(res => res.json())
-                        .then(data => {
-                            // console.log(orderData)
-
-                            dispatch(postOrders(orderData))
-                            setProcessing(false);
-                        });
-                }
-
-                if (result.error) {
-                    setCardError(result.error.message);
-                    setProcessing(false);
-                }
+        else if (shippingDetails.paymentMethod === '') {
+            setError({ paymentMethod: 'Please select your payment method' })
+        }
+        else {
+            if (!stripe || !elements) {
+                return;
+            }
+            const card = elements.getElement(CardElement);
+            if (card === null) {
+                return;
+            }
+            const { error, paymentMethod } = await stripe.createPaymentMethod({
+                type: 'card',
+                card,
             });
+
+            setCardError(error?.message || '');
+            setSuccess('');
+            setProcessing(true);
+
+            stripe.confirmCardPayment(clientSecret, {
+                payment_method: {
+                    card: card,
+                    billing_details: {
+                        name: shippingDetails.name,
+                        email: shippingDetails.email
+                    },
+                },
+            })
+                .then(function (result) {
+                    // console.log(result)
+                    // Handle result.error or result.paymentIntent
+                    if (result.paymentIntent) {
+                        setCardError('');
+                        setSuccess('Your payment is completed');
+                        setTransactionID(result.paymentIntent.id);
+                        const payment = {
+                            transactionID: result.paymentIntent.id,
+                        }
+                        // console.log(payment);
+                        const orderData = {
+                            ...shippingDetails, ...userInfo, payment
+                        }
+
+                        fetch(`http://localhost:5000/payment`, {
+                            method: 'POST',
+                            headers: {
+                                'content-type': 'application/json',
+                            },
+                            body: JSON.stringify(payment)
+                        })
+                            .then(res => res.json())
+                            .then(data => {
+                                // console.log(orderData)
+
+                                dispatch(postOrders(orderData))
+                                setProcessing(false);
+                            });
+                    }
+
+                    if (result.error) {
+                        setCardError(result.error.message);
+                        setProcessing(false);
+                    }
+                });
+        }
     }
 
     return (
@@ -131,7 +141,7 @@ const Payment = ({ total, shippingDetails, createdOrder, setShippingDetails }) =
                     />
                 </Box>
                 {
-                    cardError && <Typography color="#f06548" mt={1}> {cardError} </Typography> 
+                    cardError && <Typography color="#f06548" mt={1}> {cardError} </Typography>
                 }
                 {
                     success && <Typography color="#45cb85" mt={1}> {success} <br /> Transaction ID: {transactionID} </Typography>

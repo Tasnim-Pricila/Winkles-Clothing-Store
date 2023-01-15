@@ -1,9 +1,10 @@
-import { Box, Button, Card, Grid, Link, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, FormControl, FormHelperText, Grid, IconButton, Input, InputAdornment, InputLabel, Link, OutlinedInput, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link as ReactLink, useLocation, useNavigate } from 'react-router-dom';
 import Api from '../../../Axios/Api';
 import Footer from '../../shared/Footer';
 import login from '../../../images/login.jpg'
+import { AlternateEmail, Visibility, VisibilityOff } from '@mui/icons-material';
 
 
 const Login = () => {
@@ -14,19 +15,51 @@ const Login = () => {
         email: '',
         password: ''
     })
+    const [error, setError] = useState({
+        email: '',
+        password: '',
+        others: ''
+    })
+
+    const [showPassword, setShowPassword] = useState(false);
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
 
     const handleClick = async (e) => {
         e.preventDefault();
-        await Api.post(`/users/login`, userInfo)
-            .then(res => {
-                // console.log(res)
-                const accessToken = res.data?.data?.token;
-                localStorage.setItem('accessToken', accessToken);
-                setToken(accessToken);
 
-            })
-            .catch(err => console.log(err))
+        if (userInfo.email === '') {
+            setError({ email: 'This field is required' })
+        }
+        if (userInfo.password === '') {
+            setError({ password: 'This field is required' })
+        }
+        else {
+            await Api.post(`/users/login`, userInfo)
+                .then(res => {
+                    // console.log(res)
+                    if (res.data.status === 'success') {
+                        const accessToken = res.data?.data?.token;
+                        localStorage.setItem('accessToken', accessToken);
+                        setToken(accessToken);
+                    }
+                })
+                .catch(err => {
+                    if (err.response.data.error.toLowerCase().includes('email')) {
+                        setError({ email: err.response.data.error })
+                    }
+                    else if (err.response.data.error.toLowerCase().includes('password')) {
+                        setError({ password: err.response.data.error })
+                    }
+                    else {
+                        setError({ others: err.response.data.error })
+                    }
+                })
+        }
     }
+
     const from = location.state?.from?.pathname || '/shop';
     useEffect(() => {
         if (token) {
@@ -36,7 +69,6 @@ const Login = () => {
 
     return (
         <>
-
             <Box px={16} my={5}>
                 <Card variant="outlined" sx={{ boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
                     <Grid container>
@@ -51,53 +83,85 @@ const Login = () => {
                                 position: 'relative'
                             }}>
                                 <Box sx={{ position: 'absolute', height: '100%', width: '100%', background: '#41319ce3' }}>
-
+                                    <Box sx={{ p: 4, color: 'white' }}>
+                                        <Typography sx={{ textTransform: 'uppercase', fontSize: '20px', letterSpacing: '2px', fontWeight: 'bold' }}> Winkles </Typography>
+                                        <Typography variant='h4' mt={20} sx={{ fontStyle: 'italic', textAlign: 'center' }}>
+                                            Welcome to our <br />
+                                            Community
+                                        </Typography>
+                                        <Typography sx={{ textAlign: 'center', mt: 2 }}>
+                                            Sign in to use all features of this website and discover a great amount of new opportunities...
+                                        </Typography>
+                                    </Box>
                                 </Box>
                             </Box>
                         </Grid>
-                        <Grid item md={6} p={6}>
-                            <Typography variant="h5" sx={{}}>
+                        <Grid item md={6} p={12}>
+                            <Typography variant="h5" sx={{ textAlign: 'center', fontWeight: 'bold' }}>
                                 Welcome Back !
                             </Typography>
-                            <Typography variant="caption" sx={{}}>
-                                Sign in to continue to Winkles.
+                            <Typography sx={{ fontSize: '14px', textAlign: 'center', pt: 1 }}>
+                                Sign in to continue to Winkles...
                             </Typography>
                             <form onSubmit={handleClick}>
-                                <Grid container spacing={2} mt={3}>
+                                <Grid container spacing={3} mt={3}>
                                     <Grid item xs={12}>
-                                        <TextField required
-                                            variant="outlined"
-                                            fullWidth
-                                            id="emaill"
-                                            label="Email Address"
-                                            name="email"
-                                            autoComplete="email"
-                                            onKeyUp=
-                                            {(e) => setUserInfo({ ...userInfo, email: e.target.value })}
-                                        />
+                                        <FormControl fullWidth>
+                                            <InputLabel htmlFor="outlined-adornment-email">Email</InputLabel>
+                                            <OutlinedInput
+                                                variant="outlined"
+                                                id="outlined-adornment-email"
+                                                type='email'
+                                                label="Email Address"
+                                                name="email"
+                                                autoComplete="email"
+                                                error={error.email}
+                                                onChange=
+                                                {(e) => setUserInfo({ ...userInfo, email: e.target.value })}
+                                                endAdornment={
+                                                    <InputAdornment position="end">
+                                                        <IconButton sx={{ cursor: 'text' }}>
+                                                            <AlternateEmail />
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                }
+                                            />
+                                            <FormHelperText sx={{ color: '#d32f2f' }}> {error.email} </FormHelperText>
+                                        </FormControl>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <TextField
-                                            variant="outlined"
-                                            required
-                                            fullWidth
-                                            // name="password"
-                                            label="Password"
-                                            type="password"
-                                            id="passwordd"
-                                            autoComplete="current-password"
-                                            onBlur=
-                                            {(e) => setUserInfo({ ...userInfo, password: e.target.value })}
-                                        />
+                                        <FormControl fullWidth>
+                                            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                                            <OutlinedInput
+                                                variant="outlined"
+                                                id="outlined-adornment-password"
+                                                label="Password"
+                                                error={error.password}
+                                                type={showPassword ? 'text' : 'password'}
+                                                onKeyUp={(e) => setUserInfo({ ...userInfo, password: e.target.value })}
+                                                endAdornment={
+                                                    <InputAdornment position="end">
+                                                        <IconButton
+                                                            onClick={handleClickShowPassword}
+                                                            onMouseDown={handleMouseDownPassword}
+                                                        >
+                                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                }
+                                            />
+                                            <FormHelperText sx={{ color: '#d32f2f' }}> {error.password} </FormHelperText>
+                                        </FormControl>
+
                                     </Grid>
                                 </Grid>
-
-                                <Button type="submit" fullWidth variant="contained" sx={{ marginTop: '20px' }} >
+                                <Typography sx={{ color: '#d32f2f', fontSize: '14px', textAlign: 'center' }}> {error.others} </Typography>
+                                <Button type="submit" fullWidth variant="contained" sx={{ mt: 4 }} >
                                     Sign In
                                 </Button>
                             </form>
                             <Typography sx={{ textAlign: 'center', mt: 2 }}> Don't have an account?
-                                <Link href="/login" underline='none' pl={1}>
+                                <Link component={ReactLink} to="/register" underline='none' pl={1} fontWeight='bold' >
                                     Signup
                                 </Link>
                             </Typography>

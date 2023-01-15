@@ -1,5 +1,5 @@
 import { CameraAlt, CloudUpload } from '@mui/icons-material';
-import { Button, Card, Divider, Grid, InputAdornment, MenuItem, Select, TextField, Toolbar, Typography } from '@mui/material';
+import { Button, Card, Divider, FormHelperText, Grid, InputAdornment, MenuItem, Select, TextField, Toolbar, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { Editor } from '@tinymce/tinymce-react';
 import axios from 'axios';
@@ -22,12 +22,22 @@ const CreateProduct = () => {
         brand: '',
         stock: '',
     })
+    const [error, setError] = useState({
+        title: '',
+        description: '',
+        price: '',
+        quantity: '',
+        unit: '',
+        category: '',
+        brand: '',
+        stock: '',
+        myImage: '',
+        gallery: ''
+    })
 
     // main image 
     const [myImage, setImage] = useState('');
     const [imagePreview, setPreview] = useState();
-    console.log(myImage)
-    console.log(imagePreview);
     const getImage = (e) => {
         setImage(e.target.files[0]);
         setPreview(URL.createObjectURL(e.target.files[0]));//set preview
@@ -40,8 +50,8 @@ const CreateProduct = () => {
         gallery: '',
         galleryPreview: ''
     }]);
-    console.log(galleryImg);
-
+    console.log(myImage);
+    console.log(gallery);
     const galleryImage = (e) => {
         for (var i = 0; i < e.target.files.length; i++) {
             galleryPreview.push(URL.createObjectURL(e.target.files[i]))
@@ -56,37 +66,70 @@ const CreateProduct = () => {
     const addProduct = async (e) => {
         let imgGalleryUrl = [];
         e.preventDefault();
-        // main image 
-        const formData = new FormData();
-        formData.append('image', myImage);
-        await axios.post(url, formData)
-            .then(response => {
-                // console.log('first one', response)
-                if (response?.data?.success) {
-                    const imgUrl = response?.data?.data?.url;
+        if (productDetails.title === '') {
+            setError({ title: 'This field is required' })
+        }
+        else if (productDetails.description === '') {
+            setError({ description: 'This field is required' })
+        }
+        else if (myImage === '') {
+            setError({ myImage: 'This field is required' })
+        }
+        else if (gallery.length === 0) {
+            setError({ gallery: 'This field is required' })
+        }
+        else if (productDetails.quantity === '') {
+            setError({ quantity: 'This field is required' })
+        }
+        else if (productDetails.unit === '') {
+            setError({ unit: 'This field is required' })
+        }
+        else if (productDetails.price === '') {
+            setError({ price: 'This field is required' })
+        }
+        else if (productDetails.brand === '') {
+            setError({ brand: 'This field is required' })
+        }
+        else if (productDetails.category === '') {
+            setError({ category: 'This field is required' })
+        }
+        else if (productDetails.stock === '') {
+            setError({ stock: 'This field is required' })
+        }
+        else {
+            const formData = new FormData();
+            formData.append('image', myImage);
+            await axios.post(url, formData)
+                .then(response => {
+                    // console.log('first one', response)
+                    if (response?.data?.success) {
+                        const imgUrl = response?.data?.data?.url;
 
-                    // gallery image 
-                    const formGallery = new FormData();
-                    [...galleryImg?.gallery].forEach((image, i) => {
-                        // console.log(i)
-                        formGallery.append('image', image)
-                        axios.post(url, formGallery)
-                            .then(response => {
-                                // console.log('second one', response)
-                                if (response?.data?.success) {
-                                    imgGalleryUrl.push(response?.data?.data?.url);
-                                    if (i === galleryImg?.gallery?.length - 1) {
-                                        const data = {
-                                            ...productDetails, image: imgUrl, imageGallery: imgGalleryUrl
+                        // gallery image 
+                        const formGallery = new FormData();
+                        [...galleryImg?.gallery].forEach((image, i) => {
+                            // console.log(i)
+                            formGallery.append('image', image)
+                            axios.post(url, formGallery)
+                                .then(response => {
+                                    // console.log('second one', response)
+                                    if (response?.data?.success) {
+                                        imgGalleryUrl.push(response?.data?.data?.url);
+                                        if (i === galleryImg?.gallery?.length - 1) {
+                                            const data = {
+                                                ...productDetails, image: imgUrl, imageGallery: imgGalleryUrl
+                                            }
+                                            // console.log(imgGalleryUrl)
+                                            dispatch(postProduct(data))
                                         }
-                                        // console.log(imgGalleryUrl)
-                                        dispatch(postProduct(data))
                                     }
-                                }
-                            })
-                    })
-                }
-            })
+                                })
+                        })
+                    }
+                })
+        }
+        // main image 
+
     }
 
     useEffect(() => {
@@ -112,10 +155,7 @@ const CreateProduct = () => {
                             <Box>
                                 <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Product Title</Typography>
                                 <TextField sx={{
-                                    width: '100%',
-                                    '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
-                                        fontSize: '13px', color: '#212529'
-                                    }
+                                    width: '100%'
                                 }}
                                     hiddenLabel
                                     required
@@ -124,6 +164,8 @@ const CreateProduct = () => {
                                     size="small"
                                     placeholder='Enter product title'
                                     onChange={(e) => setProductDetails({ ...productDetails, title: e.target.value })}
+                                    error={error.title}
+                                    helperText={error.title}
                                 />
                             </Box>
                             <Box mt={2}>
@@ -145,6 +187,9 @@ const CreateProduct = () => {
                                         content_style: 'body { font-family:Mulish,Helvetica,Arial,sans-serif; font-size:14px }'
                                     }}
                                 />
+                                <Typography sx={{ color: '#d32f2f', fontSize: '13px', pt: 1 }}>
+                                    {error.description}
+                                </Typography>
                             </Box>
                         </Card>
 
@@ -197,6 +242,8 @@ const CreateProduct = () => {
                                         />
                                     </Button>
                                 </Box>
+                                <FormHelperText sx={{ color: '#d32f2f', textAlign: 'center', fontSize: '13px', pb: 6 }}> {error.myImage} </FormHelperText>
+
                             </Box>
                             <Box>
                                 <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Product Image</Typography>
@@ -222,6 +269,7 @@ const CreateProduct = () => {
                                     </Button>
                                     <Typography> Click to upload photos </Typography>
                                 </Box>
+                                <FormHelperText sx={{ color: '#d32f2f', pb: 10, textAlign: 'center', fontSize: '13px' }}> {error.gallery} </FormHelperText>
                                 {
                                     galleryImg?.galleryPreview?.map((g, i) =>
                                         <Box sx={{ display: 'flex', gap: '5px', mt: 1, border: '1px solid #ded8d8', borderRadius: '5px', p: 1 }}>
@@ -257,10 +305,7 @@ const CreateProduct = () => {
                                 <Grid item md={4}>
                                     <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Stock</Typography>
                                     <TextField sx={{
-                                        width: '100%',
-                                        '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
-                                            fontSize: '13px', color: '#212529'
-                                        }
+                                        width: '100%'
                                     }}
                                         hiddenLabel
                                         required
@@ -269,24 +314,31 @@ const CreateProduct = () => {
                                         size="small"
                                         placeholder='Enter stocks'
                                         onChange={(e) => setProductDetails({ ...productDetails, quantity: e.target.value })}
+                                        error={error.quantity}
+                                        helperText={error.quantity}
                                     />
                                 </Grid>
                                 <Grid item md={4}>
                                     <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Unit</Typography>
-                                    <TextField sx={{
-                                        width: '100%',
-                                        '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
-                                            fontSize: '13px', color: '#212529'
-                                        }
-                                    }}
-                                        hiddenLabel
-                                        required
-                                        type="text"
-                                        id="filled-hidden-label-small"
-                                        size="small"
-                                        placeholder='Enter unit'
+                                    <Select
+                                        size='small'
+                                        labelId="demo-simple-select-helper-label"
+                                        id="demo-simple-select-helper"
+                                        displayEmpty
+                                        label="Age"
+                                        value={productDetails.unit}
                                         onChange={(e) => setProductDetails({ ...productDetails, unit: e.target.value })}
-                                    />
+                                        sx={{ width: '100%' }}
+                                        error={error.unit}
+                                    >
+                                        <MenuItem disabled selected value="">
+                                            <em>Select Unit</em>
+                                        </MenuItem>
+                                        <MenuItem value='pcs' sx={{ textTransform: 'capitalize' }}>
+                                            pcs
+                                        </MenuItem>
+                                    </Select>
+                                    <FormHelperText sx={{ color: '#d32f2f' }}> {error.unit} </FormHelperText>
                                 </Grid>
                                 <Grid item md={4}>
                                     <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Price</Typography>
@@ -310,6 +362,8 @@ const CreateProduct = () => {
                                         }}
                                         placeholder='Enter price'
                                         onChange={(e) => setProductDetails({ ...productDetails, price: e.target.value })}
+                                        error={error.price}
+                                        helperText={error.price}
                                     />
                                 </Grid>
                             </Grid>
@@ -330,6 +384,7 @@ const CreateProduct = () => {
                                 value={productDetails.brand}
                                 onChange={(e) => setProductDetails({ ...productDetails, brand: e.target.value })}
                                 sx={{ width: '100%' }}
+                                error={error.brand}
                             >
                                 <MenuItem disabled selected value="">
                                     <em>Select Brand</em>
@@ -342,6 +397,7 @@ const CreateProduct = () => {
                                     )
                                 }
                             </Select>
+                            <FormHelperText sx={{ color: '#d32f2f' }}> {error.brand} </FormHelperText>
                         </Card>
 
                         <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)', mt: 2 }} >
@@ -356,6 +412,7 @@ const CreateProduct = () => {
                                 value={productDetails.category}
                                 onChange={(e) => setProductDetails({ ...productDetails, category: e.target.value })}
                                 sx={{ width: '100%' }}
+                                error={error.category}
                             >
                                 <MenuItem disabled selected value="">
                                     <em>Select Category</em>
@@ -368,6 +425,7 @@ const CreateProduct = () => {
                                     )
                                 }
                             </Select>
+                            <FormHelperText sx={{ color: '#d32f2f' }}> {error.category} </FormHelperText>
                         </Card>
 
                         <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)', mt: 2 }} >
@@ -382,6 +440,7 @@ const CreateProduct = () => {
                                 sx={{ width: '100%' }}
                                 value={productDetails.stock}
                                 onChange={(e) => setProductDetails({ ...productDetails, stock: e.target.value })}
+                                error={error.stock}
                             >
                                 <MenuItem disabled selected value="">
                                     <em>Select stock</em>
@@ -393,6 +452,7 @@ const CreateProduct = () => {
                                     Out of Stock
                                 </MenuItem>
                             </Select>
+                            <FormHelperText sx={{ color: '#d32f2f' }}> {error.stock} </FormHelperText>
                         </Card>
                     </Grid>
                 </Grid>

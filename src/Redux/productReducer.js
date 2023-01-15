@@ -6,7 +6,8 @@ const initialState = {
     filter: [],
     searchProducts: [],
     addProduct: [],
-    product: []
+    product: [],
+    pagination: []
 }
 
 const productReducer = (state = initialState, action) => {
@@ -15,6 +16,11 @@ const productReducer = (state = initialState, action) => {
             return {
                 ...state,
                 products: action.payload
+            }
+        case actionTypes.FETCH_PRODUCTS_ByPAGINATION:
+            return {
+                ...state,
+                pagination: action.payload
             }
         case actionTypes.FETCH_PRODUCT:
             return {
