@@ -1,5 +1,5 @@
 import { GridView, TableRows, ViewList, Window } from '@mui/icons-material';
-import { Box, Grid, Pagination, Typography } from '@mui/material';
+import { Box, Grid, Pagination, Tooltip, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { fetchProductsByPagination, searchByFilter, searchProducts } from '../..
 import Footer from '../../shared/Footer';
 import AllProducts from './AllProducts';
 import LeftSidebar from './LeftSidebar';
+import ListView from './ListView';
 
 const Shop = ({ searchText, setSearchText }) => {
     const products = useSelector(state => state.allProducts.pagination)
@@ -141,23 +142,27 @@ const Shop = ({ searchText, setSearchText }) => {
                 <Grid item xs={4} md={9} >
                     <Box sx={{ px: 6, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Box>
-                            <GridView sx={{
-                                p: 2, 
-                                bgcolor: grid ? 'black' : 'white', 
-                                color: grid ? 'white' : 'black',
-                                mr: 2,
-                                border: 1,
-                                cursor: 'pointer'
-                            }}
-                                value='grid' onClick={handleGrid} />
-                            <TableRows sx={{ 
-                                p: 2, 
-                                bgcolor: list ? 'black' : 'white', 
-                                color: list ? 'white' : 'black',
-                                border: 1,
-                                cursor: 'pointer'
-                            }}
-                                onClick={handleList} />
+                            <Tooltip title="Grid View">
+                                <GridView sx={{
+                                    p: 2,
+                                    bgcolor: grid ? 'black' : 'white',
+                                    color: grid ? 'white' : 'black',
+                                    mr: 2,
+                                    border: 1,
+                                    cursor: 'pointer'
+                                }}
+                                    value='grid' onClick={handleGrid} />
+                            </Tooltip>
+                            <Tooltip title="List View">
+                                <TableRows sx={{
+                                    p: 2,
+                                    bgcolor: list ? 'black' : 'white',
+                                    color: list ? 'white' : 'black',
+                                    border: 1,
+                                    cursor: 'pointer'
+                                }}
+                                    onClick={handleList} />
+                            </Tooltip>
                         </Box>
                         <Typography sx={{ color: '#00000066' }}> Showing <span style={{ color: 'black', }}>
                             {skip + 1} -
@@ -197,11 +202,33 @@ const Shop = ({ searchText, setSearchText }) => {
 
                     {
                         list &&
-                        <Typography>
-                            List here
-                        </Typography>
-                    }
+                        <Box sx={{
+                            mt: 2,
+                            px: 6,
 
+                        }}>
+                            {
+                                searchText === '' ?
+                                    products?.result?.length > 0 ?
+                                        products?.result?.map((product, i) =>
+                                            <ListView key={product._id}
+                                                product={product}
+                                            />
+                                        )
+                                        :
+                                        <p> No results found </p>
+                                    :
+                                    searched.length > 0 ?
+                                        searched.map(product =>
+                                            <ListView key={product._id}
+                                                product={product}
+                                            />
+                                        )
+                                        :
+                                        <p> No search results found </p>
+                            }
+                        </Box>
+                    }
 
                     <Pagination count={page} color="primary" defaultPage={1} page={selectedPage} onChange={handleChange}
                         sx={{

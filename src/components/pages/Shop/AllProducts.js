@@ -13,7 +13,7 @@ import { addToCart } from '../../../Redux/actions';
 import { ShoppingCart } from '@mui/icons-material';
 
 const AllProducts = ({ product }) => {
-    // console.log(product);
+    
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const handleDetails = (id) => {
@@ -53,10 +53,6 @@ const AllProducts = ({ product }) => {
         <Grid item xs={4} md={4} >
              <Card>
                 <CardMedia
-                    // component="img"
-                    // height="auto"
-                    // image={product.image}
-                    // alt="green iguana"
                     sx={{
                         backgroundImage: `url(${product?.image})`,
                         backgroundSize: 'cover',
