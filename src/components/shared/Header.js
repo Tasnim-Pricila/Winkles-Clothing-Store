@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import logout from '../pages/Auth/logout';
 import { HowToReg, Login, Logout } from '@mui/icons-material';
+import useUsers from '../../Custom Hook/useUsers';
 
 const Header = ({ setSearchText, searchText }) => {
     const pages = ['home', 'shop', 'blog', 'about', 'contact'];
@@ -18,8 +19,18 @@ const Header = ({ setSearchText, searchText }) => {
     const cart = useSelector(state => state.allProducts.cart);
     const [countCart, setCountCart] = useState(0);
     const navigate = useNavigate();
+    const [user] = useUsers();
+    // console.log(user?.cart?.product)
     // console.log(cart)
 
+    // get cart from user 
+    let sum = 0;
+    user?.cart?.product.forEach(c => {
+        sum = sum + c.qty;
+    });
+    console.log(sum);
+
+    // cart 
     useEffect(() => {
         let count = 0;
         cart?.length > 0 && cart.forEach(item => {
@@ -75,7 +86,6 @@ const Header = ({ setSearchText, searchText }) => {
         logout();
     }
     const location = useLocation();
-
     const token = localStorage.getItem('accessToken')
 
     return (
@@ -269,8 +279,8 @@ const Header = ({ setSearchText, searchText }) => {
                                                     onClick={handleCloseUserMenu}>
                                                     <Button sx={{
                                                         color: 'black'
-                                                    }} startIcon={<Login sx={{ color: '#878a99' }}/> }> Login </Button>
-                                                    
+                                                    }} startIcon={<Login sx={{ color: '#878a99' }} />}> Login </Button>
+
                                                 </NavLink>
                                                 <NavLink to='/register' style={{
                                                     textDecoration: 'none',
@@ -280,7 +290,7 @@ const Header = ({ setSearchText, searchText }) => {
                                                     onClick={handleCloseUserMenu}>
                                                     <Button sx={{
                                                         color: 'black'
-                                                    }} startIcon={<HowToReg sx={{ color: '#878a99' }}/> }> Register </Button>
+                                                    }} startIcon={<HowToReg sx={{ color: '#878a99' }} />}> Register </Button>
                                                 </NavLink>
                                             </Box>
                                             :
@@ -307,26 +317,32 @@ const Header = ({ setSearchText, searchText }) => {
                                                     </Button>
                                                 </NavLink>
                                             </>
-
                                     }
-
-
                                 </MenuItem>
-
                             </Menu>
 
-                            <IconButton sx={{ p: 0 , color: 'white'}}>
+                            <IconButton sx={{ p: 0, color: 'white' }}>
                                 <SearchIcon onClick={handleOpen} />
                             </IconButton>
-                            <IconButton sx={{ p: 0 , color: 'white'}}>
+                            <IconButton sx={{ p: 0, color: 'white' }}>
                                 <FavoriteBorderIcon />
                             </IconButton>
-                            <IconButton sx={{ p: 0, color: 'white' }} onClick={handleCart}>
-                                <Badge badgeContent={countCart} color='warning' sx={{ }}>
-                                    <ShoppingCartIcon color="white">
-                                    </ShoppingCartIcon>
-                                </Badge>
-                            </IconButton>
+                            {
+                                user?.cart?.product?.length > 0 ?
+                                    <IconButton sx={{ p: 0, color: 'white' }} onClick={handleCart}>
+                                        <Badge badgeContent={sum} color='warning' sx={{}}>
+                                            <ShoppingCartIcon color="white">
+                                            </ShoppingCartIcon>
+                                        </Badge>
+                                    </IconButton>
+                                    :
+                                    <IconButton sx={{ p: 0, color: 'white' }} onClick={handleCart}>
+                                        <Badge badgeContent={countCart} color='warning' sx={{}}>
+                                            <ShoppingCartIcon color="white">
+                                            </ShoppingCartIcon>
+                                        </Badge>
+                                    </IconButton>
+                            }
 
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

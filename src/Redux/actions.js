@@ -37,8 +37,8 @@ export const fetchProduct = (id) => {
 export const postProduct = (data) => {
     return async (dispatch) => {
         const response = await Api.post(`/products`, data)
-        console.log(data)
-        console.log(response)
+        // console.log(data)
+        // console.log(response)
         dispatch({
             type: actionTypes.ADD_PRODUCT,
             payload: response.data?.data
@@ -77,12 +77,18 @@ export const removeSelectedProduct = () => {
     }
 }
 
-export const addToCart = (itemID) => {
-    return {
-        type: actionTypes.ADD_TO_CART,
-        payload: {
-            id: itemID
-        }
+export const addToCart = (userId, itemID, data) => {
+    return async (dispatch) => {
+        // console.log(data);
+        const response = await Api.patch(`/users/update/${userId}`, data)
+        console.log(response);
+        dispatch({
+            type: actionTypes.ADD_TO_CART,
+            payload: {
+                postCart: response?.data?.data,
+                id: itemID
+            }
+        })
     }
 }
 
@@ -120,7 +126,7 @@ export const searchByFilter = (url) => {
         const response = await Api.get(url)
         dispatch({
             type: actionTypes.SEARCH_BY_FILTER,
-            payload: response.data?.data?.result
+            payload: response.data?.data
         })
     }
 }

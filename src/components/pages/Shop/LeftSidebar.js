@@ -84,7 +84,7 @@ const LeftSidebar = ({ setCategory, setGtPrice, setStock, brand, setBrand, setLt
 
                 </AccordionDetails>
             </Accordion>
-            <Accordion >
+            <Accordion defaultExpanded>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel3a-content"
@@ -108,7 +108,7 @@ const LeftSidebar = ({ setCategory, setGtPrice, setStock, brand, setBrand, setLt
                     </FormControl>
                 </AccordionDetails>
             </Accordion>
-            <Accordion >
+            <Accordion defaultExpanded>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel3a-content"

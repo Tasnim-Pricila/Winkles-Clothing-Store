@@ -7,7 +7,8 @@ const initialState = {
     searchProducts: [],
     addProduct: [],
     product: [],
-    pagination: []
+    allProducts: [],
+    saveCart: []
 }
 
 const productReducer = (state = initialState, action) => {
@@ -15,12 +16,12 @@ const productReducer = (state = initialState, action) => {
         case actionTypes.FETCH_PRODUCTS:
             return {
                 ...state,
-                products: action.payload
+                allProducts: action.payload
             }
         case actionTypes.FETCH_PRODUCTS_ByPAGINATION:
             return {
                 ...state,
-                pagination: action.payload
+                products: action.payload
             }
         case actionTypes.FETCH_PRODUCT:
             return {
@@ -49,7 +50,7 @@ const productReducer = (state = initialState, action) => {
             }
         case actionTypes.ADD_TO_CART:
             // get the items data from the products array
-            const item = state.products.find(product => product._id === action.payload.id)
+            const item = state.products.result.find(product => product._id === action.payload.id)
             // check if the item is in cart or not 
             const inCart = state.cart.find(item =>
                 item._id === action.payload.id ? true : false)
@@ -62,7 +63,8 @@ const productReducer = (state = initialState, action) => {
                             item
                     )
                     :
-                    [...state.cart, { ...item, qty: 1 }]
+                    [...state.cart, { ...item, qty: 1 }],
+                saveCart: action.payload.postCart
             }
         case actionTypes.REMOVE_FROM_CART:
             return {
@@ -86,7 +88,7 @@ const productReducer = (state = initialState, action) => {
         case actionTypes.SEARCH_PRODUCT:
             return {
                 ...state,
-                searchProducts: state.products.filter(
+                searchProducts: state.products.result.filter(
                     product => product.title.includes(action.payload.searchText))
             }
         default:
