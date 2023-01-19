@@ -1,29 +1,37 @@
 import { Button, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import CartItem from './CartItem';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, } from '@mui/material';
 import { Done, Loop } from '@mui/icons-material';
 import Footer from '../../shared/Footer';
+import { getCart } from '../../../Redux/actions';
 
 
 const Cart = () => {
     const navigate = useNavigate();
     const cart = useSelector(state => state.allProducts.cart);
+    const user = useSelector(state => state.allUsers.user)
+    const dispatch = useDispatch();
+    // const cart = user?.cart?.product
 
     const [total, setTotal] = useState(0);
 
     useEffect(() => {
+        dispatch(getCart());
+    },[dispatch])
+
+    useEffect(() => {
         let total = 0;
-        cart.forEach(item => {
-            // console.log(item.qty);
+        cart?.forEach(item => {
             total = parseFloat(total) + parseFloat(item.price) * parseFloat(item.qty);
             total = total.toFixed(2);
         })
         setTotal(total);
     }, [cart, total])
+
     const handleCheckout = () => {
         navigate('/checkout', { state: { total, cart } });
     }
@@ -50,7 +58,7 @@ const Cart = () => {
                 px: 16
             }}>
                 {
-                    cart.length !== 0 ?
+                    cart?.length !== 0 ?
                         <TableContainer >
                             <Table aria-label="simple table">
                                 <TableHead>
@@ -66,7 +74,7 @@ const Cart = () => {
                                 </TableHead>
                                 <TableBody>
                                     {
-                                        cart.map(c =>
+                                        cart?.map(c =>
                                             <CartItem key={c._id}
                                                 cartItem={c}
                                             ></CartItem>
@@ -74,9 +82,8 @@ const Cart = () => {
                                     }
                                 </TableBody>
                                 <TableRow>
-                                    <TableCell colSpan={4} align='right' sx={{ pr: 8, fontWeight: 'bold' }} >Total</TableCell>
-                                    <TableCell colSpan={2} align='right'
-                                        sx={{ fontWeight: 'bold' }} >Tk. {total}</TableCell>
+                                    <TableCell colSpan={5} align='right' sx={{ pr: 8, fontWeight: 'bold' }} >Total</TableCell>
+                                    <TableCell colSpan={2} sx={{ fontWeight: 'bold' }} >Tk. {total}</TableCell>
                                     <TableCell></TableCell>
                                 </TableRow>
                             </Table>
@@ -86,10 +93,10 @@ const Cart = () => {
 
                 }
                 {
-                    cart.length === 0 ||
-                    <div style= {{ marginTop: '20px', display: 'flex', justifyContent: 'right'}}>
-                        <Button variant='contained' sx={continueButton} onClick={handleContinue} startIcon={<Loop/>}> Continue Shopping </Button>
-                        <Button variant='contained' onClick={handleCheckout} startIcon={<Done/>}>
+                    cart?.length === 0 ||
+                    <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'right' }}>
+                        <Button variant='contained' sx={continueButton} onClick={handleContinue} startIcon={<Loop />}> Continue Shopping </Button>
+                        <Button variant='contained' onClick={handleCheckout} startIcon={<Done />}>
                             Proceed to Checkout
                         </Button>
                     </div>

@@ -6,38 +6,48 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Badge from '@mui/material/Badge';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import logout from '../pages/Auth/logout';
 import { HowToReg, Login, Logout } from '@mui/icons-material';
 import useUsers from '../../Custom Hook/useUsers';
+import { getCart, getMe } from '../../Redux/actions';
 
 const Header = ({ setSearchText, searchText }) => {
     const pages = ['home', 'shop', 'blog', 'about', 'contact'];
     // const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
     const cart = useSelector(state => state.allProducts.cart);
+    // const user = useSelector(state => state.allUsers.user)
     const [countCart, setCountCart] = useState(0);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [user] = useUsers();
-    // console.log(user?.cart?.product)
+    // const cart = user?.cart?.product
     // console.log(cart)
 
     // get cart from user 
-    let sum = 0;
-    user?.cart?.product.forEach(c => {
-        sum = sum + c.qty;
-    });
-    console.log(sum);
+    // let sum = 0;
+    // user?.cart?.product.forEach(c => {
+    //     sum = sum + c.qty;
+    // });
+    // console.log(countCart);
 
     // cart 
+    
     useEffect(() => {
+        dispatch(getCart());
+    },[dispatch])
+
+    useEffect(() => {
+        // dispatch(getMe())
         let count = 0;
         cart?.length > 0 && cart.forEach(item => {
             count = count + item.qty;
         })
+        // console.log(count)
         setCountCart(count);
-    }, [cart, countCart])
+    }, [dispatch, cart, countCart])
 
 
     const [anchorElNav, setAnchorElNav] = useState(null);
@@ -327,7 +337,7 @@ const Header = ({ setSearchText, searchText }) => {
                             <IconButton sx={{ p: 0, color: 'white' }}>
                                 <FavoriteBorderIcon />
                             </IconButton>
-                            {
+                            {/* {
                                 user?.cart?.product?.length > 0 ?
                                     <IconButton sx={{ p: 0, color: 'white' }} onClick={handleCart}>
                                         <Badge badgeContent={sum} color='warning' sx={{}}>
@@ -335,14 +345,14 @@ const Header = ({ setSearchText, searchText }) => {
                                             </ShoppingCartIcon>
                                         </Badge>
                                     </IconButton>
-                                    :
+                                    : */}
                                     <IconButton sx={{ p: 0, color: 'white' }} onClick={handleCart}>
-                                        <Badge badgeContent={countCart} color='warning' sx={{}}>
+                                        <Badge badgeContent={countCart} color='warning'>
                                             <ShoppingCartIcon color="white">
                                             </ShoppingCartIcon>
                                         </Badge>
                                     </IconButton>
-                            }
+                            {/* } */}
 
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

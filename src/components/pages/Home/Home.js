@@ -10,7 +10,8 @@ import Delivery from './Delivery';
 import Products from './Products';
 
 const Home = () => {
-    const products = useSelector(state => state.allProducts.products)
+    const products = useSelector(state => state.allProducts.allProducts)
+    // console.log(products);
     const dispatch = useDispatch();
 
     useEffect(() => {

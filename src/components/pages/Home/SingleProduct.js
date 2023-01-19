@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { addToCart, adjustQty, fetchProduct, fetchProducts, fetchReview, fetchReviewbyProductId, removeFromCart, removeSelectedProduct } from '../../../Redux/actions';
+import { addToCart, adjustQty, fetchProduct, fetchProducts, fetchReview, fetchReviewbyProductId, getMe, removeFromCart, removeSelectedProduct } from '../../../Redux/actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
@@ -18,9 +18,12 @@ const SingleProduct = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const state = useSelector(state => state.allProducts);
-    const reviews = useSelector(state => state.reviews.review);
+    const products = state.allProducts;
+    // console.log(products)
     let product = state.product;
+    const reviews = useSelector(state => state.reviews.review);
     const getCart = state.cart.find(cart => cart._id === id);
+    const user = useSelector(state => state.allUsers.user)
 
     const quantity = product?.quantity;
     const qty = getCart?.qty;
@@ -28,21 +31,29 @@ const SingleProduct = () => {
     const [purchaseQuantity, setQty] = useState(qty);
 
     const increase = () => {
-        dispatch(addToCart(id));
         setQty(parseInt(purchaseQuantity) + 1);
         const q = quantity - 1;
         if (purchaseQuantity === q) {
             console.log('no') //toast
         }
-        dispatch(adjustQty(id, purchaseQuantity + 1))
+        // console.log(purchaseQuantity, quantity );
+        const cartData = {
+            ...product, qty: purchaseQuantity + 1
+        }
+        // console.log(cartData)
+        dispatch(adjustQty(product._id, id, purchaseQuantity + 1, cartData))
     }
+
     const decrease = () => {
         setQty(parseInt(purchaseQuantity) - 1);
         console.log(purchaseQuantity)
         if (purchaseQuantity === 1) {
             dispatch(removeFromCart(id))
         }
-        dispatch(adjustQty(id, purchaseQuantity - 1))
+        const cartData = {
+            ...product, qty: purchaseQuantity + 1
+        }
+        dispatch(adjustQty(product._id, id, purchaseQuantity - 1, cartData))
     }
 
     useEffect(() => {
@@ -66,8 +77,28 @@ const SingleProduct = () => {
         }
     }, [qty, setQty, purchaseQuantity])
 
+    let newCart = user?.cart?.product;
+    
     const handleAddToCart = (id) => {
-        dispatch(addToCart(id));
+        dispatch(getMe())
+        const selectedProduct = products?.find(p => p._id === id)
+        const exists = newCart?.find(c => c._id === selectedProduct._id)
+        if (!exists) {
+            selectedProduct.qty = 1;
+            newCart = [...newCart, selectedProduct];
+        }
+        else {
+            exists.qty = exists.qty + 1;
+            const rest = newCart.filter(c => c._id !== exists._id)
+            newCart = [...rest, exists];
+        }
+        const cartData = {
+            cart: {
+                product: newCart
+            },
+        }
+        dispatch(addToCart(user._id, id, cartData));
+        dispatch(getMe())
     }
 
     const stock = {

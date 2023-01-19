@@ -9,19 +9,45 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { addToCart } from '../../../Redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart, getMe } from '../../../Redux/actions';
 import { ShoppingCart } from '@mui/icons-material';
 
-const Product = ({ product }) => {
+const Product = ({ product, products }) => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const user = useSelector(state => state.allUsers.user)
+
+    useEffect(() => {
+        dispatch(getMe());
+    },[dispatch])
+
     const handleDetails = (id) => {
         navigate(`/product/${id}`);
     }
+    let newCart = user?.cart?.product;
+    
     const handleAddToCart = (id) => {
-        dispatch(addToCart(id));
+        dispatch(getMe())
+        const selectedProduct = products?.find(p => p._id === id)
+        const exists = newCart?.find(c => c._id === selectedProduct._id)
+        if (!exists) {
+            selectedProduct.qty = 1;
+            newCart = [...newCart, selectedProduct];
+        }
+        else {
+            exists.qty = exists.qty + 1;
+            const rest = newCart.filter(c => c._id !== exists._id)
+            newCart = [...rest, exists];
+        }
+        const cartData = {
+            cart: {
+                product: newCart
+            },
+        }
+        dispatch(addToCart(user._id, id, cartData));
+        dispatch(getMe())
     }
 
     const cart = {

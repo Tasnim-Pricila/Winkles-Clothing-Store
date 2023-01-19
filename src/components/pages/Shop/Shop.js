@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import useUsers from '../../../Custom Hook/useUsers';
-import { addToCart, fetchProductsByPagination, getMe, searchByFilter, searchProducts } from '../../../Redux/actions';
+import { addToCart, fetchProductsByPagination, getCart, getMe, searchByFilter, searchProducts } from '../../../Redux/actions';
 import Footer from '../../shared/Footer';
 import AllProducts from './AllProducts';
 import LeftSidebar from './LeftSidebar';
@@ -23,8 +23,8 @@ const Shop = ({ searchText, setSearchText }) => {
     const [stock, setStock] = useState('');
     const [grid, setGrid] = useState(true);
     const [list, setList] = useState(false);
-    const [cartProduct, setCartProduct] = useState([]);
-    const [cartQty, setCartQty] = useState([]);
+    // const [cartProduct, setCartProduct] = useState([]);
+    // const [cartQty, setCartQty] = useState([]);
     // const [user] = useUsers();
     const location = useLocation();
 
@@ -206,11 +206,11 @@ const Shop = ({ searchText, setSearchText }) => {
 
 
     let newCart = user?.cart?.product;
-    console.log(newCart);
+    // console.log(newCart);
     const handleAddToCart = (id) => {
         dispatch(getMe())
         const selectedProduct = products?.result?.find(p => p._id === id)
-        const exists = newCart.find(c => c._id === selectedProduct._id)
+        const exists = newCart?.find(c => c._id === selectedProduct._id)
         if (!exists) {
             selectedProduct.qty = 1;
             newCart = [...newCart, selectedProduct];
@@ -220,7 +220,7 @@ const Shop = ({ searchText, setSearchText }) => {
             const rest = newCart.filter(c => c._id !== exists._id)
             newCart = [...rest, exists];
         }
-        console.log(newCart);
+        // console.log(newCart);
 
         const cartData = {
             cart: {
@@ -230,11 +230,11 @@ const Shop = ({ searchText, setSearchText }) => {
 
         dispatch(addToCart(user._id, id, cartData));
         dispatch(getMe())
+        // dispatch(getCart())
     }
 
     return (
         <>
-
             <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 3 }}
                 sx={{ mt: 2, px: 16, }}>
                 <Grid item xs={2} md={3} >

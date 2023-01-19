@@ -20,6 +20,7 @@ const Products = ({ products }) => {
                         products.slice(-4).reverse().map(product =>
                             <Product key={product._id}
                                 product={product}
+                                products={products}
                             />)
                         :
                         <p> Loading...</p>

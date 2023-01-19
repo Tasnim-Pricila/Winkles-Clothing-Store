@@ -23,6 +23,7 @@ const productReducer = (state = initialState, action) => {
                 ...state,
                 products: action.payload
             }
+
         case actionTypes.FETCH_PRODUCT:
             return {
                 ...state,
@@ -30,7 +31,7 @@ const productReducer = (state = initialState, action) => {
             }
         case actionTypes.REMOVE_SELECTED_PRODUCT:
             return {
-                ...state, 
+                ...state,
                 product: []
             }
         case actionTypes.ADD_PRODUCT:
@@ -48,12 +49,14 @@ const productReducer = (state = initialState, action) => {
                 ...state,
                 products: state.products.filter(product => product._id !== action.payload.id)
             }
+
         case actionTypes.ADD_TO_CART:
             // get the items data from the products array
-            const item = state.products.result.find(product => product._id === action.payload.id)
-            // check if the item is in cart or not 
+            const item = state.allProducts.find(product => product._id === action.payload.id)
+            // // check if the item is in cart or not 
             const inCart = state.cart.find(item =>
                 item._id === action.payload.id ? true : false)
+
             return {
                 ...state,
                 cart: inCart ?
@@ -64,8 +67,15 @@ const productReducer = (state = initialState, action) => {
                     )
                     :
                     [...state.cart, { ...item, qty: 1 }],
-                saveCart: action.payload.postCart
+                // cart: action.payload.postCart
+                // saveCart: action.payload.postCart
             }
+        case actionTypes.GET_CART:
+            return {
+                ...state,
+                cart: action.payload
+            }
+
         case actionTypes.REMOVE_FROM_CART:
             return {
                 ...state,
@@ -97,4 +107,4 @@ const productReducer = (state = initialState, action) => {
 };
 
 
-export { productReducer} ;
+export { productReducer };

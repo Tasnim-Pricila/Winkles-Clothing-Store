@@ -86,8 +86,23 @@ export const addToCart = (userId, itemID, data) => {
             type: actionTypes.ADD_TO_CART,
             payload: {
                 postCart: response?.data?.data,
+                // postCart: data,
                 id: itemID
             }
+        })
+    }
+}
+export const getCart = () => {
+    return async (dispatch) => {
+        // console.log(data);
+        const response = await Api.get(`/users/me`, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+        dispatch({
+            type: actionTypes.GET_CART,
+            payload: response.data.data.cart.product
         })
     }
 }
@@ -101,13 +116,18 @@ export const removeFromCart = (itemID) => {
     }
 }
 
-export const adjustQty = (itemID, qty) => {
-    return {
-        type: actionTypes.ADJUST_QTY,
-        payload: {
-            id: itemID,
-            qty: qty
-        }
+export const adjustQty = (productId, itemID, qty, data) => {
+    return async (dispatch) => {
+        // console.log(data);
+        const response = await Api.patch(`/users/me/${productId}`, data)
+        console.log(response);
+        dispatch({
+            type: actionTypes.ADJUST_QTY,
+            payload: {
+                id: itemID,
+                qty: qty
+            }
+        })
     }
 }
 
