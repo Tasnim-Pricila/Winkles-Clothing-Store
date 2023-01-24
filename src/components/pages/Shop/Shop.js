@@ -12,7 +12,7 @@ import ListView from './ListView';
 
 const Shop = ({ searchText, setSearchText }) => {
     const products = useSelector(state => state.allProducts.products)
-    var saveCart = useSelector(state => state.allProducts.saveCart)
+    // var saveCart = useSelector(state => state.allProducts.saveCart)
     const searched = useSelector(state => state.allProducts.searchProducts)
     const user = useSelector(state => state.allUsers.user)
     const dispatch = useDispatch();
@@ -227,8 +227,9 @@ const Shop = ({ searchText, setSearchText }) => {
                 product: newCart
             },
         }
+        console.log(cartData);
 
-        dispatch(addToCart(user._id, id, cartData));
+        dispatch(addToCart(user._id, cartData, id));
         dispatch(getMe())
         // dispatch(getCart())
     }

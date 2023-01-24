@@ -1,25 +1,35 @@
 import React, { useState } from 'react';
-import { adjustQty, removeFromCart } from '../../../Redux/actions';
-import { useDispatch } from 'react-redux';
+import { addToCart, adjustQty, getCart, getMe, removeFromCart } from '../../../Redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { TableCell, TableRow, } from '@mui/material';
 import styled from '@emotion/styled';
 import { Cancel } from '@mui/icons-material';
-import useUsers from '../../../Custom Hook/useUsers';
 
 const CartItem = ({ cartItem }) => {
     let { _id, title, price, qty, quantity, image } = cartItem;
     const dispatch = useDispatch();
     const [purchaseQuantity, setQty] = useState(qty);
-    // const user = useUsers();
+    const user = useSelector(state => state.allUsers.user)
+    const cart = user?.cart?.product;
 
     const handleRemove = (id) => {
+        dispatch(getMe())
+        const newCart = cart?.filter(c => c._id !== id)
+        const cartData = {
+            cart: {
+                product: newCart
+            },
+        }
+        dispatch(addToCart(user?._id, cartData));
         dispatch(removeFromCart(id));
+        dispatch(getMe())
     }
 
     const increase = () => {
+        dispatch(getMe())
         setQty(parseInt(purchaseQuantity) + 1);
         const q = quantity - 1;
         if (purchaseQuantity === q) {
@@ -29,9 +39,11 @@ const CartItem = ({ cartItem }) => {
             ...cartItem, qty: purchaseQuantity + 1
         }
         dispatch(adjustQty(cartItem._id, _id, purchaseQuantity + 1, cartData))
+        dispatch(getMe())
     }
 
     const decrease = () => {
+        dispatch(getMe())
         setQty(parseInt(purchaseQuantity) - 1);
         if (purchaseQuantity === 1) {
             dispatch(removeFromCart(_id))
@@ -39,7 +51,8 @@ const CartItem = ({ cartItem }) => {
         const cartData = {
             ...cartItem, qty: purchaseQuantity - 1
         }
-        dispatch(adjustQty( cartItem._id, _id, purchaseQuantity - 1, cartData))
+        dispatch(adjustQty(cartItem._id, _id, purchaseQuantity - 1, cartData))
+        dispatch(getMe())
     }
     // const singleTotal = price * parseInt(purchaseQuantity);
 
@@ -49,7 +62,7 @@ const CartItem = ({ cartItem }) => {
         maxWidth: '80px',
         maxHeight: '80px',
         padding: '10px 0px'
-    });
+    })
     return (
         <>
             <TableRow sx={{ p: 0 }}>

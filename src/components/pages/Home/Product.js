@@ -46,7 +46,7 @@ const Product = ({ product, products }) => {
                 product: newCart
             },
         }
-        dispatch(addToCart(user._id, id, cartData));
+        dispatch(addToCart(user._id, cartData, id));
         dispatch(getMe())
     }
 

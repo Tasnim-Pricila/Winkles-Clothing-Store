@@ -1,10 +1,23 @@
 import { Box, Breadcrumbs, Grid, Link, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Footer from '../../shared/Footer';
-import one from '../../../images/Article/1.png';
-import { Link as Routerlink } from 'react-router-dom';
+import { Link as Routerlink, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchBlogs } from '../../../Redux/actions';
 
 const Blogs = () => {
+    const dispatch = useDispatch(); 
+    const nav = useNavigate(); 
+    const blogs = useSelector(state => state.blogs.blogs)
+
+    useEffect(() => {
+        dispatch(fetchBlogs())
+    }, [dispatch])
+
+    const handleClick = (id) => {
+        // nav(`/blog/${id}`)
+    }
+
     return (
         <>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', px: 16, py: 5, bgcolor: '#FF8E78' }}>
@@ -24,29 +37,39 @@ const Blogs = () => {
                 px: 16,
                 mb: 10
             }}>
-                <Grid item md={4}
-                    sx={{
-                        '&:hover img': {
-                            transform: 'scale(1.2)'
-                        }
-                    }}>
-                    <Box sx={{ overflow: 'hidden' }} >
-                        <img src={one} alt="" width='100%'
-                            style={{
-                                transition: '3s ease-in-out',
-                                cursor: 'pointer'
-                            }} />
-                    </Box>
-                    <Typography color='#A4A4A4' pt={1} pb={2}> June 24, 2020 </Typography>
-                    <Typography variant='h5' sx={{ '&:hover': { color: '#FF8E78', transitionDuration: '.5s' }, cursor: 'pointer' }}> Never putting your <br /> Cocktail down to leave </Typography>
-                    <Typography py={2}> It reopened this year following a refurb which aims to cement its place a surfer's paradise. It now boasts two. </Typography>
-                    <Link href="#" sx={{
-                        color: '#A4A4A4', textDecorationColor: '#A4A4A4',
-                        '&:hover': { color: '#FF8E78', transitionDuration: '.5s' }
-                    }}>
-                        Read More
-                    </Link>
-                </Grid>
+               {
+                    blogs?.map(blog =>
+                        <Grid item md={4}
+                            sx={{
+                                '&:hover img': {
+                                    transform: 'scale(1.2)'
+                                }
+                            }}>
+                            <Box sx={{ overflow: 'hidden' }} >
+                                <img src={blog?.imageUrl} alt="" width='100%'
+                                    style={{
+                                        transition: '3s ease-in-out',
+                                        cursor: 'pointer'
+                                    }} />
+                            </Box>
+                            <Typography color='#A4A4A4' pt={1} pb={2}>
+                                {blog?.createdAt}
+                            </Typography>
+                            <Typography variant='h5' sx={{ '&:hover': { color: '#FF8E78', transitionDuration: '.5s' }, cursor: 'pointer', pr: 4 }}>
+                                {blog?.title}
+                            </Typography>
+                            <Typography py={2}>
+                                {blog?.description}
+                            </Typography>
+                            <Link onClick={() => handleClick(blog?._id)} sx={{
+                                color: '#A4A4A4', textDecorationColor: '#A4A4A4',
+                                '&:hover': { color: '#FF8E78', transitionDuration: '.5s' }
+                            }}>
+                                Read More
+                            </Link>
+                        </Grid>
+                    )
+                }
             </Grid>
             <Footer></Footer>
         </>

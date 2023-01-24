@@ -7,22 +7,20 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useUsers from '../../../Custom Hook/useUsers';
-import { getMe, postOrders } from '../../../Redux/actions';
+import { addToCart, clearCart, getMe, postOrders } from '../../../Redux/actions';
 import Footer from '../../shared/Footer';
 import Payment from './Payment';
 
 const Checkout = () => {
-    const [user] = useUsers();
     const navigate = useNavigate();
-    const { state } = useLocation();
     const dispatch = useDispatch();
-    const { total, cart } = state;
-    // console.log(cart);
-
+    const user = useSelector(state => state.allUsers.user)
     const createdOrder = useSelector(state => state.orders.orders)
+    // const cart = useSelector(state => state.allProducts.cart);
+    const cart = user?.cart?.product
 
     const stripePromise = loadStripe('pk_test_51L2D2EKZuhtVgyM7S2CeyD5YrpaY7x1Ab3pNWv4hqTyRbvblNQ2KZhgUz71r0JbCZCytaYDey0oYNYlZ1t3QNseW00ZewuwFk9');
-
+    const [total, setTotal] = useState(0);
     const [shippingDetails, setShippingDetails] = useState({
         phone: '',
         address: '',
@@ -40,13 +38,25 @@ const Checkout = () => {
         address: '',
         paymentMethod: '',
     })
+   
+    console.log(user);
+
+    useEffect(() => {
+        let total = 0;
+        cart?.forEach(item => {
+            total = parseFloat(total) + parseFloat(item.price) * parseFloat(item.qty);
+            total = total.toFixed(2);
+        })
+        setTotal(total);
+    }, [cart, total])
 
     const shipping = 100;
     const subtotal = parseFloat(shipping) + parseFloat(total);
 
     const placeOrder = (e) => {
+        dispatch(getMe())
         e.preventDefault();
-        console.log(shippingDetails)
+        // console.log(shippingDetails)
         const userInfo = {
             name: user?.firstName + ' ' + user?.lastName,
             email: user?.email
@@ -62,12 +72,17 @@ const Checkout = () => {
         }
         else {
             const orderData = { ...shippingDetails, ...userInfo }
-            // console.log(orderData);
             dispatch(postOrders(orderData))
+            dispatch(clearCart())
+            const cartData = {
+                cart: {
+                    product: []
+                },
+            }
+            dispatch(addToCart(user._id, cartData))
+            dispatch(getMe())
             navigate(`/orderComplete`, { state: { shippingDetails } })
-            // navigate(`/dashboard`)
         }
-
     }
 
     return (
@@ -187,6 +202,7 @@ const Checkout = () => {
                                 </TableHead>
                                 <TableBody>
                                     {
+                                        cart?.length > 0 &&
                                         cart.map(c =>
                                             <TableRow>
                                                 <TableCell>

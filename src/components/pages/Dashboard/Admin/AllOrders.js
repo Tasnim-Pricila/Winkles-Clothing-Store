@@ -50,19 +50,19 @@ const AllOrders = () => {
         }
     }
     const handleDelivery = (id) => {
-        // refetch();
+        dispatch(getAllOrders())
         dispatch(updateorder(id, {
             deliveryStatus: 'Shipped'
         }))
-        // refetch();
+        dispatch(getAllOrders())
     }
 
     const handlePayment = (id) => {
-        // refetch();
+        dispatch(getAllOrders())
         dispatch(updateorder(id, {
             paymentStatus: 'Paid'
         }))
-        // refetch();
+        dispatch(getAllOrders())
     }
 
     return (

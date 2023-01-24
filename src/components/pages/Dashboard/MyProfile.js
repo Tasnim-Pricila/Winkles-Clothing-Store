@@ -1,5 +1,5 @@
-import { Box, Button, Card, Grid, Toolbar, Typography } from '@mui/material';
-import React, { useEffect } from 'react';
+import { Avatar, Box, Button, Card, Grid, Toolbar, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMe } from '../../../Redux/actions';
 import avatar from '../../../images/avatar.png'
@@ -11,9 +11,9 @@ const MyProfile = () => {
     const user = useSelector(state => state.allUsers.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    // console.log(user);
-    const { firstName, lastName, email, status, createdAt } = user;
-    // console.log(firstName);
+
+
+    const { firstName, lastName, email, status, imageUrl, createdAt } = user;
 
 
     useEffect(() => {
@@ -49,8 +49,10 @@ const MyProfile = () => {
                     <Grid item md={12}>
                         <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)', padding: '20px 40px' }}>
 
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                <img src={avatar} alt="" style={{ border: '5px solid #eee8e8', borderRadius: '50%', width: '100px' }} />
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                                <Avatar src={imageUrl ? imageUrl : avatar} alt=""
+                                    sx={{ border: '5px solid #eee8e8', width: 100, height: 100 }}
+                                />
                                 <Typography width='100%' textTransform='uppercase' fontWeight='bold'> {firstName} {lastName} </Typography>
 
                                 <Box sx={{ display: 'flex', justifyContent: 'end', width: '100%' }}>
@@ -87,7 +89,7 @@ const MyProfile = () => {
                                     </Grid>
                                     <Grid item md={4}>
                                         <Typography>
-                                           { user?.phone}
+                                            {user?.phone}
 
                                         </Typography>
                                     </Grid>
@@ -101,7 +103,7 @@ const MyProfile = () => {
                                     </Grid>
                                     <Grid item md={4}>
                                         <Typography>
-                                           { user?.address }
+                                            {user?.address}
 
                                         </Typography>
                                     </Grid>
@@ -115,7 +117,7 @@ const MyProfile = () => {
                                     </Grid>
                                     <Grid item md={4}>
                                         <Typography>
-                                           { user?.country }
+                                            {user?.country}
 
                                         </Typography>
                                     </Grid>

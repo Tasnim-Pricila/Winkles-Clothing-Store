@@ -77,21 +77,21 @@ export const removeSelectedProduct = () => {
     }
 }
 
-export const addToCart = (userId, itemID, data) => {
+export const addToCart = (userId, data, itemID) => {
     return async (dispatch) => {
         // console.log(data);
         const response = await Api.patch(`/users/update/${userId}`, data)
-        console.log(response);
+        // console.log(response);
         dispatch({
             type: actionTypes.ADD_TO_CART,
             payload: {
                 postCart: response?.data?.data,
-                // postCart: data,
                 id: itemID
             }
         })
     }
 }
+
 export const getCart = () => {
     return async (dispatch) => {
         // console.log(data);
@@ -113,6 +113,15 @@ export const removeFromCart = (itemID) => {
         payload: {
             id: itemID
         }
+    }
+}
+
+export const clearCart = () => {
+    return {
+        type: actionTypes.CLEAR_CART,
+        // payload: {
+        //     car: itemID
+        // }
     }
 }
 
@@ -151,16 +160,29 @@ export const searchByFilter = (url) => {
     }
 }
 
+export const searchByCatAndBrand = (url) => {
+    return async (dispatch) => {
+        console.log(url);
+        const response = await Api.get(url)
+        dispatch({
+            type: actionTypes.SEARCH_BY_CAT_BRAND,
+            payload: response.data?.data?.result
+        })
+    }
+}
+
 // Orders 
 
 export const postOrders = (data) => {
     return async (dispatch) => {
         const response = await Api.post(`/orders`, data)
-        // console.log(response)
-        dispatch({
-            type: actionTypes.POST_ORDER,
-            payload: response
-        })
+        // console.log(response.data)
+        if (response?.data?.status === 'success') {
+            dispatch({
+                type: actionTypes.POST_ORDER,
+                payload: response.data
+            })
+        }
     }
 }
 
@@ -255,7 +277,7 @@ export const getMe = () => {
                 })
             }
         } catch (error) {
-            console.log(error.response.data.status)
+            // console.log(error.response.data.status)
             if (error.response.data.status === 'fail') {
                 dispatch({
                     type: actionTypes.GET_ME,

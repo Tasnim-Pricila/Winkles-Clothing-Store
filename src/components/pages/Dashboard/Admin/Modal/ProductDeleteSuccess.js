@@ -2,8 +2,9 @@ import { CheckCircleOutline } from '@mui/icons-material';
 import { Button, IconButton, Modal, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { deleteProduct } from '../../../../../Redux/actions';
+import { deleteProduct, fetchProducts } from '../../../../../Redux/actions';
 
 const ProductDeleteSuccess = ({ product, close }) => {
     const dispatch = useDispatch();
@@ -24,6 +25,7 @@ const ProductDeleteSuccess = ({ product, close }) => {
         p: 4,
         textAlign: 'center'
     };
+
     const handleDeleteproduct = (id) => {
         dispatch(deleteProduct(id))
         handleOpenModal();

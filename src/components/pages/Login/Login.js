@@ -5,11 +5,14 @@ import Api from '../../../Axios/Api';
 import Footer from '../../shared/Footer';
 import login from '../../../images/login.jpg'
 import { AlternateEmail, Visibility, VisibilityOff } from '@mui/icons-material';
+import { getCart, getMe } from '../../../Redux/actions';
+import { useDispatch } from 'react-redux';
 
 
 const Login = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [token, setToken] = useState('');
     const [userInfo, setUserInfo] = useState({
         email: '',
@@ -41,9 +44,12 @@ const Login = () => {
                 .then(res => {
                     // console.log(res)
                     if (res.data.status === 'success') {
+                        dispatch(getMe())
                         const accessToken = res.data?.data?.token;
                         localStorage.setItem('accessToken', accessToken);
                         setToken(accessToken);
+                        dispatch(getMe())
+                        dispatch(getCart())
                     }
                 })
                 .catch(err => {

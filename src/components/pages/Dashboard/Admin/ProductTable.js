@@ -1,14 +1,11 @@
 import { DeleteForever, Edit } from '@mui/icons-material';
 import { Box, Button, Modal, Popover, TableCell, TableRow, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { deleteProduct } from '../../../../Redux/actions';
 import ProductDeleteSuccess from './Modal/ProductDeleteSuccess';
 
 const ProductTable = ({ product }) => {
     const nav = useNavigate();
-    const dispatch = useDispatch();
 
     // Modal 
     const [modal, setModal] = React.useState(false);
@@ -29,11 +26,7 @@ const ProductTable = ({ product }) => {
     const handleEditProduct = (id) => {
         nav(`/dashboard/editProduct/${id}`)
     }
-    const handleDeleteproduct = (id) => {
-        dispatch(deleteProduct(id))
-        close();
-    }
-
+    
     // styles 
     const modalStyle = {
         position: 'absolute',
@@ -46,14 +39,7 @@ const ProductTable = ({ product }) => {
         boxShadow: 24,
         p: 4,
     };
-    const yes = {
-        bgcolor: '#45cb85',
-        color: 'white',
-        '&:hover': {
-            bgcolor: '#45cb85',
-            color: 'white'
-        }
-    }
+   
     const no = {
         bgcolor: '#f06548',
         color: 'white',
@@ -135,7 +121,7 @@ const ProductTable = ({ product }) => {
                                     Are you sure you want to delete this product?
                                 </Typography>
                                 <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2, gap: '10px' }}>
-                                    {/* <Button sx={yes} onClick={() => handleDeleteproduct(product._id)}> Yes </Button> */}
+                                   
                                     <ProductDeleteSuccess product={product} close={close} />
                                     <Button sx={no} onClick={close}> No </Button>
                                 </Box>

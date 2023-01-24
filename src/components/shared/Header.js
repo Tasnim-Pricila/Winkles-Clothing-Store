@@ -10,45 +10,39 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import logout from '../pages/Auth/logout';
 import { HowToReg, Login, Logout } from '@mui/icons-material';
-import useUsers from '../../Custom Hook/useUsers';
+// import useUsers from '../../Custom Hook/useUsers';
 import { getCart, getMe } from '../../Redux/actions';
 
 const Header = ({ setSearchText, searchText }) => {
     const pages = ['home', 'shop', 'blog', 'about', 'contact'];
     // const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-    const cart = useSelector(state => state.allProducts.cart);
-    // const user = useSelector(state => state.allUsers.user)
+    // let cart = useSelector(state => state.allProducts.cart);
+    const user = useSelector(state => state.allUsers.user)
+    let cart = user?.cart?.product
+    // const createdOrder = useSelector(state => state.orders.postOrder)
     const [countCart, setCountCart] = useState(0);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [user] = useUsers();
-    // const cart = user?.cart?.product
-    // console.log(cart)
 
-    // get cart from user 
-    // let sum = 0;
-    // user?.cart?.product.forEach(c => {
-    //     sum = sum + c.qty;
-    // });
-    // console.log(countCart);
+    useEffect(() => {
+        dispatch(getMe());
+    }, [dispatch])
 
-    // cart 
-    
     useEffect(() => {
         dispatch(getCart());
-    },[dispatch])
+    }, [dispatch])
+
+//    console.log(user)
 
     useEffect(() => {
-        // dispatch(getMe())
         let count = 0;
         cart?.length > 0 && cart.forEach(item => {
             count = count + item.qty;
         })
-        // console.log(count)
         setCountCart(count);
-    }, [dispatch, cart, countCart])
-
+    }, [dispatch, cart, countCart, user])
+    // console.log(countCart);
 
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
@@ -72,6 +66,7 @@ const Header = ({ setSearchText, searchText }) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
     const style = {
         position: 'absolute',
         top: '50%',
@@ -92,8 +87,10 @@ const Header = ({ setSearchText, searchText }) => {
         }
     }
     const handleLogout = () => {
+        dispatch(getMe());
         handleCloseUserMenu();
         logout();
+        dispatch(getMe());
     }
     const location = useLocation();
     const token = localStorage.getItem('accessToken')
@@ -337,22 +334,24 @@ const Header = ({ setSearchText, searchText }) => {
                             <IconButton sx={{ p: 0, color: 'white' }}>
                                 <FavoriteBorderIcon />
                             </IconButton>
-                            {/* {
+                            {
                                 user?.cart?.product?.length > 0 ?
-                                    <IconButton sx={{ p: 0, color: 'white' }} onClick={handleCart}>
-                                        <Badge badgeContent={sum} color='warning' sx={{}}>
-                                            <ShoppingCartIcon color="white">
-                                            </ShoppingCartIcon>
-                                        </Badge>
-                                    </IconButton>
-                                    : */}
                                     <IconButton sx={{ p: 0, color: 'white' }} onClick={handleCart}>
                                         <Badge badgeContent={countCart} color='warning'>
                                             <ShoppingCartIcon color="white">
                                             </ShoppingCartIcon>
                                         </Badge>
                                     </IconButton>
-                            {/* } */}
+                                    :
+                                    <IconButton sx={{ p: 0, color: 'white' }} onClick={handleCart}>
+                                        <Badge badgeContent='0' color='warning'>
+                                            <ShoppingCartIcon color="white">
+                                            </ShoppingCartIcon>
+                                        </Badge>
+                                    </IconButton>
+                            }
+
+
 
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

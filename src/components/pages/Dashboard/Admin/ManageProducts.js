@@ -4,11 +4,11 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { fetchBrands, fetchCategories, fetchProducts, searchByFilter, searchProducts } from '../../../../Redux/actions';
+import { fetchBrands, fetchCategories, fetchProducts, searchByCatAndBrand, searchByFilter, searchProducts } from '../../../../Redux/actions';
 import ProductTable from './ProductTable';
 
 const ManageProducts = () => {
-    const products = useSelector(state => state.allProducts.products);
+    const products = useSelector(state => state.allProducts.allProducts);
     const brands = useSelector(state => state.brands.brands);
     const categories = useSelector(state => state.category.categories);
     const searched = useSelector(state => state.allProducts.searchProducts)
@@ -18,7 +18,7 @@ const ManageProducts = () => {
     const [value, setValue] = useState('')
 
     const [search, setSearch] = useState('')
-
+    // console.log(products);
 
     useEffect(() => {
         dispatch(fetchProducts())
@@ -48,7 +48,7 @@ const ManageProducts = () => {
         document.getElementById("standard-search").value = '';
         setSearch('');
         const url = `/products?category=${e.target.value}`;
-        dispatch(searchByFilter(url))
+        dispatch(searchByCatAndBrand(url))
     }
 
     const handleBrand = (e) => {
@@ -56,7 +56,7 @@ const ManageProducts = () => {
         document.getElementById("standard-search").value = '';
         setSearch('');
         const url = `/products?brand=${e.target.value}`;
-        dispatch(searchByFilter(url))
+        dispatch(searchByCatAndBrand(url))
     }
     const addBtn = {
         color: 'white',
@@ -92,7 +92,7 @@ const ManageProducts = () => {
                             <Box my={2}>
                                 <Typography pb={1} sx={{ fontWeight: '600' }}>Categories</Typography>
                                 {
-                                    categories.map(cat =>
+                                    categories?.map(cat =>
                                         <Button variant='text'
                                             sx={{
                                                 color: value === cat?.name ? '#4b38b3' : '#495057',
@@ -111,7 +111,7 @@ const ManageProducts = () => {
                             <Box my={2}>
                                 <Typography pb={1} sx={{ fontWeight: '600' }}>Brands</Typography>
                                 {
-                                    brands.map(brand =>
+                                    brands?.map(brand =>
                                         <Button sx={{
                                             color: value === brand?.name ? '#4b38b3' : '#495057',
                                             fontWeight: value === brand?.name && '700',

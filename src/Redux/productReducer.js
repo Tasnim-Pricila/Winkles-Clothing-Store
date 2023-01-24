@@ -47,7 +47,8 @@ const productReducer = (state = initialState, action) => {
         case actionTypes.DELETE_PRODUCT:
             return {
                 ...state,
-                products: state.products.filter(product => product._id !== action.payload.id)
+                // products: state.products.filter(product => product._id !== action.payload.id),
+                allProducts: state.allProducts.filter(product => product._id !== action.payload.id)
             }
 
         case actionTypes.ADD_TO_CART:
@@ -81,6 +82,12 @@ const productReducer = (state = initialState, action) => {
                 ...state,
                 cart: state.cart.filter(prod => prod._id !== action.payload.id)
             }
+        case actionTypes.CLEAR_CART:
+            return {
+                ...state,
+                cart: []
+            }
+            
         case actionTypes.ADJUST_QTY:
             return {
                 ...state,
@@ -94,6 +101,11 @@ const productReducer = (state = initialState, action) => {
             return {
                 ...state,
                 products: action.payload,
+            }
+        case actionTypes.SEARCH_BY_CAT_BRAND:
+            return {
+                ...state,
+                allProducts: action.payload,
             }
         case actionTypes.SEARCH_PRODUCT:
             return {

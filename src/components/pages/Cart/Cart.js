@@ -1,27 +1,20 @@
 import { Button, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import CartItem from './CartItem';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, } from '@mui/material';
 import { Done, Loop } from '@mui/icons-material';
 import Footer from '../../shared/Footer';
-import { getCart } from '../../../Redux/actions';
 
 
 const Cart = () => {
     const navigate = useNavigate();
-    const cart = useSelector(state => state.allProducts.cart);
     const user = useSelector(state => state.allUsers.user)
-    const dispatch = useDispatch();
-    // const cart = user?.cart?.product
+    const cart = user?.cart?.product
 
     const [total, setTotal] = useState(0);
-
-    useEffect(() => {
-        dispatch(getCart());
-    },[dispatch])
 
     useEffect(() => {
         let total = 0;
@@ -33,7 +26,7 @@ const Cart = () => {
     }, [cart, total])
 
     const handleCheckout = () => {
-        navigate('/checkout', { state: { total, cart } });
+        navigate('/checkout', { state: { total } });
     }
     const handleContinue = () => {
         navigate('/shop');
@@ -80,12 +73,16 @@ const Cart = () => {
                                             ></CartItem>
                                         )
                                     }
+                                    <TableRow>
+                                        <TableCell colSpan={5} align='right' sx={{ pr: 4, fontWeight: 'bold' }}>
+                                            Total
+                                        </TableCell>
+                                        <TableCell colSpan={0} sx={{ fontWeight: 'bold' }}>
+                                            Tk. {total}
+                                        </TableCell>
+                                        <TableCell></TableCell>
+                                    </TableRow>
                                 </TableBody>
-                                <TableRow>
-                                    <TableCell colSpan={5} align='right' sx={{ pr: 8, fontWeight: 'bold' }} >Total</TableCell>
-                                    <TableCell colSpan={2} sx={{ fontWeight: 'bold' }} >Tk. {total}</TableCell>
-                                    <TableCell></TableCell>
-                                </TableRow>
                             </Table>
                         </TableContainer>
                         :

@@ -1,33 +1,78 @@
-import { Box, Button, Card, Grid, TextField, Toolbar, Typography } from '@mui/material';
-import React, { useEffect } from 'react';
+import { Avatar, Box, Button, Card, Grid, TextField, Toolbar, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMe, updateUserAction } from '../../../Redux/actions';
-import avatar from '../../../images/avatar.png'
 import { useNavigate } from 'react-router-dom';
+import { CameraAlt } from '@mui/icons-material';
+import axios from 'axios';
+import avatar from '../../../images/avatar.png'
+
 
 
 const EditProfile = () => {
     const user = useSelector(state => state.allUsers.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { firstName, lastName, email, status, createdAt } = user;
+    const { firstName, lastName, email, status, imageUrl, createdAt } = user;
 
     useEffect(() => {
         dispatch(getMe())
     }, [dispatch])
 
-    const handleUpdate = (e) => {
+    // image upload
+    const imgStorageKey = '966d2411c1e18d4935625f7409fb75e7';
+    const url = `https://api.imgbb.com/1/upload?key=${imgStorageKey}`;
+
+    const [myImage, setImage] = useState('');
+    const [imagePreview, setPreview] = useState('');
+
+    const getImage = (e) => {
+        setImage(e.target.files[0]);
+        setPreview(URL.createObjectURL(e.target.files[0]));//set preview
+    }
+
+    const handleUpdate = async (e) => {
         e.preventDefault();
-        dispatch(updateUserAction({
-            firstName: e.target.firstName.value,
-            lastName: e.target.lastName.value,
-            phone: e.target.phone.value,
-            address: e.target.address.value,
-            country: e.target.country.value,
-        }))
+        const formData = new FormData();
+        formData.append('image', myImage);
+        if (myImage) {
+            await axios.post(url, formData)
+                .then(response => {
+                    console.log(response)
+                    if (response?.data?.success) {
+                        const imgUrl = response?.data?.data?.url;
+                        dispatch(updateUserAction({
+                            firstName: e.target.firstName.value,
+                            lastName: e.target.lastName.value,
+                            phone: e.target.phone.value,
+                            address: e.target.address.value,
+                            country: e.target.country.value,
+                            imageUrl: imgUrl
+                        }))
+                        navigate('/dashboard/profile')
+                    }
+                })
+        }
+        else {
+            dispatch(updateUserAction({
+                firstName: e.target.firstName.value,
+                lastName: e.target.lastName.value,
+                phone: e.target.phone.value,
+                address: e.target.address.value,
+                country: e.target.country.value,
+            }))
+            navigate('/dashboard/profile')
+        }
+    }
+
+    const handleCancel = () => {
         navigate('/dashboard/profile')
     }
-    const handleCancel = () => {
+
+    const removePhoto = () => {
+        dispatch(updateUserAction({
+            imageUrl: ''
+        }))
         navigate('/dashboard/profile')
     }
 
@@ -46,15 +91,68 @@ const EditProfile = () => {
                 <Grid container spacing={2} >
                     <Grid item md={12}>
                         <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)', padding: '20px 40px' }}>
+                            <form onSubmit={handleUpdate}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                                    <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
+                                        <Box component="label" for='image' sx={{ cursor: 'pointer' }}>
+                                            <Avatar src={ myImage ? imagePreview :  imageUrl ? imageUrl : avatar} alt=""
+                                                sx={{
+                                                    border: '3px solid #eee8e8',
+                                                    width: 100,
+                                                    height: 100,
+                                                    display: 'inline-block',
+                                                    backgroundColor: '#aaacb85c',
+                                                    objectFit: 'cover'
+                                                }} />
+                                        </Box>
 
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                <img src={avatar} alt="" style={{ border: '5px solid #eee8e8', borderRadius: '50%', width: '100px' }} />
-                                <Typography width='100%' textTransform='uppercase' fontWeight='bold'> {firstName} {lastName} </Typography>
-                            </Box>
-                            {
-                                user?.length !== 0 &&
-                                <>
-                                    <form onSubmit={handleUpdate}>
+                                        <Button variant='outlined' component="label" for='image'
+                                            sx={{
+                                                borderRadius: '50%',
+                                                minWidth: '0px',
+                                                px: 0,
+                                                py: 0,
+                                                p: 2,
+                                                width: '10px',
+                                                height: '10px',
+                                                bgcolor: '#ffffff94',
+                                                borderColor: 'transparent',
+                                                '&:hover': {
+                                                    bgcolor: '#aaacb8',
+                                                    borderColor: 'transparent',
+                                                },
+                                                position: 'absolute',
+                                                bottom: '15px',
+                                                right: '-5px',
+                                            }}>
+                                            <CameraAlt sx={{ color: 'black' }} fontSize='small' />
+                                            <input type="file" name="image" id='image' hidden
+                                                onChange={getImage}
+                                            />
+                                        </Button>
+                                    </Box>
+                                    <Box>
+                                        <Typography width='100%' textTransform='uppercase' fontWeight='bold'> {firstName} {lastName} </Typography>
+                                        {
+                                            imageUrl &&
+                                            <Typography onClick={removePhoto} sx={{
+                                                fontSize: '10px',
+                                                mt: 1,
+                                                bgcolor: '#aaacb85c',
+                                                padding: '5px',
+                                                borderRadius: '8px',
+                                                cursor: 'pointer',
+                                                display: 'inline-block'
+                                            }}>
+                                                Remove Profile Photo
+                                            </Typography>
+                                        }
+                                    </Box>
+
+                                </Box>
+                                {
+                                    user?.length !== 0 &&
+                                    <Box>
                                         <Grid container spacing={2} mt={2} sx={{ display: 'flex', alignItems: 'center' }}>
                                             <Grid item md={4}>
                                                 <Typography textAlign='right' pr={20}> First Name </Typography>
@@ -143,7 +241,7 @@ const EditProfile = () => {
                                                         fontSize: '13px', color: '#212529'
                                                     }
                                                 }}
-                                                    defaultValue={user?.address && user?.address }
+                                                    defaultValue={user?.address && user?.address}
                                                     id="filled-hidden-label-small"
                                                     size="small"
                                                     name='address'
@@ -162,7 +260,7 @@ const EditProfile = () => {
                                                         fontSize: '13px', color: '#212529'
                                                     }
                                                 }}
-                                                    defaultValue={user?.country && user.country }
+                                                    defaultValue={user?.country && user.country}
                                                     id="filled-hidden-label-small"
                                                     size="small"
                                                     name='country'
@@ -193,14 +291,11 @@ const EditProfile = () => {
                                             <Button variant='contained' type='submit '> Save </Button>
                                             <Button variant='contained' onClick={handleCancel}> Cancel </Button>
                                         </Box>
-                                    </form>
-
-                                </>
-                            }
 
 
-
-
+                                    </Box>
+                                }
+                            </form>
                         </Card>
                     </Grid>
                 </Grid>

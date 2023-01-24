@@ -1,5 +1,5 @@
 import { Block, SearchOutlined } from '@mui/icons-material';
-import { Box, Button, Card, Grid, InputAdornment, TextField, Toolbar, Table, TableBody, TableCell, TableHead, TableRow, Divider, TableContainer } from '@mui/material';
+import { Box, Button, Card, Grid, InputAdornment, TextField, Toolbar, Table, TableBody, TableCell, TableHead, TableRow, Divider, TableContainer, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useDispatch } from 'react-redux';
@@ -109,7 +109,21 @@ const AllUsers = () => {
                                                     <TableCell> {user.email} </TableCell>
                                                     <TableCell> {user?.phone}  </TableCell>
                                                     <TableCell> {user.createdAt} </TableCell>
-                                                    <TableCell> {user.status} </TableCell>
+                                                    <TableCell>
+                                                        <Typography sx={{
+                                                            bgcolor: user?.status === 'blocked' ? 'rgba(240,101,72,.23)' : 'rgba(69,203,133,.23)',
+                                                            color: user?.status === 'blocked' ? '#f06548' : '#45cb85',
+                                                            fontSize: '11px',
+                                                            fontWeight: 'bold',
+                                                            letterSpacing: '1px',
+                                                            padding: '5px 4px',
+                                                            borderRadius: '5px',
+                                                            textAlign: 'center'
+                                                        }}>
+                                                            {user?.status}
+                                                        </Typography>
+
+                                                    </TableCell>
                                                     {
                                                         user?.status === 'active' ?
                                                             <TableCell>

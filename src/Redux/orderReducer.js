@@ -1,6 +1,7 @@
 import actionTypes from "./constants";
 
 const initialState = {
+    postOrder: [],
     orders: [],
     allOrder: [],
     updateOrder: []
@@ -9,11 +10,10 @@ const initialState = {
 
 export const orderReducer = (state = initialState, action) => {
     switch (action.type) {
-        
         case actionTypes.POST_ORDER:
             return {
                 ...state,
-                orders: action.payload
+                postOrder: action.payload
             }
         case actionTypes.GET_ORDER_BY_EMAIl:
             return {

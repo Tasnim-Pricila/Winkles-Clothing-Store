@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { addToCart, adjustQty, fetchProduct, fetchProducts, fetchReview, fetchReviewbyProductId, getMe, removeFromCart, removeSelectedProduct } from '../../../Redux/actions';
+import { addToCart, adjustQty, fetchProduct, fetchProducts, fetchReviewbyProductId, getMe, removeFromCart, removeSelectedProduct } from '../../../Redux/actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -19,42 +18,13 @@ const SingleProduct = () => {
     const dispatch = useDispatch();
     const state = useSelector(state => state.allProducts);
     const products = state.allProducts;
-    // console.log(products)
     let product = state.product;
-    const reviews = useSelector(state => state.reviews.review);
-    const getCart = state.cart.find(cart => cart._id === id);
-    const user = useSelector(state => state.allUsers.user)
-
     const quantity = product?.quantity;
-    const qty = getCart?.qty;
-
-    const [purchaseQuantity, setQty] = useState(qty);
-
-    const increase = () => {
-        setQty(parseInt(purchaseQuantity) + 1);
-        const q = quantity - 1;
-        if (purchaseQuantity === q) {
-            console.log('no') //toast
-        }
-        // console.log(purchaseQuantity, quantity );
-        const cartData = {
-            ...product, qty: purchaseQuantity + 1
-        }
-        // console.log(cartData)
-        dispatch(adjustQty(product._id, id, purchaseQuantity + 1, cartData))
-    }
-
-    const decrease = () => {
-        setQty(parseInt(purchaseQuantity) - 1);
-        console.log(purchaseQuantity)
-        if (purchaseQuantity === 1) {
-            dispatch(removeFromCart(id))
-        }
-        const cartData = {
-            ...product, qty: purchaseQuantity + 1
-        }
-        dispatch(adjustQty(product._id, id, purchaseQuantity - 1, cartData))
-    }
+    const reviews = useSelector(state => state.reviews.review);
+    const user = useSelector(state => state.allUsers.user)
+    const getCart = state.cart?.find(cart => cart._id === id);
+    
+    const [purchaseQuantity, setQty] = useState('');
 
     useEffect(() => {
         dispatch(fetchProduct(id))
@@ -68,17 +38,53 @@ const SingleProduct = () => {
     }, [dispatch])
 
     useEffect(() => {
+        dispatch(getMe())
+    }, [dispatch])
+
+
+    useEffect(() => {
+        if (getCart?.qty === undefined) {
+            setQty(0);
+        }
+        else if (getCart) {
+            setQty(getCart?.qty);
+        }
+    }, [getCart, setQty, purchaseQuantity])
+
+    useEffect(() => {
         dispatch(fetchReviewbyProductId(id))
     }, [dispatch, id])
 
-    useEffect(() => {
-        if (qty === undefined) {
-            setQty(0);
+    const increase = () => {
+        dispatch(getMe())
+        setQty(parseInt(purchaseQuantity) + 1);
+        const q = quantity - 1;
+        if (purchaseQuantity === q) {
+            console.log('no') //toast
         }
-    }, [qty, setQty, purchaseQuantity])
+        const cartData = {
+            ...product, qty: purchaseQuantity + 1
+        }
+        dispatch(adjustQty(product._id, id, purchaseQuantity + 1, cartData))
+        dispatch(getMe())
+    }
+
+    const decrease = () => {
+        dispatch(getMe())
+        setQty(parseInt(purchaseQuantity) - 1);
+        console.log(purchaseQuantity)
+        if (purchaseQuantity === 1) {
+            dispatch(removeFromCart(id))
+        }
+        const cartData = {
+            ...product, qty: purchaseQuantity - 1
+        }
+        dispatch(adjustQty(product._id, id, purchaseQuantity - 1, cartData))
+        dispatch(getMe())
+    }
 
     let newCart = user?.cart?.product;
-    
+
     const handleAddToCart = (id) => {
         dispatch(getMe())
         const selectedProduct = products?.find(p => p._id === id)
@@ -97,7 +103,7 @@ const SingleProduct = () => {
                 product: newCart
             },
         }
-        dispatch(addToCart(user._id, id, cartData));
+        dispatch(addToCart(user._id, cartData, id));
         dispatch(getMe())
     }
 

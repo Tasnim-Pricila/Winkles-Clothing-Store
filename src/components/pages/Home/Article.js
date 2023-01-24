@@ -17,7 +17,7 @@ const Article = () => {
     }, [dispatch])
 
     const handleClick = (id) => {
-        nav(`/blog/${id}`)
+        // nav(`/blog/${id}`)
     }
 
     return (
