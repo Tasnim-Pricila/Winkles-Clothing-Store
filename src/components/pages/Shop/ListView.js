@@ -1,19 +1,13 @@
-import { CheckCircle, ShoppingCart } from '@mui/icons-material';
+import {  ShoppingCart } from '@mui/icons-material';
 import { Box, Button, Grid, Typography } from '@mui/material';
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { addToCart } from '../../../Redux/actions';
 
-const ListView = ({ product }) => {
+const ListView = ({ product, handleAddToCart }) => {
 
     const navigate = useNavigate();
-    const dispatch = useDispatch();
     const handleDetails = (id) => {
         navigate(`/product/${id}`);
-    }
-    const handleAddToCart = (id) => {
-        dispatch(addToCart(id));
     }
 
     const cart = {

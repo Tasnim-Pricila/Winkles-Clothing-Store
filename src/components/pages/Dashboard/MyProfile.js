@@ -44,10 +44,10 @@ const MyProfile = () => {
             }}>
                 My Profile
             </Toolbar>
-            <Box p={3}>
-                <Grid container spacing={2} >
+            <Box m={4}>
+                <Grid container>
                     <Grid item md={12}>
-                        <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)', padding: '20px 40px' }}>
+                        <Card variant="outlined" sx={{ boxShadow: '0 3px 3px rgba(56,65,74,0.1)', p: 5 }}>
 
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                                 <Avatar src={imageUrl ? imageUrl : avatar} alt=""

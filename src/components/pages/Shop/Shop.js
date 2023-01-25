@@ -200,13 +200,8 @@ const Shop = ({ searchText, setSearchText }) => {
         setList(true);
     }
 
-    // useEffect(() => {
-    //     console.log(user?.cart?.product)
-    // }, [dispatch, user])
-
-
     let newCart = user?.cart?.product;
-    // console.log(newCart);
+
     const handleAddToCart = (id) => {
         dispatch(getMe())
         const selectedProduct = products?.result?.find(p => p._id === id)
@@ -315,7 +310,7 @@ const Shop = ({ searchText, setSearchText }) => {
                                     products?.result?.length > 0 ?
                                         products?.result?.map((product, i) =>
                                             <ListView key={product._id}
-                                                product={product}
+                                                product={product} handleAddToCart={handleAddToCart}
                                             />
                                         )
                                         :
@@ -332,7 +327,7 @@ const Shop = ({ searchText, setSearchText }) => {
                             }
                         </Box>
                     }
-                    <Typography> Page: {selectedPage} </Typography>
+                    {/* <Typography> Page: {selectedPage} </Typography> */}
                     <Pagination count={page} color="primary" defaultPage={1}
                         page={selectedPage} onChange={handleChange}
                         sx={{

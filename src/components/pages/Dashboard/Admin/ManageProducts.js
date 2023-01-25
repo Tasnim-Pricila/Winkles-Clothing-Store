@@ -36,7 +36,7 @@ const ManageProducts = () => {
     }, [dispatch])
 
     const handleAddproduct = () => {
-        nav('/dashboard/addProduct')
+        nav('/dashboard')
     }
 
     const handleClear = () => {

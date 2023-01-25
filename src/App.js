@@ -30,6 +30,8 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import SingleArticle from './components/pages/Home/SingleArticle';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMe } from './Redux/actions';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
@@ -40,7 +42,6 @@ function App() {
       },
     },
   });
-
 
   const [searchText, setSearchText] = useState('')
 
@@ -94,7 +95,7 @@ function App() {
             <Route path='profile/edit' element={<EditProfile />}></Route>
           </Route>
         </Routes>
-
+        <ToastContainer/>
       </div>
     </ThemeProvider>
 

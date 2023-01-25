@@ -1,12 +1,13 @@
-import { Box, Button, Card, FormControl, FormHelperText, Grid, IconButton, Input, InputAdornment, InputLabel, Link, OutlinedInput, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, FormControl, FormHelperText, Grid, IconButton, InputAdornment, InputLabel, Link, OutlinedInput, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Link as ReactLink, useLocation, useNavigate } from 'react-router-dom';
 import Api from '../../../Axios/Api';
 import Footer from '../../shared/Footer';
 import login from '../../../images/login.jpg'
 import { AlternateEmail, Visibility, VisibilityOff } from '@mui/icons-material';
-import { getCart, getMe } from '../../../Redux/actions';
+import { getMe } from '../../../Redux/actions';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 
 const Login = () => {
@@ -49,7 +50,8 @@ const Login = () => {
                         localStorage.setItem('accessToken', accessToken);
                         setToken(accessToken);
                         dispatch(getMe())
-                        dispatch(getCart())
+                        // dispatch(getCart())
+                        
                     }
                 })
                 .catch(err => {
@@ -70,6 +72,9 @@ const Login = () => {
     useEffect(() => {
         if (token) {
             navigate(from, { replace: true });
+            toast.success('Login Successful ', {
+                theme: 'colored',
+            });
         }
     }, [token])
 

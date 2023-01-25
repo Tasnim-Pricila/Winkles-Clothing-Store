@@ -6,6 +6,7 @@ import Api from '../../../Axios/Api';
 import Footer from '../../shared/Footer';
 import login from '../../../images/login.jpg'
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { toast } from 'react-toastify';
 
 const Register = () => {
 
@@ -41,7 +42,7 @@ const Register = () => {
 
     const handleClick = async (e) => {
         e.preventDefault();
-        console.log(userInfo);
+        // console.log(userInfo);
 
         if (userInfo.firstName === '') {
             setError({ firstName: 'This field is required' })
@@ -70,6 +71,9 @@ const Register = () => {
                     console.log(res);
                     if (res.data.status === 'success') {
                         navigate('/login')
+                        toast.success('Registration Successful ', {
+                            theme: 'colored',
+                        });
                     }
                 })
                 .catch(err => {

@@ -8,6 +8,7 @@ import { fetchBrands, fetchCategories, fetchProduct, removeSelectedProduct, upda
 import { Editor } from '@tinymce/tinymce-react';
 import { CameraAlt, CloudUpload } from '@mui/icons-material';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 const EditProduct = () => {
@@ -98,6 +99,9 @@ const EditProduct = () => {
                                             console.log(data)
                                             dispatch(updateProduct(id, data))
                                             nav('/dashboard/manageProducts')
+                                            toast.success('Product Updated Successfully ', {
+                                                theme: 'colored',
+                                            });
                                         }
                                     }
                                 })
@@ -126,6 +130,9 @@ const EditProduct = () => {
                         console.log(data)
                         dispatch(updateProduct(id, data))
                         nav('/dashboard/manageProducts')
+                        toast.success('Product Updated Successfully ', {
+                            theme: 'colored',
+                        });
                     }
                 })
         }
@@ -155,6 +162,9 @@ const EditProduct = () => {
                                 console.log(data)
                                 dispatch(updateProduct(id, data))
                                 nav('/dashboard/manageProducts')
+                                toast.success('Product Updated Successfully ', {
+                                    theme: 'colored',
+                                });
                             }
                         }
                     })
@@ -178,6 +188,9 @@ const EditProduct = () => {
             console.log(data)
             dispatch(updateProduct(id, data))
             nav('/dashboard/manageProducts')
+            toast.success('Product Updated Successfully ', {
+                theme: 'colored',
+            });
         }
     }
 

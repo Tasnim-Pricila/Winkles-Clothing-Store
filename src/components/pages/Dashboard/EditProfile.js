@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { CameraAlt } from '@mui/icons-material';
 import axios from 'axios';
 import avatar from '../../../images/avatar.png'
+import { toast } from 'react-toastify';
 
 
 
@@ -50,6 +51,9 @@ const EditProfile = () => {
                             imageUrl: imgUrl
                         }))
                         navigate('/dashboard/profile')
+                        toast.success('Profile Updated Successfully ', {
+                            theme: 'colored',
+                        });
                     }
                 })
         }
@@ -62,6 +66,9 @@ const EditProfile = () => {
                 country: e.target.country.value,
             }))
             navigate('/dashboard/profile')
+            toast.success('Profile Updated Successfully ', {
+                theme: 'colored',
+            });
         }
     }
 

@@ -5,12 +5,20 @@ import { Editor } from '@tinymce/tinymce-react';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { fetchBrands, fetchCategories, postProduct } from '../../../../Redux/actions';
 
 const CreateProduct = () => {
     const brands = useSelector(state => state.brands.brands);
     const categories = useSelector(state => state.category.categories);
     const dispatch = useDispatch();
+    const nav = useNavigate();
+
+    useEffect(() => {
+        dispatch(fetchBrands())
+        dispatch(fetchCategories())
+    }, [dispatch])
 
     const [productDetails, setProductDetails] = useState({
         title: '',
@@ -50,8 +58,9 @@ const CreateProduct = () => {
         gallery: '',
         galleryPreview: ''
     }]);
-    console.log(myImage);
-    console.log(gallery);
+
+    console.log(galleryImg)
+
     const galleryImage = (e) => {
         for (var i = 0; i < e.target.files.length; i++) {
             galleryPreview.push(URL.createObjectURL(e.target.files[i]))
@@ -75,7 +84,7 @@ const CreateProduct = () => {
         else if (myImage === '') {
             setError({ myImage: 'This field is required' })
         }
-        else if (gallery.length === 0) {
+        else if (galleryImg[0]?.gallery === '') {
             setError({ gallery: 'This field is required' })
         }
         else if (productDetails.quantity === '') {
@@ -101,26 +110,25 @@ const CreateProduct = () => {
             formData.append('image', myImage);
             await axios.post(url, formData)
                 .then(response => {
-                    // console.log('first one', response)
                     if (response?.data?.success) {
                         const imgUrl = response?.data?.data?.url;
-
                         // gallery image 
                         const formGallery = new FormData();
                         [...galleryImg?.gallery].forEach((image, i) => {
-                            // console.log(i)
                             formGallery.append('image', image)
                             axios.post(url, formGallery)
                                 .then(response => {
-                                    // console.log('second one', response)
                                     if (response?.data?.success) {
                                         imgGalleryUrl.push(response?.data?.data?.url);
                                         if (i === galleryImg?.gallery?.length - 1) {
                                             const data = {
                                                 ...productDetails, image: imgUrl, imageGallery: imgGalleryUrl
                                             }
-                                            // console.log(imgGalleryUrl)
                                             dispatch(postProduct(data))
+                                            nav('/dashboard/manageProducts')
+                                            toast.success('Product added Successfully ', {
+                                                theme: 'colored',
+                                            });
                                         }
                                     }
                                 })
@@ -128,14 +136,9 @@ const CreateProduct = () => {
                     }
                 })
         }
-        // main image 
-
     }
 
-    useEffect(() => {
-        dispatch(fetchBrands())
-        dispatch(fetchCategories())
-    }, [dispatch])
+
 
     return (
         <Box mb={4}>
@@ -269,7 +272,7 @@ const CreateProduct = () => {
                                     </Button>
                                     <Typography> Click to upload photos </Typography>
                                 </Box>
-                                <FormHelperText sx={{ color: '#d32f2f', pb: 10, textAlign: 'center', fontSize: '13px' }}> {error.gallery} </FormHelperText>
+                                <FormHelperText sx={{ color: '#d32f2f', textAlign: 'center', fontSize: '13px' }}> {error.gallery} </FormHelperText>
                                 {
                                     galleryImg?.galleryPreview?.map((g, i) =>
                                         <Box sx={{ display: 'flex', gap: '5px', mt: 1, border: '1px solid #ded8d8', borderRadius: '5px', p: 1 }}>
