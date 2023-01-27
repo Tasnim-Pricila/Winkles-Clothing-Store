@@ -10,17 +10,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import logout from '../pages/Auth/logout';
 import { HowToReg, Login, Logout } from '@mui/icons-material';
-// import useUsers from '../../Custom Hook/useUsers';
 import { getCart, getMe } from '../../Redux/actions';
 
 const Header = ({ setSearchText, searchText }) => {
     const pages = ['home', 'shop', 'blog', 'about', 'contact'];
-    // const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-    // let cart = useSelector(state => state.allProducts.cart);
     const user = useSelector(state => state.allUsers.user)
     let cart = user?.cart?.product
-    // const createdOrder = useSelector(state => state.orders.postOrder)
     const [countCart, setCountCart] = useState(0);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -33,8 +29,6 @@ const Header = ({ setSearchText, searchText }) => {
         dispatch(getCart());
     }, [dispatch])
 
-//    console.log(user)
-
     useEffect(() => {
         let count = 0;
         cart?.length > 0 && cart.forEach(item => {
@@ -42,7 +36,6 @@ const Header = ({ setSearchText, searchText }) => {
         })
         setCountCart(count);
     }, [dispatch, cart, countCart, user])
-    // console.log(countCart);
 
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
@@ -350,8 +343,6 @@ const Header = ({ setSearchText, searchText }) => {
                                         </Badge>
                                     </IconButton>
                             }
-
-
 
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

@@ -59,7 +59,7 @@ const CreateProduct = () => {
         galleryPreview: ''
     }]);
 
-    console.log(galleryImg)
+    // console.log(galleryImg)
 
     const galleryImage = (e) => {
         for (var i = 0; i < e.target.files.length; i++) {
@@ -208,7 +208,7 @@ const CreateProduct = () => {
                                     Add Product main Image.
                                 </Typography>
 
-                                <Box p={10} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
+                                <Box p={10} component="label" for='image' sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', position: 'relative', cursor: 'pointer' }}>
                                     <Box>
                                         <img src={imagePreview} alt="" style={{
                                             width: '100px',
@@ -256,7 +256,7 @@ const CreateProduct = () => {
                                 }}>
                                     Add Product Gallery Images.
                                 </Typography>
-                                <Box mt={2} p={6} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', position: 'relative', border: '1px solid gray', borderStyle: 'dashed', borderRadius: '1%' }}>
+                                <Box component="label" for='gallery' mt={2} p={6} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', position: 'relative', border: '1px solid gray', borderStyle: 'dashed', borderRadius: '1%', cursor: 'pointer' }}>
                                     <Button variant='outlined' component="label" for='gallery'
                                         sx={{
                                             borderColor: 'transparent',

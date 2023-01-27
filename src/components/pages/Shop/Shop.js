@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 import useUsers from '../../../Custom Hook/useUsers';
 import { addToCart, fetchProductsByPagination, getCart, getMe, searchByFilter, searchProducts } from '../../../Redux/actions';
 import Footer from '../../shared/Footer';
+import Loading from '../Loading/Loading';
 import AllProducts from './AllProducts';
 import LeftSidebar from './LeftSidebar';
 import ListView from './ListView';
@@ -222,7 +223,7 @@ const Shop = ({ searchText, setSearchText }) => {
                 product: newCart
             },
         }
-        console.log(cartData);
+        // console.log(cartData);
 
         dispatch(addToCart(user._id, cartData, id));
         dispatch(getMe())
@@ -284,7 +285,7 @@ const Shop = ({ searchText, setSearchText }) => {
                                             />
                                         )
                                         :
-                                        <p> No results found </p>
+                                        <Loading/>
                                     :
                                     searched?.length > 0 ?
                                         searched?.map(product =>
@@ -314,7 +315,7 @@ const Shop = ({ searchText, setSearchText }) => {
                                             />
                                         )
                                         :
-                                        <p> No results found </p>
+                                        <Loading/>
                                     :
                                     searched.length > 0 ?
                                         searched.map(product =>

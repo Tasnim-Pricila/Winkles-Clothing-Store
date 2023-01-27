@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import one from '../../../images/Article/1.png';
 import { fetchBlogs } from '../../../Redux/actions';
+import Loading from '../Loading/Loading';
 
 const Article = () => {
     const dispatch = useDispatch(); 
@@ -22,8 +23,8 @@ const Article = () => {
 
     return (
         <Box>
-            <Typography variant='h4' sx={{ textAlign: 'center', pt: 10, textTransform: 'uppercase' }}>
-                Latest Articles
+            <Typography variant='h4' sx={{ textAlign: 'center', pt: 10, textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold', fontSize: '26px' }}>
+                Latest From Blog
             </Typography>
 
             <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 4 }} sx={{
@@ -32,6 +33,7 @@ const Article = () => {
                 mb: 10
             }}>
                 {
+                    blogs?.length > 0 ?
                     blogs.slice(-3).reverse()?.map(blog =>
                         <Grid item md={4}
                             sx={{
@@ -63,6 +65,8 @@ const Article = () => {
                             </Link>
                         </Grid>
                     )
+                    :
+                    <Loading/>
                 }
 
             </Grid>

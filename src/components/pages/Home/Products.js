@@ -2,11 +2,12 @@ import React from 'react';
 import Grid from '@mui/material/Grid';
 import Product from './Product';
 import { Typography } from '@mui/material';
+import Loading from '../Loading/Loading';
 
 const Products = ({ products }) => {
     return (
         <>
-            <Typography variant='h4' sx={{ textAlign: 'center', pt: 10, textTransform: 'uppercase' }}>
+            <Typography sx={{ textAlign: 'center', pt: 10, textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold', fontSize: '26px' }}>
                 New Arrivals
             </Typography>
 
@@ -23,7 +24,7 @@ const Products = ({ products }) => {
                                 products={products}
                             />)
                         :
-                        <p> Loading...</p>
+                        <Loading/>
                 }
             </Grid>
         </>

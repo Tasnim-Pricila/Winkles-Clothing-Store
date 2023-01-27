@@ -8,7 +8,8 @@ const initialState = {
     addProduct: [],
     product: [],
     allProducts: [],
-    saveCart: []
+    saveCart: [],
+    loading: false
 }
 
 const productReducer = (state = initialState, action) => {
@@ -23,7 +24,6 @@ const productReducer = (state = initialState, action) => {
                 ...state,
                 products: action.payload
             }
-
         case actionTypes.FETCH_PRODUCT:
             return {
                 ...state,
@@ -68,19 +68,29 @@ const productReducer = (state = initialState, action) => {
                     )
                     :
                     [...state.cart, { ...item, qty: 1 }],
-                // cart: action.payload.postCart
-                // saveCart: action.payload.postCart
+                saveCart: action.payload.postCart,
+                loading: false
             }
         case actionTypes.GET_CART:
             return {
                 ...state,
                 cart: action.payload
             }
+        case actionTypes.LOADING:
+            return {
+                ...state,
+                loading: true
+            }
 
         case actionTypes.REMOVE_FROM_CART:
             return {
                 ...state,
                 cart: state.cart.filter(prod => prod._id !== action.payload.id)
+            }
+        case actionTypes.RESET_SAVECART:
+            return {
+                ...state,
+                saveCart: []
             }
         case actionTypes.CLEAR_CART:
             return {

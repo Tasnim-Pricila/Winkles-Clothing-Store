@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { addToCart, adjustQty, fetchProduct, fetchProducts, fetchReviewbyProductId, getMe, removeFromCart, removeSelectedProduct } from '../../../Redux/actions';
+import { addToCart, adjustQty, fetchProduct, fetchProducts, fetchReviewbyProductId, getMe, removeFromCart, removeSelectedProduct, searchByFilter } from '../../../Redux/actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { Avatar, Box, Card, Divider, Rating, TextField } from '@mui/material';
+import { Avatar, Box, Card, CardActions, CardContent, CardMedia, Divider, Rating, TextField } from '@mui/material';
 import { CheckCircle, ShoppingCart } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Carousel } from 'react-responsive-carousel';
 import "./carousel.min.css";
 import RatingModal from './RatingModal';
+import Loading from '../Loading/Loading';
+import Slider from 'react-slick';
 
 const SingleProduct = () => {
     const { id } = useParams();
@@ -23,7 +25,7 @@ const SingleProduct = () => {
     const reviews = useSelector(state => state.reviews.review);
     const user = useSelector(state => state.allUsers.user)
     const getCart = state.cart?.find(cart => cart._id === id);
-    
+    const categoryWiseProducts = state.products;
     const [purchaseQuantity, setQty] = useState('');
 
     useEffect(() => {
@@ -41,7 +43,6 @@ const SingleProduct = () => {
         dispatch(getMe())
     }, [dispatch])
 
-
     useEffect(() => {
         if (getCart?.qty === undefined) {
             setQty(0);
@@ -54,6 +55,11 @@ const SingleProduct = () => {
     useEffect(() => {
         dispatch(fetchReviewbyProductId(id))
     }, [dispatch, id])
+
+    useEffect(() => {
+        const url = `/products?category=${product.category}`
+        dispatch(searchByFilter(url))
+    }, [dispatch, product?.category])
 
     const increase = () => {
         dispatch(getMe())
@@ -117,6 +123,7 @@ const SingleProduct = () => {
         borderRadius: 0,
 
     }
+
     const cart = {
         border: '1px solid #FF8E78',
         color: '#FF8E78',
@@ -128,17 +135,54 @@ const SingleProduct = () => {
             color: 'white'
         }
     }
+    console.log(categoryWiseProducts)
+
     let allImg = [];
     const mainImg = [product?.image];
     const galleryImg = product?.imageGallery?.filter(image => image)
     if (mainImg && galleryImg) {
         allImg = [...mainImg, ...galleryImg]
     }
+  
+    const settings = {
+        dots: false,
+        infinite: true,
+        speed: 2000,
+        slidesToShow: 4,
+        slidesToScroll: 2,
+        initialSlide: 0,
+        autoplay: true,
+        arrows: false,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
+                    initialSlide: 2
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
+    }
 
     return (
         <>
             {
-                product ?
+                product?.length !== 0 ?
                     <>
                         <Grid container direction="row" columnSpacing={{ xs: 1, sm: 2, md: 3 }}
                             sx={{ px: 16, mt: 10 }}>
@@ -228,8 +272,71 @@ const SingleProduct = () => {
                             </Grid>
                         </Grid>
 
+
+                        {/* Related Products  */}
+
+                        <Box mx={16} py={6} mb={8}>
+                            <Typography variant='h5' sx={{ textAlign: 'center', py: 10, textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold' }}>
+                                Related Products
+                            </Typography>
+
+                            <Slider {...settings} >
+                                {
+                                    categoryWiseProducts?.result?.length > 0 ?
+                                    categoryWiseProducts?.result?.map((product, i) =>
+                                        <div style={{
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            padding: '20px',
+                                            gap: '200px',
+                                            flexDirection: 'column'
+                                        }}>
+                                            <Box>
+                                                <Box
+                                                    sx={{
+                                                        backgroundImage: `url(${product?.image})`,
+                                                        backgroundSize: 'cover',
+                                                        height: '60vh',
+                                                        backgroundRepeat: 'no-repeat',
+                                                        // backgroundPosition: 'top',
+                                                    }}
+                                                />
+                                                <Box sx={{ pt: 2, px: 1 }}>
+                                                    <Typography gutterBottom variant="h6"
+                                                        sx={{
+                                                            // textAlign: 'center',
+                                                            textTransform: 'capitalize',
+                                                            fontWeight: 'bold' ,
+                                                            mb: 0
+                                                            // height: '80px'
+                                                        }}>
+                                                        {
+                                                            product.title.length > 20 ? `${product.title.slice(0, 20)}...`
+                                                                : product.title
+                                                        }
+                                                    </Typography>
+                                                    <Typography 
+                                                    sx={{ 
+                                                        fontSize: '16px'
+                                                        // textAlign: 'center', 
+                                                        // fontWeight: 'bold' 
+                                                    }}>
+                                                        Tk. {product.price}
+                                                    </Typography>
+                                                </Box>
+                                            </Box>
+                                        </div>
+                                    )
+                                    :
+                                    <Loading/>
+                                }
+                            </Slider>
+
+                        </Box>
+
                         {/* Review Section  */}
-                        <Card variant="outlined" sx={{ p: 4, boxShadow: '0 3px 3px rgba(56,65,74,0.1)', mx: 16, my: 10 }}>
+                        <Card variant="outlined" sx={{ p: 4, boxShadow: '0 3px 3px rgba(56,65,74,0.1)', mx: 16 }}>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <Typography variant='h6' fontWeight='bold'> Share your thoughts with other customers </Typography>
                                 <Box>
@@ -263,8 +370,12 @@ const SingleProduct = () => {
                             </Box>
                         </Card>
 
+
                     </>
-                    : <p>Loading...</p>
+
+                    :
+
+                    <Loading></Loading>
             }
 
 

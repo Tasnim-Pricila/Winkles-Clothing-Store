@@ -94,7 +94,8 @@ const Product = ({ product, products }) => {
                 <CardContent sx={{ pt: 2 }}>
                     <Typography gutterBottom variant="h6" sx={{ textAlign: 'center', textTransform: 'capitalize' }}>
                         {
-                            product.title.length > 24 ? `${product.title.slice(0, 24)}...`
+                           
+                                product.title.length > 20 ? `${product.title.slice(0, 20)}...`
                                 : product.title
                         }
                     </Typography>

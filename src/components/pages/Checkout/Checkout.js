@@ -7,16 +7,19 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useUsers from '../../../Custom Hook/useUsers';
-import { addToCart, clearCart, getMe, postOrders } from '../../../Redux/actions';
+import { addToCart, clearCart, getMe, postOrders, resetSavecart } from '../../../Redux/actions';
 import Footer from '../../shared/Footer';
+import Loading from '../Loading/Loading';
 import Payment from './Payment';
 
 const Checkout = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    // const [loading, setLoading] = useState(false)
     const user = useSelector(state => state.allUsers.user)
     const createdOrder = useSelector(state => state.orders.orders)
-    // const cart = useSelector(state => state.allProducts.cart);
+    // const saveCart = useSelector(state => state.allProducts.saveCart);
+    const loading = useSelector(state => state.allProducts.loading);
     const cart = user?.cart?.product
 
     const stripePromise = loadStripe('pk_test_51L2D2EKZuhtVgyM7S2CeyD5YrpaY7x1Ab3pNWv4hqTyRbvblNQ2KZhgUz71r0JbCZCytaYDey0oYNYlZ1t3QNseW00ZewuwFk9');
@@ -38,8 +41,6 @@ const Checkout = () => {
         address: '',
         paymentMethod: '',
     })
-   
-    console.log(user);
 
     useEffect(() => {
         let total = 0;
@@ -50,13 +51,25 @@ const Checkout = () => {
         setTotal(total);
     }, [cart, total])
 
+    // useEffect(() => {
+    //     console.log(saveCart);
+    //     if (saveCart?.acknowledged === true) {
+    //         dispatch(resetSavecart())
+    //         navigate(`/orderComplete`, { state: { shippingDetails } })
+    //         dispatch(getMe())
+    //     }
+    // }, [dispatch, saveCart])
+
     const shipping = 100;
     const subtotal = parseFloat(shipping) + parseFloat(total);
+
+    if (loading) {
+        return <Loading></Loading>
+    }
 
     const placeOrder = (e) => {
         dispatch(getMe())
         e.preventDefault();
-        // console.log(shippingDetails)
         const userInfo = {
             name: user?.firstName + ' ' + user?.lastName,
             email: user?.email
@@ -71,6 +84,7 @@ const Checkout = () => {
             setError({ paymentMethod: 'Please select your payment method' })
         }
         else {
+            // setLoading(true)
             const orderData = { ...shippingDetails, ...userInfo }
             dispatch(postOrders(orderData))
             dispatch(clearCart())
@@ -80,8 +94,8 @@ const Checkout = () => {
                 },
             }
             dispatch(addToCart(user._id, cartData))
-            dispatch(getMe())
             navigate(`/orderComplete`, { state: { shippingDetails } })
+            dispatch(getMe())
         }
     }
 
@@ -173,12 +187,13 @@ const Checkout = () => {
                             shippingDetails.paymentMethod === "Card" ?
                                 <Box mt={4}>
                                     <Elements stripe={stripePromise}>
-                                        <Payment total={total} shippingDetails={shippingDetails} createdOrder={createdOrder} setShippingDetails={setShippingDetails} error={error} setError={setError} />
+                                        <Payment total={total} shippingDetails={shippingDetails} createdOrder={createdOrder} setShippingDetails={setShippingDetails} error={error} setError={setError} cart={cart} />
                                     </Elements>
                                 </Box>
                                 :
                                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                    <Button type="submit" variant='contained' onClick={placeOrder} sx={{ mt: 6 }}>
+                                    <Button type="submit" variant='contained' onClick={placeOrder} sx={{ mt: 6 }} 
+                                    disabled={cart?.length === 0}>
                                         Place Order
                                     </Button>
                                 </Box>

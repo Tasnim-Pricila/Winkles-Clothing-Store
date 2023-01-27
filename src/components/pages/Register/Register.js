@@ -7,6 +7,7 @@ import Footer from '../../shared/Footer';
 import login from '../../../images/login.jpg'
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { toast } from 'react-toastify';
+import Loading from '../Loading/Loading';
 
 const Register = () => {
 
@@ -23,6 +24,7 @@ const Register = () => {
     const handleMouseDownConfirmPassword = (event) => {
         event.preventDefault();
     };
+    const [loading, setLoading] = useState(false)
 
     const [userInfo, setUserInfo] = useState({
         firstName: '',
@@ -39,6 +41,10 @@ const Register = () => {
         confirmPassword: '',
         others: ''
     })
+
+    if(loading){
+        return <Loading></Loading>
+    }
 
     const handleClick = async (e) => {
         e.preventDefault();
@@ -66,11 +72,13 @@ const Register = () => {
             setError({ lastName: 'Name must be at least 3 characters' })
         }
         else {
+            setLoading(true)
             await Api.post(`/users/signup`, userInfo)
                 .then(res => {
-                    console.log(res);
+                    // console.log(res);
                     if (res.data.status === 'success') {
                         navigate('/login')
+                        setLoading(false)
                         toast.success('Registration Successful ', {
                             theme: 'colored',
                         });
@@ -157,7 +165,6 @@ const Register = () => {
                                             id="lastName"
                                             label="Last Name*"
                                             name="lastName"
-                                            autoComplete="lname"
                                             onKeyUp=
                                             {(e) => setUserInfo({ ...userInfo, lastName: e.target.value })}
                                         />

@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import useUsers from '../../../Custom Hook/useUsers';
 import { postOrders } from '../../../Redux/actions';
 
-const Payment = ({ total, shippingDetails, createdOrder, setShippingDetails, setError }) => {
+const Payment = ({ total, shippingDetails, createdOrder, setShippingDetails, setError, cart }) => {
     const dispatch = useDispatch();
     const stripe = useStripe();
     const elements = useElements();
@@ -148,7 +148,7 @@ const Payment = ({ total, shippingDetails, createdOrder, setShippingDetails, set
                 }
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Button type="submit" variant='contained' sx={{ mt: 6 }}
-                        disabled={!stripe || !clientSecret || success}
+                        disabled={!stripe || !clientSecret || success || cart?.length === 0 }
                     >
                         Pay & Place Order
                     </Button>

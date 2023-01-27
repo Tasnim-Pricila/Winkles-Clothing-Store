@@ -11,7 +11,6 @@ import logout from '../Auth/logout';
 
 const Dashboard = (props) => {
     const user = useSelector(state => state.allUsers.user);
-    // console.log(user)
     const dispatch = useDispatch();
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -229,8 +228,10 @@ const Dashboard = (props) => {
     const id = open ? 'simple-popover' : undefined;
 
     const handleLogout = () => {
+        dispatch(getMe());
         handleClose();
         logout();
+        dispatch(getMe());
     }
 
     return (

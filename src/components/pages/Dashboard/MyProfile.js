@@ -12,7 +12,6 @@ const MyProfile = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-
     const { firstName, lastName, email, status, imageUrl, createdAt } = user;
 
 

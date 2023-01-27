@@ -11,6 +11,7 @@ import './brand.css';
 
 const Brand = () => {
     const image = [one, two, three, four, five, six, one, two];
+    
     function SampleNextArrow(props) {
         const { className, style, onClick } = props;
         return (

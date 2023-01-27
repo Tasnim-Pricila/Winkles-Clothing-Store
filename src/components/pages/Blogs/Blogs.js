@@ -1,15 +1,15 @@
 import { Box, Breadcrumbs, Grid, Link, Typography } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Footer from '../../shared/Footer';
 import { Link as Routerlink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBlogs } from '../../../Redux/actions';
+import Loading from '../Loading/Loading';
 
 const Blogs = () => {
     const dispatch = useDispatch(); 
     const nav = useNavigate(); 
     const blogs = useSelector(state => state.blogs.blogs)
-
     useEffect(() => {
         dispatch(fetchBlogs())
     }, [dispatch])
@@ -38,6 +38,7 @@ const Blogs = () => {
                 mb: 10
             }}>
                {
+                    blogs?.length > 0 ?
                     blogs?.map(blog =>
                         <Grid item md={4}
                             sx={{
@@ -69,6 +70,8 @@ const Blogs = () => {
                             </Link>
                         </Grid>
                     )
+                    :
+                    <Loading/>
                 }
             </Grid>
             <Footer></Footer>

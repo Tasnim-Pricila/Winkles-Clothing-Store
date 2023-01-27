@@ -1,12 +1,10 @@
 import { Celebration } from '@mui/icons-material';
 import { Box, Button, Card, Typography } from '@mui/material';
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 
 const OrderComplete = () => {
-    const { state } = useLocation();
-    const { shippingDetails } = state;
-    const { name, email, phone, address, notes } = shippingDetails;
+
     const navigate = useNavigate();
     const handleClick = () => {
         navigate('/dashboard')

@@ -63,6 +63,7 @@ const CartItem = ({ cartItem }) => {
         maxHeight: '80px',
         padding: '10px 0px'
     })
+    
     return (
         <>
             <TableRow sx={{ p: 0 }}>

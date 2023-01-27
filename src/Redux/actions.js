@@ -1,3 +1,4 @@
+import { toast } from "react-toastify"
 import Api from "../Axios/Api"
 import actionTypes from "./constants"
 
@@ -79,16 +80,23 @@ export const removeSelectedProduct = () => {
 
 export const addToCart = (userId, data, itemID) => {
     return async (dispatch) => {
-        // console.log(data);
+        dispatch({ type: actionTypes.LOADING, })
         const response = await Api.patch(`/users/update/${userId}`, data)
-        // console.log(response);
-        dispatch({
-            type: actionTypes.ADD_TO_CART,
-            payload: {
-                postCart: response?.data?.data,
-                id: itemID
-            }
-        })
+        if (response?.data?.data?.acknowledged === true) {
+            dispatch({
+                type: actionTypes.ADD_TO_CART,
+                payload: {
+                    postCart: response?.data?.data,
+                    id: itemID
+                }
+            })
+        }
+    }
+}
+
+export const resetSavecart = () => {
+    return {
+        type: actionTypes.RESET_SAVECART,
     }
 }
 
@@ -199,7 +207,7 @@ export const getAllOrders = () => {
 
 export const orderByFilter = (url) => {
     return async (dispatch) => {
-        console.log(url);
+        // console.log(url);
         const response = await Api.get(url)
         dispatch({
             type: actionTypes.ORDER_BY_FILTER,

@@ -1,37 +1,33 @@
 import { Block, SearchOutlined } from '@mui/icons-material';
 import { Box, Button, Card, Grid, InputAdornment, TextField, Toolbar, Table, TableBody, TableCell, TableHead, TableRow, Divider, TableContainer, Typography } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { updateUserById } from '../../../../Redux/actions';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUsers, updateUserById } from '../../../../Redux/actions';
+import Loading from '../../Loading/Loading';
 
 const AllUsers = () => {
-    const { data, isLoading, refetch } = useQuery({
-        queryKey: ['users'],
-        queryFn: () =>
-            fetch(`https://winkles-server.onrender.com/users`)
-                .then(res => res.json())
 
-    })
-    if (isLoading) {
-        console.log('loading');
-    }
-
+    const users = useSelector(state => state.allUsers.users)
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        dispatch(getUsers())
+    }, [dispatch])
+
     const handleBlock = (id) => {
-        refetch();
+        dispatch(getUsers())
         dispatch(updateUserById(id, {
             status: 'blocked'
         }))
-        refetch();
+        dispatch(getUsers())
     }
     const handleActive = (id) => {
-        refetch();
+        dispatch(getUsers())
         dispatch(updateUserById(id, {
             status: 'active'
         }))
-        refetch();
+        dispatch(getUsers())
     }
     const addBtn = {
         color: 'white',
@@ -55,110 +51,117 @@ const AllUsers = () => {
             }}>
                 Manage Products
             </Toolbar>
-            <Box p={3}>
-                <Grid container spacing={2}>
-                    <Grid item md={12}>
-                        <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pb: 2 }}>
-                                <Button variant='contained' sx={addBtn}> + Add User </Button>
-                                <TextField
-                                    id="standard-search"
-                                    type="search"
-                                    placeholder='Search Users...'
-                                    size='small'
-                                    InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start">
-                                                <SearchOutlined />
-                                            </InputAdornment>
-                                        ),
-                                    }}
-                                    sx={{
-                                        '.css-1xp6qmi-MuiInputBase-input-MuiOutlinedInput-input': {
-                                            fontSize: '14px'
-                                        }
-                                    }}
-                                />
-                            </Box>
-                            <Divider />
-                            <TableContainer sx={{ maxHeight: 500 }}>
-                                <Table stickyHeader aria-label="simple table">
-                                    <TableHead sx={{ bgcolor: '#f3f6f9' }}>
-                                        <TableRow sx={{
-                                            '.MuiTableCell-root': {
-                                                color: '#878a99',
-                                                fontWeight: 'bold',
-                                                textTransform: 'uppercase'
-                                            }
-                                        }} >
-                                            <TableCell sx={{ fontWeight: 'bold' }}> # </TableCell>
-                                            <TableCell sx={{ fontWeight: 'bold' }}> User </TableCell>
-                                            <TableCell sx={{ fontWeight: 'bold' }}> Email </TableCell>
-                                            <TableCell sx={{ fontWeight: 'bold' }}> Phone </TableCell>
-                                            <TableCell sx={{ fontWeight: 'bold' }}> Joining Date </TableCell>
-                                            <TableCell sx={{ fontWeight: 'bold' }}> Status </TableCell>
-                                            <TableCell sx={{ fontWeight: 'bold' }}> Action </TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {
-                                            data?.data?.result.map((user, i) =>
-                                                <TableRow>
-                                                    <TableCell> {i + 1} </TableCell>
-                                                    <TableCell> {user.firstName} {user.lastName} </TableCell>
-                                                    <TableCell> {user.email} </TableCell>
-                                                    <TableCell> {user?.phone}  </TableCell>
-                                                    <TableCell> {user.createdAt} </TableCell>
-                                                    <TableCell>
-                                                        <Typography sx={{
-                                                            bgcolor: user?.status === 'blocked' ? 'rgba(240,101,72,.23)' : 'rgba(69,203,133,.23)',
-                                                            color: user?.status === 'blocked' ? '#f06548' : '#45cb85',
-                                                            fontSize: '11px',
-                                                            fontWeight: 'bold',
-                                                            letterSpacing: '1px',
-                                                            padding: '5px 4px',
-                                                            borderRadius: '5px',
-                                                            textAlign: 'center'
-                                                        }}>
-                                                            {user?.status}
-                                                        </Typography>
-
-                                                    </TableCell>
-                                                    {
-                                                        user?.status === 'active' ?
-                                                            <TableCell>
-                                                                <Button variant='contained'
-                                                                    size='small'
-                                                                    sx={{
-                                                                        bgcolor: '#f06548',
-                                                                        '&:hover': {
-                                                                            bgcolor: '#f06548',
-                                                                        }
-                                                                    }}
-                                                                    endIcon={<Block fontSize='small' />}
-                                                                    onClick={() => handleBlock(user._id)}>
-                                                                    Block
-                                                                </Button>
-                                                            </TableCell>
-                                                            :
-                                                            <TableCell>
-                                                                <Button variant='contained' size='small'
-                                                                    endIcon={<Block fontSize='small' />}
-                                                                    onClick={() => handleActive(user._id)}>
-                                                                    Activate
-                                                                </Button>
-                                                            </TableCell>
+            {
+                users?.length !== 0 ?
+                    <Box p={3}>
+                        <Grid container spacing={2}>
+                            <Grid item md={12}>
+                                <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
+                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pb: 2 }}>
+                                        <Button variant='contained' sx={addBtn}> + Add User </Button>
+                                        <TextField
+                                            id="standard-search"
+                                            type="search"
+                                            placeholder='Search Users...'
+                                            size='small'
+                                            InputProps={{
+                                                startAdornment: (
+                                                    <InputAdornment position="start">
+                                                        <SearchOutlined />
+                                                    </InputAdornment>
+                                                ),
+                                            }}
+                                            sx={{
+                                                '.css-1xp6qmi-MuiInputBase-input-MuiOutlinedInput-input': {
+                                                    fontSize: '14px'
+                                                }
+                                            }}
+                                        />
+                                    </Box>
+                                    <Divider />
+                                    <TableContainer sx={{ maxHeight: 500 }}>
+                                        <Table stickyHeader aria-label="simple table">
+                                            <TableHead sx={{ bgcolor: '#f3f6f9' }}>
+                                                <TableRow sx={{
+                                                    '.MuiTableCell-root': {
+                                                        color: '#878a99',
+                                                        fontWeight: 'bold',
+                                                        textTransform: 'uppercase'
                                                     }
+                                                }} >
+                                                    <TableCell sx={{ fontWeight: 'bold' }}> # </TableCell>
+                                                    <TableCell sx={{ fontWeight: 'bold' }}> User </TableCell>
+                                                    <TableCell sx={{ fontWeight: 'bold' }}> Email </TableCell>
+                                                    <TableCell sx={{ fontWeight: 'bold' }}> Phone </TableCell>
+                                                    <TableCell sx={{ fontWeight: 'bold' }}> Joining Date </TableCell>
+                                                    <TableCell sx={{ fontWeight: 'bold' }}> Status </TableCell>
+                                                    <TableCell sx={{ fontWeight: 'bold' }}> Action </TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {
+                                                    users?.map((user, i) =>
+                                                        <TableRow>
+                                                            <TableCell> {i + 1} </TableCell>
+                                                            <TableCell> {user.firstName} {user.lastName} </TableCell>
+                                                            <TableCell> {user.email} </TableCell>
+                                                            <TableCell> {user?.phone}  </TableCell>
+                                                            <TableCell> {user.createdAt} </TableCell>
+                                                            <TableCell>
+                                                                <Typography sx={{
+                                                                    bgcolor: user?.status === 'blocked' ? 'rgba(240,101,72,.23)' : 'rgba(69,203,133,.23)',
+                                                                    color: user?.status === 'blocked' ? '#f06548' : '#45cb85',
+                                                                    fontSize: '11px',
+                                                                    fontWeight: 'bold',
+                                                                    letterSpacing: '1px',
+                                                                    padding: '5px 4px',
+                                                                    borderRadius: '5px',
+                                                                    textAlign: 'center'
+                                                                }}>
+                                                                    {user?.status}
+                                                                </Typography>
 
-                                                </TableRow>)
-                                        }
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                        </Card>
-                    </Grid>
-                </Grid>
-            </Box>
+                                                            </TableCell>
+                                                            {
+                                                                user?.status === 'active' ?
+                                                                    <TableCell>
+                                                                        <Button variant='contained'
+                                                                            size='small'
+                                                                            sx={{
+                                                                                bgcolor: '#f06548',
+                                                                                '&:hover': {
+                                                                                    bgcolor: '#f06548',
+                                                                                }
+                                                                            }}
+                                                                            endIcon={<Block fontSize='small' />}
+                                                                            onClick={() => handleBlock(user._id)}>
+                                                                            Block
+                                                                        </Button>
+                                                                    </TableCell>
+                                                                    :
+                                                                    <TableCell>
+                                                                        <Button variant='contained' size='small'
+                                                                            endIcon={<Block fontSize='small' />}
+                                                                            onClick={() => handleActive(user._id)}>
+                                                                            Activate
+                                                                        </Button>
+                                                                    </TableCell>
+                                                            }
+
+                                                        </TableRow>
+                                                    )
+                                                }
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                                </Card>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                    :
+                    <Loading />
+            }
+
         </Box >
     );
 };

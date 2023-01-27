@@ -8,6 +8,7 @@ import { AlternateEmail, Visibility, VisibilityOff } from '@mui/icons-material';
 import { getMe } from '../../../Redux/actions';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
+import Loading from '../Loading/Loading';
 
 
 const Login = () => {
@@ -15,43 +16,45 @@ const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [token, setToken] = useState('');
+
     const [userInfo, setUserInfo] = useState({
         email: '',
         password: ''
     })
+
     const [error, setError] = useState({
         email: '',
         password: '',
         others: ''
     })
 
+    const [loading, setLoading] = useState(false)
+
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
-
+   
     const handleClick = async (e) => {
         e.preventDefault();
 
         if (userInfo.email === '') {
             setError({ email: 'This field is required' })
         }
-        if (userInfo.password === '') {
+        else if (userInfo.password === '') {
             setError({ password: 'This field is required' })
         }
         else {
             await Api.post(`/users/login`, userInfo)
                 .then(res => {
-                    // console.log(res)
                     if (res.data.status === 'success') {
+                        setLoading(true)
                         dispatch(getMe())
                         const accessToken = res.data?.data?.token;
                         localStorage.setItem('accessToken', accessToken);
                         setToken(accessToken);
                         dispatch(getMe())
-                        // dispatch(getCart())
-                        
                     }
                 })
                 .catch(err => {
@@ -71,12 +74,18 @@ const Login = () => {
     const from = location.state?.from?.pathname || '/shop';
     useEffect(() => {
         if (token) {
+            setLoading(false)
             navigate(from, { replace: true });
             toast.success('Login Successful ', {
                 theme: 'colored',
             });
         }
     }, [token])
+
+    if(loading){
+        return <Loading></Loading>
+    }
+
 
     return (
         <>
@@ -166,7 +175,7 @@ const Login = () => {
 
                                     </Grid>
                                 </Grid>
-                                <Typography sx={{ color: '#d32f2f', fontSize: '14px', textAlign: 'center' }}> {error.others} </Typography>
+                                <Typography sx={{ color: '#d32f2f', fontSize: '14px', textAlign: 'center' }}> {error?.others} </Typography>
                                 <Button type="submit" fullWidth variant="contained" sx={{ mt: 4 }} >
                                     Sign In
                                 </Button>
