@@ -1,9 +1,10 @@
 import actionTypes from "./constants";
 
 const initialState = {
-   users : [],
-   user:[],
-   updateUser: [],
+    users: [],
+    user: [],
+    updateUser: [],
+    searchUsers: []
 }
 
 const userReducer = (state = initialState, action) => {
@@ -12,6 +13,14 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 users: action.payload
+            }
+        case actionTypes.SEARCH_USER:
+            return {
+                ...state,
+                searchUsers: state.users.filter( user => 
+                    user.firstName.toLowerCase().includes(action.payload.searchText.toLowerCase()) || 
+                    user.lastName.toLowerCase().includes(action.payload.searchText.toLowerCase()) ||
+                    user.email.toLowerCase().includes(action.payload.searchText.toLowerCase()) )
             }
         case actionTypes.GET_ME:
             return {
@@ -23,7 +32,7 @@ const userReducer = (state = initialState, action) => {
                 ...state,
                 updateUser: action.payload
             }
-      
+
         default:
             return state
     }

@@ -105,9 +105,17 @@ const Header = ({ setSearchText, searchText }) => {
                     <Fade in={open}>
                         <Box sx={style}>
                             <TextField id="outlined-basic" variant="outlined"
-                                sx={{ width: '100%', bgcolor: 'white', borderRadius: '0%' }}
+                                sx={{
+                                    width: '100%', bgcolor: '#b2acd3f0', borderRadius: '10px',
+
+                                    '.css-1o9s3wi-MuiInputBase-input-MuiOutlinedInput-input': {
+                                        color: 'black',
+
+                                    }
+                                }}
                                 name='search'
-                                placeholder='Search.....'
+                                placeholder='Search by product name...'
+                                autoComplete='off'
                                 onKeyUp={handleSearch}
                                 InputProps={{
                                     startAdornment: (

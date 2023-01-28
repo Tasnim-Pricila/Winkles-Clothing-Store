@@ -1,29 +1,29 @@
 import { SearchOutlined } from '@mui/icons-material';
-import { Box, Button, Card, Divider, Grid, InputAdornment, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, TextField, Toolbar } from '@mui/material';
+import { Box, Button, Card, Divider, Grid, InputAdornment, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, TextField, Toolbar, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
+import { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllOrders, orderByFilter, updateorder } from '../../../../Redux/actions';
+import { getAllOrders, orderByFilter, searchOrders, updateorder } from '../../../../Redux/actions';
 import OrdersTable from './OrdersTable';
 
 const AllOrders = () => {
     const dispatch = useDispatch();
+    const [search, setSearch] = useState('')
     const orders = useSelector(state => state.orders.allOrder)
-    // const { data, isLoading, refetch } = useQuery({
-    //     queryKey: ['orders'],
-    //     queryFn: () =>
-    //         fetch(`https://winkles-server.onrender.com/orders`)
-    //             .then(res => res.json())
+    const searched = useSelector(state => state.orders.searchOrders)
 
-    // })
-
-    // if (isLoading) {
-    //     console.log('Loading...');
-    // }
     useEffect(() => {
         dispatch(getAllOrders())
-    },[dispatch])
+    }, [dispatch])
+
+    useEffect(() => {
+        if (search !== '') {
+            dispatch(searchOrders(search))
+        }
+    }, [dispatch, search])
+
 
     const [value, setValue] = React.useState('one');
 
@@ -56,7 +56,6 @@ const AllOrders = () => {
         }))
         dispatch(getAllOrders())
     }
-
     const handlePayment = (id) => {
         dispatch(getAllOrders())
         dispatch(updateorder(id, {
@@ -86,7 +85,7 @@ const AllOrders = () => {
                                 <TextField
                                     id="standard-search"
                                     type="search"
-                                    placeholder='Search Orders...'
+                                    placeholder='Search Orders by ID or customer name...'
                                     size='small'
                                     InputProps={{
                                         startAdornment: (
@@ -95,10 +94,12 @@ const AllOrders = () => {
                                             </InputAdornment>
                                         ),
                                     }}
+                                    onChange={(e) => setSearch(e.target.value)}
                                     sx={{
                                         '.css-1xp6qmi-MuiInputBase-input-MuiOutlinedInput-input': {
                                             fontSize: '14px'
-                                        }
+                                        },
+                                        width:'400px'
                                     }}
                                 />
                             </Box>
@@ -137,12 +138,26 @@ const AllOrders = () => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody sx={{ fontSize: '12px' }}>
+                                       
                                         {
-                                            orders.map((order, index) =>
-                                                <OrdersTable order={order} index={index}
-                                                    handleDelivery={handleDelivery} handlePayment={handlePayment}
-                                                ></OrdersTable>
-                                            )
+                                            search === '' ?
+                                                orders?.length > 0 ?
+                                                    orders.map((order, index) =>
+                                                        <OrdersTable order={order} index={index}
+                                                            handleDelivery={handleDelivery} handlePayment={handlePayment}
+                                                        ></OrdersTable>
+                                                    )
+                                                    :
+                                                    <Typography> No results found </Typography>
+                                                :
+                                                searched?.length > 0 ?
+                                                    searched?.map((order, index) =>
+                                                        <OrdersTable order={order} index={index}
+                                                            handleDelivery={handleDelivery} handlePayment={handlePayment}
+                                                        ></OrdersTable>
+                                                    )
+                                                    :
+                                                    <Typography> No results found </Typography>
                                         }
                                     </TableBody>
                                 </Table>

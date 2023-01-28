@@ -4,8 +4,8 @@ const initialState = {
     postOrder: [],
     orders: [],
     allOrder: [],
-    updateOrder: []
-
+    updateOrder: [],
+    searchOrders: []
 }
 
 export const orderReducer = (state = initialState, action) => {
@@ -24,6 +24,14 @@ export const orderReducer = (state = initialState, action) => {
             return {
                 ...state,
                 allOrder: action.payload
+            }
+        case actionTypes.SEARCH_ORDER:
+            return {
+                ...state,
+                searchOrders: state.allOrder.filter(order =>
+                    order._id === action.payload.searchText
+                    ||
+                    order.name.toLowerCase().includes(action.payload.searchText.toLowerCase()))
             }
         case actionTypes.ORDER_BY_FILTER:
             return {

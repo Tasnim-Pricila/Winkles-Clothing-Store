@@ -205,6 +205,15 @@ export const getAllOrders = () => {
     }
 }
 
+export const searchOrders = (text) => {
+    return {
+        type: actionTypes.SEARCH_ORDER,
+        payload: {
+            searchText: text
+        }
+    }
+}
+
 export const orderByFilter = (url) => {
     return async (dispatch) => {
         // console.log(url);
@@ -267,6 +276,15 @@ export const getUsers = () => {
             payload: response.data.data.result
         })
 
+    }
+}
+
+export const searchUsers = (text) => {
+    return {
+        type: actionTypes.SEARCH_USER,
+        payload: {
+            searchText: text
+        }
     }
 }
 
@@ -349,7 +367,7 @@ export const fetchBrand = (id) => {
 export const createBrand = (data) => {
     return async (dispatch) => {
         const response = await Api.post(`/brands`, data)
-        console.log(response)
+        // console.log(response)
         dispatch({
             type: actionTypes.CREATE_BRAND,
             payload: response.data?.data

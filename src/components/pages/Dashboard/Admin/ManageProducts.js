@@ -4,7 +4,9 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { fetchBrands, fetchCategories, fetchProducts, searchByCatAndBrand, searchByFilter, searchProducts } from '../../../../Redux/actions';
+import { fetchBrands, fetchCategories, fetchProducts, searchByCatAndBrand, searchProducts } from '../../../../Redux/actions';
+import AddBrand from './Modal/AddBrand';
+import AddCategory from './Modal/AddCategory';
 import ProductTable from './ProductTable';
 
 const ManageProducts = () => {
@@ -16,9 +18,7 @@ const ManageProducts = () => {
 
     const dispatch = useDispatch();
     const [value, setValue] = useState('')
-
     const [search, setSearch] = useState('')
-    // console.log(products);
 
     useEffect(() => {
         dispatch(fetchProducts())
@@ -69,6 +69,7 @@ const ManageProducts = () => {
         }
     }
 
+
     return (
         <Box mb={4}>
             <Toolbar sx={{
@@ -90,7 +91,11 @@ const ManageProducts = () => {
                             </Box>
                             <Divider></Divider>
                             <Box my={2}>
-                                <Typography pb={1} sx={{ fontWeight: '600' }}>Categories</Typography>
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <Typography pb={1} sx={{ fontWeight: '600' }}>Categories</Typography>
+                                    <AddCategory></AddCategory>
+                                </Box>
+
                                 {
                                     categories?.map(cat =>
                                         <Button variant='text'
@@ -109,7 +114,10 @@ const ManageProducts = () => {
                             </Box>
                             <Divider></Divider>
                             <Box my={2}>
-                                <Typography pb={1} sx={{ fontWeight: '600' }}>Brands</Typography>
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <Typography pb={1} sx={{ fontWeight: '600' }}>Brands</Typography>
+                                    <AddBrand></AddBrand>
+                                </Box>
                                 {
                                     brands?.map(brand =>
                                         <Button sx={{

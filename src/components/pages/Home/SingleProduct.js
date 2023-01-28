@@ -298,18 +298,15 @@ const SingleProduct = () => {
                                                         backgroundImage: `url(${product?.image})`,
                                                         backgroundSize: 'cover',
                                                         height: '60vh',
-                                                        backgroundRepeat: 'no-repeat',
-                                                        // backgroundPosition: 'top',
+                                                        backgroundRepeat: 'no-repeat'
                                                     }}
                                                 />
                                                 <Box sx={{ pt: 2, px: 1 }}>
                                                     <Typography gutterBottom variant="h6"
                                                         sx={{
-                                                            // textAlign: 'center',
                                                             textTransform: 'capitalize',
                                                             fontWeight: 'bold' ,
                                                             mb: 0
-                                                            // height: '80px'
                                                         }}>
                                                         {
                                                             product.title.length > 20 ? `${product.title.slice(0, 20)}...`
@@ -319,8 +316,6 @@ const SingleProduct = () => {
                                                     <Typography 
                                                     sx={{ 
                                                         fontSize: '16px'
-                                                        // textAlign: 'center', 
-                                                        // fontWeight: 'bold' 
                                                     }}>
                                                         Tk. {product.price}
                                                     </Typography>

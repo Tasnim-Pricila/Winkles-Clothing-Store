@@ -1,19 +1,27 @@
 import { Block, SearchOutlined } from '@mui/icons-material';
 import { Box, Button, Card, Grid, InputAdornment, TextField, Toolbar, Table, TableBody, TableCell, TableHead, TableRow, Divider, TableContainer, Typography } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUsers, updateUserById } from '../../../../Redux/actions';
+import { getUsers, searchUsers, updateUserById } from '../../../../Redux/actions';
 import Loading from '../../Loading/Loading';
 
 const AllUsers = () => {
 
     const users = useSelector(state => state.allUsers.users)
+    const searchedUser = useSelector(state => state.allUsers.searchUsers)
     const dispatch = useDispatch();
+    const [search, setSearch] = useState('')
 
     useEffect(() => {
         dispatch(getUsers())
     }, [dispatch])
+
+    useEffect(() => {
+        if (search !== '') {
+            dispatch(searchUsers(search))
+        }
+    }, [dispatch, search])
 
     const handleBlock = (id) => {
         dispatch(getUsers())
@@ -62,7 +70,7 @@ const AllUsers = () => {
                                         <TextField
                                             id="standard-search"
                                             type="search"
-                                            placeholder='Search Users...'
+                                            placeholder='Search users by name or email...'
                                             size='small'
                                             InputProps={{
                                                 startAdornment: (
@@ -71,10 +79,12 @@ const AllUsers = () => {
                                                     </InputAdornment>
                                                 ),
                                             }}
+                                            onChange={(e) => setSearch(e.target.value)}
                                             sx={{
                                                 '.css-1xp6qmi-MuiInputBase-input-MuiOutlinedInput-input': {
                                                     fontSize: '14px'
-                                                }
+                                                },
+                                                width: '300px'
                                             }}
                                         />
                                     </Box>
@@ -100,56 +110,111 @@ const AllUsers = () => {
                                             </TableHead>
                                             <TableBody>
                                                 {
-                                                    users?.map((user, i) =>
-                                                        <TableRow>
-                                                            <TableCell> {i + 1} </TableCell>
-                                                            <TableCell> {user.firstName} {user.lastName} </TableCell>
-                                                            <TableCell> {user.email} </TableCell>
-                                                            <TableCell> {user?.phone}  </TableCell>
-                                                            <TableCell> {user.createdAt} </TableCell>
-                                                            <TableCell>
-                                                                <Typography sx={{
-                                                                    bgcolor: user?.status === 'blocked' ? 'rgba(240,101,72,.23)' : 'rgba(69,203,133,.23)',
-                                                                    color: user?.status === 'blocked' ? '#f06548' : '#45cb85',
-                                                                    fontSize: '11px',
-                                                                    fontWeight: 'bold',
-                                                                    letterSpacing: '1px',
-                                                                    padding: '5px 4px',
-                                                                    borderRadius: '5px',
-                                                                    textAlign: 'center'
-                                                                }}>
-                                                                    {user?.status}
-                                                                </Typography>
+                                                    search === '' ?
+                                                        users?.map((user, i) =>
+                                                            <TableRow>
+                                                                <TableCell> {i + 1} </TableCell>
+                                                                <TableCell> {user.firstName} {user.lastName} </TableCell>
+                                                                <TableCell> {user.email} </TableCell>
+                                                                <TableCell> {user?.phone}  </TableCell>
+                                                                <TableCell> {user.createdAt} </TableCell>
+                                                                <TableCell>
+                                                                    <Typography sx={{
+                                                                        bgcolor: user?.status === 'blocked' ? 'rgba(240,101,72,.23)' : 'rgba(69,203,133,.23)',
+                                                                        color: user?.status === 'blocked' ? '#f06548' : '#45cb85',
+                                                                        fontSize: '11px',
+                                                                        fontWeight: 'bold',
+                                                                        letterSpacing: '1px',
+                                                                        padding: '5px 4px',
+                                                                        borderRadius: '5px',
+                                                                        textAlign: 'center'
+                                                                    }}>
+                                                                        {user?.status}
+                                                                    </Typography>
 
-                                                            </TableCell>
-                                                            {
-                                                                user?.status === 'active' ?
-                                                                    <TableCell>
-                                                                        <Button variant='contained'
-                                                                            size='small'
-                                                                            sx={{
-                                                                                bgcolor: '#f06548',
-                                                                                '&:hover': {
+                                                                </TableCell>
+                                                                {
+                                                                    user?.status === 'active' ?
+                                                                        <TableCell>
+                                                                            <Button variant='contained'
+                                                                                size='small'
+                                                                                sx={{
                                                                                     bgcolor: '#f06548',
-                                                                                }
-                                                                            }}
-                                                                            endIcon={<Block fontSize='small' />}
-                                                                            onClick={() => handleBlock(user._id)}>
-                                                                            Block
-                                                                        </Button>
-                                                                    </TableCell>
-                                                                    :
-                                                                    <TableCell>
-                                                                        <Button variant='contained' size='small'
-                                                                            endIcon={<Block fontSize='small' />}
-                                                                            onClick={() => handleActive(user._id)}>
-                                                                            Activate
-                                                                        </Button>
-                                                                    </TableCell>
-                                                            }
+                                                                                    '&:hover': {
+                                                                                        bgcolor: '#f06548',
+                                                                                    }
+                                                                                }}
+                                                                                endIcon={<Block fontSize='small' />}
+                                                                                onClick={() => handleBlock(user._id)}>
+                                                                                Block
+                                                                            </Button>
+                                                                        </TableCell>
+                                                                        :
+                                                                        <TableCell>
+                                                                            <Button variant='contained' size='small'
+                                                                                endIcon={<Block fontSize='small' />}
+                                                                                onClick={() => handleActive(user._id)}>
+                                                                                Activate
+                                                                            </Button>
+                                                                        </TableCell>
+                                                                }
 
-                                                        </TableRow>
-                                                    )
+                                                            </TableRow>
+                                                        )
+                                                        :
+                                                        searchedUser?.length > 0 ?
+                                                            searchedUser?.map((user, i) =>
+                                                                <TableRow>
+                                                                    <TableCell> {i + 1} </TableCell>
+                                                                    <TableCell> {user.firstName} {user.lastName} </TableCell>
+                                                                    <TableCell> {user.email} </TableCell>
+                                                                    <TableCell> {user?.phone}  </TableCell>
+                                                                    <TableCell> {user.createdAt} </TableCell>
+                                                                    <TableCell>
+                                                                        <Typography sx={{
+                                                                            bgcolor: user?.status === 'blocked' ? 'rgba(240,101,72,.23)' : 'rgba(69,203,133,.23)',
+                                                                            color: user?.status === 'blocked' ? '#f06548' : '#45cb85',
+                                                                            fontSize: '11px',
+                                                                            fontWeight: 'bold',
+                                                                            letterSpacing: '1px',
+                                                                            padding: '5px 4px',
+                                                                            borderRadius: '5px',
+                                                                            textAlign: 'center'
+                                                                        }}>
+                                                                            {user?.status}
+                                                                        </Typography>
+
+                                                                    </TableCell>
+                                                                    {
+                                                                        user?.status === 'active' ?
+                                                                            <TableCell>
+                                                                                <Button variant='contained'
+                                                                                    size='small'
+                                                                                    sx={{
+                                                                                        bgcolor: '#f06548',
+                                                                                        '&:hover': {
+                                                                                            bgcolor: '#f06548',
+                                                                                        }
+                                                                                    }}
+                                                                                    endIcon={<Block fontSize='small' />}
+                                                                                    onClick={() => handleBlock(user._id)}>
+                                                                                    Block
+                                                                                </Button>
+                                                                            </TableCell>
+                                                                            :
+                                                                            <TableCell>
+                                                                                <Button variant='contained' size='small'
+                                                                                    endIcon={<Block fontSize='small' />}
+                                                                                    onClick={() => handleActive(user._id)}>
+                                                                                    Activate
+                                                                                </Button>
+                                                                            </TableCell>
+                                                                    }
+
+                                                                </TableRow>
+                                                            )
+                                                            :
+                                                            <Typography> No results found </Typography>
                                                 }
                                             </TableBody>
                                         </Table>
