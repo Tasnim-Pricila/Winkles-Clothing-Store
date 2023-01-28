@@ -9,6 +9,7 @@ const initialState = {
     product: [],
     allProducts: [],
     saveCart: [],
+    wishlist: [],
     loading: false
 }
 
@@ -71,6 +72,12 @@ const productReducer = (state = initialState, action) => {
                 saveCart: action.payload.postCart,
                 loading: false
             }
+        case actionTypes.ADD_TO_WISHLIST:
+            return {
+                ...state,
+                wishlist: action.payload.wishlist,
+            }
+
         case actionTypes.GET_CART:
             return {
                 ...state,

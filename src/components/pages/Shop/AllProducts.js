@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { ShoppingCart } from '@mui/icons-material';
 
 
-const AllProducts = ({ product, handleAddToCart }) => {
+const AllProducts = ({ product, handleAddToCart, handleWishlist }) => {
 
     const navigate = useNavigate();
 
@@ -72,6 +72,10 @@ const AllProducts = ({ product, handleAddToCart }) => {
                     <Button size="small" sx={details}
                         onClick={() => handleDetails(product._id)}>
                         Details
+                    </Button>
+                    <Button size="small" sx={details}
+                        onClick={() => handleWishlist(product._id)}>
+                        WishList
                     </Button>
                     <Button size="small" sx={cart}
                         onClick={() => handleAddToCart(product._id)} startIcon={<ShoppingCart />}>

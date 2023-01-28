@@ -17,7 +17,9 @@ const Header = ({ setSearchText, searchText }) => {
 
     const user = useSelector(state => state.allUsers.user)
     let cart = user?.cart?.product
+    let wishlist = user?.wishlist?.product
     const [countCart, setCountCart] = useState(0);
+    const [countWishlist, setCountWishlist] = useState(0);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -35,8 +37,10 @@ const Header = ({ setSearchText, searchText }) => {
             count = count + item.qty;
         })
         setCountCart(count);
-    }, [dispatch, cart, countCart, user])
+        wishlist?.length > 0 && setCountWishlist(wishlist?.length)
 
+    }, [dispatch, cart, countCart, user, countWishlist, wishlist])
+ 
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -332,9 +336,22 @@ const Header = ({ setSearchText, searchText }) => {
                             <IconButton sx={{ p: 0, color: 'white' }}>
                                 <SearchIcon onClick={handleOpen} />
                             </IconButton>
-                            <IconButton sx={{ p: 0, color: 'white' }}>
-                                <FavoriteBorderIcon />
-                            </IconButton>
+                            {
+                                user?.wishlist?.product?.length > 0 ?
+                                    <IconButton sx={{ p: 0, color: 'white' }} onClick={handleCart}>
+                                        <Badge badgeContent={countWishlist} color='warning'>
+                                            <FavoriteBorderIcon color="white">
+                                            </FavoriteBorderIcon>
+                                        </Badge>
+                                    </IconButton>
+                                    :
+                                    <IconButton sx={{ p: 0, color: 'white' }} onClick={handleCart}>
+                                        <Badge color='warning'>
+                                            <FavoriteBorderIcon color="white">
+                                            </FavoriteBorderIcon>
+                                        </Badge>
+                                    </IconButton>
+                            }
                             {
                                 user?.cart?.product?.length > 0 ?
                                     <IconButton sx={{ p: 0, color: 'white' }} onClick={handleCart}>

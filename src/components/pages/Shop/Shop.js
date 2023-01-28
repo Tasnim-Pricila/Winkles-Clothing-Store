@@ -3,8 +3,9 @@ import { Box, Grid, Pagination, Tooltip, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import useUsers from '../../../Custom Hook/useUsers';
-import { addToCart, fetchProductsByPagination, getCart, getMe, searchByFilter, searchProducts } from '../../../Redux/actions';
+import { addToCart, addToWishlist, fetchProductsByPagination, getCart, getMe, searchByFilter, searchProducts } from '../../../Redux/actions';
 import Footer from '../../shared/Footer';
 import Loading from '../Loading/Loading';
 import AllProducts from './AllProducts';
@@ -24,10 +25,9 @@ const Shop = ({ searchText, setSearchText }) => {
     const [stock, setStock] = useState('');
     const [grid, setGrid] = useState(true);
     const [list, setList] = useState(false);
-    // const [cartProduct, setCartProduct] = useState([]);
-    // const [cartQty, setCartQty] = useState([]);
-    // const [user] = useUsers();
     const location = useLocation();
+
+    // console.log(user);
 
     const [selectedPage, setSelectedPage] = useState(1);
 
@@ -201,8 +201,29 @@ const Shop = ({ searchText, setSearchText }) => {
         setList(true);
     }
 
-    let newCart = user?.cart?.product;
+    
+    let wishlist = user?.wishlist?.product;
+    const handleWishlist = (id) => {
+        dispatch(getMe())
+        const exists = wishlist?.find(w => w === id)
+        if (!exists) {
+            wishlist = [...wishlist, id];
+        }
+        else {
+            toast.warning('Already in your Wishlist ', {
+                theme: 'colored',
+            });
+        }
+        const wishlistData = {
+            wishlist: {
+                product: wishlist
+            },
+        }
+        dispatch(addToWishlist(user._id, wishlistData, id));
+        dispatch(getMe())
+    }
 
+    let newCart = user?.cart?.product;
     const handleAddToCart = (id) => {
         dispatch(getMe())
         const selectedProduct = products?.result?.find(p => p._id === id)
@@ -216,18 +237,13 @@ const Shop = ({ searchText, setSearchText }) => {
             const rest = newCart.filter(c => c._id !== exists._id)
             newCart = [...rest, exists];
         }
-        // console.log(newCart);
-
         const cartData = {
             cart: {
                 product: newCart
             },
         }
-        // console.log(cartData);
-
         dispatch(addToCart(user._id, cartData, id));
         dispatch(getMe())
-        // dispatch(getCart())
     }
 
     return (
@@ -281,7 +297,7 @@ const Shop = ({ searchText, setSearchText }) => {
                                     products?.result?.length > 0 ?
                                         products?.result?.map((product, i) =>
                                             <AllProducts key={product._id}
-                                                product={product} handleAddToCart={handleAddToCart}
+                                                product={product} handleAddToCart={handleAddToCart} handleWishlist={handleWishlist}
                                             />
                                         )
                                         :

@@ -94,6 +94,21 @@ export const addToCart = (userId, data, itemID) => {
     }
 }
 
+export const addToWishlist = (userId, data ) => {
+    return async (dispatch) => {
+        const response = await Api.patch(`/users/update/${userId}`, data)
+        console.log(response);
+        if (response?.data?.data?.acknowledged === true) {
+            dispatch({
+                type: actionTypes.ADD_TO_WISHLIST,
+                payload: {
+                    wishlist: response?.data?.data,
+                }
+            })
+        }
+    }
+}
+
 export const resetSavecart = () => {
     return {
         type: actionTypes.RESET_SAVECART,
@@ -127,9 +142,6 @@ export const removeFromCart = (itemID) => {
 export const clearCart = () => {
     return {
         type: actionTypes.CLEAR_CART,
-        // payload: {
-        //     car: itemID
-        // }
     }
 }
 
