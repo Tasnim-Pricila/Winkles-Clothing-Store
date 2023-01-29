@@ -119,19 +119,15 @@
     margin-right: 6px;
     white-space: nowrap;
     overflow: hidden;
-    /* border: 1px solid white; */
-    /* padding: 2px */
-    width: "80px";
-    height: "80px" !important;
+   
 }
 
 .carousel .thumb:focus {
-    border: 1px solid #FF8E78;
+    border: 2px solid #FF8E78;
     outline: none
 }
 
-.carousel .thumb.selected,
-.carousel .thumb:hover {
+.carousel .thumb.selected {
     border: 2px solid #FF8E78
 }
 
@@ -225,7 +221,9 @@
 .carousel .slide img {
     width: 100%;
     vertical-align: top;
-    border: 0
+    border: 0;
+    min-height: 60vh;
+    object-fit: cover;
 }
 
 .carousel .slide iframe {
@@ -321,6 +319,12 @@
 li.thumb {
     opacity: .5;
 }
+
+li.thumb img {
+    width: 80px;
+    height: 80px;
+}
+
 li.thumb:hover {
     cursor: pointer;
 }

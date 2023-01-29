@@ -14,7 +14,7 @@ const Reviews = ({ id }) => {
         dispatch(fetchReviewbyProductId(id))
     }, [dispatch, id])
     
-    console.log(reviews)
+    // console.log(reviews)
 
     return (
         <Card variant="outlined" sx={{ p: 4, boxShadow: '0 3px 3px rgba(56,65,74,0.1)', mx: 16 }}>

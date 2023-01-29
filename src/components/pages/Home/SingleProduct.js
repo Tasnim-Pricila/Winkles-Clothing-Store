@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { addToCart, adjustQty, fetchProduct, fetchProducts, getMe, removeFromCart, removeSelectedProduct } from '../../../Redux/actions';
+import { addToCart, addToWishlist, adjustQty, fetchProduct, fetchProducts, getMe, removeFromCart, removeSelectedProduct } from '../../../Redux/actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { Box, Divider, TextField } from '@mui/material';
-import { CheckCircle, ShoppingCart } from '@mui/icons-material';
+import { CheckCircle, FavoriteBorder, ShoppingCart } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Carousel } from 'react-responsive-carousel';
@@ -14,11 +14,12 @@ import "./carousel.min.css";
 import Loading from '../Loading/Loading';
 import RelatedProducts from './RelatedProducts';
 import Reviews from './Reviews';
+import { toast } from 'react-toastify';
 
 const SingleProduct = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
-    
+
     const user = useSelector(state => state.allUsers.user)
     const state = useSelector(state => state.allProducts);
     const products = state.allProducts;
@@ -103,7 +104,7 @@ const SingleProduct = () => {
         dispatch(getMe())
     }
 
-    const stock = {
+    const instock = {
         backgroundColor: ' #FF8E78',
         color: 'white',
         padding: '5px 10px',
@@ -111,7 +112,15 @@ const SingleProduct = () => {
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 0,
-
+    }
+    const outstock = {
+        backgroundColor: '#aca3a178',
+        color: '#201f1f70',
+        padding: '5px 10px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 0,
     }
 
     const cart = {
@@ -133,7 +142,39 @@ const SingleProduct = () => {
     if (mainImg && galleryImg) {
         allImg = [...mainImg, ...galleryImg]
     }
+    const details = {
+        padding: '5px 14px',
+        borderRadius: 0,
+        border: 1,
+        borderColor: '#4b38b3',
+        fontWeight: 600,
+        color: '#4b38b3',
+        '&:hover': {
+            backgroundColor: '#4b38b3',
+            color: 'white',
+        }
+    }
 
+    let wishlist = user?.wishlist?.product;
+    const handleWishlist = (id) => {
+        dispatch(getMe())
+        const exists = wishlist?.find(w => w === id)
+        if (!exists) {
+            wishlist = [...wishlist, id];
+        }
+        else {
+            toast.warning('Already in your Wishlist ', {
+                theme: 'colored',
+            });
+        }
+        const wishlistData = {
+            wishlist: {
+                product: wishlist
+            },
+        }
+        dispatch(addToWishlist(user._id, wishlistData));
+        dispatch(getMe())
+    }
     return (
         <>
             {
@@ -148,7 +189,7 @@ const SingleProduct = () => {
                                             return (
                                                 <img src={image} alt={image} key={i}
                                                     style={{
-                                                        objectFit: 'cover'
+                                                        objectFit: "fill",
                                                     }} />
                                             )
                                         })
@@ -166,9 +207,13 @@ const SingleProduct = () => {
                                     <Typography variant="h5" sx={{ py: 2, fontWeight: 'bold' }}>
                                         Tk. {product.price}
                                     </Typography>
-                                    <Typography variant="subtitle2" sx={stock}
+                                    <Typography variant="subtitle2"
+                                        sx={product?.stock === 'In Stock' ? instock : outstock}
                                     >
-                                        <CheckCircle fontSize='small' sx={{ pr: 1 }} />
+                                        {
+                                            product?.stock === 'In Stock' && <CheckCircle fontSize='small' sx={{ pr: 1 }} />
+                                        }
+
                                         {product.stock}
                                     </Typography>
                                 </Box>
@@ -183,7 +228,8 @@ const SingleProduct = () => {
                                     textAlign: 'justify',
                                     my: 2
                                 }}>
-                                    <b style={{ marginBottom: '4px', display: 'inline-block', fontSize: '16px', paddingBottom: '10px' }}>Description:</b> <br /> {product.description}
+                                    <b style={{ marginBottom: '4px', display: 'inline-block', fontSize: '16px', paddingBottom: '10px' }}>Description:</b> <br />
+                                    {product.description}
                                 </Typography>
 
                                 <Divider />
@@ -215,7 +261,12 @@ const SingleProduct = () => {
                                         variant='outlined' disabled={purchaseQuantity === 0}>
                                         <RemoveIcon />
                                     </Button>
-
+                                </Box>
+                                <Box sx={{ mt: 3, display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    <Button size="small" sx={details} startIcon={<FavoriteBorder />}
+                                        onClick={() => handleWishlist(product._id)}>
+                                        Add To Wishlist
+                                    </Button>
                                     <Button size="small"
                                         sx={cart}
                                         onClick={() => handleAddToCart(product._id)}
@@ -223,7 +274,6 @@ const SingleProduct = () => {
                                         Add To Cart
                                     </Button>
                                 </Box>
-
                             </Grid>
                         </Grid>
                         <RelatedProducts product={product} />

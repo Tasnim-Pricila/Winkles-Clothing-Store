@@ -3,7 +3,7 @@ import { Button, Card, Divider, FormHelperText, Grid, InputAdornment, MenuItem, 
 import { Box } from '@mui/system';
 import { Editor } from '@tinymce/tinymce-react';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -42,6 +42,7 @@ const CreateProduct = () => {
         myImage: '',
         gallery: ''
     })
+    console.log(productDetails.description);
 
     // main image 
     const [myImage, setImage] = useState('');
@@ -137,9 +138,10 @@ const CreateProduct = () => {
                 })
         }
     }
-
-
-
+    // const editorRef = useRef(null);
+    // if (editorRef.current) {
+    //     console.log(editorRef.current.getContent());
+    // }
     return (
         <Box mb={4}>
             <Toolbar sx={{
@@ -174,10 +176,14 @@ const CreateProduct = () => {
                             <Box mt={2}>
                                 <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Product Description</Typography>
                                 <Editor
-                                    onEditorChange={(e) => setProductDetails({ ...productDetails, description: e })}
+                                    // onEditorChange={(e) => setProductDetails({ ...productDetails, description: e })}
+                                    // initialValue='Once upon a time...'
+                                    onEditorChange={(evt, editor) => 
+                                        setProductDetails({ ...productDetails, description: editor.getContent({format: 'text'}) }) }
                                     init={{
                                         height: 200,
                                         menubar: false,
+                                        forced_root_block : false,
                                         plugins: [
                                             'advlist autolink lists link image charmap print preview anchor',
                                             'searchreplace visualblocks code fullscreen',
