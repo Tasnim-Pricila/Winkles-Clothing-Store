@@ -2,8 +2,12 @@ import React from 'react';
 import { Box, Button, Grid, Typography } from '@mui/material';
 import banner from '../../../images/seven.jpg'
 import { LocalGroceryStore } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 const Banner = () => {
+
+    const navigate = useNavigate();
+
     const buttonStyle = {
         color: 'black',
         marginTop: 3,
@@ -20,6 +24,7 @@ const Banner = () => {
         boxShadow: 'rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;'
 
     }
+
     return (
 
         <Box sx={{
@@ -35,7 +40,7 @@ const Banner = () => {
                     <Typography variant="h3" gutterBottom> New Season </Typography>
                     <Typography variant="body1" gutterBottom> Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, labore quo repellat sed asperiores architecto laudantium unde, amet ratione rerum, cum culpa. Sint aperiam asperiores quibusdam necessitatibus, obcaecati autem explicabo!  </Typography>
                     <Button variant="outlined" endIcon={<LocalGroceryStore />}
-                        sx={buttonStyle}>
+                        sx={buttonStyle} onClick={ () => navigate('/shop')}>
                         Shop
                     </Button>
                 </Grid>

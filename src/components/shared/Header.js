@@ -40,7 +40,7 @@ const Header = ({ setSearchText, searchText }) => {
         wishlist?.length > 0 && setCountWishlist(wishlist?.length)
 
     }, [dispatch, cart, countCart, user, countWishlist, wishlist])
- 
+
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -59,6 +59,9 @@ const Header = ({ setSearchText, searchText }) => {
     };
     const handleCart = () => {
         navigate('/cart');
+    };
+    const handleWishlist = () => {
+        navigate('/wishlist');
     };
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -332,48 +335,55 @@ const Header = ({ setSearchText, searchText }) => {
                                     }
                                 </MenuItem>
                             </Menu>
-
-                            <IconButton sx={{ p: 0, color: 'white' }}>
-                                <SearchIcon onClick={handleOpen} />
-                            </IconButton>
-                            {
-                                user?.wishlist?.product?.length > 0 ?
-                                    <IconButton sx={{ p: 0, color: 'white' }} onClick={handleCart}>
-                                        <Badge badgeContent={countWishlist} color='warning'>
-                                            <FavoriteBorderIcon color="white">
-                                            </FavoriteBorderIcon>
-                                        </Badge>
-                                    </IconButton>
-                                    :
-                                    <IconButton sx={{ p: 0, color: 'white' }} onClick={handleCart}>
-                                        <Badge color='warning'>
-                                            <FavoriteBorderIcon color="white">
-                                            </FavoriteBorderIcon>
-                                        </Badge>
-                                    </IconButton>
-                            }
-                            {
-                                user?.cart?.product?.length > 0 ?
-                                    <IconButton sx={{ p: 0, color: 'white' }} onClick={handleCart}>
-                                        <Badge badgeContent={countCart} color='warning'>
-                                            <ShoppingCartIcon color="white">
-                                            </ShoppingCartIcon>
-                                        </Badge>
-                                    </IconButton>
-                                    :
-                                    <IconButton sx={{ p: 0, color: 'white' }} onClick={handleCart}>
-                                        <Badge badgeContent='0' color='warning'>
-                                            <ShoppingCartIcon color="white">
-                                            </ShoppingCartIcon>
-                                        </Badge>
-                                    </IconButton>
-                            }
-
-                            <Tooltip title="Open settings">
-                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar src="/broken-image.jpg" />
+                            <Box sx={{
+                                display: 'flex',
+                                gap: '15px',
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}>
+                                <IconButton sx={{ p: 0, color: 'white' }}>
+                                    <SearchIcon onClick={handleOpen} />
                                 </IconButton>
-                            </Tooltip>
+                                {
+                                    user?.wishlist?.product?.length > 0 ?
+                                        <IconButton sx={{ p: 0, color: 'white' }} onClick={handleWishlist}>
+                                            <Badge badgeContent={countWishlist} color='warning'>
+                                                <FavoriteBorderIcon color="white">
+                                                </FavoriteBorderIcon>
+                                            </Badge>
+                                        </IconButton>
+                                        :
+                                        <IconButton sx={{ p: 0, color: 'white' }} onClick={handleWishlist}>
+                                            <Badge color='warning'>
+                                                <FavoriteBorderIcon color="white">
+                                                </FavoriteBorderIcon>
+                                            </Badge>
+                                        </IconButton>
+                                }
+                                {
+                                    user?.cart?.product?.length > 0 ?
+                                        <IconButton sx={{ p: 0, color: 'white' }} onClick={handleCart}>
+                                            <Badge badgeContent={countCart} color='warning'>
+                                                <ShoppingCartIcon color="white">
+                                                </ShoppingCartIcon>
+                                            </Badge>
+                                        </IconButton>
+                                        :
+                                        <IconButton sx={{ p: 0, color: 'white' }} onClick={handleCart}>
+                                            <Badge badgeContent='0' color='warning'>
+                                                <ShoppingCartIcon color="white">
+                                                </ShoppingCartIcon>
+                                            </Badge>
+                                        </IconButton>
+                                }
+
+                                <Tooltip title="Open settings">
+                                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                        <Avatar src={user?.imageUrl ? user?.imageUrl : ''} />
+                                    </IconButton>
+                                </Tooltip>
+                            </Box>
+
                         </Box>
                     </Toolbar>
                 </Container>

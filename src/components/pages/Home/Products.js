@@ -11,7 +11,7 @@ const Products = ({ products }) => {
                 New Arrivals
             </Typography>
 
-            <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 4 }} sx={{
+            <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 2 }} sx={{
                 mt: 4,
                 px: 16,
                 mb: 10

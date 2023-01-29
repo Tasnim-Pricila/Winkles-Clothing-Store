@@ -1,15 +1,11 @@
-import {  ShoppingCart } from '@mui/icons-material';
+import { FavoriteBorder, ShoppingCart } from '@mui/icons-material';
 import { Box, Button, Grid, Typography } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const ListView = ({ product, handleAddToCart }) => {
-
+const ListView = ({ product, handleAddToCart, handleWishlist }) => {
+    
     const navigate = useNavigate();
-    const handleDetails = (id) => {
-        navigate(`/product/${id}`);
-    }
-
     const cart = {
         backgroundColor: '#FF8E78',
         color: 'white',
@@ -39,10 +35,12 @@ const ListView = ({ product, handleAddToCart }) => {
     return (
         <Grid container columnSpacing={{ md: 4 }} pb={4}>
             <Grid item md={4} >
-                <img src={product?.image} alt="" width='100%' height='100%' style={{ objectFit: 'cover' }} />
+                <img src={product?.image} alt="" width='100%' height='100%' style={{ objectFit: 'cover', cursor: 'pointer' }} 
+                onClick={() => navigate(`/product/${product._id}`)} />
             </Grid>
             <Grid item md={8} sx={{ display: 'flex', flexDirection: 'column' }}>
-                <Typography gutterBottom variant="h5" sx={{ textTransform: 'uppercase', fontWeight: 'bold', color: 'black' }}>
+                <Typography gutterBottom variant="h5" sx={{ textTransform: 'uppercase', fontWeight: 'bold', color: 'black', cursor: 'pointer' }} 
+                onClick={() => navigate(`/product/${product._id}`)}>
                     {product.title}
                 </Typography>
 
@@ -61,9 +59,10 @@ const ListView = ({ product, handleAddToCart }) => {
                     {product.description.length > 220 ? product.description.slice(0, 220) + '.........' : product.description}
                 </Typography>
                 <Box sx={{ display: 'flex', my: 2, gap: '10px' }}>
-                    <Button size="small" sx={details}
-                        onClick={() => handleDetails(product._id)}>
-                        Details
+                    <Button size="small" sx={details} startIcon={<FavoriteBorder />}
+                        onClick={() => handleWishlist(product._id)}
+                        >
+                        Add To Wishlist
                     </Button>
                     <Button size="small" sx={cart}
                         onClick={() => handleAddToCart(product._id)} startIcon={<ShoppingCart />}>

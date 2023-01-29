@@ -7,22 +7,18 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { useNavigate } from 'react-router-dom';
-import { ShoppingCart } from '@mui/icons-material';
+import { FavoriteBorder, ShoppingCart } from '@mui/icons-material';
 
 
 const AllProducts = ({ product, handleAddToCart, handleWishlist }) => {
 
     const navigate = useNavigate();
-
-    const handleDetails = (id) => {
-        navigate(`/product/${id}`);
-    }
-    
     const cart = {
         backgroundColor: '#FF8E78',
         color: 'white',
         padding: '5px 10px',
         borderRadius: 0,
+        textTransform: 'capitalize',
         border: 0,
         '&:hover': {
             backgroundColor: '#df6750',
@@ -30,13 +26,13 @@ const AllProducts = ({ product, handleAddToCart, handleWishlist }) => {
             border: 0
         }
     }
-
     const details = {
         padding: '5px 14px',
         borderRadius: 0,
         border: 1,
         borderColor: '#4b38b3',
         fontWeight: 600,
+        textTransform: 'capitalize',
         color: '#4b38b3',
         '&:hover': {
             backgroundColor: '#4b38b3',
@@ -47,17 +43,19 @@ const AllProducts = ({ product, handleAddToCart, handleWishlist }) => {
     return (
         <Grid item xs={4} md={4} >
             <Card>
-                <CardMedia
+                <CardMedia onClick={() => navigate(`/product/${product._id}`)}
                     sx={{
                         backgroundImage: `url(${product?.image})`,
                         backgroundSize: 'cover',
-                        height: '40vh',
+                        height: '50vh',
                         backgroundRepeat: 'no-repeat',
                         backgroundPosition: 'top',
+                        cursor: 'pointer'
                     }}
                 />
                 <CardContent sx={{ pt: 2, px: 1 }}>
-                    <Typography gutterBottom variant="h6" sx={{ textAlign: 'center', textTransform: 'capitalize' }}>
+                    <Typography gutterBottom variant="h6" sx={{ textAlign: 'center', textTransform: 'capitalize', cursor: 'pointer' }} 
+                    onClick={() => navigate(`/product/${product._id}`)}>
                         {
                             product.title.length > 20 ? `${product.title.slice(0, 20)}...`
                                 : product.title
@@ -69,13 +67,10 @@ const AllProducts = ({ product, handleAddToCart, handleWishlist }) => {
                 </CardContent>
 
                 <CardActions sx={{ pb: 2 }} style={{ display: 'flex', justifyContent: 'space-around' }}>
-                    <Button size="small" sx={details}
-                        onClick={() => handleDetails(product._id)}>
-                        Details
-                    </Button>
-                    <Button size="small" sx={details}
+
+                    <Button size="small" sx={details} startIcon={<FavoriteBorder/>}
                         onClick={() => handleWishlist(product._id)}>
-                        WishList
+                        Add To Wishlist
                     </Button>
                     <Button size="small" sx={cart}
                         onClick={() => handleAddToCart(product._id)} startIcon={<ShoppingCart />}>

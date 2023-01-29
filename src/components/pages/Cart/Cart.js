@@ -43,7 +43,7 @@ const Cart = () => {
     }
 
     return (
-        <div>
+        <>
             <Box sx={{
                 position: 'relative',
                 pb: 10,
@@ -100,7 +100,7 @@ const Cart = () => {
                 }
             </Box>
             <Footer></Footer>
-        </div>
+        </>
     );
 };
 

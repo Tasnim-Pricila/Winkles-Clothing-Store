@@ -1,31 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { addToCart, adjustQty, fetchProduct, fetchProducts, fetchReviewbyProductId, getMe, removeFromCart, removeSelectedProduct, searchByFilter } from '../../../Redux/actions';
+import { addToCart, adjustQty, fetchProduct, fetchProducts, getMe, removeFromCart, removeSelectedProduct } from '../../../Redux/actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { Avatar, Box, Card, CardActions, CardContent, CardMedia, Divider, Rating, TextField } from '@mui/material';
+import { Box, Divider, TextField } from '@mui/material';
 import { CheckCircle, ShoppingCart } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Carousel } from 'react-responsive-carousel';
 import "./carousel.min.css";
-import RatingModal from './RatingModal';
 import Loading from '../Loading/Loading';
-import Slider from 'react-slick';
+import RelatedProducts from './RelatedProducts';
+import Reviews from './Reviews';
 
 const SingleProduct = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
+    
+    const user = useSelector(state => state.allUsers.user)
     const state = useSelector(state => state.allProducts);
     const products = state.allProducts;
     let product = state.product;
-    const quantity = product?.quantity;
-    const reviews = useSelector(state => state.reviews.review);
-    const user = useSelector(state => state.allUsers.user)
     const getCart = state.cart?.find(cart => cart._id === id);
-    const categoryWiseProducts = state.products;
+
+    const quantity = product?.quantity;
     const [purchaseQuantity, setQty] = useState('');
 
     useEffect(() => {
@@ -51,15 +51,6 @@ const SingleProduct = () => {
             setQty(getCart?.qty);
         }
     }, [getCart, setQty, purchaseQuantity])
-
-    useEffect(() => {
-        dispatch(fetchReviewbyProductId(id))
-    }, [dispatch, id])
-
-    useEffect(() => {
-        const url = `/products?category=${product.category}`
-        dispatch(searchByFilter(url))
-    }, [dispatch, product?.category])
 
     const increase = () => {
         dispatch(getMe())
@@ -90,7 +81,6 @@ const SingleProduct = () => {
     }
 
     let newCart = user?.cart?.product;
-
     const handleAddToCart = (id) => {
         dispatch(getMe())
         const selectedProduct = products?.find(p => p._id === id)
@@ -135,48 +125,13 @@ const SingleProduct = () => {
             color: 'white'
         }
     }
-    console.log(categoryWiseProducts)
 
     let allImg = [];
     const mainImg = [product?.image];
     const galleryImg = product?.imageGallery?.filter(image => image)
+
     if (mainImg && galleryImg) {
         allImg = [...mainImg, ...galleryImg]
-    }
-  
-    const settings = {
-        dots: false,
-        infinite: true,
-        speed: 2000,
-        slidesToShow: 4,
-        slidesToScroll: 2,
-        initialSlide: 0,
-        autoplay: true,
-        arrows: false,
-        responsive: [
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                }
-            },
-            {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2,
-                    initialSlide: 2
-                }
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1
-                }
-            }
-        ]
     }
 
     return (
@@ -271,105 +226,10 @@ const SingleProduct = () => {
 
                             </Grid>
                         </Grid>
-
-
-                        {/* Related Products  */}
-
-                        <Box mx={16} py={6} mb={8}>
-                            <Typography variant='h5' sx={{ textAlign: 'center', py: 10, textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold' }}>
-                                Related Products
-                            </Typography>
-
-                            <Slider {...settings} >
-                                {
-                                    categoryWiseProducts?.result?.length > 0 ?
-                                    categoryWiseProducts?.result?.map((product, i) =>
-                                        <div style={{
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            padding: '20px',
-                                            gap: '200px',
-                                            flexDirection: 'column'
-                                        }}>
-                                            <Box>
-                                                <Box
-                                                    sx={{
-                                                        backgroundImage: `url(${product?.image})`,
-                                                        backgroundSize: 'cover',
-                                                        height: '60vh',
-                                                        backgroundRepeat: 'no-repeat'
-                                                    }}
-                                                />
-                                                <Box sx={{ pt: 2, px: 1 }}>
-                                                    <Typography gutterBottom variant="h6"
-                                                        sx={{
-                                                            textTransform: 'capitalize',
-                                                            fontWeight: 'bold' ,
-                                                            mb: 0
-                                                        }}>
-                                                        {
-                                                            product.title.length > 20 ? `${product.title.slice(0, 20)}...`
-                                                                : product.title
-                                                        }
-                                                    </Typography>
-                                                    <Typography 
-                                                    sx={{ 
-                                                        fontSize: '16px'
-                                                    }}>
-                                                        Tk. {product.price}
-                                                    </Typography>
-                                                </Box>
-                                            </Box>
-                                        </div>
-                                    )
-                                    :
-                                    <Loading/>
-                                }
-                            </Slider>
-
-                        </Box>
-
-                        {/* Review Section  */}
-                        <Card variant="outlined" sx={{ p: 4, boxShadow: '0 3px 3px rgba(56,65,74,0.1)', mx: 16 }}>
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <Typography variant='h6' fontWeight='bold'> Share your thoughts with other customers </Typography>
-                                <Box>
-                                    <RatingModal id={id}> </RatingModal>
-                                </Box>
-                            </Box>
-                            <Box mt={4}>
-                                {
-                                    reviews?.length > 0 ?
-                                        reviews?.map((review, i) =>
-                                            <Box mb={3}>
-                                                <Box sx={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                                                    <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-
-                                                    <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                                                        <Typography fontWeight='bold' sx={{ fontSize: '15px' }}>
-                                                            {review.postedBy}
-                                                        </Typography>
-                                                        <Typography sx={{ display: 'flex', fontSize: '14px', alignItems: 'center', gap: '10px' }}>
-                                                            <Rating name="read-only" size="small" value={review.rating} precision={0.5} readOnly />
-                                                            {review.summary}
-                                                        </Typography>
-                                                    </Box>
-                                                </Box>
-                                                <Typography mt={1} sx={{ fontSize: '15px' }}> {review?.review} </Typography>
-                                            </Box>
-                                        )
-                                        :
-                                        <Typography sx={{ textAlign: 'center', fontWeight: 'bold' }}> No Reviews </Typography>
-                                }
-                            </Box>
-                        </Card>
-
-
+                        <RelatedProducts product={product} />
+                        <Reviews id={id} />
                     </>
-
                     :
-
                     <Loading></Loading>
             }
 

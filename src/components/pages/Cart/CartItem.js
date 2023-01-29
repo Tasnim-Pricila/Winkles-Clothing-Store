@@ -9,7 +9,7 @@ import styled from '@emotion/styled';
 import { Cancel } from '@mui/icons-material';
 
 const CartItem = ({ cartItem }) => {
-    let { _id, title, price, qty, quantity, image } = cartItem;
+    const { _id, title, price, qty, quantity, image } = cartItem;
     const dispatch = useDispatch();
     const [purchaseQuantity, setQty] = useState(qty);
     const user = useSelector(state => state.allUsers.user)
@@ -63,41 +63,39 @@ const CartItem = ({ cartItem }) => {
         maxHeight: '80px',
         padding: '10px 0px'
     })
-    
+
     return (
-        <>
-            <TableRow sx={{ p: 0 }}>
-                <TableCell align="center" sx={{ p: 0 }}>
-                    <Img alt="complex" src={image} />
-                </TableCell>
-                <TableCell align="center" sx={{ textTransform: 'capitalize', p: 0 }}>
-                    {title}
-                </TableCell>
-                <TableCell align="center" sx={{ p: 0 }}>{quantity}</TableCell>
+        <TableRow sx={{ p: 0 }}>
+            <TableCell align="center" sx={{ p: 0 }}>
+                <Img alt="complex" src={image} />
+            </TableCell>
+            <TableCell align="center" sx={{ textTransform: 'capitalize', p: 0 }}>
+                {title}
+            </TableCell>
+            <TableCell align="center" sx={{ p: 0 }}>{quantity}</TableCell>
 
 
-                {/* Quantity  */}
-                <TableCell align="center" sx={{ p: 0 }}>
-                    <Button disabled={purchaseQuantity === quantity} onClick={increase}>
-                        <AddIcon />
-                    </Button>
-                    <input type="number" value={purchaseQuantity} readOnly style={{ width: '40px', textAlign: 'center' }}
-                        onChange={(e) => setQty(e.target.value)}
-                    />
-                    <Button onClick={decrease}>
-                        <RemoveIcon />
-                    </Button>
-                </TableCell>
+            {/* Quantity  */}
+            <TableCell align="center" sx={{ p: 0 }}>
+                <Button disabled={purchaseQuantity === quantity} onClick={increase}>
+                    <AddIcon />
+                </Button>
+                <input type="number" value={purchaseQuantity} readOnly style={{ width: '40px', textAlign: 'center' }}
+                    onChange={(e) => setQty(e.target.value)}
+                />
+                <Button onClick={decrease}>
+                    <RemoveIcon />
+                </Button>
+            </TableCell>
 
 
-                <TableCell align="center" sx={{ p: 0 }}>{price}</TableCell>
-                <TableCell align="center" sx={{ p: 0 }}>{qty * price}</TableCell>
-                <TableCell align="center" sx={{ p: 0 }}>
-                    <Button onClick={() => handleRemove(_id)}><Cancel /></Button>
-                </TableCell>
+            <TableCell align="center" sx={{ p: 0 }}>{price}</TableCell>
+            <TableCell align="center" sx={{ p: 0 }}>{qty * price}</TableCell>
+            <TableCell align="center" sx={{ p: 0 }}>
+                <Button onClick={() => handleRemove(_id)}><Cancel /></Button>
+            </TableCell>
 
-            </TableRow>
-        </>
+        </TableRow>
     );
 };
 

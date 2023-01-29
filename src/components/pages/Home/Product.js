@@ -10,8 +10,9 @@ import Grid from '@mui/material/Grid';
 
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart, getMe } from '../../../Redux/actions';
-import { ShoppingCart } from '@mui/icons-material';
+import { addToCart, addToWishlist, getMe } from '../../../Redux/actions';
+import { FavoriteBorder, ShoppingCart } from '@mui/icons-material';
+import { toast } from 'react-toastify';
 
 const Product = ({ product, products }) => {
 
@@ -23,11 +24,7 @@ const Product = ({ product, products }) => {
         dispatch(getMe());
     },[dispatch])
 
-    const handleDetails = (id) => {
-        navigate(`/product/${id}`);
-    }
     let newCart = user?.cart?.product;
-    
     const handleAddToCart = (id) => {
         dispatch(getMe())
         const selectedProduct = products?.find(p => p._id === id)
@@ -50,12 +47,36 @@ const Product = ({ product, products }) => {
         dispatch(getMe())
     }
 
+    let wishlist = user?.wishlist?.product;
+    // console.log(wishlist)
+    const handleWishlist = (id) => {
+        dispatch(getMe())
+        const exists = wishlist?.find(w => w._id === id)
+        // console.log(exists)
+        if (!exists) {
+            wishlist = [...wishlist, id];
+        }
+        else {
+            toast.warning('Already in your Wishlist ', {
+                theme: 'colored',
+            });
+        }
+        const wishlistData = {
+            wishlist: {
+                product: wishlist
+            },
+        }
+        dispatch(addToWishlist(user._id, wishlistData));
+        dispatch(getMe())
+    }
+
     const cart = {
         backgroundColor: '#FF8E78',
         color: 'white',
         padding: '5px 10px',
         borderRadius: 0,
         border: 0,
+        textTransform: 'capitalize',
         '&:hover': {
             backgroundColor: '#df6750',
             color: 'white',
@@ -68,6 +89,7 @@ const Product = ({ product, products }) => {
         border: 1,
         borderColor: '#4b38b3',
         fontWeight: 600,
+        textTransform: 'capitalize',
         color: '#4b38b3',
         '&:hover': {
             backgroundColor: '#4b38b3',
@@ -78,21 +100,20 @@ const Product = ({ product, products }) => {
     return (
         <Grid item xs={3}>
             <Card sx={{ border: 0 }}>
-                <CardMedia
-                    // component="img"
-                    // image={product.image}
-                    // alt="green iguana"
+                <CardMedia onClick={() => navigate(`/product/${product._id}`)}
                     sx={{
                         backgroundImage: `url(${product?.image})`,
                         backgroundSize: 'cover',
-                        height: '40vh',
+                        height: '50vh',
                         backgroundRepeat: 'no-repeat',
                         backgroundPosition: 'top',
+                        cursor: 'pointer'
                     }}
                 />
-
                 <CardContent sx={{ pt: 2 }}>
-                    <Typography gutterBottom variant="h6" sx={{ textAlign: 'center', textTransform: 'capitalize' }}>
+                    <Typography gutterBottom variant="h6" 
+                    onClick={() => navigate(`/product/${product._id}`)} 
+                    sx={{ textAlign: 'center', textTransform: 'capitalize', cursor: 'pointer' }}>
                         {
                            
                                 product.title.length > 20 ? `${product.title.slice(0, 20)}...`
@@ -105,9 +126,10 @@ const Product = ({ product, products }) => {
                 </CardContent>
 
                 <CardActions sx={{ pb: 2, display: 'flex', justifyContent: 'space-around' }}>
-                    <Button size="small" onClick={() => handleDetails(product._id)}
-                        sx={details}>
-                        Details
+                    <Button size="small" 
+                    onClick={() => handleWishlist(product._id)}
+                        sx={details} startIcon={<FavoriteBorder/>} >
+                        Add To Wishlist
                     </Button>
                     <Button size="small" variant="outlined" sx={cart} onClick={() => handleAddToCart(product._id)} startIcon={<ShoppingCart/>}>
                        Add To Cart</Button>

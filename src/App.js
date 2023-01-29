@@ -32,6 +32,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getMe } from './Redux/actions';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Wishlist from './components/pages/Dashboard/Wishlist/Wishlist';
 
 function App() {
 
@@ -59,6 +60,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />}></Route>
           <Route path='/home' element={<Home />}></Route>
+          <Route path='/wishlist' element={<Wishlist />}></Route>
           <Route path='/cart' element={
             <RequireAuth>
               <Cart />

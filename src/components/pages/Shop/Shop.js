@@ -219,7 +219,7 @@ const Shop = ({ searchText, setSearchText }) => {
                 product: wishlist
             },
         }
-        dispatch(addToWishlist(user._id, wishlistData, id));
+        dispatch(addToWishlist(user._id, wishlistData));
         dispatch(getMe())
     }
 
@@ -255,7 +255,7 @@ const Shop = ({ searchText, setSearchText }) => {
                 </Grid>
 
                 <Grid item xs={4} md={9} >
-                    <Box sx={{ px: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Box>
                             <Tooltip title="Grid View">
                                 <GridView sx={{
@@ -287,10 +287,8 @@ const Shop = ({ searchText, setSearchText }) => {
 
                     {
                         grid &&
-                        <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{
+                        <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 2 }} sx={{
                             mt: 2,
-                            px: 2,
-
                         }}>
                             {
                                 searchText === '' ?
@@ -306,7 +304,7 @@ const Shop = ({ searchText, setSearchText }) => {
                                     searched?.length > 0 ?
                                         searched?.map(product =>
                                             <AllProducts key={product._id}
-                                                product={product}
+                                                product={product} handleAddToCart={handleAddToCart} handleWishlist={handleWishlist}
                                             />
                                         )
                                         :
@@ -327,7 +325,7 @@ const Shop = ({ searchText, setSearchText }) => {
                                     products?.result?.length > 0 ?
                                         products?.result?.map((product, i) =>
                                             <ListView key={product._id}
-                                                product={product} handleAddToCart={handleAddToCart}
+                                                product={product} handleAddToCart={handleAddToCart} handleWishlist={handleWishlist}
                                             />
                                         )
                                         :
@@ -336,7 +334,7 @@ const Shop = ({ searchText, setSearchText }) => {
                                     searched.length > 0 ?
                                         searched.map(product =>
                                             <ListView key={product._id}
-                                                product={product}
+                                                product={product} handleAddToCart={handleAddToCart} handleWishlist={handleWishlist}
                                             />
                                         )
                                         :

@@ -80,8 +80,9 @@ export const removeSelectedProduct = () => {
 
 export const addToCart = (userId, data, itemID) => {
     return async (dispatch) => {
-        dispatch({ type: actionTypes.LOADING, })
+        dispatch({ type: actionTypes.LOADING })
         const response = await Api.patch(`/users/update/${userId}`, data)
+        // console.log(response)
         if (response?.data?.data?.acknowledged === true) {
             dispatch({
                 type: actionTypes.ADD_TO_CART,
@@ -97,7 +98,7 @@ export const addToCart = (userId, data, itemID) => {
 export const addToWishlist = (userId, data ) => {
     return async (dispatch) => {
         const response = await Api.patch(`/users/update/${userId}`, data)
-        console.log(response);
+        // console.log(response);
         if (response?.data?.data?.acknowledged === true) {
             dispatch({
                 type: actionTypes.ADD_TO_WISHLIST,
@@ -171,7 +172,7 @@ export const searchProducts = (text) => {
 
 export const searchByFilter = (url) => {
     return async (dispatch) => {
-        console.log(url);
+        // console.log(url);
         const response = await Api.get(url)
         dispatch({
             type: actionTypes.SEARCH_BY_FILTER,
