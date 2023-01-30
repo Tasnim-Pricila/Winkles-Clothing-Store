@@ -42,7 +42,7 @@ const CreateProduct = () => {
         myImage: '',
         gallery: ''
     })
-    console.log(productDetails.description);
+    // console.log(productDetails.description);
 
     // main image 
     const [myImage, setImage] = useState('');
@@ -127,9 +127,6 @@ const CreateProduct = () => {
                                             }
                                             dispatch(postProduct(data))
                                             nav('/dashboard/manageProducts')
-                                            toast.success('Product added Successfully ', {
-                                                theme: 'colored',
-                                            });
                                         }
                                     }
                                 })
@@ -138,10 +135,7 @@ const CreateProduct = () => {
                 })
         }
     }
-    // const editorRef = useRef(null);
-    // if (editorRef.current) {
-    //     console.log(editorRef.current.getContent());
-    // }
+   
     return (
         <Box mb={4}>
             <Toolbar sx={{
@@ -149,7 +143,6 @@ const CreateProduct = () => {
                 fontWeight: 'bold',
                 textTransform: 'uppercase',
                 color: '#495057',
-                letterSpacing: '-0.5px'
             }}>
                 Add Product
             </Toolbar>
@@ -179,11 +172,12 @@ const CreateProduct = () => {
                                     // onEditorChange={(e) => setProductDetails({ ...productDetails, description: e })}
                                     // initialValue='Once upon a time...'
                                     onEditorChange={(evt, editor) => 
-                                        setProductDetails({ ...productDetails, description: editor.getContent({format: 'text'}) }) }
+                                        setProductDetails({ ...productDetails, description: editor.getContent() }) }
                                     init={{
                                         height: 200,
                                         menubar: false,
-                                        forced_root_block : false,
+                                        forced_root_block : '',
+                                        selector:'textarea',
                                         plugins: [
                                             'advlist autolink lists link image charmap print preview anchor',
                                             'searchreplace visualblocks code fullscreen',

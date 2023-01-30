@@ -1,10 +1,10 @@
 
-const authHeader = () => {
+const authheader = () => {
     const token = localStorage.getItem('accessToken');
     // console.log(token);
     if (token) {
         return { 
-            'Authorization': `Bearer ${token}` 
+            'authorization': `Bearer ${token}` 
         }
     }
     else {
@@ -12,4 +12,4 @@ const authHeader = () => {
     }
 };
 
-export default authHeader;
+export default authheader;

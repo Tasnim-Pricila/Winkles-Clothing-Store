@@ -3,6 +3,7 @@ import { Box, Button, Card, Grid, InputAdornment, TextField, Toolbar, Table, Tab
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { getUsers, searchUsers, updateUserById } from '../../../../Redux/actions';
 import Loading from '../../Loading/Loading';
 
@@ -11,6 +12,7 @@ const AllUsers = () => {
     const users = useSelector(state => state.allUsers.users)
     const searchedUser = useSelector(state => state.allUsers.searchUsers)
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [search, setSearch] = useState('')
 
     useEffect(() => {
@@ -55,9 +57,8 @@ const AllUsers = () => {
                 fontWeight: 'bold',
                 textTransform: 'uppercase',
                 color: '#495057',
-                letterSpacing: '-0.5px'
             }}>
-                Manage Products
+                All Users
             </Toolbar>
             {
                 users?.length !== 0 ?
@@ -66,7 +67,9 @@ const AllUsers = () => {
                             <Grid item md={12}>
                                 <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
                                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pb: 2 }}>
-                                        <Button variant='contained' sx={addBtn}> + Add User </Button>
+                                        <Button variant='contained' sx={addBtn}
+                                        onClick={() => navigate('/soon')}
+                                        > + Add User </Button>
                                         <TextField
                                             id="standard-search"
                                             type="search"

@@ -2,12 +2,11 @@ import { Button, Card, CardContent, Divider, FormControl, FormControlLabel, Grid
 import { Box } from '@mui/system';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import React, { useRef, useState } from 'react';
+import React, {  useState } from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
-import useUsers from '../../../Custom Hook/useUsers';
-import { addToCart, clearCart, getMe, postOrders, resetSavecart } from '../../../Redux/actions';
+import {  useNavigate } from 'react-router-dom';
+import { addToCart, clearCart, getMe, postOrders } from '../../../Redux/actions';
 import Footer from '../../shared/Footer';
 import Loading from '../Loading/Loading';
 import Payment from './Payment';

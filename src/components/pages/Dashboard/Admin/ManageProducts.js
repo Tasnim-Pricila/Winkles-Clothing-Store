@@ -77,7 +77,6 @@ const ManageProducts = () => {
                 fontWeight: 'bold',
                 textTransform: 'uppercase',
                 color: '#495057',
-                letterSpacing: '-0.5px'
             }}>
                 Manage Products
             </Toolbar>

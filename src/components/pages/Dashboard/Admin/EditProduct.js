@@ -96,12 +96,10 @@ const EditProduct = () => {
                                                 brand: e.target.brand.value,
                                                 stock: e.target.stock.value,
                                             }
-                                            console.log(data)
+                                            // console.log(data)
                                             dispatch(updateProduct(id, data))
                                             nav('/dashboard/manageProducts')
-                                            toast.success('Product Updated Successfully ', {
-                                                theme: 'colored',
-                                            });
+                                           
                                         }
                                     }
                                 })
@@ -127,12 +125,10 @@ const EditProduct = () => {
                             brand: e.target.brand.value,
                             stock: e.target.stock.value,
                         }
-                        console.log(data)
+                        // console.log(data)
                         dispatch(updateProduct(id, data))
                         nav('/dashboard/manageProducts')
-                        toast.success('Product Updated Successfully ', {
-                            theme: 'colored',
-                        });
+                    
                     }
                 })
         }
@@ -159,12 +155,10 @@ const EditProduct = () => {
                                     brand: e.target.brand.value,
                                     stock: e.target.stock.value,
                                 }
-                                console.log(data)
+                                // console.log(data)
                                 dispatch(updateProduct(id, data))
                                 nav('/dashboard/manageProducts')
-                                toast.success('Product Updated Successfully ', {
-                                    theme: 'colored',
-                                });
+                               
                             }
                         }
                     })
@@ -185,12 +179,9 @@ const EditProduct = () => {
                 brand: e.target.brand.value,
                 stock: e.target.stock.value,
             }
-            console.log(data)
+            // console.log(data)
             dispatch(updateProduct(id, data))
             nav('/dashboard/manageProducts')
-            toast.success('Product Updated Successfully ', {
-                theme: 'colored',
-            });
         }
     }
 
@@ -201,7 +192,6 @@ const EditProduct = () => {
                 fontWeight: 'bold',
                 textTransform: 'uppercase',
                 color: '#495057',
-                letterSpacing: '-0.5px'
             }}>
                 Edit Product
             </Toolbar>

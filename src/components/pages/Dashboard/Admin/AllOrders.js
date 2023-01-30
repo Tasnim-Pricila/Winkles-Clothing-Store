@@ -5,11 +5,13 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { getAllOrders, orderByFilter, searchOrders, updateorder } from '../../../../Redux/actions';
 import OrdersTable from './OrdersTable';
 
 const AllOrders = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [search, setSearch] = useState('')
     const orders = useSelector(state => state.orders.allOrder)
     const searched = useSelector(state => state.orders.searchOrders)
@@ -72,7 +74,6 @@ const AllOrders = () => {
                 fontWeight: 'bold',
                 textTransform: 'uppercase',
                 color: '#495057',
-                letterSpacing: '-0.5px'
             }}>
                 Order Details
             </Toolbar>
@@ -81,7 +82,8 @@ const AllOrders = () => {
                     <Grid item md={12}>
                         <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pb: 2 }}>
-                                <Button variant='contained' sx={addBtn}> + Create Order </Button>
+                                <Button variant='contained' sx={addBtn}
+                                onClick={() => navigate('/soon')}> + Create Order </Button>
                                 <TextField
                                     id="standard-search"
                                     type="search"

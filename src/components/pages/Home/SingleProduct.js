@@ -124,14 +124,13 @@ const SingleProduct = () => {
     }
 
     const cart = {
-        border: '1px solid #FF8E78',
-        color: '#FF8E78',
+        backgroundColor: '#FF8E78',
+        color: 'white',
         padding: '5px 10px',
         borderRadius: 0,
         fontWeight: 'bold',
         '&:hover': {
-            backgroundColor: '#FF8E78',
-            color: 'white'
+            backgroundColor: '#df6750',
         }
     }
 
@@ -223,15 +222,18 @@ const SingleProduct = () => {
                                     Brand: {product.brand}
                                 </Typography>
                                 <Divider />
-
+                                <Typography sx={{
+                                    mt: 1,
+                                    display: 'inline-block',
+                                    fontWeight: 600
+                                }}> 
+                                Description: 
+                                </Typography>
                                 <Typography variant="body2" gutterBottom sx={{
                                     textAlign: 'justify',
-                                    my: 2
-                                }}>
-                                    <b style={{ marginBottom: '4px', display: 'inline-block', fontSize: '16px', paddingBottom: '10px' }}>Description:</b> <br />
-                                    {product.description}
+                                }}
+                                    dangerouslySetInnerHTML={{ __html: product.description }}>
                                 </Typography>
-
                                 <Divider />
 
                                 <Box mt={3} sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -261,8 +263,6 @@ const SingleProduct = () => {
                                         variant='outlined' disabled={purchaseQuantity === 0}>
                                         <RemoveIcon />
                                     </Button>
-                                </Box>
-                                <Box sx={{ mt: 3, display: 'flex', alignItems: 'center', gap: '10px' }}>
                                     <Button size="small" sx={details} startIcon={<FavoriteBorder />}
                                         onClick={() => handleWishlist(product._id)}>
                                         Add To Wishlist
@@ -274,10 +274,13 @@ const SingleProduct = () => {
                                         Add To Cart
                                     </Button>
                                 </Box>
+                                <Box sx={{ mt: 3, display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    
+                                </Box>
                             </Grid>
                         </Grid>
                         <RelatedProducts product={product} />
-                        <Reviews id={id} />
+                        <Reviews id={id} user={user} />
                     </>
                     :
                     <Loading></Loading>

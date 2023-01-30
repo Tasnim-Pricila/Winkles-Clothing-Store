@@ -2,12 +2,8 @@ import { CheckCircleOutline } from '@mui/icons-material';
 import { Button, IconButton, Modal, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
-import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
-import Api from '../../../../../Axios/Api';
-import { deleteProduct, fetchProducts } from '../../../../../Redux/actions';
-import actionTypes from '../../../../../Redux/constants';
+import { deleteProduct } from '../../../../../Redux/actions';
 
 const ProductDeleteSuccess = ({ product, close }) => {
     const dispatch = useDispatch();
@@ -30,24 +26,8 @@ const ProductDeleteSuccess = ({ product, close }) => {
     };
 
     const handleDeleteproduct = async (id) => {
-        // dispatch(deleteProduct(id))
-        await Api.delete(`/products/${id}`)
-        .then(data => {
-            console.log(data);
-            if (data?.data?.status === 'success') {
-                dispatch({
-                    type: actionTypes.DELETE_PRODUCT,
-                    payload: {
-                        res: data.data,
-                        id: id
-                    }
-                })
-                handleOpenModal();
-                toast.success('Product Deleted Successfully ', {
-                    theme: 'colored',
-                });
-            }
-        })
+        dispatch(deleteProduct(id))
+        handleOpenModal();
     }
 
     const yes = {

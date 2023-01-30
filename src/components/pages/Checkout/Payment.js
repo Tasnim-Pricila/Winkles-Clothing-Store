@@ -3,12 +3,13 @@ import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import useUsers from '../../../Custom Hook/useUsers';
-import { postOrders } from '../../../Redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { addToCart, clearCart, getMe, postOrders } from '../../../Redux/actions';
 
 const Payment = ({ total, shippingDetails, createdOrder, setShippingDetails, setError, cart }) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const stripe = useStripe();
     const elements = useElements();
     const [cardError, setCardError] = useState('');
@@ -16,7 +17,7 @@ const Payment = ({ total, shippingDetails, createdOrder, setShippingDetails, set
     const [transactionID, setTransactionID] = useState('');
     const [clientSecret, setClientSecret] = useState('');
     const [processing, setProcessing] = useState(false);
-    const [user] = useUsers();
+    const user = useSelector(state => state.allUsers.user)
 
     // console.log(createdOrder)
     const amount = parseInt(total)
@@ -26,6 +27,7 @@ const Payment = ({ total, shippingDetails, createdOrder, setShippingDetails, set
             method: "POST",
             headers: {
                 "content-type": "application/json",
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
             },
             body: JSON.stringify({ amount }),
         })
@@ -98,15 +100,23 @@ const Payment = ({ total, shippingDetails, createdOrder, setShippingDetails, set
                             method: 'POST',
                             headers: {
                                 'content-type': 'application/json',
+                                authorization: `Bearer ${localStorage.getItem('accessToken')}`
                             },
                             body: JSON.stringify(payment)
                         })
                             .then(res => res.json())
                             .then(data => {
-                                // console.log(orderData)
-
                                 dispatch(postOrders(orderData))
                                 setProcessing(false);
+                                dispatch(clearCart())
+                                const cartData = {
+                                    cart: {
+                                        product: []
+                                    },
+                                }
+                                dispatch(addToCart(user._id, cartData))
+                                navigate(`/orderComplete`, { state: { shippingDetails } })
+                                dispatch(getMe())
                             });
                     }
 
@@ -148,7 +158,7 @@ const Payment = ({ total, shippingDetails, createdOrder, setShippingDetails, set
                 }
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Button type="submit" variant='contained' sx={{ mt: 6 }}
-                        disabled={!stripe || !clientSecret || success || cart?.length === 0 }
+                        disabled={!stripe || !clientSecret || success || cart?.length === 0}
                     >
                         Pay & Place Order
                     </Button>

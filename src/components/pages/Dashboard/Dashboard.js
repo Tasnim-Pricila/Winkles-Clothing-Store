@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { AccountCircle, Add, Help, Logout, ManageHistory, PeopleAlt, Person, Settings, ShoppingBasket, ShoppingCart } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMe } from '../../../Redux/actions';
@@ -12,6 +12,8 @@ import logout from '../Auth/logout';
 const Dashboard = (props) => {
     const user = useSelector(state => state.allUsers.user);
     const dispatch = useDispatch();
+    const location = useLocation();
+    const navigate = useNavigate();
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const drawerWidth = 240;
@@ -23,7 +25,7 @@ const Dashboard = (props) => {
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
-    const location = useLocation();
+    // console.log(user)
 
     const container = window !== undefined ? () => window().document.body : undefined;
     const drawer = (
@@ -51,139 +53,142 @@ const Dashboard = (props) => {
 
                 {/* Admin   */}
                 {
-                    user?.role === 'admin' ?
-                        <>
-                            <ListItem disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon sx={{
-                                        color: '#A3A6B7',
-                                        ...(location.pathname === "/dashboard") && {
-                                            color: 'white'
-                                        }
-                                    }}> <Add /> </ListItemIcon>
-                                    <ListItemText>
-                                        <Typography component={NavLink} to='/dashboard'
-                                            sx={{
-                                                textDecoration: 'none',
-                                                color: '#A3A6B7',
-                                                ...(location.pathname === "/dashboard") && {
-                                                    color: 'white',
-                                                    fontWeight: '600',
-                                                    letterSpacing: '1px'
-                                                }
-                                            }}>
-                                            Add Product
-                                        </Typography>
-                                    </ListItemText>
-                                    <ListItemText />
-                                </ListItemButton>
-                            </ListItem>
-                            <ListItem disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon sx={{
-                                        color: '#A3A6B7',
-                                        ...(location.pathname === "/dashboard/manageProducts") && {
-                                            color: 'white'
-                                        }
-                                    }}> <ManageHistory /> </ListItemIcon>
-                                    <ListItemText >
-                                        <Typography component={NavLink} to='/dashboard/manageProducts'
-                                            sx={{
-                                                textDecoration: 'none',
-                                                color: '#A3A6B7',
-                                                ...(location.pathname === "/dashboard/manageProducts") && {
-                                                    color: 'white',
-                                                    fontWeight: '600',
-                                                    letterSpacing: '1px'
-                                                }
-                                            }}>
-                                            Manage Products
-                                        </Typography>
-                                    </ListItemText>
-                                    <ListItemText />
-                                </ListItemButton>
-                            </ListItem>
-                            <ListItem disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon sx={{
-                                        color: '#A3A6B7',
-                                        ...(location.pathname === "/dashboard/orderDetails") && {
-                                            color: 'white'
-                                        }
-                                    }}> <ShoppingCart /> </ListItemIcon>
-                                    <ListItemText >
-                                        <Typography component={NavLink} to='/dashboard/orderDetails'
-                                            sx={{
-                                                textDecoration: 'none',
-                                                color: '#A3A6B7',
-                                                ...(location.pathname === "/dashboard/orderDetails") && {
-                                                    color: 'white',
-                                                    fontWeight: '600',
-                                                    letterSpacing: '1px'
-                                                }
-                                            }}>
-                                            Order Details
-                                        </Typography>
-                                    </ListItemText>
-                                    <ListItemText />
-                                </ListItemButton>
-                            </ListItem>
-                            <ListItem disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon sx={{
-                                        color: '#A3A6B7',
-                                        ...(location.pathname === "/dashboard/allUsers") && {
-                                            color: 'white'
-                                        }
-                                    }}> <PeopleAlt /> </ListItemIcon>
-                                    <ListItemText >
-                                        <Typography component={NavLink} to='/dashboard/allUsers'
-                                            sx={{
-                                                textDecoration: 'none',
-                                                color: '#A3A6B7',
-                                                ...(location.pathname === "/dashboard/allUsers") && {
-                                                    color: 'white',
-                                                    fontWeight: '600',
-                                                    letterSpacing: '1px'
-                                                }
-                                            }}>
-                                            All Users
-                                        </Typography>
-                                    </ListItemText>
-                                    <ListItemText />
-                                </ListItemButton>
-                            </ListItem>
-                        </>
+                    user.length !== 0 ?
+                        user?.role === 'admin' ?
+                            <>
+                                <ListItem disablePadding>
+                                    <ListItemButton>
+                                        <ListItemIcon sx={{
+                                            color: '#A3A6B7',
+                                            ...(location.pathname === "/dashboard") && {
+                                                color: 'white'
+                                            }
+                                        }}> <Add /> </ListItemIcon>
+                                        <ListItemText>
+                                            <Typography component={NavLink} to='/dashboard'
+                                                sx={{
+                                                    textDecoration: 'none',
+                                                    color: '#A3A6B7',
+                                                    ...(location.pathname === "/dashboard") && {
+                                                        color: 'white',
+                                                        fontWeight: '600',
+                                                        letterSpacing: '1px'
+                                                    }
+                                                }}>
+                                                Add Product
+                                            </Typography>
+                                        </ListItemText>
+                                        <ListItemText />
+                                    </ListItemButton>
+                                </ListItem>
+                                <ListItem disablePadding>
+                                    <ListItemButton>
+                                        <ListItemIcon sx={{
+                                            color: '#A3A6B7',
+                                            ...(location.pathname === "/dashboard/manageProducts") && {
+                                                color: 'white'
+                                            }
+                                        }}> <ManageHistory /> </ListItemIcon>
+                                        <ListItemText >
+                                            <Typography component={NavLink} to='/dashboard/manageProducts'
+                                                sx={{
+                                                    textDecoration: 'none',
+                                                    color: '#A3A6B7',
+                                                    ...(location.pathname === "/dashboard/manageProducts") && {
+                                                        color: 'white',
+                                                        fontWeight: '600',
+                                                        letterSpacing: '1px'
+                                                    }
+                                                }}>
+                                                Manage Products
+                                            </Typography>
+                                        </ListItemText>
+                                        <ListItemText />
+                                    </ListItemButton>
+                                </ListItem>
+                                <ListItem disablePadding>
+                                    <ListItemButton>
+                                        <ListItemIcon sx={{
+                                            color: '#A3A6B7',
+                                            ...(location.pathname === "/dashboard/orderDetails") && {
+                                                color: 'white'
+                                            }
+                                        }}> <ShoppingCart /> </ListItemIcon>
+                                        <ListItemText >
+                                            <Typography component={NavLink} to='/dashboard/orderDetails'
+                                                sx={{
+                                                    textDecoration: 'none',
+                                                    color: '#A3A6B7',
+                                                    ...(location.pathname === "/dashboard/orderDetails") && {
+                                                        color: 'white',
+                                                        fontWeight: '600',
+                                                        letterSpacing: '1px'
+                                                    }
+                                                }}>
+                                                Order Details
+                                            </Typography>
+                                        </ListItemText>
+                                        <ListItemText />
+                                    </ListItemButton>
+                                </ListItem>
+                                <ListItem disablePadding>
+                                    <ListItemButton>
+                                        <ListItemIcon sx={{
+                                            color: '#A3A6B7',
+                                            ...(location.pathname === "/dashboard/allUsers") && {
+                                                color: 'white'
+                                            }
+                                        }}> <PeopleAlt /> </ListItemIcon>
+                                        <ListItemText >
+                                            <Typography component={NavLink} to='/dashboard/allUsers'
+                                                sx={{
+                                                    textDecoration: 'none',
+                                                    color: '#A3A6B7',
+                                                    ...(location.pathname === "/dashboard/allUsers") && {
+                                                        color: 'white',
+                                                        fontWeight: '600',
+                                                        letterSpacing: '1px'
+                                                    }
+                                                }}>
+                                                All Users
+                                            </Typography>
+                                        </ListItemText>
+                                        <ListItemText />
+                                    </ListItemButton>
+                                </ListItem>
+                            </>
+                            :
+                            <>
+                                {/* User  */}
+                                < ListItem disablePadding>
+                                    <ListItemButton>
+                                        <ListItemIcon sx={{
+                                            color: '#A3A6B7',
+                                            ...(location.pathname === "/dashboard") && {
+                                                color: 'white'
+                                            }
+                                        }}> <ShoppingBasket /> </ListItemIcon>
+                                        <ListItemText>
+                                            <Typography component={NavLink} to='/dashboard'
+                                                sx={{
+                                                    textDecoration: 'none',
+                                                    color: '#A3A6B7',
+                                                    ...(location.pathname === "/dashboard") && {
+                                                        color: 'white',
+                                                        fontWeight: '600',
+                                                        letterSpacing: '1px'
+                                                    }
+                                                }}
+                                            >
+                                                My Orders
+                                            </Typography>
+                                        </ListItemText>
+                                        <ListItemText />
+                                    </ListItemButton>
+                                </ListItem>
+                            </>
                         :
-                        <>
-                            {/* User  */}
-                            < ListItem disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon sx={{
-                                        color: '#A3A6B7',
-                                        ...(location.pathname === "/dashboard") && {
-                                            color: 'white'
-                                        }
-                                    }}> <ShoppingBasket /> </ListItemIcon>
-                                    <ListItemText>
-                                        <Typography component={NavLink} to='/dashboard'
-                                            sx={{
-                                                textDecoration: 'none',
-                                                color: '#A3A6B7',
-                                                ...(location.pathname === "/dashboard") && {
-                                                    color: 'white',
-                                                    fontWeight: '600',
-                                                    letterSpacing: '1px'
-                                                }
-                                            }}
-                                        >
-                                            My Orders
-                                        </Typography>
-                                    </ListItemText>
-                                    <ListItemText />
-                                </ListItemButton>
-                            </ListItem>
-                        </>
+                        navigate('/login')
                 }
 
                 {/* All  */}
@@ -262,7 +267,7 @@ const Dashboard = (props) => {
                         </Typography>
 
                         <Box sx={{ display: 'flex', gap: '10px', justifyContent: 'center', alignItems: 'center', cursor: 'pointer' }} aria-describedby={id} onClick={handleClick}>
-                            <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+                            <Avatar src={user?.imageUrl ? user?.imageUrl : ''} />
                             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                                 <Typography> {user?.firstName} {user?.lastName} </Typography>
                                 <Typography variant='caption'> Designation</Typography>

@@ -33,6 +33,7 @@ import { getMe } from './Redux/actions';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Wishlist from './components/pages/Dashboard/Wishlist/Wishlist';
+import CommingSoon from './CommingSoon/CommingSoon';
 
 function App() {
 
@@ -79,6 +80,7 @@ function App() {
           <Route path='/checkout' element={<Checkout />}></Route>
           <Route path='/orderComplete' element={<OrderComplete />}></Route>
           <Route path='/*' element={<Error />}></Route>
+          <Route path='/soon' element={<CommingSoon />}></Route>
 
           <Route path='/dashboard' element={<Dashboard />}>
             {

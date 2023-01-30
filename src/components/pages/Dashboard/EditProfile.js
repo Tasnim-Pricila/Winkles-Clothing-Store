@@ -90,7 +90,6 @@ const EditProfile = () => {
                 fontWeight: 'bold',
                 textTransform: 'uppercase',
                 color: '#495057',
-                letterSpacing: '-0.5px'
             }}>
                 My Profile
             </Toolbar>

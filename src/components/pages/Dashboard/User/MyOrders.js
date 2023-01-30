@@ -1,33 +1,26 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import useUsers from '../../../../Custom Hook/useUsers';
-import { updateorder } from '../../../../Redux/actions';
+import { getMe, updateorder } from '../../../../Redux/actions';
 import { Box, Card, Divider, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import OrderTable from './OrderTable';
+import { useEffect } from 'react';
 
 const MyOrders = () => {
-    const [user] = useUsers();
+   
+    const user = useSelector(state => state.allUsers.user);
     const dispatch = useDispatch();
-
-    const { data, isLoading, refetch } = useQuery({
-        queryKey: ['orders', user?.email],
-        queryFn: () =>
-            fetch(`https://winkles-server.onrender.com/orders/${user?.email}`)
-                .then(res => res.json())
-
-    })
-    if (isLoading) {
-        console.log('Loading...');
-    }
-    // console.log(data?.data);
+    useEffect(() => {
+        dispatch(getMe())
+    }, [dispatch])
 
     const handleOrder = (id) => {
-        refetch();
+        dispatch(getMe())
         dispatch(updateorder(id, {
             orderStatus: 'Cancelled'
         }))
-        refetch();
+        dispatch(getMe())
     }
 
     return (
@@ -39,7 +32,6 @@ const MyOrders = () => {
                     fontWeight: 'bold',
                     textTransform: 'uppercase',
                     color: '#495057',
-                    letterSpacing: '-0.5px'
                 }}>
                     My Orders
                 </Toolbar>
@@ -77,7 +69,7 @@ const MyOrders = () => {
                                             }
                                         }}>
                                             {
-                                                data?.data?.map((order, index) =>
+                                                user?.data?.data?.map((order, index) =>
                                                     <OrderTable
                                                         order={order} index={index} handleOrder={handleOrder}
                                                     ></OrderTable>

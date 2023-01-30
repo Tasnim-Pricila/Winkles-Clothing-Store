@@ -13,6 +13,7 @@ export const fetchProducts = () => {
         })
     }
 }
+
 export const fetchProductsByPagination = (page) => {
     return async (dispatch) => {
         const response = await Api.get(`/products?page=${page}&limit=12`)
@@ -37,36 +38,103 @@ export const fetchProduct = (id) => {
 
 export const postProduct = (data) => {
     return async (dispatch) => {
-        const response = await Api.post(`/products`, data)
-        // console.log(data)
-        // console.log(response)
-        dispatch({
-            type: actionTypes.ADD_PRODUCT,
-            payload: response.data?.data
+        await Api.post(`/products`, data, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
         })
+            .then(data => {
+                // console.log(data);
+                if (data?.data?.status === 'success') {
+                    dispatch({
+                        type: actionTypes.ADD_PRODUCT,
+                        payload: data?.data
+
+                    })
+                    toast.success('Product Added Successfully ', {
+                        theme: 'colored',
+                    });
+                }
+            })
+            .catch(err => {
+                // console.log(err.response.data)
+                if (err.response.data.status === 'fail') {
+                    toast.error(err.response.data.error, {
+                        theme: 'colored',
+                    });
+                    toast.error(err.response.data.message, {
+                        theme: 'colored',
+                    });
+                }
+            })
     }
 }
 
 export const updateProduct = (id, data) => {
     return async (dispatch) => {
-        const response = await Api.patch(`/products/${id}`, data)
-        console.log(response)
-        dispatch({
-            type: actionTypes.UPDATE_PRODUCT,
-            payload: response.data?.data
+        await Api.patch(`/products/${id}`, data, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
         })
+        .then(data => {
+            // console.log(data);
+            if (data?.data?.status === 'success') {
+                dispatch({
+                    type: actionTypes.UPDATE_PRODUCT,
+                    payload: data?.data
+                })
+                toast.success( data.data.message , {
+                    theme: 'colored',
+                });
+            }
+        })
+        .catch(err => {
+            // console.log(err.response.data)
+            if (err.response.data.status === 'fail') {
+                toast.error(err.response.data.error, {
+                    theme: 'colored',
+                });
+                toast.error(err.response.data.message, {
+                    theme: 'colored',
+                });
+            }
+        })
+       
     }
 }
 
 export const deleteProduct = (id) => {
     return async (dispatch) => {
-        const response = await Api.delete(`/products/${id}`)
-        console.log(response)
-        dispatch({
-            type: actionTypes.DELETE_PRODUCT,
-            payload: {
-                res: response.data.data,
-                id: id
+        await Api.delete(`/products/${id}`, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+        .then(data => {
+            // console.log(data);
+            if (data?.data?.status === 'success') {
+                dispatch({
+                    type: actionTypes.DELETE_PRODUCT,
+                    payload: {
+                        res: data.data,
+                        id: id
+                    }
+                })
+                toast.success(data.data.message, {
+                    theme: 'colored',
+                });
+            }
+        })
+        .catch(err => {
+            // console.log(err.response.data)
+            if (err.response.data.status === 'fail') {
+                toast.error(err.response.data.error, {
+                    theme: 'colored',
+                });
+                toast.error(err.response.data.message, {
+                    theme: 'colored',
+                });
             }
         })
     }
@@ -81,32 +149,63 @@ export const removeSelectedProduct = () => {
 export const addToCart = (userId, data, itemID) => {
     return async (dispatch) => {
         dispatch({ type: actionTypes.LOADING })
-        const response = await Api.patch(`/users/update/${userId}`, data)
-        // console.log(response)
-        if (response?.data?.data?.acknowledged === true) {
-            dispatch({
-                type: actionTypes.ADD_TO_CART,
-                payload: {
-                    postCart: response?.data?.data,
-                    id: itemID
-                }
-            })
-        }
+        await Api.patch(`/users/update/${userId}`, data, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+        .then(data => {
+            // console.log(data);
+            if (data?.data?.status === 'success') {
+                dispatch({
+                    type: actionTypes.ADD_TO_CART,
+                    payload: {
+                        postCart: data?.data,
+                        id: itemID
+                    }
+                })
+            }
+        })
+        .catch(err => {
+            // console.log(err.response.data)
+            if (err.response.data.status === 'fail') {
+                toast.error(err.response.data.error, {
+                    theme: 'colored',
+                });
+            }
+        })        
     }
 }
 
-export const addToWishlist = (userId, data ) => {
+export const addToWishlist = (userId, data) => {
     return async (dispatch) => {
-        const response = await Api.patch(`/users/update/${userId}`, data)
-        // console.log(response);
-        if (response?.data?.data?.acknowledged === true) {
-            dispatch({
-                type: actionTypes.ADD_TO_WISHLIST,
-                payload: {
-                    wishlist: response?.data?.data,
-                }
-            })
-        }
+        await Api.patch(`/users/update/${userId}`, data, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+        .then(data => {
+            // console.log(data);
+            if (data?.data?.status === 'success') {
+                dispatch({
+                    type: actionTypes.ADD_TO_WISHLIST,
+                    payload: {
+                        wishlist: data?.data,
+                    }
+                })
+            }
+        })
+        .catch(err => {
+            // console.log(err.response.data)
+            if (err.response.data.status === 'fail') {
+                toast.error(err.response.data.error, {
+                    theme: 'colored',
+                });
+            }
+        })   
+
+            
+        
     }
 }
 
@@ -149,8 +248,12 @@ export const clearCart = () => {
 export const adjustQty = (productId, itemID, qty, data) => {
     return async (dispatch) => {
         // console.log(data);
-        const response = await Api.patch(`/users/me/${productId}`, data)
-        console.log(response);
+        const response = await Api.patch(`/users/me/${productId}`, data, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+        // console.log(response);
         dispatch({
             type: actionTypes.ADJUST_QTY,
             payload: {
@@ -183,7 +286,7 @@ export const searchByFilter = (url) => {
 
 export const searchByCatAndBrand = (url) => {
     return async (dispatch) => {
-        console.log(url);
+        // console.log(url);
         const response = await Api.get(url)
         dispatch({
             type: actionTypes.SEARCH_BY_CAT_BRAND,
@@ -196,20 +299,44 @@ export const searchByCatAndBrand = (url) => {
 
 export const postOrders = (data) => {
     return async (dispatch) => {
-        const response = await Api.post(`/orders`, data)
-        // console.log(response.data)
-        if (response?.data?.status === 'success') {
-            dispatch({
-                type: actionTypes.POST_ORDER,
-                payload: response.data
-            })
-        }
+        await Api.post(`/orders`, data, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+        .then(data => {
+            // console.log(data);
+            if (data?.data?.status === 'success') {
+                dispatch({
+                    type: actionTypes.POST_ORDER,
+                    payload: data.data
+                })
+                toast.success(data.data.message, {
+                    theme: 'colored',
+                });
+            }
+        })
+        .catch(err => {
+            // console.log(err.response.data)
+            if (err.response.data.status === 'fail') {
+                toast.error(err.response.data.error, {
+                    theme: 'colored',
+                });
+                toast.error(err.response.data.message, {
+                    theme: 'colored',
+                });
+            }
+        })
     }
 }
 
 export const getAllOrders = () => {
     return async (dispatch) => {
-        const response = await Api.get(`/orders`,)
+        const response = await Api.get(`/orders`, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
         // console.log(response.data.data);
         dispatch({
             type: actionTypes.GET_ALL_ORDER,
@@ -230,7 +357,11 @@ export const searchOrders = (text) => {
 export const orderByFilter = (url) => {
     return async (dispatch) => {
         // console.log(url);
-        const response = await Api.get(url)
+        const response = await Api.get(url, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
         dispatch({
             type: actionTypes.ORDER_BY_FILTER,
             payload: response.data?.data?.result
@@ -240,7 +371,11 @@ export const orderByFilter = (url) => {
 
 export const getOrdersByEmail = (email) => {
     return async (dispatch) => {
-        const response = await Api.get(`/orders/${email}`,)
+        const response = await Api.get(`/orders/${email}`, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
         console.log(response.data.data);
         dispatch({
             type: actionTypes.GET_ORDER_BY_EMAIl,
@@ -251,11 +386,33 @@ export const getOrdersByEmail = (email) => {
 
 export const updateorder = (id, data) => {
     return async (dispatch) => {
-        const response = await Api.patch(`/orders/${id}`, data)
-        console.log(response)
-        dispatch({
-            type: actionTypes.UPDATE_ORDER,
-            payload: response.data?.data
+        await Api.patch(`/orders/${id}`, data, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+        .then(data => {
+            // console.log(data);
+            if (data?.data?.status === 'success') {
+                dispatch({
+                    type: actionTypes.UPDATE_ORDER,
+                    payload: data?.data
+                })
+                toast.success(data.data.message, {
+                    theme: 'colored',
+                });
+            }
+        })
+        .catch(err => {
+            // console.log(err.response.data)
+            if (err.response.data.status === 'fail') {
+                toast.error(err.response.data.error, {
+                    theme: 'colored',
+                });
+                toast.error(err.response.data.message, {
+                    theme: 'colored',
+                });
+            }
         })
     }
 }
@@ -268,22 +425,49 @@ export const removeUpdatedProduct = () => {
 
 export const deleteOrder = (id) => {
     return async (dispatch) => {
-        const response = await Api.delete(`/orders/${id}`)
-        console.log(response)
-        dispatch({
-            type: actionTypes.DELETE_ORDER,
-            payload: {
-                res: response.data.data,
-                id: id
+        await Api.delete(`/orders/${id}`, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+        .then(data => {
+            // console.log(data);
+            if (data?.data?.status === 'success') {
+                dispatch({
+                    type: actionTypes.DELETE_ORDER,
+                    payload: {
+                        res: data.data,
+                        id: id
+                    }
+                })
+                toast.success(data.data.message, {
+                    theme: 'colored',
+                });
+            }
+        })
+        .catch(err => {
+            // console.log(err.response.data)
+            if (err.response.data.status === 'fail') {
+                toast.error(err.response.data.error, {
+                    theme: 'colored',
+                });
+                toast.error(err.response.data.message, {
+                    theme: 'colored',
+                });
             }
         })
     }
 }
 
 // Users 
+
 export const getUsers = () => {
     return async (dispatch) => {
-        const response = await Api.get(`/users`)
+        const response = await Api.get(`/users`, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
         dispatch({
             type: actionTypes.GET_USERS,
             payload: response.data.data.result
@@ -344,7 +528,11 @@ export const updateUserAction = (data) => {
 
 export const updateUserById = (id, data) => {
     return async (dispatch) => {
-        const response = await Api.patch(`/users/update/${id}`, data)
+        const response = await Api.patch(`/users/update/${id}`, data, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
         console.log(response)
         dispatch({
             type: actionTypes.UPDATE_USER,
@@ -379,7 +567,11 @@ export const fetchBrand = (id) => {
 
 export const createBrand = (data) => {
     return async (dispatch) => {
-        const response = await Api.post(`/brands`, data)
+        const response = await Api.post(`/brands`, data, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
         // console.log(response)
         dispatch({
             type: actionTypes.CREATE_BRAND,
@@ -414,7 +606,11 @@ export const fetchCategory = (id) => {
 
 export const createCategory = (data) => {
     return async (dispatch) => {
-        const response = await Api.post(`/categories`, data)
+        const response = await Api.post(`/categories`, data, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
         console.log(response)
         dispatch({
             type: actionTypes.CREATE_CATEGORY,
@@ -449,7 +645,11 @@ export const fetchBlog = (id) => {
 
 export const createBlog = (data) => {
     return async (dispatch) => {
-        const response = await Api.post(`/blogs`, data)
+        const response = await Api.post(`/blogs`, data, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
         console.log(response)
         dispatch({
             type: actionTypes.CREATE_BLOG,
@@ -460,7 +660,11 @@ export const createBlog = (data) => {
 
 export const updateBlog = (id, data) => {
     return async (dispatch) => {
-        const response = await Api.patch(`/blogs/${id}`, data)
+        const response = await Api.patch(`/blogs/${id}`, data, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
         console.log(response)
         dispatch({
             type: actionTypes.UPDATE_BLOG,
@@ -471,7 +675,11 @@ export const updateBlog = (id, data) => {
 
 export const deleteBlog = (id) => {
     return async (dispatch) => {
-        const response = await Api.delete(`/blogs/${id}`)
+        const response = await Api.delete(`/blogs/${id}`, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
         console.log(response)
         dispatch({
             type: actionTypes.DELETE_BLOG,
@@ -509,7 +717,11 @@ export const fetchReviewbyProductId = (id) => {
 
 export const createReview = (data) => {
     return async (dispatch) => {
-        const response = await Api.post(`/reviews`, data)
+        const response = await Api.post(`/reviews`, data, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
         // console.log(response)
         dispatch({
             type: actionTypes.CREATE_REVIEW,
@@ -517,12 +729,3 @@ export const createReview = (data) => {
         })
     }
 }
-
-
-
-
-
-
-
-
-

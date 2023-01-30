@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchReviewbyProductId } from '../../../Redux/actions';
 import RatingModal from './RatingModal';
 
-const Reviews = ({ id }) => {
+const Reviews = ({ id, user }) => {
     const dispatch = useDispatch();
     const reviews = useSelector(state => state.reviews.review);
 
@@ -30,8 +30,7 @@ const Reviews = ({ id }) => {
                         reviews?.map((review, i) =>
                             <Box mb={3}>
                                 <Box sx={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                                    <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-
+                                    <Avatar src={user?.imageUrl ? user?.imageurl : ''} />
                                     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                                         <Typography fontWeight='bold' sx={{ fontSize: '15px' }}>
                                             {review.postedBy}
