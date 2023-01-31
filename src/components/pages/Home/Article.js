@@ -4,7 +4,6 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import one from '../../../images/Article/1.png';
 import { fetchBlogs } from '../../../Redux/actions';
 import Loading from '../Loading/Loading';
 
@@ -19,6 +18,7 @@ const Article = () => {
 
     const handleClick = (id) => {
         // nav(`/blog/${id}`)
+        nav('/soon')
     }
 
     return (
