@@ -15,19 +15,19 @@ const Categories = () => {
 
     const categories = [
         {
-            title: 'Women',
+            title: 'Sharee',
             image: women,
-            link: 'women'
+            link: 'sharee'
         },
         {
-            title: 'Men',
+            title: 'Lehenga',
             image: men,
-            link: 'men'
+            link: 'lehenga'
         },
         {
-            title: 'Kids',
+            title: 'Gown',
             image: kids,
-            link: 'kids'
+            link: 'gown'
         },
     ]
 

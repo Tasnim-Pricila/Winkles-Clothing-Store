@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import Slider from 'react-slick';
 import { searchByFilter } from '../../../Redux/actions';
 import Loading from '../Loading/Loading';
+import './RelatedProducts.css';
 
 const RelatedProducts = ({ product }) => {
     const navigate = useNavigate();
@@ -16,13 +17,14 @@ const RelatedProducts = ({ product }) => {
         const url = `/products?category=${product?.category}`
         dispatch(searchByFilter(url))
     }, [dispatch, product?.category])
+    console.log(categoryWiseProducts?.result?.length)
 
     const settings = {
         dots: false,
         infinite: true,
         speed: 2000,
-        slidesToShow: 4,
-        slidesToScroll: 2,
+        slidesToShow: categoryWiseProducts?.result?.length === 1 ? 1 : categoryWiseProducts?.result?.length > 4 ? 4 : categoryWiseProducts?.result?.length,
+        slidesToScroll: 1,
         initialSlide: 0,
         autoplay: true,
         arrows: false,
@@ -31,14 +33,14 @@ const RelatedProducts = ({ product }) => {
                 breakpoint: 1024,
                 settings: {
                     slidesToShow: 3,
-                    slidesToScroll: 3,
+                    slidesToScroll: 1,
                 }
             },
             {
                 breakpoint: 600,
                 settings: {
                     slidesToShow: 2,
-                    slidesToScroll: 2,
+                    slidesToScroll: 1,
                     initialSlide: 2
                 }
             },
@@ -62,15 +64,15 @@ const RelatedProducts = ({ product }) => {
                 {
                     categoryWiseProducts?.result?.length > 0 ?
                         categoryWiseProducts?.result?.map((product, i) =>
-                            <div style={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                padding: '20px',
-                                gap: '200px',
-                                flexDirection: 'column'
-                            }}>
-                                <Box>
+                            // <div style={{
+                            //     display: 'flex',
+                            //     justifyContent: 'center',
+                            //     alignItems: 'center',
+                            //     padding: '20px',
+                            //     gap: '200px',
+                            //     flexDirection: 'column'
+                            // }}>
+                                <Box className='slick-list'>
                                     <Box onClick={() => navigate(`/product/${product._id}`)}
                                         sx={{
                                             backgroundImage: `url(${product?.image})`,
@@ -102,7 +104,7 @@ const RelatedProducts = ({ product }) => {
                                         </Typography>
                                     </Box>
                                 </Box>
-                            </div>
+                            // </div>
                         )
                         :
                         <Loading />

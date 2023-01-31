@@ -13,13 +13,15 @@ const Reviews = ({ id, user }) => {
     useEffect(() => {
         dispatch(fetchReviewbyProductId(id))
     }, [dispatch, id])
-    
-    // console.log(reviews)
+
+    // console.log(user)
 
     return (
-        <Card variant="outlined" sx={{ p: 4, boxShadow: '0 3px 3px rgba(56,65,74,0.1)', mx: 16 }}>
+        <Card variant="outlined" sx={{ p: 4, boxShadow: '0 3px 3px rgba(56,65,74,0.1)', mx: 16, mb: 10 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Typography variant='h6' fontWeight='bold'> Share your thoughts with other customers </Typography>
+                <Typography variant='h6' fontWeight='bold'>
+                    Share your thoughts with other customers
+                </Typography>
                 <Box>
                     <RatingModal id={id}> </RatingModal>
                 </Box>
@@ -30,7 +32,7 @@ const Reviews = ({ id, user }) => {
                         reviews?.map((review, i) =>
                             <Box mb={3}>
                                 <Box sx={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                                    <Avatar src={user?.imageUrl ? user?.imageurl : ''} />
+                                    <Avatar src={review?.avatar ? review?.avatar : ''} />
                                     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                                         <Typography fontWeight='bold' sx={{ fontSize: '15px' }}>
                                             {review.postedBy}

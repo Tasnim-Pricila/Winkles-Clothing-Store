@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { addToCart, addToWishlist, fetchProductsByPagination, getMe, searchByFilter, searchProducts } from '../../../Redux/actions';
+import { addToCart, addToWishlist, fetchProductsByPagination, getMe, searchByFilter, searchProducts, searchProductsbyPagination } from '../../../Redux/actions';
 import Footer from '../../shared/Footer';
 import Loading from '../Loading/Loading';
 import AllProducts from './AllProducts';
@@ -187,7 +187,7 @@ const Shop = ({ searchText, setSearchText }) => {
         if (searchText === '' && !location?.state?.value)
             dispatch(fetchProductsByPagination(selectedPage))
         else {
-            dispatch(searchProducts(searchText))
+            dispatch(searchProductsbyPagination(searchText))
         }
     }, [searchText, dispatch, location?.state?.value])
 

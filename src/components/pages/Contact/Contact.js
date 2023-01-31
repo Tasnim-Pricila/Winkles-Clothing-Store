@@ -4,13 +4,24 @@ import React from 'react';
 import Footer from '../../shared/Footer';
 import { Link as Routerlink } from 'react-router-dom';
 
-
 const Contact = () => {
+
+    const message = {
+        color: 'white',
+        backgroundColor: '#4b38b3',
+        marginRight: '20px',
+        borderRadius: 0,
+        '&:hover': {
+            color: 'white',
+            backgroundColor: '#4b38b3',
+        }
+    }
+
     return (
         <div>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', px: 16, py: 5, bgcolor: '#FF8E78' }}>
                 <Typography variant='h5' sx={{ textTransform: 'uppercase', fontWeight: 600 }}>
-                Contact
+                    Contact
                 </Typography>
                 <Breadcrumbs aria-label="breadcrumb">
                     <Link to="/" underline="hover" color="inherit" component={Routerlink}>
@@ -68,11 +79,11 @@ const Contact = () => {
                         />
                     </Grid>
                 </Grid>
-                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-                    <Button variant="contained">
+                <Box style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+                    <Button variant="contained" sx={message}>
                         Send Message
                     </Button>
-                </div>
+                </Box>
             </Box>
             <Footer></Footer>
         </div>

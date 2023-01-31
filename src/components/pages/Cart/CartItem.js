@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { TableCell, TableRow, } from '@mui/material';
+import { IconButton, TableCell, TableRow, } from '@mui/material';
 import styled from '@emotion/styled';
 import { Cancel } from '@mui/icons-material';
 
@@ -77,15 +77,17 @@ const CartItem = ({ cartItem }) => {
 
             {/* Quantity  */}
             <TableCell align="center" sx={{ p: 0 }}>
-                <Button disabled={purchaseQuantity === quantity} onClick={increase}>
+                <IconButton disabled={purchaseQuantity === quantity} onClick={increase}
+                    sx={{ color: '#4b38b3' }} >
                     <AddIcon />
-                </Button>
-                <input type="number" value={purchaseQuantity} readOnly style={{ width: '40px', textAlign: 'center' }}
+                </IconButton>
+                <input type="number" value={purchaseQuantity} readOnly 
+                style={{ width: '40px', textAlign: 'center', height: '25px' }}
                     onChange={(e) => setQty(e.target.value)}
                 />
-                <Button onClick={decrease}>
+                <IconButton onClick={decrease} sx={{ color: '#4b38b3' }}>
                     <RemoveIcon />
-                </Button>
+                </IconButton>
             </TableCell>
 
 

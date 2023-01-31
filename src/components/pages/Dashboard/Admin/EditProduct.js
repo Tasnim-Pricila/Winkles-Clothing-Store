@@ -60,7 +60,16 @@ const EditProduct = () => {
         setGalleryImg({ gallery, galleryPreview })
     }
 
-    const imgStorageKey = '966d2411c1e18d4935625f7409fb75e7';
+    const update = {
+        color: 'white',
+        backgroundColor: '#45CB85',
+        boxShadow: '0 3px 3px rgba(56,65,74,0.1)',
+        '&:hover': {
+            backgroundColor: '#3bad71',
+        }
+    }
+
+    const imgStorageKey = '966d2411c1e18d4935625f7409fb75e7' ;
     const url = `https://api.imgbb.com/1/upload?key=${imgStorageKey}`;
 
     const handleEdit = async (e) => {
@@ -532,7 +541,7 @@ const EditProduct = () => {
                                 </Grid>
                             </Grid>
                             <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
-                                <Button variant='contained' type='submit'> Update Product </Button>
+                                <Button variant='contained' type='submit' sx={update}> Update Product </Button>
                             </Box>
                         </form>
                     </>

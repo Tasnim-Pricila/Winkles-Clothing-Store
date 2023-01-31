@@ -68,7 +68,7 @@ const AllUsers = () => {
                                 <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
                                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pb: 2 }}>
                                         <Button variant='contained' sx={addBtn}
-                                        onClick={() => navigate('/soon')}
+                                            onClick={() => navigate('/soon')}
                                         > + Add User </Button>
                                         <TextField
                                             id="standard-search"
@@ -155,7 +155,6 @@ const AllUsers = () => {
                                                                         :
                                                                         <TableCell>
                                                                             <Button variant='contained' size='small'
-                                                                                endIcon={<Block fontSize='small' />}
                                                                                 onClick={() => handleActive(user._id)}>
                                                                                 Activate
                                                                             </Button>
@@ -207,7 +206,6 @@ const AllUsers = () => {
                                                                             :
                                                                             <TableCell>
                                                                                 <Button variant='contained' size='small'
-                                                                                    endIcon={<Block fontSize='small' />}
                                                                                     onClick={() => handleActive(user._id)}>
                                                                                     Activate
                                                                                 </Button>

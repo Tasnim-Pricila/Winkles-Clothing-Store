@@ -54,9 +54,9 @@ const ProductTable = ({ product }) => {
         <TableRow>
             <TableCell>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <img src={product.image} alt="" width='40px' height='40px' />
+                    <img src={product.image} alt="" width='50px' height='70px' />
                     <Box >
-                        <Typography> {product.title} </Typography>
+                        <Typography sx={{ textTransform: 'capitalize'}}> {product.title} </Typography>
                         <Typography variant='caption' sx={{ color: '#878a99', textTransform: 'capitalize' }}> Category: {product.category} </Typography>
                     </Box>
 

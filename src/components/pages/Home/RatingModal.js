@@ -13,7 +13,7 @@ const RatingModal = ({id}) => {
     const handleClose = () => setOpen(false);
     const user = useSelector(state => state.allUsers.user);
     const dispatch = useDispatch();
-    const { firstName, lastName } = user;
+    const { firstName, lastName, imageUrl } = user;
 
     useEffect(() => {
         dispatch(getMe())
@@ -59,6 +59,7 @@ const RatingModal = ({id}) => {
             summary: labels[value],
             review: review,
             postedBy: firstName + ' ' + lastName,
+            avatar: imageUrl,
             productId: id
         }
         dispatch(createReview(data))

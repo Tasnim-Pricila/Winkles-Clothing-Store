@@ -33,12 +33,22 @@ const Cart = () => {
     }
     const continueButton = {
         color: 'white',
-        backgroundColor: 'green',
+        backgroundColor: '#FF8E78',
         marginRight: '20px',
         borderRadius: 0,
         '&:hover': {
             color: 'white',
-            backgroundColor: 'green',
+            backgroundColor: '#df6750',
+        }
+    }
+    const checkout = {
+        color: 'white',
+        backgroundColor: '#4b38b3',
+        marginRight: '20px',
+        borderRadius: 0,
+        '&:hover': {
+            color: 'white',
+            backgroundColor: '#4b38b3',
         }
     }
 
@@ -74,10 +84,11 @@ const Cart = () => {
                                         )
                                     }
                                     <TableRow>
-                                        <TableCell colSpan={5} align='right' sx={{ pr: 4, fontWeight: 'bold' }}>
+                                        <TableCell colSpan={5} align='center' 
+                                        sx={{  fontWeight: 'bold', textTransform: 'uppercase' }}>
                                             Total
                                         </TableCell>
-                                        <TableCell colSpan={0} sx={{ fontWeight: 'bold' }}>
+                                        <TableCell colSpan={0} align='center' sx={{ fontWeight: 'bold' }}>
                                             Tk. {total}
                                         </TableCell>
                                         <TableCell></TableCell>
@@ -92,8 +103,10 @@ const Cart = () => {
                 {
                     cart?.length === 0 ||
                     <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'right' }}>
-                        <Button variant='contained' sx={continueButton} onClick={handleContinue} startIcon={<Loop />}> Continue Shopping </Button>
-                        <Button variant='contained' onClick={handleCheckout} startIcon={<Done />}>
+                        <Button variant='contained' sx={continueButton} onClick={handleContinue} startIcon={<Loop />}>
+                            Continue Shopping
+                        </Button>
+                        <Button variant='contained' sx={checkout} onClick={handleCheckout} startIcon={<Done />}>
                             Proceed to Checkout
                         </Button>
                     </div>

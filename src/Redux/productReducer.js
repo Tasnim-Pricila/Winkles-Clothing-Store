@@ -5,6 +5,7 @@ const initialState = {
     cart: [],
     filter: [],
     searchProducts: [],
+    searchAllProducts: [],
     addProduct: [],
     product: [],
     allProducts: [],
@@ -124,11 +125,17 @@ const productReducer = (state = initialState, action) => {
                 ...state,
                 allProducts: action.payload,
             }
-        case actionTypes.SEARCH_PRODUCT:
+        case actionTypes.SEARCH_PRODUCT_BY_PAGINATION:
             return {
                 ...state,
                 searchProducts: state.products.result.filter(
-                    product => product.title.includes(action.payload.searchText))
+                    product => product.title.includes(action.payload.searchText.toLowerCase()))
+            }
+        case actionTypes.SEARCH_PRODUCT:
+            return {
+                ...state,
+                searchAllProducts: state.allProducts.filter(
+                    product => product.title.includes(action.payload.searchText.toLowerCase()))
             }
         default:
             return state

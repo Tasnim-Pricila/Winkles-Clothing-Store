@@ -35,7 +35,7 @@ const Login = () => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
-   
+
     const handleClick = async (e) => {
         e.preventDefault();
 
@@ -50,11 +50,9 @@ const Login = () => {
                 .then(res => {
                     if (res.data.status === 'success') {
                         setLoading(true)
-                        dispatch(getMe())
                         const accessToken = res.data?.data?.token;
                         localStorage.setItem('accessToken', accessToken);
                         setToken(accessToken);
-                        dispatch(getMe())
                     }
                 })
                 .catch(err => {
@@ -71,18 +69,19 @@ const Login = () => {
         }
     }
 
-    const from = location.state?.from?.pathname || '/shop';
+    const from = location.state?.from?.pathname || '/';
     useEffect(() => {
         if (token) {
             setLoading(false)
-            navigate(from, { replace: true });
             toast.success('Login Successful ', {
                 theme: 'colored',
             });
+            navigate(from, { replace: true })
+            dispatch(getMe())
         }
-    }, [token])
+    }, [token, navigate, from])
 
-    if(loading){
+    if (loading) {
         return <Loading></Loading>
     }
 

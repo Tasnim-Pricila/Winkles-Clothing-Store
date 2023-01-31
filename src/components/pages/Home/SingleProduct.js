@@ -197,7 +197,7 @@ const SingleProduct = () => {
                                 </Carousel>
                             </Grid>
                             <Grid item xs={8} sx={{ display: 'flex', flexDirection: 'column' }}>
-                                <Typography gutterBottom variant="h4" sx={{ textTransform: 'uppercase', fontWeight: 'bold', color: 'black', mt: 2 }}>
+                                <Typography gutterBottom variant="h4" sx={{ textTransform: 'capitalize', fontWeight: 'bold', color: 'black', mt: 2 }}>
                                     {product.title}
                                 </Typography>
                                 <Divider />

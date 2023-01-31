@@ -21,7 +21,7 @@ const EditProfile = () => {
     }, [dispatch])
 
     // image upload
-    const imgStorageKey = '966d2411c1e18d4935625f7409fb75e7';
+    const imgStorageKey = '966d2411c1e18d4935625f7409fb75e7' ;
     const url = `https://api.imgbb.com/1/upload?key=${imgStorageKey}`;
 
     const [myImage, setImage] = useState('');
@@ -39,7 +39,7 @@ const EditProfile = () => {
         if (myImage) {
             await axios.post(url, formData)
                 .then(response => {
-                    console.log(response)
+                    // console.log(response)
                     if (response?.data?.success) {
                         const imgUrl = response?.data?.data?.url;
                         dispatch(updateUserAction({
@@ -81,6 +81,23 @@ const EditProfile = () => {
             imageUrl: ''
         }))
         navigate('/dashboard/profile')
+    }
+
+    const save = {
+        color: 'white',
+        backgroundColor: '#45CB85',
+        boxShadow: '0 3px 3px rgba(56,65,74,0.1)',
+        '&:hover': {
+            backgroundColor: '#3bad71',
+        }
+    }
+    const cancel = {
+        color: 'white',
+        backgroundColor: '#f06548',
+        boxShadow: '0 3px 3px rgba(56,65,74,0.1)',
+        '&:hover': {
+            backgroundColor: '#f06548',
+        }
     }
 
     return (
@@ -294,8 +311,8 @@ const EditProfile = () => {
                                         </Grid>
 
                                         <Box mt={3} sx={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
-                                            <Button variant='contained' type='submit '> Save </Button>
-                                            <Button variant='contained' onClick={handleCancel}> Cancel </Button>
+                                            <Button variant='contained' sx={save} type='submit '> Save </Button>
+                                            <Button variant='contained' sx={cancel} onClick={handleCancel}> Cancel </Button>
                                         </Box>
 
 

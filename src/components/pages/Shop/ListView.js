@@ -39,7 +39,7 @@ const ListView = ({ product, handleAddToCart, handleWishlist }) => {
                 onClick={() => navigate(`/product/${product._id}`)} />
             </Grid>
             <Grid item md={8} sx={{ display: 'flex', flexDirection: 'column' }}>
-                <Typography gutterBottom variant="h5" sx={{ textTransform: 'uppercase', fontWeight: 'bold', color: 'black', cursor: 'pointer' }} 
+                <Typography gutterBottom variant="h5" sx={{ textTransform: 'capitalize', fontWeight: 'bold', color: 'black', cursor: 'pointer' }} 
                 onClick={() => navigate(`/product/${product._id}`)}>
                     {product.title}
                 </Typography>
@@ -55,8 +55,8 @@ const ListView = ({ product, handleAddToCart, handleWishlist }) => {
                 <Typography variant="body2" gutterBottom sx={{
                     textAlign: 'justify',
                     marginBottom: '4px', display: 'inline-block', fontSize: '14px', paddingBottom: '10px'
-                }}>
-                    {product.description.length > 220 ? product.description.slice(0, 220) + '.........' : product.description}
+                }}
+                dangerouslySetInnerHTML={{ __html: product.description.length > 220 ? product.description.slice(0, 220) + '.........' : product.description }}>
                 </Typography>
                 <Box sx={{ display: 'flex', my: 2, gap: '10px' }}>
                     <Button size="small" sx={details} startIcon={<FavoriteBorder />}

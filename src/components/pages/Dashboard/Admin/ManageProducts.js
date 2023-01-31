@@ -13,7 +13,8 @@ const ManageProducts = () => {
     const products = useSelector(state => state.allProducts.allProducts);
     const brands = useSelector(state => state.brands.brands);
     const categories = useSelector(state => state.category.categories);
-    const searched = useSelector(state => state.allProducts.searchProducts)
+    const searched = useSelector(state => state.allProducts.searchAllProducts)
+    console.log(searched);
     const nav = useNavigate();
 
     const dispatch = useDispatch();
@@ -94,7 +95,6 @@ const ManageProducts = () => {
                                     <Typography pb={1} sx={{ fontWeight: '600' }}>Categories</Typography>
                                     <AddCategory></AddCategory>
                                 </Box>
-
                                 {
                                     categories?.map(cat =>
                                         <Button variant='text'

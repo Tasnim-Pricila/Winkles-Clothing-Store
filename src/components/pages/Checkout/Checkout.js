@@ -14,14 +14,13 @@ import Payment from './Payment';
 const Checkout = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    // const [loading, setLoading] = useState(false)
     const user = useSelector(state => state.allUsers.user)
     const createdOrder = useSelector(state => state.orders.orders)
-    // const saveCart = useSelector(state => state.allProducts.saveCart);
     const loading = useSelector(state => state.allProducts.loading);
     const cart = user?.cart?.product
 
     const stripePromise = loadStripe('pk_test_51L2D2EKZuhtVgyM7S2CeyD5YrpaY7x1Ab3pNWv4hqTyRbvblNQ2KZhgUz71r0JbCZCytaYDey0oYNYlZ1t3QNseW00ZewuwFk9');
+    
     const [total, setTotal] = useState(0);
     const [shippingDetails, setShippingDetails] = useState({
         phone: '',
@@ -49,15 +48,6 @@ const Checkout = () => {
         })
         setTotal(total);
     }, [cart, total])
-
-    // useEffect(() => {
-    //     console.log(saveCart);
-    //     if (saveCart?.acknowledged === true) {
-    //         dispatch(resetSavecart())
-    //         navigate(`/orderComplete`, { state: { shippingDetails } })
-    //         dispatch(getMe())
-    //     }
-    // }, [dispatch, saveCart])
 
     const shipping = 100;
     const subtotal = parseFloat(shipping) + parseFloat(total);

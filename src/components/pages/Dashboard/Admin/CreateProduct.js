@@ -85,9 +85,9 @@ const CreateProduct = () => {
         else if (myImage === '') {
             setError({ myImage: 'This field is required' })
         }
-        else if (galleryImg[0]?.gallery === '') {
-            setError({ gallery: 'This field is required' })
-        }
+        // else if (galleryImg[0]?.gallery === '') {
+        //     setError({ gallery: 'This field is required' })
+        // }
         else if (productDetails.quantity === '') {
             setError({ quantity: 'This field is required' })
         }
@@ -115,27 +115,44 @@ const CreateProduct = () => {
                         const imgUrl = response?.data?.data?.url;
                         // gallery image 
                         const formGallery = new FormData();
-                        [...galleryImg?.gallery].forEach((image, i) => {
-                            formGallery.append('image', image)
-                            axios.post(url, formGallery)
-                                .then(response => {
-                                    if (response?.data?.success) {
-                                        imgGalleryUrl.push(response?.data?.data?.url);
-                                        if (i === galleryImg?.gallery?.length - 1) {
-                                            const data = {
-                                                ...productDetails, image: imgUrl, imageGallery: imgGalleryUrl
+                        if (galleryImg[0]?.gallery !== '') {
+                            [...galleryImg?.gallery]?.forEach((image, i) => {
+                                formGallery.append('image', image)
+                                axios.post(url, formGallery)
+                                    .then(response => {
+                                        if (response?.data?.success) {
+                                            imgGalleryUrl.push(response?.data?.data?.url);
+                                            if (i === galleryImg?.gallery?.length - 1) {
+                                                const data = {
+                                                    ...productDetails, image: imgUrl, imageGallery: imgGalleryUrl
+                                                }
+                                                dispatch(postProduct(data))
+                                                nav('/dashboard/manageProducts')
                                             }
-                                            dispatch(postProduct(data))
-                                            nav('/dashboard/manageProducts')
                                         }
-                                    }
-                                })
-                        })
+                                    })
+                            })
+                        }
+                        else {
+                            const data = {
+                                ...productDetails, image: imgUrl
+                            }
+                            dispatch(postProduct(data))
+                            nav('/dashboard/manageProducts')
+                        }
                     }
                 })
         }
     }
-   
+    const addBtn = {
+        color: 'white',
+        backgroundColor: '#45CB85',
+        boxShadow: '0 3px 3px rgba(56,65,74,0.1)',
+        '&:hover': {
+            backgroundColor: '#3bad71',
+        }
+    }
+
     return (
         <Box mb={4}>
             <Toolbar sx={{
@@ -171,13 +188,13 @@ const CreateProduct = () => {
                                 <Editor
                                     // onEditorChange={(e) => setProductDetails({ ...productDetails, description: e })}
                                     // initialValue='Once upon a time...'
-                                    onEditorChange={(evt, editor) => 
-                                        setProductDetails({ ...productDetails, description: editor.getContent() }) }
+                                    onEditorChange={(evt, editor) =>
+                                        setProductDetails({ ...productDetails, description: editor.getContent() })}
                                     init={{
                                         height: 200,
                                         menubar: false,
-                                        forced_root_block : '',
-                                        selector:'textarea',
+                                        forced_root_block: '',
+                                        selector: 'textarea',
                                         plugins: [
                                             'advlist autolink lists link image charmap print preview anchor',
                                             'searchreplace visualblocks code fullscreen',
@@ -372,7 +389,9 @@ const CreateProduct = () => {
                             </Grid>
 
                         </Card>
-
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 6 }}>
+                            <Button variant='contained' sx={addBtn} onClick={addProduct}> Submit </Button>
+                        </Box>
                     </Grid>
                     <Grid item md={5} height='100%'>
                         <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
@@ -459,9 +478,6 @@ const CreateProduct = () => {
                         </Card>
                     </Grid>
                 </Grid>
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
-                    <Button variant='contained' onClick={addProduct}> Add Product </Button>
-                </Box>
             </Box>
         </Box>
     );

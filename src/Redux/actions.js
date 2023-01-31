@@ -272,6 +272,14 @@ export const searchProducts = (text) => {
         }
     }
 }
+export const searchProductsbyPagination = (text) => {
+    return {
+        type: actionTypes.SEARCH_PRODUCT_BY_PAGINATION,
+        payload: {
+            searchText: text
+        }
+    }
+}
 
 export const searchByFilter = (url) => {
     return async (dispatch) => {
