@@ -16,6 +16,7 @@ const Blogs = () => {
 
     const handleClick = (id) => {
         // nav(`/blog/${id}`)
+        nav('/soon')
     }
 
     return (
@@ -63,7 +64,7 @@ const Blogs = () => {
                                 {blog?.description}
                             </Typography>
                             <Link onClick={() => handleClick(blog?._id)} sx={{
-                                color: '#A4A4A4', textDecorationColor: '#A4A4A4',
+                                color: '#A4A4A4', textDecorationColor: '#A4A4A4', cursor: 'pointer',
                                 '&:hover': { color: '#FF8E78', transitionDuration: '.5s' }
                             }}>
                                 Read More
