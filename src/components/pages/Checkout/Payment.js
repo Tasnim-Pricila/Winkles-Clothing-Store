@@ -23,7 +23,7 @@ const Payment = ({ total, shippingDetails, createdOrder, setShippingDetails, set
     const amount = parseInt(total)
 
     useEffect(() => {
-        fetch("http://localhost:5000/payment/create-payment-intent", {
+        fetch("https://winkles-server.onrender.com/payment/create-payment-intent", {
             method: "POST",
             headers: {
                 "content-type": "application/json",
@@ -96,7 +96,7 @@ const Payment = ({ total, shippingDetails, createdOrder, setShippingDetails, set
                             ...shippingDetails, ...userInfo, payment
                         }
 
-                        fetch(`http://localhost:5000/payment`, {
+                        fetch(`https://winkles-server.onrender.com/payment`, {
                             method: 'POST',
                             headers: {
                                 'content-type': 'application/json',

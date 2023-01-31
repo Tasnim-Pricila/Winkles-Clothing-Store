@@ -160,6 +160,16 @@ const Shop = ({ searchText, setSearchText }) => {
             const url = `/products?page=${selectedPage}&limit=12&stock=${stock}&category=${category}&brand=${brand}`;
             dispatch(searchByFilter(url))
         }
+        else if (stock && category ) {
+            setSearchText('');
+            const url = `/products?page=${selectedPage}&limit=12&stock=${stock}&category=${category}`;
+            dispatch(searchByFilter(url))
+        }
+        else if (stock && brand ) {
+            setSearchText('');
+            const url = `/products?page=${selectedPage}&limit=12&stock=${stock}&brand=${brand}`;
+            dispatch(searchByFilter(url))
+        }
         else if (stock) {
             setSearchText('');
             const url = `/products?page=${selectedPage}&limit=12&stock=${stock}`;
@@ -298,7 +308,7 @@ const Shop = ({ searchText, setSearchText }) => {
                                             />
                                         )
                                         :
-                                        <Loading/>
+                                        <Typography> No search results found </Typography>
                                     :
                                     searched?.length > 0 ?
                                         searched?.map(product =>
@@ -307,7 +317,7 @@ const Shop = ({ searchText, setSearchText }) => {
                                             />
                                         )
                                         :
-                                        <p> No search results found </p>
+                                        <Typography> No search results found </Typography>
                             }
                         </Grid>
                     }
@@ -328,7 +338,7 @@ const Shop = ({ searchText, setSearchText }) => {
                                             />
                                         )
                                         :
-                                        <Loading/>
+                                        <Typography> No search results found </Typography>
                                     :
                                     searched.length > 0 ?
                                         searched.map(product =>
@@ -337,7 +347,7 @@ const Shop = ({ searchText, setSearchText }) => {
                                             />
                                         )
                                         :
-                                        <p> No search results found </p>
+                                        <Typography> No search results found </Typography>
                             }
                         </Box>
                     }
