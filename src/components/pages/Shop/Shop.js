@@ -2,9 +2,9 @@ import { GridView, TableRows } from '@mui/icons-material';
 import { Box, Grid, Pagination, Tooltip, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { addToCart, addToWishlist, fetchProductsByPagination, getMe, searchByFilter, searchProducts, searchProductsbyPagination } from '../../../Redux/actions';
+import { addToCart, addToWishlist, fetchProductsByPagination, getMe, searchByFilter, searchProductsbyPagination } from '../../../Redux/actions';
 import Footer from '../../shared/Footer';
 import Loading from '../Loading/Loading';
 import AllProducts from './AllProducts';
@@ -13,10 +13,10 @@ import ListView from './ListView';
 
 const Shop = ({ searchText, setSearchText }) => {
     const products = useSelector(state => state.allProducts.products)
-    // var saveCart = useSelector(state => state.allProducts.saveCart)
     const searched = useSelector(state => state.allProducts.searchProducts)
     const user = useSelector(state => state.allUsers.user)
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [category, setCategory] = useState('');
     const [brand, setBrand] = useState('');
     const [gtPrice, setGtPrice] = useState('');
@@ -25,8 +25,6 @@ const Shop = ({ searchText, setSearchText }) => {
     const [grid, setGrid] = useState(true);
     const [list, setList] = useState(false);
     const location = useLocation();
-
-    // console.log(user);
 
     const [selectedPage, setSelectedPage] = useState(1);
 
@@ -106,7 +104,7 @@ const Shop = ({ searchText, setSearchText }) => {
     };
     const page = (Math.ceil(products?.count / 12));
     const skip = (selectedPage - 1) * 12;
-
+   
     const handleClear = () => {
         setSearchText('');
         dispatch(fetchProductsByPagination(selectedPage))
@@ -117,7 +115,7 @@ const Shop = ({ searchText, setSearchText }) => {
             const url = `/products?page=${selectedPage}&limit=12&category=${location?.state?.value}`;
             dispatch(searchByFilter(url))
         }
-        else if (!gtPrice && !ltPrice && !stock && !brand && !category) {
+        else if (searchText === '' && !location?.state?.value && !gtPrice && !ltPrice && !stock && !brand && !category) {
             dispatch(fetchProductsByPagination(selectedPage))
         }
         else if (stock && gtPrice && ltPrice && category && brand) {
@@ -160,12 +158,12 @@ const Shop = ({ searchText, setSearchText }) => {
             const url = `/products?page=${selectedPage}&limit=12&stock=${stock}&category=${category}&brand=${brand}`;
             dispatch(searchByFilter(url))
         }
-        else if (stock && category ) {
+        else if (stock && category) {
             setSearchText('');
             const url = `/products?page=${selectedPage}&limit=12&stock=${stock}&category=${category}`;
             dispatch(searchByFilter(url))
         }
-        else if (stock && brand ) {
+        else if (stock && brand) {
             setSearchText('');
             const url = `/products?page=${selectedPage}&limit=12&stock=${stock}&brand=${brand}`;
             dispatch(searchByFilter(url))
@@ -194,9 +192,7 @@ const Shop = ({ searchText, setSearchText }) => {
         [dispatch, stock, gtPrice, ltPrice, category, brand, setSearchText, location?.state?.value])
 
     useEffect(() => {
-        if (searchText === '' && !location?.state?.value)
-            dispatch(fetchProductsByPagination(selectedPage))
-        else {
+        if (searchText !== '') {
             dispatch(searchProductsbyPagination(searchText))
         }
     }, [searchText, dispatch, location?.state?.value])
@@ -210,49 +206,60 @@ const Shop = ({ searchText, setSearchText }) => {
         setList(true);
     }
 
-    
+
     let wishlist = user?.wishlist?.product;
     const handleWishlist = (id) => {
-        dispatch(getMe())
-        const exists = wishlist?.find(w => w === id)
-        if (!exists) {
-            wishlist = [...wishlist, id];
+        if (user?.length !== 0) {
+            dispatch(getMe())
+            const exists = wishlist?.find(w => w === id)
+            if (!exists) {
+                wishlist = [...wishlist, id];
+            }
+            else {
+                toast.warning('Already in your Wishlist ', {
+                    theme: 'colored',
+                });
+            }
+            const wishlistData = {
+                wishlist: {
+                    product: wishlist
+                },
+            }
+            dispatch(addToWishlist(user._id, wishlistData));
+            dispatch(getMe())
         }
         else {
-            toast.warning('Already in your Wishlist ', {
-                theme: 'colored',
-            });
+            navigate('/login')
         }
-        const wishlistData = {
-            wishlist: {
-                product: wishlist
-            },
-        }
-        dispatch(addToWishlist(user._id, wishlistData));
-        dispatch(getMe())
     }
 
     let newCart = user?.cart?.product;
     const handleAddToCart = (id) => {
-        dispatch(getMe())
-        const selectedProduct = products?.result?.find(p => p._id === id)
-        const exists = newCart?.find(c => c._id === selectedProduct._id)
-        if (!exists) {
-            selectedProduct.qty = 1;
-            newCart = [...newCart, selectedProduct];
+        if (user?.length !== 0) {
+            dispatch(getMe())
+            const selectedProduct = products?.result?.find(p => p._id === id)
+            const exists = newCart?.find(c => c._id === selectedProduct._id)
+            if (!exists) {
+                selectedProduct.qty = 1;
+                newCart = [...newCart, selectedProduct];
+            }
+            else {
+                exists.qty = exists.qty + 1;
+                const rest = newCart.filter(c => c._id !== exists._id)
+                newCart = [...rest, exists];
+            }
+            const cartData = {
+                cart: {
+                    product: newCart
+                },
+            }
+            dispatch(addToCart(user._id, cartData, id));
+            dispatch(getMe())
         }
         else {
-            exists.qty = exists.qty + 1;
-            const rest = newCart.filter(c => c._id !== exists._id)
-            newCart = [...rest, exists];
+            navigate('/login')
         }
-        const cartData = {
-            cart: {
-                product: newCart
-            },
-        }
-        dispatch(addToCart(user._id, cartData, id));
-        dispatch(getMe())
+
     }
 
     return (
@@ -304,7 +311,7 @@ const Shop = ({ searchText, setSearchText }) => {
                                     products?.result?.length > 0 ?
                                         products?.result?.map((product, i) =>
                                             <AllProducts key={product._id}
-                                                product={product} handleAddToCart={handleAddToCart} handleWishlist={handleWishlist}
+                                                product={product} handleAddToCart={handleAddToCart} handleWishlist={handleWishlist} user={user}
                                             />
                                         )
                                         :

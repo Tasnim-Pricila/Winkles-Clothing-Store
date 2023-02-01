@@ -61,11 +61,11 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />}></Route>
           <Route path='/home' element={<Home />}></Route>
-          <Route path='/wishlist' element={<Wishlist />}></Route>
+          <Route path='/wishlist' element={
+            <RequireAuth> <Wishlist /> </RequireAuth>
+          }></Route>
           <Route path='/cart' element={
-            <RequireAuth>
-              <Cart />
-            </RequireAuth>
+            <RequireAuth> <Cart /> </RequireAuth>
           }></Route>
           <Route path='/product/:id' element={<SingleProduct />}></Route>
           <Route path='/login' element={<Login />}></Route>
@@ -77,12 +77,16 @@ function App() {
           <Route path='/blog/:id' element={<SingleArticle />}></Route>
           <Route path='/about' element={<About />}></Route>
           <Route path='/contact' element={<Contact />}></Route>
-          <Route path='/checkout' element={<Checkout />}></Route>
-          <Route path='/orderComplete' element={<OrderComplete />}></Route>
+          <Route path='/checkout' element={
+          <RequireAuth> <Checkout /> </RequireAuth>
+          }></Route>
+          <Route path='/orderComplete' element={
+          <RequireAuth> <OrderComplete /> </RequireAuth>
+          }></Route>
           <Route path='/*' element={<Error />}></Route>
           <Route path='/soon' element={<CommingSoon />}></Route>
 
-          <Route path='/dashboard' element={<Dashboard />}>
+          <Route path='/dashboard' element={<RequireAuth><Dashboard /> </RequireAuth> }>
             {
               user?.role === 'admin' ?
                 <>
@@ -94,12 +98,13 @@ function App() {
                 </>
                 :
                 <Route index element={<MyOrders />}></Route>
+                
             }
-            <Route path='profile' element={<MyProfile />}></Route>
-            <Route path='profile/edit' element={<EditProfile />}></Route>
+            <Route path='profile' element={<RequireAuth> <MyProfile /> </RequireAuth>}></Route>
+            <Route path='profile/edit' element={<RequireAuth> <EditProfile /> </RequireAuth>}></Route>
           </Route>
         </Routes>
-        <ToastContainer/>
+        <ToastContainer />
       </div>
     </ThemeProvider>
 

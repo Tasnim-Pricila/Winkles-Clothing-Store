@@ -73,7 +73,8 @@ const AllProducts = ({ product, handleAddToCart, handleWishlist }) => {
                         Add To Wishlist
                     </Button>
                     <Button size="small" sx={cart}
-                        onClick={() => handleAddToCart(product._id)} startIcon={<ShoppingCart />}>
+                        onClick={() => handleAddToCart(product._id)} 
+                        startIcon={<ShoppingCart />}>
                         Add To Cart</Button>
                 </CardActions>
             </Card>

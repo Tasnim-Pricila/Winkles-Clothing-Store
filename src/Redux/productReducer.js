@@ -118,7 +118,7 @@ const productReducer = (state = initialState, action) => {
         case actionTypes.SEARCH_BY_FILTER:
             return {
                 ...state,
-                products: action.payload,
+                products: action.payload,  // pagination 
             }
         case actionTypes.SEARCH_BY_CAT_BRAND:
             return {

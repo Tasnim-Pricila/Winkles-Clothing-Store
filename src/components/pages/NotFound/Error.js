@@ -1,12 +1,17 @@
+import { Box, Typography } from '@mui/material';
 import React from 'react';
 import Footer from '../../shared/Footer';
 
 const Error = () => {
     return (
-        <div>
-            <h1>Page not found</h1>
-            <Footer></Footer>
-        </div>
+        <Box sx={{
+            height: '90vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+        }}>
+            <Typography variant='h5'> Page Not Found </Typography>
+        </Box>
     );
 };
 

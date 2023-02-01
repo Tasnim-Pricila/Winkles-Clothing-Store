@@ -7,7 +7,7 @@ const Delivery = () => {
     return (
         <Box px={16} py={16} bgcolor='whitesmoke'>
             <Grid container >
-                <Grid item md={4} borderRight={1} borderColor='#00000052' lineHeight='20' >
+                <Grid item xs={12} md={4} borderRight={1} borderColor='#00000052' lineHeight='20' >
                     <Box p={3} sx={{ display:'flex', justifyContent:'center', alignItems:'center', flexDirection: 'column', gap: '10px' }}>
                         <LocalShippingOutlined  sx={{ fontSize: '50px', color: '#FF8E78' }} />
                         <Typography variant='h6'> FREE SHIPPING, RETURN </Typography>

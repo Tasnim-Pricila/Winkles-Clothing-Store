@@ -20,6 +20,7 @@ const LeftSidebar = ({ setCategory, setGtPrice, setStock, brand, setBrand, setLt
         dispatch(fetchCategories())
     }, [dispatch])
 
+
     return (
         <Box mb={6}>
             <Grid container>

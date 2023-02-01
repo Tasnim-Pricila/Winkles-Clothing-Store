@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { addToCart, addToWishlist, adjustQty, fetchProduct, fetchProducts, getMe, removeFromCart, removeSelectedProduct } from '../../../Redux/actions';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -19,7 +19,7 @@ import { toast } from 'react-toastify';
 const SingleProduct = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
-
+    const navigate = useNavigate();
     const user = useSelector(state => state.allUsers.user)
     const state = useSelector(state => state.allProducts);
     const products = state.allProducts;
@@ -83,25 +83,30 @@ const SingleProduct = () => {
 
     let newCart = user?.cart?.product;
     const handleAddToCart = (id) => {
-        dispatch(getMe())
-        const selectedProduct = products?.find(p => p._id === id)
-        const exists = newCart?.find(c => c._id === selectedProduct._id)
-        if (!exists) {
-            selectedProduct.qty = 1;
-            newCart = [...newCart, selectedProduct];
+        if (user?.length !== 0) {
+            dispatch(getMe())
+            const selectedProduct = products?.find(p => p._id === id)
+            const exists = newCart?.find(c => c._id === selectedProduct._id)
+            if (!exists) {
+                selectedProduct.qty = 1;
+                newCart = [...newCart, selectedProduct];
+            }
+            else {
+                exists.qty = exists.qty + 1;
+                const rest = newCart.filter(c => c._id !== exists._id)
+                newCart = [...rest, exists];
+            }
+            const cartData = {
+                cart: {
+                    product: newCart
+                },
+            }
+            dispatch(addToCart(user._id, cartData, id));
+            dispatch(getMe())
         }
         else {
-            exists.qty = exists.qty + 1;
-            const rest = newCart.filter(c => c._id !== exists._id)
-            newCart = [...rest, exists];
+            navigate('/login')
         }
-        const cartData = {
-            cart: {
-                product: newCart
-            },
-        }
-        dispatch(addToCart(user._id, cartData, id));
-        dispatch(getMe())
     }
 
     const instock = {
@@ -156,23 +161,28 @@ const SingleProduct = () => {
 
     let wishlist = user?.wishlist?.product;
     const handleWishlist = (id) => {
-        dispatch(getMe())
-        const exists = wishlist?.find(w => w === id)
-        if (!exists) {
-            wishlist = [...wishlist, id];
+        if (user?.length !== 0) {
+            dispatch(getMe())
+            const exists = wishlist?.find(w => w === id)
+            if (!exists) {
+                wishlist = [...wishlist, id];
+            }
+            else {
+                toast.warning('Already in your Wishlist ', {
+                    theme: 'colored',
+                });
+            }
+            const wishlistData = {
+                wishlist: {
+                    product: wishlist
+                },
+            }
+            dispatch(addToWishlist(user._id, wishlistData));
+            dispatch(getMe())
         }
         else {
-            toast.warning('Already in your Wishlist ', {
-                theme: 'colored',
-            });
+            navigate('/login')
         }
-        const wishlistData = {
-            wishlist: {
-                product: wishlist
-            },
-        }
-        dispatch(addToWishlist(user._id, wishlistData));
-        dispatch(getMe())
     }
     return (
         <>
@@ -226,8 +236,8 @@ const SingleProduct = () => {
                                     mt: 1,
                                     display: 'inline-block',
                                     fontWeight: 600
-                                }}> 
-                                Description: 
+                                }}>
+                                    Description:
                                 </Typography>
                                 <Typography variant="body2" gutterBottom sx={{
                                     textAlign: 'justify',
@@ -275,7 +285,7 @@ const SingleProduct = () => {
                                     </Button>
                                 </Box>
                                 <Box sx={{ mt: 3, display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                    
+
                                 </Box>
                             </Grid>
                         </Grid>

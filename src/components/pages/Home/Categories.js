@@ -1,6 +1,5 @@
 import { Box, Typography } from '@mui/material';
 import React from 'react';
-import Grid from '@mui/material/Grid';
 import { useNavigate } from 'react-router-dom';
 import women from '../../../images/women.png'
 import men from '../../../images/men.png'
@@ -8,9 +7,12 @@ import kids from '../../../images/kids.png'
 
 const Categories = () => {
     const navigate = useNavigate();
-
     const handleCollections = (value) => {
         navigate('/shop', { state: { value } })
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
     }
 
     const categories = [

@@ -285,6 +285,7 @@ export const searchByFilter = (url) => {
     return async (dispatch) => {
         // console.log(url);
         const response = await Api.get(url)
+        // console.log(response);
         dispatch({
             type: actionTypes.SEARCH_BY_FILTER,
             payload: response.data?.data

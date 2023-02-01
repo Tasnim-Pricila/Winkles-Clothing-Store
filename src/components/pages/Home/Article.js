@@ -19,6 +19,7 @@ const Article = () => {
     const handleClick = (id) => {
         // nav(`/blog/${id}`)
         nav('/soon')
+       
     }
 
     return (
