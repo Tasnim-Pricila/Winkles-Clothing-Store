@@ -32,10 +32,10 @@ const Banner = () => {
             backgroundSize: 'cover',
             height: '90vh',
             backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'top',
+            backgroundPosition: { xs: 'center', md: 'top'},
         }}>
             <Grid container sx={{ height: '100%', display: 'grid', justifyContent: 'center', alignItems: 'center' }}>
-                <Grid md={6} sx={{ px: 16 }}>
+                <Grid md={6} sx={{ px: { md: 16 , xs: 4 } }}>
                     <Typography variant="overline" sx={{ fontSize: 20, textTransform: 'uppercase' }}> Fashion 2022  </Typography>
                     <Typography variant="h3" gutterBottom> New Season </Typography>
                     <Typography variant="body1" gutterBottom> Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, labore quo repellat sed asperiores architecto laudantium unde, amet ratione rerum, cum culpa. Sint aperiam asperiores quibusdam necessitatibus, obcaecati autem explicabo!  </Typography>

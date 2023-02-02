@@ -11,7 +11,7 @@ import './brand.css';
 
 const Brand = () => {
     const image = [one, two, three, four, five, six, one, two];
-    
+
     function SampleNextArrow(props) {
         const { className, style, onClick } = props;
         return (
@@ -72,7 +72,8 @@ const Brand = () => {
     }
 
     return (
-        <Box mx={16} py={6} mb={8} sx={{ borderTop: 1, borderBottom: 1, borderColor: '#00000052' }}>
+        <Box py={6} mb={8} sx={{ borderTop: 1, borderBottom: 1, borderColor: '#00000052', 
+        mx: { md: 16, xs: 6 } }}>
             <Slider {...settings} >
                 {
                     image.map(i =>

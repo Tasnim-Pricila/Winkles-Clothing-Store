@@ -9,7 +9,7 @@ import Badge from '@mui/material/Badge';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import logout from '../pages/Auth/logout';
-import { HowToReg, Login, Logout } from '@mui/icons-material';
+import { HowToReg, Login, Logout, MoreVert } from '@mui/icons-material';
 import { getCart, getMe } from '../../Redux/actions';
 
 const Header = ({ setSearchText, searchText }) => {
@@ -43,6 +43,7 @@ const Header = ({ setSearchText, searchText }) => {
 
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
+    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -57,6 +58,11 @@ const Header = ({ setSearchText, searchText }) => {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+    const handleMobileMenuOpen = (event) => {
+        setMobileMoreAnchorEl(event.currentTarget);
+    };
+
     const handleCart = () => {
         navigate('/cart');
     };
@@ -77,7 +83,6 @@ const Header = ({ setSearchText, searchText }) => {
         boxShadow: 24,
         py: 30,
         px: 60
-        // border: '5px solid red'
     };
     const handleSearch = (e) => {
         setSearchText(e.target.value);
@@ -95,6 +100,74 @@ const Header = ({ setSearchText, searchText }) => {
     const location = useLocation();
     const token = localStorage.getItem('accessToken')
 
+    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+    const handleMobileMenuClose = () => {
+        setMobileMoreAnchorEl(null);
+    };
+    const mobileMenuId = 'primary-search-account-menu-mobile';
+    const renderMobileMenu = (
+        <Menu
+            anchorEl={mobileMoreAnchorEl}
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            id={mobileMenuId}
+            keepMounted
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            open={isMobileMenuOpen}
+            onClose={handleMobileMenuClose}
+            sx={{ mt: 4 }}
+        >
+            <MenuItem>
+                <IconButton size="large" color="inherit">
+                    <SearchIcon onClick={handleOpen} />
+                </IconButton>
+            </MenuItem>
+            <MenuItem>
+                {
+                    user?.wishlist?.product?.length > 0 ?
+                        <IconButton size="large" onClick={handleWishlist}>
+                            <Badge badgeContent={countWishlist} color='warning'>
+                                <FavoriteBorderIcon />
+                            </Badge>
+                        </IconButton>
+                        :
+                        <IconButton size="large" onClick={handleWishlist}>
+                            <Badge color='warning'>
+                                <FavoriteBorderIcon />
+                            </Badge>
+                        </IconButton>
+                }
+            </MenuItem>
+            <MenuItem>
+                {
+                    user?.cart?.product?.length > 0 ?
+                        <IconButton size="large" onClick={handleCart}>
+                            <Badge badgeContent={countCart} color='warning'>
+                                <ShoppingCartIcon />
+                            </Badge>
+                        </IconButton>
+                        :
+                        <IconButton size="large" onClick={handleCart}>
+                            <Badge badgeContent='0' color='warning'>
+                                <ShoppingCartIcon />
+                            </Badge>
+                        </IconButton>
+                }
+            </MenuItem>
+            <MenuItem onClick={handleOpenUserMenu}>
+                <Tooltip title="Open settings">
+                    <IconButton>
+                        <Avatar src={user?.imageUrl ? user?.imageUrl : ''} />
+                    </IconButton>
+                </Tooltip>
+            </MenuItem>
+        </Menu>
+    )
     return (
         <Box>
             <Box>
@@ -137,7 +210,7 @@ const Header = ({ setSearchText, searchText }) => {
                 </Modal>
             </Box>
             <AppBar position="static" sx={{
-                px: 10,
+                px: { md: 10 },
                 bgcolor: '#4b38b3'
             }}>
                 <Container maxWidth="xl" >
@@ -149,7 +222,7 @@ const Header = ({ setSearchText, searchText }) => {
                             component={Link}
                             to="/"
                             sx={{
-                                mr: 2,
+                                // mr: 2,
                                 display: { xs: 'none', md: 'flex' },
                                 fontWeight: 700,
                                 letterSpacing: '.3rem',
@@ -170,6 +243,7 @@ const Header = ({ setSearchText, searchText }) => {
                                 aria-haspopup="true"
                                 onClick={handleOpenNavMenu}
                                 color="inherit"
+                                sx={{px: 0}}
                             >
                                 <MenuIcon />
                             </IconButton>
@@ -218,7 +292,7 @@ const Header = ({ setSearchText, searchText }) => {
                             component={Link}
                             to="/"
                             sx={{
-                                mr: 2,
+                                // mr: 2,
                                 display: { xs: 'flex', md: 'none' },
                                 flexGrow: 1,
                                 fontFamily: 'monospace',
@@ -226,6 +300,7 @@ const Header = ({ setSearchText, searchText }) => {
                                 letterSpacing: '.3rem',
                                 color: 'inherit',
                                 textDecoration: 'none',
+                                textTransform: 'uppercase'
                             }}
                         >
                             Winkles
@@ -263,7 +338,7 @@ const Header = ({ setSearchText, searchText }) => {
                             alignItems: 'center'
                         }}>
                             <Menu
-                                sx={{ mt: '45px' }}
+                                sx={{ mt: { md: 5, xs: 12 }}}
                                 id="menu-appbar"
                                 anchorEl={anchorElUser}
                                 anchorOrigin={{
@@ -335,8 +410,11 @@ const Header = ({ setSearchText, searchText }) => {
                                     }
                                 </MenuItem>
                             </Menu>
+
+                            {/* Icon Part  */}
+
                             <Box sx={{
-                                display: 'flex',
+                                display: { xs: 'none', md: 'flex' },
                                 gap: '15px',
                                 justifyContent: 'center',
                                 alignItems: 'center'
@@ -384,9 +462,24 @@ const Header = ({ setSearchText, searchText }) => {
                                 </Tooltip>
                             </Box>
 
+                            {/* Mobile Icon  */}
+                            <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                                <IconButton
+                                    size="large"
+                                    aria-label="show more"
+                                    aria-haspopup="true"
+                                    onClick={handleMobileMenuOpen}
+                                    color="inherit"
+                                    sx={{ px: 0}}
+                                >
+                                    <MoreVert />
+                                </IconButton>
+                            </Box>
+                            {renderMobileMenu}
                         </Box>
                     </Toolbar>
                 </Container>
+
             </AppBar>
         </Box>
     );

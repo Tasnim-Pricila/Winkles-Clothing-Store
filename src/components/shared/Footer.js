@@ -1,7 +1,7 @@
-import { Box, Divider, Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import Link from '@mui/material/Link';
-import { Email, KeyboardArrowUp, LocationOn, Message, NavigateNext, Phone } from '@mui/icons-material';
+import { Email, KeyboardArrowUp, LocationOn, NavigateNext, Phone } from '@mui/icons-material';
 
 const Footer = () => {
 
@@ -46,8 +46,8 @@ const Footer = () => {
     return (
         <>
             <Box sx={{ py: 10, backgroundColor: '#333333', color: 'white' }}>
-                <Grid container px={16}>
-                    <Grid item md={3}>
+                <Grid container sx={{ px:{ md: 16 , xs: 4 } }}>
+                    <Grid item xs={12} md={6} lg={3} sx={{ mt: { lg: 0, xs: 3 }}}>
                         <Typography sx={{ pb: 2 }}>CUSTOMER SERVICE</Typography>
                         <Link href="#" underline="none" sx={footerBtn}>
                             <NavigateNext /> Contact Us
@@ -68,7 +68,7 @@ const Footer = () => {
                             <NavigateNext /> My Account
                         </Link>
                     </Grid>
-                    <Grid item md={3}>
+                    <Grid item xs={12} md={6} lg={3} sx={{ mt: { lg: 0, xs: 3 }}}>
                         <Typography sx={{ pb: 2 }}>EXTRAS</Typography>
                         <Link href="#" underline="none" sx={footerBtn}>
                             <NavigateNext /> Brands
@@ -89,7 +89,7 @@ const Footer = () => {
                             <NavigateNext /> Specials
                         </Link>
                     </Grid>
-                    <Grid item md={3}>
+                    <Grid item xs={12} md={6} lg={3} sx={{ mt: { lg: 0, xs: 3 }}}>
                         <Typography sx={{ pb: 2 }}>CUSTOMER SERVICE</Typography>
                         <Link href="#" underline="none" sx={footerBtn}>
                             <NavigateNext /> About Us
@@ -110,7 +110,7 @@ const Footer = () => {
                             <NavigateNext /> Our Store
                         </Link>
                     </Grid>
-                    <Grid item md={3}>
+                    <Grid item xs={12} md={6} lg={3} sx={{ mt: { lg: 0, xs: 3 }}}>
                         <Typography sx={{ pb: 2 }}>CONTACT US</Typography>
                         <div style={style}>
                             <LocationOn sx={{ borderRadius: '50%', p: 1, bgcolor: '#FF8E78', }} />
@@ -136,11 +136,11 @@ const Footer = () => {
                 }
             </Box>
 
-            <Grid container sx={{ py: 2, borderTop: 1, borderColor: '#444444', backgroundColor: '#555555', px: 16, color: 'white' }}>
-                <Grid item md={6}>
-                    <Typography>&copy; 2016 Magikcommerce. All Rights Reserved.</Typography>
+            <Grid container sx={{ py: 2, borderTop: 1, borderColor: '#444444', backgroundColor: '#555555', px:{ md: 16 , xs: 4 } , color: 'white' }}>
+                <Grid item xs={12} lg={6}>
+                    <Typography sx={{ textAlign: { xs: 'center', lg:'initial'}}}>&copy; 2023 Tasnim Pricila. All Rights Reserved.</Typography>
                 </Grid>
-                <Grid item md={6} sx={{ display: 'flex', gap: 4, justifyContent: 'end' }}>
+                <Grid item lg={6} sx={{ display: {xs: 'none', lg: 'flex'}, gap: 4, justifyContent: 'end' }}>
                     <Link href="#" underline="none" sx={footerBtn}>OpenCart Extensions</Link>
                     <Link href="#" underline="none" sx={footerBtn}> Responsive Themes</Link>
                     <Link href="#" underline="none" sx={footerBtn}>Premium  Themes</Link>

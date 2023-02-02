@@ -13,7 +13,7 @@ const Products = ({ products }) => {
 
             <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 2 }} sx={{
                 mt: 4,
-                px: 16,
+                px:{ md: 16 , xs: 4 },
                 mb: 10
             }}>
                 {
