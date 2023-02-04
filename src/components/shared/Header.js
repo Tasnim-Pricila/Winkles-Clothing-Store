@@ -65,12 +65,18 @@ const Header = ({ setSearchText, searchText }) => {
 
     const handleCart = () => {
         navigate('/cart');
+        handleMobileMenuClose()
     };
     const handleWishlist = () => {
         navigate('/wishlist');
+        handleMobileMenuClose()
     };
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
+
+    const handleOpen = () => {
+        setOpen(true);
+        handleMobileMenuClose()
+    }
     const handleClose = () => setOpen(false);
 
     const style = {
@@ -161,7 +167,7 @@ const Header = ({ setSearchText, searchText }) => {
             </MenuItem>
             <MenuItem onClick={handleOpenUserMenu}>
                 <Tooltip title="Open settings">
-                    <IconButton>
+                    <IconButton onClick={handleMobileMenuClose}>
                         <Avatar src={user?.imageUrl ? user?.imageUrl : ''} />
                     </IconButton>
                 </Tooltip>
@@ -243,7 +249,7 @@ const Header = ({ setSearchText, searchText }) => {
                                 aria-haspopup="true"
                                 onClick={handleOpenNavMenu}
                                 color="inherit"
-                                sx={{px: 0}}
+                                sx={{ px: 0 }}
                             >
                                 <MenuIcon />
                             </IconButton>
@@ -338,7 +344,7 @@ const Header = ({ setSearchText, searchText }) => {
                             alignItems: 'center'
                         }}>
                             <Menu
-                                sx={{ mt: { md: 5, xs: 12 }}}
+                                sx={{ mt: { md: 5, xs: -11 } }}
                                 id="menu-appbar"
                                 anchorEl={anchorElUser}
                                 anchorOrigin={{
@@ -470,7 +476,7 @@ const Header = ({ setSearchText, searchText }) => {
                                     aria-haspopup="true"
                                     onClick={handleMobileMenuOpen}
                                     color="inherit"
-                                    sx={{ px: 0}}
+                                    sx={{ px: 0 }}
                                 >
                                     <MoreVert />
                                 </IconButton>

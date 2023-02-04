@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import Api from '../../../Axios/Api';
 import { addToCart, clearCart, getMe, postOrders } from '../../../Redux/actions';
 
-const Payment = ({ total, shippingDetails, createdOrder, setShippingDetails, setError, cart }) => {
+const Payment = ({ total, shippingDetails, setError, cart }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const stripe = useStripe();
@@ -85,7 +85,6 @@ const Payment = ({ total, shippingDetails, createdOrder, setShippingDetails, set
                 },
             })
                 .then(function (result) {
-                    // console.log(result)
                     // Handle result.error or result.paymentIntent
                     if (result.paymentIntent) {
                         setCardError('');
