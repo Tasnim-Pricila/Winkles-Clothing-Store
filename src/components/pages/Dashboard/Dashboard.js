@@ -262,14 +262,21 @@ const Dashboard = (props) => {
                         >
                             <MenuIcon />
                         </IconButton>
-                        <Typography variant="h6" noWrap component="div">
+                        <Typography noWrap component="div" 
+                        sx={{ 
+                            display: 'flex', 
+                            visibility: { xs: 'hidden', sm: 'initial'} ,
+                            fontSize: { sm: '14px', md: '20px'}
+                        }}>
                             Dashboard
                         </Typography>
 
                         <Box sx={{ display: 'flex', gap: '10px', justifyContent: 'center', alignItems: 'center', cursor: 'pointer' }} aria-describedby={id} onClick={handleClick}>
                             <Avatar src={user?.imageUrl ? user?.imageUrl : ''} />
                             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                                <Typography> {user?.firstName} {user?.lastName} </Typography>
+                                <Typography sx={{
+                                    fontSize: { sm: '14px', md: '16px'}
+                                }}> {user?.firstName} {user?.lastName} </Typography>
                                 <Typography variant='caption'> Designation</Typography>
                             </Box>
                         </Box>
@@ -307,7 +314,7 @@ const Dashboard = (props) => {
                                     </Button>
                                 </NavLink>
                                 <br />
-                                <NavLink to='/dashboard' style={{
+                                <NavLink to='/soon' style={{
                                     textDecoration: 'none',
                                     color: 'black'
                                 }}>

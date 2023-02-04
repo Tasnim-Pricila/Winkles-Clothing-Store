@@ -41,7 +41,7 @@ const AllProducts = ({ product, handleAddToCart, handleWishlist }) => {
     }
 
     return (
-        <Grid item xs={4} md={4} >
+        <Grid item xs={12} sm={6} lg={4} >
             <Card>
                 <CardMedia onClick={() => navigate(`/product/${product._id}`)}
                     sx={{
@@ -57,7 +57,7 @@ const AllProducts = ({ product, handleAddToCart, handleWishlist }) => {
                     <Typography gutterBottom variant="h6" sx={{ textAlign: 'center', textTransform: 'capitalize', cursor: 'pointer' }} 
                     onClick={() => navigate(`/product/${product._id}`)}>
                         {
-                            product.title.length > 20 ? `${product.title.slice(0, 20)}...`
+                            product.title.length > 15 ? `${product.title.slice(0, 15)}...`
                                 : product.title
                         }
                     </Typography>

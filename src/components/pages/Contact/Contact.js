@@ -19,7 +19,7 @@ const Contact = () => {
 
     return (
         <div>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', px: 16, py: 5, bgcolor: '#FF8E78' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', px:{ md: 16 , xs: 4 }, py: 5, bgcolor: '#FF8E78' }}>
                 <Typography variant='h5' sx={{ textTransform: 'uppercase', fontWeight: 600 }}>
                     Contact
                 </Typography>
@@ -30,25 +30,25 @@ const Contact = () => {
                     <Typography color="text.primary">Contact</Typography>
                 </Breadcrumbs>
             </Box>
-            <Box sx={{ px: 16, pb: 16 }} >
+            <Box sx={{ px:{ md: 16 , xs: 4 }, pb: 16 }} >
                 <Typography variant='h4' sx={{ textAlign: 'center', py: 8, textTransform: 'uppercase' }}>
                     CONTACT US FOR ANY QUERY
                 </Typography>
                 <Grid container spacing={4}>
-                    <Grid item md={4} display='flex' flexDirection='column' alignItems='center'>
+                    <Grid item xs={12} md={4} display='flex' flexDirection='column' alignItems='center'>
                         <LocalPhoneOutlined fontSize='large' sx={{ borderRadius: '10%', p: 2, bgcolor: '#FF8E78', color: 'white' }} />
                         <Typography sx={{ mt: 4, fontWeight: 600 }}> Mobile </Typography>
                         <Typography sx={{ mt: 1 }}> +123456 78910 </Typography>
                         <Typography sx={{ mt: 1 }}> +123456 78911 </Typography>
                     </Grid>
-                    <Grid item md={4} display='flex' flexDirection='column' alignItems='center'>
+                    <Grid item xs={12} md={4} display='flex' flexDirection='column' alignItems='center'>
                         <Drafts fontSize='large' sx={{ borderRadius: '10%', p: 2, bgcolor: '#FF8E78', color: 'white' }} />
                         <Typography sx={{ mt: 4, fontWeight: 600 }}> Email
                         </Typography>
                         <Typography sx={{ mt: 1 }}> brandfashion@email.com </Typography>
                         <Typography sx={{ mt: 1 }}> support@zwin.io </Typography>
                     </Grid>
-                    <Grid item md={4} display='flex' flexDirection='column' alignItems='center'>
+                    <Grid item xs={12} md={4} display='flex' flexDirection='column' alignItems='center'>
                         <LocationOn fontSize='large' sx={{ borderRadius: '10%', p: 2, bgcolor: '#FF8E78', color: 'white' }} />
                         <Typography sx={{ mt: 4, fontWeight: 600 }}> Address </Typography>
                         <Typography sx={{ mt: 1 }}> 125/A, CA Commercial Area </Typography>
@@ -57,20 +57,20 @@ const Contact = () => {
                 </Grid>
             </Box>
             <Box mt={0} py={10} bgcolor='ghostwhite'>
-                <Grid container px={16} spacing={4}>
-                    <Grid item md={6}>
+                <Grid container sx={{ px:{ md: 16 , xs: 4 } }} spacing={4}>
+                    <Grid item xs={12} sm={6} >
                         <TextField sx={{ width: '100%' }} id="outlined-basic" label="Name" variant="outlined" />
                     </Grid>
-                    <Grid item md={6}>
+                    <Grid item xs={12} sm={6}>
                         <TextField sx={{ width: '100%' }} id="outlined-basic" label="Phone" variant="outlined" />
                     </Grid>
-                    <Grid item md={6}>
+                    <Grid item xs={12} sm={6}>
                         <TextField sx={{ width: '100%' }} id="outlined-basic" label="Email" variant="outlined" />
                     </Grid>
-                    <Grid item md={6} >
+                    <Grid item xs={12} sm={6} >
                         <TextField sx={{ width: '100%' }} id="outlined-basic" label="Topic" variant="outlined" />
                     </Grid>
-                    <Grid item md={12}>
+                    <Grid item xs={12}>
                         <TextField sx={{ width: '100%' }}
                             id="filled-multiline-static"
                             multiline

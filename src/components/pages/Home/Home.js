@@ -11,7 +11,6 @@ import Products from './Products';
 
 const Home = () => {
     const products = useSelector(state => state.allProducts.allProducts)
-    // console.log(products);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -22,7 +21,7 @@ const Home = () => {
         <>
             <Banner></Banner>
             <Categories></Categories>
-            <Products products={products} />
+            <Products products={products}/>
             <Delivery></Delivery>
             <Article></Article>
             <Brand></Brand>

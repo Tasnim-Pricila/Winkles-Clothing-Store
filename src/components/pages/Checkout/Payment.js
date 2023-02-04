@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Api from '../../../Axios/Api';
 import { addToCart, clearCart, getMe, postOrders } from '../../../Redux/actions';
 
 const Payment = ({ total, shippingDetails, createdOrder, setShippingDetails, setError, cart }) => {
@@ -19,25 +20,27 @@ const Payment = ({ total, shippingDetails, createdOrder, setShippingDetails, set
     const [processing, setProcessing] = useState(false);
     const user = useSelector(state => state.allUsers.user)
 
-    // console.log(createdOrder)
     const amount = parseInt(total)
+    const data = {
+        amount
+    }
 
     useEffect(() => {
-        fetch("https://winkles-server.onrender.com/payment/create-payment-intent", {
-            method: "POST",
-            headers: {
-                "content-type": "application/json",
-                authorization: `Bearer ${localStorage.getItem('accessToken')}`
-            },
-            body: JSON.stringify({ amount }),
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                // console.log(data)
-                if (data?.data?.clientSecret) {
-                    setClientSecret(data.data.clientSecret);
+        const payment = async () => {
+            await Api.post(`/payment/create-payment-intent`, data, {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('accessToken')}`
                 }
             })
+                .then(data => {
+                    console.log(data)
+                    if (data.data.data.clientSecret) {
+                        setClientSecret(data.data.data.clientSecret);
+                    }
+                })
+                .catch(err => console.log(err));
+        }
+        payment();
     }, [amount]);
 
     const handleSubmit = async (e) => {

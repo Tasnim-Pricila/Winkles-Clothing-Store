@@ -4,7 +4,7 @@ import { Link as ReactLink, useLocation, useNavigate } from 'react-router-dom';
 import Api from '../../../Axios/Api';
 import Footer from '../../shared/Footer';
 import login from '../../../images/login.jpg'
-import { AlternateEmail, Visibility, VisibilityOff } from '@mui/icons-material';
+import { AlternateEmail, ArrowDownward, Visibility, VisibilityOff } from '@mui/icons-material';
 import { getMe } from '../../../Redux/actions';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -79,7 +79,7 @@ const Login = () => {
             navigate(from, { replace: true })
             dispatch(getMe())
         }
-    }, [token, navigate, from])
+    }, [token, navigate, from, dispatch])
 
     if (loading) {
         return <Loading></Loading>
@@ -88,10 +88,10 @@ const Login = () => {
 
     return (
         <>
-            <Box px={16} my={5}>
+            <Box my={5} sx={{ px:{ md: 16 , xs: 4 } }}>
                 <Card variant="outlined" sx={{ boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
                     <Grid container>
-                        <Grid item md={6}>
+                        <Grid item xs={12} md={6} >
                             <Box sx={{
                                 backgroundImage: `url(${login})`,
                                 backgroundSize: 'cover',
@@ -111,11 +111,15 @@ const Login = () => {
                                         <Typography sx={{ textAlign: 'center', mt: 2 }}>
                                             Sign in to use all features of this website and discover a great amount of new opportunities...
                                         </Typography>
+                                        <Box sx={{ display: { xs: 'initial', md: 'none' }  }}>
+                                            <Typography variant='h6' sx={{ textAlign: 'center', mt: 2 }}> Sign In </Typography>
+                                            <ArrowDownward sx={{ width: '100%', mt: 2, }} />
+                                        </Box>
                                     </Box>
                                 </Box>
                             </Box>
                         </Grid>
-                        <Grid item md={6} p={12}>
+                        <Grid item xs={12} md={6} sx={{ p:{ xs: 4, lg: 12 } }}>
                             <Typography variant="h5" sx={{ textAlign: 'center', fontWeight: 'bold' }}>
                                 Welcome Back !
                             </Typography>

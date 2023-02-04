@@ -14,7 +14,7 @@ import { Link as Routerlink } from 'react-router-dom';
 const About = () => {
     return (
         <>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', px: 16, py: 5, bgcolor: '#FF8E78' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', px:{ md: 16 , xs: 4 }, py: 5, bgcolor: '#FF8E78' }}>
                 <Typography variant='h5' sx={{ textTransform: 'uppercase', fontWeight: 600 }}>
                     About
                 </Typography>
@@ -25,9 +25,10 @@ const About = () => {
                     <Typography color="text.primary">About</Typography>
                 </Breadcrumbs>
             </Box>
-            <Box sx={{ px: 16, mb: 16 , mt: 4}}>
-                <Grid container spacing={4} sx={{}} justifyContent='center' alignItems='center'>
-                    <Grid item md={6} justifyContent='center' alignItems='center' pr={20}>
+            <Box sx={{ px:{ md: 16 , xs: 4 }, mb: 16 , mt: 4}}>
+                <Grid container spacing={{md: 4}} justifyContent='center' alignItems='center'>
+                    <Grid item xs={12} md={6} justifyContent='center' alignItems='center' 
+                    sx={{ pr: { lg: 20 }}}>
                         <Typography variant='h4' mb={6} sx={{ lineHeight: '50px' }}>
                             We take fashion <br /> personally & we bring you <br /> happiness
                         </Typography>
@@ -40,18 +41,16 @@ const About = () => {
                             Tasnim Pricila
                         </Typography>
                     </Grid>
-                    <Grid item md={6}>
-                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                            <img src={about} alt="about_image" />
-                        </Box>
-
+                    <Grid item xs={12} md={6} sx={{ position: 'relative'}}>
+                            <img src={about} alt="about_image" style={{ width: '100%', 
+                            overflow: 'hidden' }} />
                     </Grid>
                 </Grid>
             </Box>
             <Box bgcolor='#F5F5F5' textAlign='center'>
                 <Typography variant='h4' pt={10} pb={10}> Prefessional Experts </Typography>
-                <Grid container columnSpacing={4} pb={10} px={16}>
-                    <Grid item md={3}>
+                <Grid container columnSpacing={4} pb={10} sx={{ px:{ md: 16 , xs: 4 } }}>
+                    <Grid item xs={12} sm={6} md={3}>
                         <Box>
                             <img src={one} alt=""
                                 style={{ maxWidth: '90%', borderRadius: '50%', border: '8px solid white' }} />
@@ -64,7 +63,7 @@ const About = () => {
                             <Twitter sx={{ color: '#1DA1F2', cursor: 'pointer', bgcolor: 'white', padding: '10px', borderRadius: '50%', '&:hover': { color: 'white', bgcolor: 'black' } }}></Twitter>
                         </Box>
                     </Grid>
-                    <Grid item md={3}>
+                    <Grid item xs={12} sm={6} md={3}>
                         <Box>
                             <img src={two} alt=""
                                 style={{ maxWidth: '90%', borderRadius: '50%', border: '8px solid white' }} />
@@ -77,7 +76,7 @@ const About = () => {
                             <Twitter sx={{ color: '#1DA1F2', cursor: 'pointer', bgcolor: 'white', padding: '10px', borderRadius: '50%', '&:hover': { color: 'white', bgcolor: 'black' } }}></Twitter>
                         </Box>
                     </Grid>
-                    <Grid item md={3}>
+                    <Grid item xs={12} sm={6} md={3}>
                         <Box>
                             <img src={three} alt=""
                                 style={{ maxWidth: '90%', borderRadius: '50%', border: '8px solid white' }} />
@@ -90,7 +89,7 @@ const About = () => {
                             <Twitter sx={{ color: '#1DA1F2', cursor: 'pointer', bgcolor: 'white', padding: '10px', borderRadius: '50%', '&:hover': { color: 'white', bgcolor: 'black' } }}></Twitter>
                         </Box>
                     </Grid>
-                    <Grid item md={3}>
+                    <Grid item xs={12} sm={6} md={3}>
                         <Box>
                             <img src={four} alt=""
                                 style={{ maxWidth: '90%', borderRadius: '50%', border: '8px solid white' }} />

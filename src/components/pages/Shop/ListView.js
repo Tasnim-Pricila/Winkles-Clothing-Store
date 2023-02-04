@@ -33,12 +33,12 @@ const ListView = ({ product, handleAddToCart, handleWishlist }) => {
     }
 
     return (
-        <Grid container columnSpacing={{ md: 4 }} pb={4}>
-            <Grid item md={4} >
+        <Grid container columnSpacing={{ xs: 2, md: 4 }} pb={4}>
+            <Grid item xs={4} >
                 <img src={product?.image} alt="" width='100%' height='100%' style={{ objectFit: 'cover', cursor: 'pointer' }} 
                 onClick={() => navigate(`/product/${product._id}`)} />
             </Grid>
-            <Grid item md={8} sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Grid item xs={8} sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Typography gutterBottom variant="h5" sx={{ textTransform: 'capitalize', fontWeight: 'bold', color: 'black', cursor: 'pointer' }} 
                 onClick={() => navigate(`/product/${product._id}`)}>
                     {product.title}

@@ -47,7 +47,8 @@ const WishlistItem = ({ wishlistItem }) => {
             backgroundColor: '#df6750',
             color: 'white',
             border: 0
-        }
+        },
+        minWidth: '140px'
     }
     
     let newCart = user?.cart?.product;

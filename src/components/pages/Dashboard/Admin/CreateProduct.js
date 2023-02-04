@@ -3,10 +3,9 @@ import { Button, Card, Divider, FormHelperText, Grid, InputAdornment, MenuItem, 
 import { Box } from '@mui/system';
 import { Editor } from '@tinymce/tinymce-react';
 import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { fetchBrands, fetchCategories, postProduct } from '../../../../Redux/actions';
 
 const CreateProduct = () => {
@@ -165,7 +164,7 @@ const CreateProduct = () => {
             </Toolbar>
             <Box p={3}>
                 <Grid container spacing={2}>
-                    <Grid item md={7} height='100%'>
+                    <Grid item xs={12} md={7} height='100%'>
                         <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
                             <Box>
                                 <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Product Title</Typography>
@@ -186,12 +185,10 @@ const CreateProduct = () => {
                             <Box mt={2}>
                                 <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Product Description</Typography>
                                 <Editor
-                                    // onEditorChange={(e) => setProductDetails({ ...productDetails, description: e })}
-                                    // initialValue='Once upon a time...'
                                     onEditorChange={(evt, editor) =>
                                         setProductDetails({ ...productDetails, description: editor.getContent() })}
                                     init={{
-                                        height: 200,
+                                        height: 300,
                                         menubar: false,
                                         forced_root_block: '',
                                         selector: 'textarea',
@@ -322,7 +319,7 @@ const CreateProduct = () => {
                             <Typography pb={1}>General Info</Typography>
                             <Divider></Divider>
                             <Grid container spacing={2} mt={1}>
-                                <Grid item md={4}>
+                                <Grid item xs={12} sm={6} lg={4}>
                                     <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Stock</Typography>
                                     <TextField sx={{
                                         width: '100%'
@@ -338,7 +335,7 @@ const CreateProduct = () => {
                                         helperText={error.quantity}
                                     />
                                 </Grid>
-                                <Grid item md={4}>
+                                <Grid item xs={12} sm={6} lg={4}>
                                     <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Unit</Typography>
                                     <Select
                                         size='small'
@@ -360,7 +357,7 @@ const CreateProduct = () => {
                                     </Select>
                                     <FormHelperText sx={{ color: '#d32f2f' }}> {error.unit} </FormHelperText>
                                 </Grid>
-                                <Grid item md={4}>
+                                <Grid item xs={12} lg={4}>
                                     <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Price</Typography>
                                     <TextField sx={{
                                         width: '100%',
@@ -389,11 +386,12 @@ const CreateProduct = () => {
                             </Grid>
 
                         </Card>
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 6 }}>
+                        <Box sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end', mt: 6 }}>
                             <Button variant='contained' sx={addBtn} onClick={addProduct}> Submit </Button>
                         </Box>
                     </Grid>
-                    <Grid item md={5} height='100%'>
+
+                    <Grid item xs={12} md={5} height='100%'>
                         <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
                             <Typography pb={1}>Product Brands </Typography>
                             <Divider></Divider>
@@ -476,8 +474,13 @@ const CreateProduct = () => {
                             </Select>
                             <FormHelperText sx={{ color: '#d32f2f' }}> {error.stock} </FormHelperText>
                         </Card>
+
                     </Grid>
+
                 </Grid>
+                <Box sx={{ display: { xs: 'flex', md: 'none' }, justifyContent: 'flex-end', mt: 6 }}>
+                    <Button variant='contained' sx={addBtn} onClick={addProduct}> Submit </Button>
+                </Box>
             </Box>
         </Box>
     );

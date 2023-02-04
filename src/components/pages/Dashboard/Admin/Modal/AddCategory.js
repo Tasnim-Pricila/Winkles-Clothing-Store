@@ -39,7 +39,19 @@ const AddCategory = ({ id }) => {
         '&:hover': {
             backgroundColor: '#3bad71',
         },
-        fontSize: '13px'
+        fontSize: '13px',
+        display: { xs: 'initial', lg: 'initial', md: 'none'}
+    }
+    const smallAddIcon = {
+        color: 'white',
+        backgroundColor: '#45CB85',
+        textTransform: 'capitalize',
+        boxShadow: '0 3px 3px rgba(56,65,74,0.1)',
+        minWidth: '0px',
+        '&:hover': {
+            backgroundColor: '#3bad71',
+        },
+        display: { lg: 'none', xs: 'none', md: 'initial'}
     }
 
     const handleAddCategory = () => {
@@ -57,8 +69,11 @@ const AddCategory = ({ id }) => {
     return (
         <>
             <Button variant='contained' size='small' sx={smallAddBtn}
-                onClick={() => handleAddCategory()}
+                onClick={() => handleAddCategory()} 
             > + Add </Button>
+            <Button variant='contained' size='small' sx={smallAddIcon}
+                onClick={() => handleAddCategory()} 
+            > + </Button>
             <Modal
                 open={open}
                 onClose={handleClose}

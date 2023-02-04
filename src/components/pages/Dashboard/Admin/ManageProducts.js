@@ -83,16 +83,16 @@ const ManageProducts = () => {
             </Toolbar>
             <Box p={3}>
                 <Grid container spacing={2}>
-                    <Grid item md={3} height='100%'>
-                        <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
+                    <Grid item xs={12} md={3} height='100%'>
+                        <Card variant="outlined" sx={{ p: {xs: 2, md: 1, lg: 2}, boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', pb: 2 }}>
                                 <Typography>Filters</Typography>
                                 <Link sx={{ cursor: 'pointer', color: '#4b38b3', fontSize: '14px', textDecorationColor: '#4b38b3' }} onClick={handleClear}>Clear All</Link>
                             </Box>
                             <Divider></Divider>
                             <Box my={2}>
-                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <Typography pb={1} sx={{ fontWeight: '600' }}>Categories</Typography>
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pb: 1 }}>
+                                    <Typography sx={{ fontWeight: '600' }}>Categories</Typography>
                                     <AddCategory></AddCategory>
                                 </Box>
                                 {
@@ -134,7 +134,7 @@ const ManageProducts = () => {
                         </Card>
 
                     </Grid>
-                    <Grid item md={9} height='100%'>
+                    <Grid item xs={12} md={9} height='100%'>
                         <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                                 <Button variant='contained' sx={addBtn}

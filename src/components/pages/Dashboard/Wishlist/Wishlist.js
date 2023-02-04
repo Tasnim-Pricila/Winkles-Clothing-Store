@@ -1,16 +1,13 @@
-import { Done, Loop } from '@mui/icons-material';
-import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import Footer from '../../../shared/Footer';
 import WishlistItem from './WishlistItem';
 
 const Wishlist = () => {
 
-    // const navigate = useNavigate();
     const user = useSelector(state => state.allUsers.user)
     const wishlist = user?.wishlist?.product
     const [countWishlist, setCountWishlist] = useState(0);
@@ -25,7 +22,7 @@ const Wishlist = () => {
                 position: 'relative',
                 pb: 10,
                 my: 6,
-                px: 16
+                px:{ md: 16 , xs: 4 }
             }}>
                 {
                     wishlist?.length !== 0 ?

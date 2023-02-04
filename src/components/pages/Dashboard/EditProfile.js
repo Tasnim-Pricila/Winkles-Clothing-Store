@@ -108,7 +108,7 @@ const EditProfile = () => {
                 textTransform: 'uppercase',
                 color: '#495057',
             }}>
-                My Profile
+                Edit Profile
             </Toolbar>
             <Box p={3}>
                 <Grid container spacing={2} >

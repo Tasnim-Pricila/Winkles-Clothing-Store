@@ -2,10 +2,10 @@ import { Button, Card, CardContent, Divider, FormControl, FormControlLabel, Grid
 import { Box } from '@mui/system';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import React, {  useState } from 'react';
+import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { addToCart, clearCart, getMe, postOrders } from '../../../Redux/actions';
 import Footer from '../../shared/Footer';
 import Loading from '../Loading/Loading';
@@ -20,19 +20,22 @@ const Checkout = () => {
     const cart = user?.cart?.product
 
     const stripePromise = loadStripe('pk_test_51L2D2EKZuhtVgyM7S2CeyD5YrpaY7x1Ab3pNWv4hqTyRbvblNQ2KZhgUz71r0JbCZCytaYDey0oYNYlZ1t3QNseW00ZewuwFk9');
-    
-    const [total, setTotal] = useState(0);
+
+    const shipping = 100;
+    const [total, setTotal] = useState('');
     const [shippingDetails, setShippingDetails] = useState({
         phone: '',
         address: '',
         notes: '',
-        products: cart,
+        products: '',
         amount: total,
         paymentMethod: '',
         paymentStatus: '',
         deliveryStatus: 'Pending',
         orderStatus: 'Pending'
     })
+    // console.log(cart)
+    // console.log(shippingDetails);
 
     const [error, setError] = useState({
         phone: '',
@@ -46,10 +49,16 @@ const Checkout = () => {
             total = parseFloat(total) + parseFloat(item.price) * parseFloat(item.qty);
             total = total.toFixed(2);
         })
+        // console.log(total);
         setTotal(total);
+        setShippingDetails({
+            ...shippingDetails,
+            amount: parseFloat(total) + parseFloat(shipping),
+            products: cart
+        });
     }, [cart, total])
 
-    const shipping = 100;
+
     const subtotal = parseFloat(shipping) + parseFloat(total);
 
     if (loading) {
@@ -90,8 +99,8 @@ const Checkout = () => {
 
     return (
         <>
-            <Grid container sx={{ mt: 2, px: 6 }}>
-                <Grid xs={6} md={8} sx={{ py: 6, px: 4 }}>
+            <Grid container sx={{ mt: 2, px: { md: 16, xs: 4 } }}>
+                <Grid xs={12} lg={8} sx={{ py: { xs: 0, md: 6 }, order: { xs: 1, lg: 0 } }}>
                     <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
                         <Typography sx={{ pb: 1, fontWeight: 'bold' }} variant='h5'>Shipping Info</Typography>
                         <Typography sx={{ pb: 1, color: 'GrayText', fontSize: '14px' }}> Please fill all information below </Typography>
@@ -181,17 +190,16 @@ const Checkout = () => {
                                 </Box>
                                 :
                                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                    <Button type="submit" variant='contained' onClick={placeOrder} sx={{ mt: 6 }} 
-                                    disabled={cart?.length === 0}>
+                                    <Button type="submit" variant='contained' onClick={placeOrder} sx={{ mt: 6 }}
+                                        disabled={cart?.length === 0}>
                                         Place Order
                                     </Button>
                                 </Box>
                         }
                     </Card>
-
                 </Grid>
-                <Grid xs={6} md={4} >
-                    <CardContent sx={{ mx: 2, my: 8, borderRadius: 2, boxShadow: 2 }}>
+                <Grid xs={12} lg={4} >
+                    <CardContent sx={{ mx: { xs: 0, lg: 2 }, mt: { xs: 2, md: 6 }, mb: 4, borderRadius: 2, boxShadow: 2 }}>
                         <Typography variant='h6' gutterBottom sx={{ borderBottom: 1, pb: 1 }}>
                             Order Summary
                         </Typography>

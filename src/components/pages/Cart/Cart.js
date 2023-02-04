@@ -39,7 +39,8 @@ const Cart = () => {
         '&:hover': {
             color: 'white',
             backgroundColor: '#df6750',
-        }
+        },
+        mt: { xs: 2, md: 0}
     }
     const checkout = {
         color: 'white',
@@ -49,7 +50,8 @@ const Cart = () => {
         '&:hover': {
             color: 'white',
             backgroundColor: '#4b38b3',
-        }
+        },
+        mt: { xs: 2, md: 0}
     }
 
     return (
@@ -58,7 +60,7 @@ const Cart = () => {
                 position: 'relative',
                 pb: 10,
                 mb: 10,
-                px: 16
+                px:{ md: 16 , xs: 4 }
             }}>
                 {
                     cart?.length !== 0 ?
@@ -102,7 +104,7 @@ const Cart = () => {
                 }
                 {
                     cart?.length === 0 ||
-                    <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'right' }}>
+                    <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'right', flexWrap: 'wrap' }}>
                         <Button variant='contained' sx={continueButton} onClick={handleContinue} startIcon={<Loop />}>
                             Continue Shopping
                         </Button>

@@ -1,11 +1,11 @@
-import { Button, Card, Container, CssBaseline, FormControl, Grid, IconButton, InputAdornment, InputLabel, Link, OutlinedInput, TextField, Typography } from '@mui/material';
+import { Button, Card, FormControl, Grid, IconButton, InputAdornment, InputLabel, Link, OutlinedInput, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
 import { Link as ReactLink, useNavigate } from 'react-router-dom';
 import Api from '../../../Axios/Api';
 import Footer from '../../shared/Footer';
 import login from '../../../images/login.jpg'
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { ArrowDownward, Visibility, VisibilityOff } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import Loading from '../Loading/Loading';
 
@@ -42,7 +42,7 @@ const Register = () => {
         others: ''
     })
 
-    if(loading){
+    if (loading) {
         return <Loading></Loading>
     }
 
@@ -109,13 +109,14 @@ const Register = () => {
     }
     return (
         <>
-            <Box px={16} my={5}>
+            <Box sx={{ px: { md: 16, xs: 4 } }} my={5}>
                 <Card variant="outlined" sx={{ boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
                     <Grid container>
-                        <Grid item md={6}>
+                        <Grid item xs={12} md={6}  >
                             <Box sx={{
                                 backgroundImage: `url(${login})`,
                                 backgroundSize: 'cover',
+                                minHeight: '80vh',
                                 height: '100%',
                                 backgroundRepeat: 'no-repeat',
                                 backgroundPosition: 'center',
@@ -123,19 +124,23 @@ const Register = () => {
                             }}>
                                 <Box sx={{ position: 'absolute', height: '100%', width: '100%', background: '#41319ce3' }}>
                                     <Box sx={{ p: 4, color: 'white' }}>
-                                        <Typography sx={{ textTransform: 'uppercase', fontSize: '20px', letterSpacing: '2px', fontWeight: 'bold'}}> Winkles </Typography>
-                                        <Typography variant='h4' mt={20} sx={{ fontStyle: 'italic', textAlign: 'center'}}>
-                                            Welcome to our <br/>
+                                        <Typography sx={{ textTransform: 'uppercase', fontSize: '20px', letterSpacing: '2px', fontWeight: 'bold' }}> Winkles </Typography>
+                                        <Typography variant='h4' mt={20} sx={{ fontStyle: 'italic', textAlign: 'center' }}>
+                                            Welcome to our <br />
                                             Community
                                         </Typography>
                                         <Typography sx={{ textAlign: 'center', mt: 2 }}>
                                             Sign up to use all features of this website and discover a great amount of new opportunities...
                                         </Typography>
+                                        <Box sx={{ display: { xs: 'initial', md: 'none' }  }}>
+                                            <Typography variant='h6' sx={{ textAlign: 'center', mt: 2 }}> Sign Up</Typography>
+                                            <ArrowDownward sx={{ width: '100%', mt: 2, }} />
+                                        </Box>
                                     </Box>
                                 </Box>
                             </Box>
                         </Grid>
-                        <Grid item md={6} p={6}>
+                        <Grid item xs={12} md={6} sx={{ p: { xs: 4, lg: 6 } }}>
                             <Typography variant="h5" sx={{ textAlign: 'center', fontWeight: 'bold' }} >
                                 Sign Up to Winkles
                             </Typography>

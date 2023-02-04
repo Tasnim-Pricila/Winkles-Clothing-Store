@@ -1,5 +1,5 @@
 import React from 'react';
-import { RiseLoader } from 'react-spinners';
+import { CircleLoader } from 'react-spinners';
 import { Box } from '@mui/system';
 
 const Loading = () => {
@@ -12,8 +12,7 @@ const Loading = () => {
             width: '100%',
             height: '90vh'
         }}>
-            {/* <SyncLoader size={20} color={"#B51BE1"} /> */}
-            <RiseLoader size={20} color={"#B51BE1"} />
+            <CircleLoader size={120} color={"#B51BE1"} />
         </Box>
     );
 };

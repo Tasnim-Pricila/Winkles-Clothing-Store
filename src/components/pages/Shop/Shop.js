@@ -25,7 +25,6 @@ const Shop = ({ searchText, setSearchText }) => {
     const [grid, setGrid] = useState(true);
     const [list, setList] = useState(false);
     const location = useLocation();
-
     const [selectedPage, setSelectedPage] = useState(1);
 
     const handleChange = (event, value) => {
@@ -265,13 +264,13 @@ const Shop = ({ searchText, setSearchText }) => {
     return (
         <>
             <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-                sx={{ mt: 2, px: 16, }}>
-                <Grid item xs={2} md={3} >
+                sx={{ mt: 2, px:{ md: 16 , xs: 4 }, }}>
+                <Grid item xs={12} md={3} sx={{ order: { xs: 1, md: 0 }}}>
                     <LeftSidebar category={category} setCategory={setCategory} gtPrice={gtPrice} setGtPrice={setGtPrice} stock={stock} setStock={setStock} brand={brand} setBrand={setBrand} setLtPrice={setLtPrice} ltPrice={ltPrice} handleClear={handleClear} />
                 </Grid>
 
-                <Grid item xs={4} md={9} >
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Grid item xs={12} md={9} >
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
                         <Box>
                             <Tooltip title="Grid View">
                                 <GridView sx={{
@@ -295,9 +294,9 @@ const Shop = ({ searchText, setSearchText }) => {
                                     onClick={handleList} />
                             </Tooltip>
                         </Box>
-                        <Typography sx={{ color: '#00000066' }}> Showing <span style={{ color: 'black', }}>
+                        <Typography sx={{ color: '#00000066', py: 1 }}> Showing <span style={{ color: 'black'}}>
                             {skip + 1} -
-                            {skip + 12} of {products?.count} </span> Products
+                            {skip + products?.result?.length} of {products?.count} </span> Products
                         </Typography>
                     </Box>
 
@@ -315,7 +314,8 @@ const Shop = ({ searchText, setSearchText }) => {
                                             />
                                         )
                                         :
-                                        <Typography> No search results found </Typography>
+                                        // <Typography> No search results found </Typography>
+                                        <Loading/>
                                     :
                                     searched?.length > 0 ?
                                         searched?.map(product =>
@@ -324,7 +324,14 @@ const Shop = ({ searchText, setSearchText }) => {
                                             />
                                         )
                                         :
-                                        <Typography> No search results found </Typography>
+                                        <Typography sx={{
+                                            height: '50vh',
+                                            width: '100%',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            fontWeight: 'bold',
+                                        }}> No search results found </Typography>
                             }
                         </Grid>
                     }
@@ -332,9 +339,7 @@ const Shop = ({ searchText, setSearchText }) => {
                     {
                         list &&
                         <Box sx={{
-                            mt: 2,
-                            px: 2,
-
+                            mt: 2
                         }}>
                             {
                                 searchText === '' ?

@@ -21,7 +21,7 @@ const Blogs = () => {
 
     return (
         <>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', px: 16, py: 5, bgcolor: '#FF8E78' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', px:{ md: 16 , xs: 4 }, py: 5, bgcolor: '#FF8E78' }}>
                 <Typography variant='h5' sx={{ textTransform: 'uppercase', fontWeight: 600 }}>
                     Blogs
                 </Typography>
@@ -35,7 +35,7 @@ const Blogs = () => {
 
             <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 4 }} sx={{
                 mt: 4,
-                px: 16,
+                px:{ md: 16 , xs: 4 },
                 mb: 10
             }}>
                {
