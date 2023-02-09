@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { addToCart, addToWishlist, adjustQty, fetchProduct, fetchProducts, getMe, removeFromCart, removeSelectedProduct } from '../../../Redux/actions';
+import { addToCart, addToWishlist, adjustQty, fetchProduct, fetchProducts, fetchReviewbyProductId, getMe, removeFromCart, removeSelectedProduct } from '../../../Redux/actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { Box, Divider, TextField } from '@mui/material';
+import { Box, Divider, Rating, TextField } from '@mui/material';
 import { CheckCircle, FavoriteBorder, ShoppingCart } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -18,6 +18,8 @@ import { toast } from 'react-toastify';
 
 const SingleProduct = () => {
     const { id } = useParams();
+    const [avgRating, setAvgRating] = useState(0)
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = useSelector(state => state.allUsers.user)
@@ -25,9 +27,14 @@ const SingleProduct = () => {
     const products = state.allProducts;
     let product = state.product;
     const getCart = state.cart?.find(cart => cart._id === id);
+    const reviews = useSelector(state => state.reviews.review);
 
     const quantity = product?.quantity;
     const [purchaseQuantity, setQty] = useState('');
+
+    useEffect(() => {
+        dispatch(fetchReviewbyProductId(id))
+    }, [dispatch, id])
 
     useEffect(() => {
         dispatch(fetchProduct(id))
@@ -184,14 +191,25 @@ const SingleProduct = () => {
             navigate('/login')
         }
     }
+    useEffect(() => {
+        let sum = 0;
+        reviews?.length > 0 &&
+            reviews?.forEach(r =>
+                sum = sum + r.rating
+            )
+        setAvgRating(sum / reviews?.length)
+        console.log(avgRating)
+
+    }, [avgRating, reviews])
+
     return (
         <>
             {
                 product?.length !== 0 ?
                     <>
                         <Grid container direction="row" columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-                            sx={{ px: 16, mt: 10 }}>
-                            <Grid item xs={4}>
+                            sx={{ px: { md: 16, xs: 4 }, mt: 10 }}>
+                            <Grid item xs={12} md={4}>
                                 <Carousel>
                                     {allImg &&
                                         allImg.map((image, i) => {
@@ -206,10 +224,19 @@ const SingleProduct = () => {
                                     }
                                 </Carousel>
                             </Grid>
-                            <Grid item xs={8} sx={{ display: 'flex', flexDirection: 'column' }}>
+                            <Grid item xs={12} md={8} sx={{ display: 'flex', flexDirection: 'column' }}>
                                 <Typography gutterBottom variant="h4" sx={{ textTransform: 'capitalize', fontWeight: 'bold', color: 'black', mt: 2 }}>
                                     {product.title}
                                 </Typography>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                                    <Rating name="read-only" size="medium" value={avgRating} precision={0.5} readOnly />
+                                    <span style={{
+                                        fontSize: '14px',
+                                        display: 'inline-block',
+                                        fontWeight: '600'
+                                    }}> ({reviews.length} Ratings) </span>
+                                </Box>
+
                                 <Divider />
 
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', }}>
@@ -246,7 +273,7 @@ const SingleProduct = () => {
                                 </Typography>
                                 <Divider />
 
-                                <Box mt={3} sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <Box mt={3} sx={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
                                     <Typography fontWeight='bold'> Qty: </Typography>
                                     <Button disabled={purchaseQuantity === quantity} onClick={increase} variant='outlined' sx={{ border: '2px solid' }}>
                                         <AddIcon />
@@ -290,7 +317,7 @@ const SingleProduct = () => {
                             </Grid>
                         </Grid>
                         <RelatedProducts product={product} />
-                        <Reviews id={id} user={user} />
+                        <Reviews reviews={reviews} id={id} user={user} />
                     </>
                     :
                     <Loading></Loading>

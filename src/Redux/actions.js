@@ -49,7 +49,6 @@ export const postProduct = (data) => {
                     dispatch({
                         type: actionTypes.ADD_PRODUCT,
                         payload: data?.data
-
                     })
                     toast.success('Product Added Successfully ', {
                         theme: 'colored',
@@ -176,6 +175,8 @@ export const addToCart = (userId, data, itemID) => {
         })        
     }
 }
+
+
 
 export const addToWishlist = (userId, data) => {
     return async (dispatch) => {

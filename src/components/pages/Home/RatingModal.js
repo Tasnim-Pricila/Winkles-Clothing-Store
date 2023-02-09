@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { createReview, fetchReviewbyProductId, getMe } from '../../../Redux/actions';
+import { CleaningServices } from '@mui/icons-material';
 
 const RatingModal = ({id}) => {
     const [open, setOpen] = React.useState(false);
@@ -22,7 +23,6 @@ const RatingModal = ({id}) => {
     const [value, setValue] = useState(0);
     const [hover, setHover] = useState(0);
     const [review, setReview] = useState('');
-    const reviews = useSelector(state => state.reviews.review);
     // console.log(reviews)
 
     const style = {
@@ -47,6 +47,7 @@ const RatingModal = ({id}) => {
         4.5: 'Excellent',
         5: 'Excellent+',
     };
+    // console.log(value)
 
     const getLabelText = (value) => {
         return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;

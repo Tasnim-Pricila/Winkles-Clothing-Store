@@ -11,7 +11,7 @@ const initialState = {
     allProducts: [],
     saveCart: [],
     wishlist: [],
-    loading: false
+    loading: false,
 }
 
 const productReducer = (state = initialState, action) => {

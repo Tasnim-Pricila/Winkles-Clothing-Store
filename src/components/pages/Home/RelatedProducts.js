@@ -13,11 +13,11 @@ const RelatedProducts = ({ product }) => {
     const dispatch = useDispatch();
 
     const categoryWiseProducts = useSelector(state => state.allProducts.products);
+    
     useEffect(() => {
         const url = `/products?category=${product?.category}`
         dispatch(searchByFilter(url))
     }, [dispatch, product?.category])
-    console.log(categoryWiseProducts?.result?.length)
 
     const settings = {
         dots: false,
@@ -55,7 +55,7 @@ const RelatedProducts = ({ product }) => {
     }
 
     return (
-        <Box mx={16} py={6} mb={8}>
+        <Box py={6} mb={8} sx={{ mx:{ md: 16 , xs: 4 } }}>
             <Typography variant='h5' sx={{ textAlign: 'center', py: 10, textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold' }}>
                 Related Products
             </Typography>
