@@ -8,11 +8,16 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { useNavigate } from 'react-router-dom';
 import { FavoriteBorder, ShoppingCart } from '@mui/icons-material';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { Rating } from '@mui/material';
 
 
 const AllProducts = ({ product, handleAddToCart, handleWishlist }) => {
 
     const navigate = useNavigate();
+    const [avgRating, setAvgRating] = useState(0)
+
     const cart = {
         backgroundColor: '#FF8E78',
         color: 'white',
@@ -40,6 +45,15 @@ const AllProducts = ({ product, handleAddToCart, handleWishlist }) => {
         }
     }
 
+    useEffect(() => {
+        let sum = 0;
+        product?.reviews?.forEach(r =>
+            sum = sum + r.rating
+        )
+        setAvgRating(sum / product.reviews?.length)
+        console.log(avgRating)
+    }, [avgRating, product.reviews])
+
     return (
         <Grid item xs={12} sm={6} lg={4} >
             <Card>
@@ -61,7 +75,18 @@ const AllProducts = ({ product, handleAddToCart, handleWishlist }) => {
                                 : product.title
                         }
                     </Typography>
-                    <Typography gutterBottom variant="h6" sx={{ textAlign: 'center', fontWeight: 'bold' }}>
+                    <Rating name="read-only"
+                        size="medium"
+                        value={avgRating}
+                        precision={0.5}
+                        readOnly
+                        sx={{
+                            width: '100%',
+                            display: 'flex',
+                            justifyContent: 'center'
+                        }}
+                    />
+                    <Typography gutterBottom variant="h6" sx={{ textAlign: 'center', fontWeight: 'bold', pt: 1 }}>
                         Tk. {product.price}
                     </Typography>
                 </CardContent>

@@ -1,70 +1,70 @@
-# Getting Started with Create React App
+<h1 align='center'>
+<a href='https://winkles.vercel.app/' target='_blank'>
+Winkles</a>
+</h1>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align='center'>
+<b>E-commerce web-application of a Clothing Store</b>
+</p>
 
-## Available Scripts
+<p align='center'>
+<img src='./src/images/winkles.png'>
+</p>
 
-In the project directory, you can run:
+## Client Side Link : [https://github.com/Tasnim-Pricila/Winkles-Clothing-Store](https://github.com/Tasnim-Pricila/Winkles-Clothing-Store)
+## Backend Side Link : [https://github.com/Tasnim-Pricila/winkles-server-side](https://github.com/Tasnim-Pricila/winkles-server-side) 
+## Website Live Link : [https://winkles.vercel.app/](https://winkles.vercel.app/) 
 
-### `npm start`
+## **Project Description**
+### **Tools and Technologies Used** :
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+* HTML
+* CSS
+* Material-UI
+* React JS
+* React Redux
+* Stripe 
+* Node Js
+* Express Js
+* MongoDB
+* Mongoose
+* JWT Token
+* Vercel
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### **Features** :
 
-### `npm test`
+1. This is a Single-Page-Application website of a clothing store.
+2. Jwt token is used for login authentication.
+3. Users can filter products on various types.
+4. Users can wishlist any product.
+5. Users can add products to cart.
+6. Users can pay for the products via stripe they want to buy.
+7. Users can view their order's status and their previous orders.
+8. Users can add their reviews for the product.
+9. Different dashboard routes for admin and users. 
+10. Admin is able to create, update or delete any products.
+11. Admin can see the products purchased by any users and update their order status.
+12. Admin can delete the orders which are ordered by users but unpaid.
+13. Users and admins both can see their profile on dashboard page.
+14. Users can update their profile and display image.
+15. Website is responsive for all screen sizes.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Test admin user credentials
 
-### `npm run build`
+| **E-mail**                   | **Password**     |
+| ---------------------------- | ---------------- |
+| tasnimpricila27@gmail.com    | Tasnim123#       |
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+NOTE: These are just for testing purpose. Please Don't:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Update or delete any existing product, brand and categories.
+2. Delete product reviews.
+3. Delete or block any existing admin users.
+4. Delete or edit any orders.
 
-### `npm run eject`
+For testing, you can create a new product, order, brand and categories. Update or delete anything you created and try out the things.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<p align='center'>
+(If you liked the project, give it a star 😃)
+</p>

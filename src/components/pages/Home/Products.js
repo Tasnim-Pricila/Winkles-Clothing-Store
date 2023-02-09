@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import Product from './Product';
 import { Typography } from '@mui/material';
 import Loading from '../Loading/Loading';
 
-const Products = ({ products }) => {
+const Products = ({ products }) => {   
+
     return (
         <>
             <Typography sx={{ textAlign: 'center', pt: 10, textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold', fontSize: '26px' }}>

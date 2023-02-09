@@ -198,7 +198,7 @@ const SingleProduct = () => {
                 sum = sum + r.rating
             )
         setAvgRating(sum / reviews?.length)
-        console.log(avgRating)
+        // console.log(avgRating)
 
     }, [avgRating, reviews])
 

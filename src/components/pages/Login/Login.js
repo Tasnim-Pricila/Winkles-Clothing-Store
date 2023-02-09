@@ -4,7 +4,7 @@ import { Link as ReactLink, useLocation, useNavigate } from 'react-router-dom';
 import Api from '../../../Axios/Api';
 import Footer from '../../shared/Footer';
 import login from '../../../images/login.jpg'
-import { AlternateEmail, ArrowDownward, Visibility, VisibilityOff } from '@mui/icons-material';
+import { AlternateEmail, ArrowDownward, CleaningServices, Visibility, VisibilityOff } from '@mui/icons-material';
 import { getMe } from '../../../Redux/actions';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -56,6 +56,7 @@ const Login = () => {
                     }
                 })
                 .catch(err => {
+                    console.log(err)
                     if (err.response.data.error.toLowerCase().includes('email')) {
                         setError({ email: err.response.data.error })
                     }

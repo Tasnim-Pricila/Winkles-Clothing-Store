@@ -13,12 +13,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, addToWishlist, getMe } from '../../../Redux/actions';
 import { FavoriteBorder, ShoppingCart } from '@mui/icons-material';
 import { toast } from 'react-toastify';
+import { Rating } from '@mui/material';
+import { useState } from 'react';
 
 const Product = ({ product, products }) => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector(state => state.allUsers.user)
+    const [avgRating, setAvgRating] = useState(0)
+
 
     useEffect(() => {
         dispatch(getMe());
@@ -105,6 +109,15 @@ const Product = ({ product, products }) => {
         }
     }
 
+    useEffect(() => {
+        let sum = 0;
+        product?.reviews?.forEach(r =>
+            sum = sum + r.rating
+        )
+        setAvgRating(sum / product.reviews?.length)
+        console.log(avgRating)
+    }, [avgRating, product.reviews])
+
     return (
         <Grid item xs={12} sm={6} lg={3}>
             <Card sx={{ border: 0 }}>
@@ -128,7 +141,18 @@ const Product = ({ product, products }) => {
                                 : product.title
                         }
                     </Typography>
-                    <Typography gutterBottom variant="h6" sx={{ textAlign: 'center', fontWeight: 'bold' }}>
+                    <Rating name="read-only"
+                        size="medium"
+                        value={avgRating}
+                        precision={0.5}
+                        readOnly
+                        sx={{
+                            width: '100%',
+                            display: 'flex',
+                            justifyContent: 'center'
+                        }}
+                    />
+                    <Typography gutterBottom variant="h6" sx={{ textAlign: 'center', fontWeight: 'bold', pt: 1 }}>
                         Tk. {product.price}
                     </Typography>
                 </CardContent>

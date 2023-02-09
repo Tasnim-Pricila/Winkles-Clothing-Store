@@ -1,11 +1,15 @@
 import { FavoriteBorder, ShoppingCart } from '@mui/icons-material';
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid, Rating, Typography } from '@mui/material';
 import React from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const ListView = ({ product, handleAddToCart, handleWishlist }) => {
     
     const navigate = useNavigate();
+    const [avgRating, setAvgRating] = useState(0)
+
     const cart = {
         backgroundColor: '#FF8E78',
         color: 'white',
@@ -31,6 +35,14 @@ const ListView = ({ product, handleAddToCart, handleWishlist }) => {
             color: 'white',
         }
     }
+    useEffect(() => {
+        let sum = 0;
+        product?.reviews?.forEach(r =>
+            sum = sum + r.rating
+        )
+        setAvgRating(sum / product.reviews?.length)
+        console.log(avgRating)
+    }, [avgRating, product.reviews])
 
     return (
         <Grid container columnSpacing={{ xs: 2, md: 4 }} pb={4}>
@@ -43,8 +55,15 @@ const ListView = ({ product, handleAddToCart, handleWishlist }) => {
                 onClick={() => navigate(`/product/${product._id}`)}>
                     {product.title}
                 </Typography>
+                <Rating name="read-only"
+                        size="medium"
+                        value={avgRating}
+                        precision={0.5}
+                        readOnly
+                       
+                    />
 
-                <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#FF8E78' }}>
+                <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#FF8E78', pt: 1 }}>
                     Tk. {product.price}
                 </Typography>
 
