@@ -11,9 +11,9 @@ Winkles</a>
 <img src='./src/images/winkles.png'>
 </p>
 
-## Client Side Link : [https://github.com/Tasnim-Pricila/Winkles-Clothing-Store](https://github.com/Tasnim-Pricila/Winkles-Clothing-Store)
-## Backend Side Link : [https://github.com/Tasnim-Pricila/winkles-server-side](https://github.com/Tasnim-Pricila/winkles-server-side) 
-## Website Live Link : [https://winkles.vercel.app/](https://winkles.vercel.app/) 
+### Client Side Link : [https://github.com/Tasnim-Pricila/Winkles-Clothing-Store](https://github.com/Tasnim-Pricila/Winkles-Clothing-Store)
+### Backend Side Link : [https://github.com/Tasnim-Pricila/winkles-server-side](https://github.com/Tasnim-Pricila/winkles-server-side) 
+### Website Live Link : [https://winkles.vercel.app/](https://winkles.vercel.app/) 
 
 ## **Project Description**
 ### **Tools and Technologies Used** :
@@ -30,8 +30,8 @@ Winkles</a>
 * Mongoose
 * JWT Token
 * Vercel
-
-### **Features** :
+* Render
+### **About Project** :
 
 1. This is a Single-Page-Application website of a clothing store.
 2. Jwt token is used for login authentication.
@@ -49,14 +49,15 @@ Winkles</a>
 14. Users can update their profile and display image.
 15. Website is responsive for all screen sizes.
 
-## Test admin user credentials
+## Admin credentials
 
 | **E-mail**                   | **Password**     |
 | ---------------------------- | ---------------- |
 | tasnimpricila27@gmail.com    | Tasnim123#       |
 
 
-NOTE: These are just for testing purpose. Please Don't:
+NOTE: These are just for testing purpose. 
+Please Don't:
 
 1. Update or delete any existing product, brand and categories.
 2. Delete product reviews.
