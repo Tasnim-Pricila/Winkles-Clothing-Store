@@ -56,7 +56,7 @@ const Login = () => {
                     }
                 })
                 .catch(err => {
-                    console.log(err)
+                    // console.log(err)
                     if (err.response.data.error.toLowerCase().includes('email')) {
                         setError({ email: err.response.data.error })
                     }

@@ -85,7 +85,7 @@ const Register = () => {
                     }
                 })
                 .catch(err => {
-                    console.log(err.response.data.error)
+                    // console.log(err.response.data.error)
                     if (err.response.data.error.toLowerCase().includes('email')) {
                         setError({ email: err.response.data.error })
                     }

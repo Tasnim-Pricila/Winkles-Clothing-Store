@@ -25,7 +25,7 @@ const WishlistItem = ({ wishlistItem }) => {
                 product: newWishlist
             },
         }
-        console.log(wishlistData)
+        // console.log(wishlistData)
         dispatch(addToWishlist(user?._id, wishlistData));
         dispatch(getMe())
     }

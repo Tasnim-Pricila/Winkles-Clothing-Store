@@ -19,8 +19,17 @@ const Cart = () => {
     useEffect(() => {
         let total = 0;
         cart?.forEach(item => {
-            total = parseFloat(total) + parseFloat(item.price) * parseFloat(item.qty);
-            total = total.toFixed(2);
+            if (item?.discount) {
+                const discount = +item.price * +item.discount / 100
+                const discountedPrice = parseFloat(+item.price - discount).toFixed(0);
+                total = parseFloat(total) + discountedPrice * +item.qty;
+                total = total.toFixed(0);
+            }
+            else {
+                total = parseFloat(total) + parseFloat(item.price) * parseFloat(item.qty);
+                total = total.toFixed(0);
+            }
+
         })
         setTotal(total);
     }, [cart, total])
@@ -40,7 +49,7 @@ const Cart = () => {
             color: 'white',
             backgroundColor: '#df6750',
         },
-        mt: { xs: 2, md: 0}
+        mt: { xs: 2, md: 0 }
     }
     const checkout = {
         color: 'white',
@@ -51,7 +60,7 @@ const Cart = () => {
             color: 'white',
             backgroundColor: '#4b38b3',
         },
-        mt: { xs: 2, md: 0}
+        mt: { xs: 2, md: 0 }
     }
 
     return (
@@ -60,7 +69,7 @@ const Cart = () => {
                 position: 'relative',
                 pb: 10,
                 mb: 10,
-                px:{ md: 16 , xs: 4 }
+                px: { md: 16, xs: 4 }
             }}>
                 {
                     cart?.length !== 0 ?
@@ -86,8 +95,8 @@ const Cart = () => {
                                         )
                                     }
                                     <TableRow>
-                                        <TableCell colSpan={5} align='center' 
-                                        sx={{  fontWeight: 'bold', textTransform: 'uppercase' }}>
+                                        <TableCell colSpan={5} align='center'
+                                            sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
                                             Total
                                         </TableCell>
                                         <TableCell colSpan={0} align='center' sx={{ fontWeight: 'bold' }}>

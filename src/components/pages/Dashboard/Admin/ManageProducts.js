@@ -14,7 +14,7 @@ const ManageProducts = () => {
     const brands = useSelector(state => state.brands.brands);
     const categories = useSelector(state => state.category.categories);
     const searched = useSelector(state => state.allProducts.searchAllProducts)
-    console.log(searched);
+    // console.log(searched);
     const nav = useNavigate();
 
     const dispatch = useDispatch();

@@ -51,6 +51,7 @@ const SingleProduct = () => {
         dispatch(getMe())
     }, [dispatch])
 
+    // console.log(getCart?.qty, purchaseQuantity);
     useEffect(() => {
         if (getCart?.qty === undefined) {
             setQty(0);
@@ -63,6 +64,7 @@ const SingleProduct = () => {
     const increase = () => {
         dispatch(getMe())
         setQty(parseInt(purchaseQuantity) + 1);
+        // console.log(purchaseQuantity);
         const q = quantity - 1;
         if (purchaseQuantity === q) {
             console.log('no') //toast
@@ -202,6 +204,9 @@ const SingleProduct = () => {
 
     }, [avgRating, reviews])
 
+    const discount = +product.price * +product.discount / 100
+    const discountedPrice = parseFloat(+product.price - discount).toFixed(0);
+
     return (
         <>
             {
@@ -240,9 +245,34 @@ const SingleProduct = () => {
                                 <Divider />
 
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', }}>
-                                    <Typography variant="h5" sx={{ py: 2, fontWeight: 'bold' }}>
-                                        Tk. {product.price}
-                                    </Typography>
+
+                                    {
+                                        product?.discount ?
+                                            <Box sx={{
+                                                display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2
+                                            }}>
+                                                <Typography gutterBottom variant="h6" sx={{
+                                                    py: 2, fontWeight: 'bold',
+                                                    textDecoration: "line-through",
+                                                    color: 'gray'
+                                                }}>
+                                                    Tk. {product.price}
+                                                </Typography>
+                                                <Typography gutterBottom variant="h6" sx={{
+                                                    py: 2, fontWeight: 'bold', color: '#df6750'
+                                                }}>
+                                                    Tk. {discountedPrice}
+                                                </Typography>
+                                            </Box>
+
+                                            :
+                                            <Typography gutterBottom variant="h6" sx={{
+                                                py: 2, fontWeight: 'bold', color: '#df6750'
+                                            }}>
+                                                Tk. {product.price}
+                                            </Typography>
+
+                                    }
                                     <Typography variant="subtitle2"
                                         sx={product?.stock === 'In Stock' ? instock : outstock}
                                     >

@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { FavoriteBorder, ShoppingCart } from '@mui/icons-material';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { Rating } from '@mui/material';
+import { Box, Rating } from '@mui/material';
 
 
 const AllProducts = ({ product, handleAddToCart, handleWishlist }) => {
@@ -44,6 +44,8 @@ const AllProducts = ({ product, handleAddToCart, handleWishlist }) => {
             color: 'white',
         }
     }
+    const discount = +product.price * +product.discount / 100
+    const discountedPrice = parseFloat(+product.price - discount).toFixed(0);
 
     useEffect(() => {
         let sum = 0;
@@ -51,7 +53,7 @@ const AllProducts = ({ product, handleAddToCart, handleWishlist }) => {
             sum = sum + r.rating
         )
         setAvgRating(sum / product.reviews?.length)
-        console.log(avgRating)
+        // console.log(avgRating)
     }, [avgRating, product.reviews])
 
     return (
@@ -86,9 +88,38 @@ const AllProducts = ({ product, handleAddToCart, handleWishlist }) => {
                             justifyContent: 'center'
                         }}
                     />
-                    <Typography gutterBottom variant="h6" sx={{ textAlign: 'center', fontWeight: 'bold', pt: 1 }}>
-                        Tk. {product.price}
-                    </Typography>
+                    {
+                        product?.discount ?
+                            <Box sx={{
+                                display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2
+                            }}>
+                                <Typography gutterBottom variant="h6" sx={{
+                                    textAlign: 'center',
+                                    fontWeight: 'bold',
+                                    pt: 1,
+                                    textDecoration: "line-through",
+                                    color: 'gray'
+                                }}>
+                                    Tk. {product.price}
+                                </Typography>
+                                <Typography gutterBottom variant="h6" sx={{
+                                    textAlign: 'center',
+                                    fontWeight: 'bold',
+                                    pt: 1,
+                                }}>
+                                    Tk. {discountedPrice}
+                                </Typography>
+                            </Box>
+
+                            :
+                            <Typography gutterBottom variant="h6" sx={{
+                                textAlign: 'center',
+                                fontWeight: 'bold',
+                                pt: 1,
+                            }}>
+                                Tk. {product.price}
+                            </Typography>
+                    }
                 </CardContent>
 
                 <CardActions sx={{ pb: 2 }} style={{ display: 'flex', justifyContent: 'space-around' }}>

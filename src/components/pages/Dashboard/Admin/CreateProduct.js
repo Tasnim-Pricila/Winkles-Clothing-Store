@@ -28,11 +28,14 @@ const CreateProduct = () => {
         category: '',
         brand: '',
         stock: '',
+        discount: ''
     })
+    // console.log(productDetails);
     const [error, setError] = useState({
         title: '',
         description: '',
         price: '',
+        discount: '',
         quantity: '',
         unit: '',
         category: '',
@@ -95,6 +98,12 @@ const CreateProduct = () => {
         }
         else if (productDetails.price === '') {
             setError({ price: 'This field is required' })
+        }
+        else if (productDetails.price < 0) {
+            setError({ price: 'Price can not be less than 0' })
+        }
+        else if (productDetails.discount < 0) {
+            setError({ discount: 'Discount can not be less than 0' })
         }
         else if (productDetails.brand === '') {
             setError({ brand: 'This field is required' })
@@ -319,7 +328,7 @@ const CreateProduct = () => {
                             <Typography pb={1}>General Info</Typography>
                             <Divider></Divider>
                             <Grid container spacing={2} mt={1}>
-                                <Grid item xs={12} sm={6} lg={4}>
+                                <Grid item xs={12} sm={6} >
                                     <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Stock</Typography>
                                     <TextField sx={{
                                         width: '100%'
@@ -335,7 +344,7 @@ const CreateProduct = () => {
                                         helperText={error.quantity}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={6} lg={4}>
+                                <Grid item xs={12} sm={6} >
                                     <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Unit</Typography>
                                     <Select
                                         size='small'
@@ -357,7 +366,7 @@ const CreateProduct = () => {
                                     </Select>
                                     <FormHelperText sx={{ color: '#d32f2f' }}> {error.unit} </FormHelperText>
                                 </Grid>
-                                <Grid item xs={12} lg={4}>
+                                <Grid item xs={12} sm={6}>
                                     <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Price</Typography>
                                     <TextField sx={{
                                         width: '100%',
@@ -376,11 +385,46 @@ const CreateProduct = () => {
                                                     $
                                                 </InputAdornment>
                                             ),
+                                            inputProps: {
+                                                min: 0
+                                            }
                                         }}
                                         placeholder='Enter price'
                                         onChange={(e) => setProductDetails({ ...productDetails, price: e.target.value })}
                                         error={error.price}
                                         helperText={error.price}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Discount</Typography>
+                                    <TextField sx={{
+                                        width: '100%',
+                                        '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
+                                            fontSize: '13px', color: '#212529'
+                                        }
+                                    }}
+                                        hiddenLabel
+                                        type="number"
+                                        id="filled-hidden-label-small"
+                                        size="small"
+                                        min='0'
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    %
+                                                </InputAdornment>
+                                            ),
+                                            inputProps: {
+                                                min: 0,
+                                                max: 100
+                                            }
+                                        }
+
+                                        }
+                                        placeholder='Enter Discount'
+                                        onChange={(e) => setProductDetails({ ...productDetails, discount: e.target.value })}
+                                        error={error.discount}
+                                        helperText={error.discount}
                                     />
                                 </Grid>
                             </Grid>

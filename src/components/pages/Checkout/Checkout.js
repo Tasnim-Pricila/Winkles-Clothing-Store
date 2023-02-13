@@ -43,11 +43,22 @@ const Checkout = () => {
         paymentMethod: '',
     })
 
+    // console.log(total);
     useEffect(() => {
         let total = 0;
+
         cart?.forEach(item => {
-            total = parseFloat(total) + parseFloat(item.price) * parseFloat(item.qty);
-            total = total.toFixed(2);
+            if (item?.discount) {
+                const discount = +item.price * +item.discount / 100
+                const discountedPrice = parseFloat(+item.price - discount).toFixed(0);
+                total = parseFloat(total) + discountedPrice * +item.qty;
+                total = total.toFixed(0);
+            }
+            else {
+                total = parseFloat(total) + parseFloat(item.price) * +item.qty;
+                total = total.toFixed(0);
+            }
+
         })
         // console.log(total);
         setTotal(total);
@@ -225,11 +236,19 @@ const Checkout = () => {
                                                         {c.title}
                                                     </Typography>
                                                     <Typography variant='body2'>
-                                                        Tk. {c.price} * {c.qty}
+                                                        Tk. {c.discount ? c.price - (c.discount * c.price / 100) : c.price} * {c.qty}
                                                     </Typography>
 
                                                 </TableCell>
-                                                <TableCell align="right">{c.price * c.qty}</TableCell>
+                                                <TableCell align="right">
+                                                    {
+                                                        c.discount ?
+                                                            (c.price - (c.discount * c.price / 100)) * c.qty
+                                                            :
+                                                            c.price * c.qty
+                                                    }
+
+                                                </TableCell>
                                             </TableRow>
                                         )
                                     }

@@ -386,7 +386,7 @@ export const getOrdersByEmail = (email) => {
                 authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
         })
-        console.log(response.data.data);
+        // console.log(response.data.data);
         dispatch({
             type: actionTypes.GET_ORDER_BY_EMAIl,
             payload: response.data.data
@@ -528,7 +528,7 @@ export const updateUserAction = (data) => {
                 authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
         })
-        console.log(response)
+        // console.log(response)
         dispatch({
             type: actionTypes.UPDATE_USER,
             payload: response.data?.data
@@ -543,7 +543,7 @@ export const updateUserById = (id, data) => {
                 authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
         })
-        console.log(response)
+        // console.log(response)
         dispatch({
             type: actionTypes.UPDATE_USER,
             payload: response.data?.data
@@ -621,7 +621,7 @@ export const createCategory = (data) => {
                 authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
         })
-        console.log(response)
+        // console.log(response)
         dispatch({
             type: actionTypes.CREATE_CATEGORY,
             payload: response.data?.data
@@ -660,7 +660,7 @@ export const createBlog = (data) => {
                 authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
         })
-        console.log(response)
+        // console.log(response)
         dispatch({
             type: actionTypes.CREATE_BLOG,
             payload: response.data?.data
@@ -675,7 +675,7 @@ export const updateBlog = (id, data) => {
                 authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
         })
-        console.log(response)
+        // console.log(response)
         dispatch({
             type: actionTypes.UPDATE_BLOG,
             payload: response.data?.data
@@ -690,7 +690,7 @@ export const deleteBlog = (id) => {
                 authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
         })
-        console.log(response)
+        // console.log(response)
         dispatch({
             type: actionTypes.DELETE_BLOG,
             payload: {
@@ -706,7 +706,7 @@ export const deleteBlog = (id) => {
 export const fetchReview = () => {
     return async (dispatch) => {
         const response = await Api.get('/reviews')
-        console.log(response);
+        // console.log(response);
         dispatch({
             type: actionTypes.FETCH_REVIEW,
             payload: response.data?.data?.result

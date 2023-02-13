@@ -9,11 +9,15 @@ import styled from '@emotion/styled';
 import { Cancel } from '@mui/icons-material';
 
 const CartItem = ({ cartItem }) => {
-    const { _id, title, price, qty, quantity, image } = cartItem;
+    const { _id, title, price, qty, quantity, image, discount } = cartItem;
     const dispatch = useDispatch();
     const [purchaseQuantity, setQty] = useState(qty);
     const user = useSelector(state => state.allUsers.user)
     const cart = user?.cart?.product;
+
+    // console.log(cartItem);
+    const discountAmount = discount && +price * +discount / 100
+    const discountedPrice = discount && parseFloat(+price - discountAmount).toFixed(0);
 
     const handleRemove = (id) => {
         dispatch(getMe())
@@ -91,8 +95,10 @@ const CartItem = ({ cartItem }) => {
             </TableCell>
 
 
-            <TableCell align="center" sx={{ p: 0 }}>{price}</TableCell>
-            <TableCell align="center" sx={{ p: 0 }}>{qty * price}</TableCell>
+            <TableCell align="center" sx={{ p: 0 }}>{discount ? discountedPrice : price}</TableCell>
+            <TableCell align="center" sx={{ p: 0 }}>
+                {discount ? qty * discountedPrice : qty * price}
+                </TableCell>
             <TableCell align="center" sx={{ p: 0 }}>
                 <Button onClick={() => handleRemove(_id)}><Cancel /></Button>
             </TableCell>

@@ -97,6 +97,7 @@ const EditProduct = () => {
                                                 title: e.target.title.value,
                                                 description: e.target.description.value,
                                                 price: e.target.price.value,
+                                                discount: e.target.discount.value,
                                                 quantity: e.target.quantity.value,
                                                 unit: e.target.unit.value,
                                                 image: imgUrl,
@@ -126,6 +127,7 @@ const EditProduct = () => {
                             title: e.target.title.value,
                             description: e.target.description.value,
                             price: e.target.price.value,
+                            discount: e.target.discount.value,
                             quantity: e.target.quantity.value,
                             unit: e.target.unit.value,
                             image: imgUrl,
@@ -148,7 +150,7 @@ const EditProduct = () => {
                 formGallery.append('image', image)
                 axios.post(url, formGallery)
                     .then(response => {
-                        console.log('second one', response)
+                        // console.log('second one', response)
                         if (response?.data?.success) {
                             imgGalleryUrl.push(response?.data?.data?.url);
                             if (i === galleryImg?.gallery?.length - 1) {
@@ -156,6 +158,7 @@ const EditProduct = () => {
                                     title: e.target.title.value,
                                     description: e.target.description.value,
                                     price: e.target.price.value,
+                                    discount: e.target.discount.value,
                                     quantity: e.target.quantity.value,
                                     unit: e.target.unit.value,
                                     image: product?.image,
@@ -180,6 +183,7 @@ const EditProduct = () => {
                 title: e.target.title.value,
                 description: e.target.description.value,
                 price: e.target.price.value,
+                discount: e.target.discount.value,
                 quantity: e.target.quantity.value,
                 unit: e.target.unit.value,
                 image: product?.image,
@@ -398,7 +402,7 @@ const EditProduct = () => {
                                         <Typography pb={1}>General Info</Typography>
                                         <Divider></Divider>
                                         <Grid container spacing={2} mt={1}>
-                                            <Grid item md={4}>
+                                            <Grid item xs={12} sm={6}>
                                                 <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Stock</Typography>
                                                 <TextField sx={{
                                                     width: '100%',
@@ -416,7 +420,7 @@ const EditProduct = () => {
                                                     defaultValue={product?.quantity}
                                                 />
                                             </Grid>
-                                            <Grid item md={4}>
+                                            <Grid item xs={12} sm={6}>
                                                 <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Unit</Typography>
                                                 <TextField sx={{
                                                     width: '100%',
@@ -434,7 +438,7 @@ const EditProduct = () => {
                                                     defaultValue={product?.unit}
                                                 />
                                             </Grid>
-                                            <Grid item md={4}>
+                                            <Grid item xs={12} sm={6}>
                                                 <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Price</Typography>
                                                 <TextField sx={{
                                                     width: '100%',
@@ -459,12 +463,36 @@ const EditProduct = () => {
                                                     defaultValue={product?.price}
                                                 />
                                             </Grid>
+                                            <Grid item xs={12} sm={6}>
+                                                <Typography variant='body2' pb={1} fontWeight='600' color='#212529eb'>Discount</Typography>
+                                                <TextField sx={{
+                                                    width: '100%',
+                                                    '.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input': {
+                                                        fontSize: '13px', color: '#212529'
+                                                    }
+                                                }}
+                                                    hiddenLabel
+                                                    type="number"
+                                                    id="filled-hidden-label-small"
+                                                    size="small"
+                                                    InputProps={{
+                                                        startAdornment: (
+                                                            <InputAdornment position="start">
+                                                                %
+                                                            </InputAdornment>
+                                                        ),
+                                                    }}
+                                                    placeholder='Enter price'
+                                                    name='discount'
+                                                    defaultValue={product?.discount}
+                                                />
+                                            </Grid>
                                         </Grid>
 
                                     </Card>
                                 </Grid>
 
-                                <Grid item md={5} height='100%'>
+                                <Grid item xs={12} md={5} height='100%'>
                                     <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
                                         <Typography pb={1}>Product Brands </Typography>
                                         <Divider></Divider>
