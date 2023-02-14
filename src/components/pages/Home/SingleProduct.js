@@ -26,11 +26,10 @@ const SingleProduct = () => {
     const state = useSelector(state => state.allProducts);
     const products = state.allProducts;
     let product = state.product;
-    const getCart = state.cart?.find(cart => cart._id === id);
+    const getCart = user?.cart?.product?.find(cart => cart._id === id);
     const reviews = useSelector(state => state.reviews.review);
-
     const quantity = product?.quantity;
-    const [purchaseQuantity, setQty] = useState('');
+    const [purchaseQuantity, setQty] = useState(0);
 
     useEffect(() => {
         dispatch(fetchReviewbyProductId(id))
@@ -54,41 +53,13 @@ const SingleProduct = () => {
     // console.log(getCart?.qty, purchaseQuantity);
     useEffect(() => {
         if (getCart?.qty === undefined) {
+            console.log('undefined');
             setQty(0);
         }
         else if (getCart) {
             setQty(getCart?.qty);
         }
     }, [getCart, setQty, purchaseQuantity])
-
-    const increase = () => {
-        dispatch(getMe())
-        setQty(parseInt(purchaseQuantity) + 1);
-        // console.log(purchaseQuantity);
-        const q = quantity - 1;
-        if (purchaseQuantity === q) {
-            console.log('no') //toast
-        }
-        const cartData = {
-            ...product, qty: purchaseQuantity + 1
-        }
-        dispatch(adjustQty(product._id, id, purchaseQuantity + 1, cartData))
-        dispatch(getMe())
-    }
-
-    const decrease = () => {
-        dispatch(getMe())
-        setQty(parseInt(purchaseQuantity) - 1);
-        console.log(purchaseQuantity)
-        if (purchaseQuantity === 1) {
-            dispatch(removeFromCart(id))
-        }
-        const cartData = {
-            ...product, qty: purchaseQuantity - 1
-        }
-        dispatch(adjustQty(product._id, id, purchaseQuantity - 1, cartData))
-        dispatch(getMe())
-    }
 
     let newCart = user?.cart?.product;
     const handleAddToCart = (id) => {
@@ -118,6 +89,52 @@ const SingleProduct = () => {
         }
     }
 
+    const increase = () => {
+        dispatch(getMe())
+        const selectedProduct = products?.find(p => p._id === id)
+        const exists = newCart?.find(c => c._id === selectedProduct._id)
+        if (!exists) {
+            selectedProduct.qty = 1;
+            newCart = [...newCart, selectedProduct];
+            const cartData = {
+                cart: {
+                    product: newCart
+                },
+            }
+            dispatch(addToCart(user._id, cartData));
+        }
+        else {
+            setQty(parseInt(purchaseQuantity) + 1);
+            const q = quantity - 1;
+            if (purchaseQuantity === q) {
+                // console.log('no') //toast
+                toast.warning('Stock is empty', {
+                    theme: 'colored',
+                });
+            }
+            const cartData = {
+                ...product, qty: purchaseQuantity + 1
+            }
+            dispatch(adjustQty(product._id, id, purchaseQuantity + 1, cartData))
+
+        }
+        dispatch(getMe())
+    }
+
+    const decrease = () => {
+        dispatch(getMe())
+        setQty(parseInt(purchaseQuantity) - 1);
+        console.log(purchaseQuantity)
+        if (purchaseQuantity === 1) {
+            dispatch(removeFromCart(id))
+        }
+        const cartData = {
+            ...product, qty: purchaseQuantity - 1
+        }
+        dispatch(adjustQty(product._id, id, purchaseQuantity - 1, cartData))
+        dispatch(getMe())
+    }
+
     const instock = {
         backgroundColor: ' #FF8E78',
         color: 'white',
@@ -127,6 +144,7 @@ const SingleProduct = () => {
         alignItems: 'center',
         borderRadius: 0,
     }
+    
     const outstock = {
         backgroundColor: '#aca3a178',
         color: '#201f1f70',
