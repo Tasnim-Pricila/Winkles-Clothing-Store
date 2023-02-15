@@ -13,6 +13,16 @@ export const fetchProducts = () => {
         })
     }
 }
+export const trendingProducts = () => {
+    return async (dispatch) => {
+        const response = await Api.get('/products/trending')
+        console.log(response.data?.data);
+        dispatch({
+            type: actionTypes.TRENDING_PRODUCTS,
+            payload: response.data?.data
+        })
+    }
+}
 
 export const fetchProductsByPagination = (page) => {
     return async (dispatch) => {

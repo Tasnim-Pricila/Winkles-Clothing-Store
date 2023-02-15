@@ -12,6 +12,7 @@ const initialState = {
     saveCart: [],
     wishlist: [],
     loading: false,
+    trending: []
 }
 
 const productReducer = (state = initialState, action) => {
@@ -20,6 +21,11 @@ const productReducer = (state = initialState, action) => {
             return {
                 ...state,
                 allProducts: action.payload
+            }
+        case actionTypes.TRENDING_PRODUCTS:
+            return {
+                ...state,
+                trending: action.payload
             }
         case actionTypes.FETCH_PRODUCTS_ByPAGINATION:
             return {

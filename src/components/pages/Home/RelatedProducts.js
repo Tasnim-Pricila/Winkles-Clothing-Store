@@ -13,7 +13,7 @@ const RelatedProducts = ({ product }) => {
     const dispatch = useDispatch();
 
     const categoryWiseProducts = useSelector(state => state.allProducts.products);
-    
+
     useEffect(() => {
         const url = `/products?category=${product?.category}`
         dispatch(searchByFilter(url))
@@ -55,7 +55,7 @@ const RelatedProducts = ({ product }) => {
     }
 
     return (
-        <Box py={6} mb={8} sx={{ mx:{ md: 16 , xs: 4 } }}>
+        <Box py={6} mb={8} sx={{ mx: { md: 16, xs: 4 } }}>
             <Typography variant='h5' sx={{ textAlign: 'center', py: 10, textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold' }}>
                 Related Products
             </Typography>
@@ -64,47 +64,39 @@ const RelatedProducts = ({ product }) => {
                 {
                     categoryWiseProducts?.result?.length > 0 ?
                         categoryWiseProducts?.result?.map((product, i) =>
-                            // <div style={{
-                            //     display: 'flex',
-                            //     justifyContent: 'center',
-                            //     alignItems: 'center',
-                            //     padding: '20px',
-                            //     gap: '200px',
-                            //     flexDirection: 'column'
-                            // }}>
-                                <Box className='slick-list'>
-                                    <Box onClick={() => navigate(`/product/${product._id}`)}
+
+                            <Box className='slick-list'>
+                                <Box onClick={() => navigate(`/product/${product._id}`)}
+                                    sx={{
+                                        backgroundImage: `url(${product?.image})`,
+                                        backgroundSize: 'cover',
+                                        height: '60vh',
+                                        backgroundRepeat: 'no-repeat',
+                                        cursor: 'pointer'
+                                    }}
+                                />
+                                <Box sx={{ pt: 2, px: 1 }}>
+                                    <Typography gutterBottom variant="h6"
+                                        onClick={() => navigate(`/product/${product._id}`)}
                                         sx={{
-                                            backgroundImage: `url(${product?.image})`,
-                                            backgroundSize: 'cover',
-                                            height: '60vh',
-                                            backgroundRepeat: 'no-repeat',
+                                            textTransform: 'capitalize',
+                                            fontWeight: 'bold',
+                                            mb: 0,
                                             cursor: 'pointer'
-                                        }}
-                                    />
-                                    <Box sx={{ pt: 2, px: 1 }}>
-                                        <Typography gutterBottom variant="h6"
-                                            onClick={() => navigate(`/product/${product._id}`)}
-                                            sx={{
-                                                textTransform: 'capitalize',
-                                                fontWeight: 'bold',
-                                                mb: 0,
-                                                cursor: 'pointer'
-                                            }}>
-                                            {
-                                                product.title.length > 20 ? `${product.title.slice(0, 20)}...`
-                                                    : product.title
-                                            }
-                                        </Typography>
-                                        <Typography
-                                            sx={{
-                                                fontSize: '16px'
-                                            }}>
-                                            Tk. {product.price}
-                                        </Typography>
-                                    </Box>
+                                        }}>
+                                        {
+                                            product.title.length > 20 ? `${product.title.slice(0, 20)}...`
+                                                : product.title
+                                        }
+                                    </Typography>
+                                    <Typography
+                                        sx={{
+                                            fontSize: '16px'
+                                        }}>
+                                        Tk. {product.price}
+                                    </Typography>
                                 </Box>
-                            // </div>
+                            </Box>
                         )
                         :
                         <Loading />

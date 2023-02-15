@@ -8,6 +8,7 @@ import Brand from './Brand';
 import Categories from './Categories';
 import Delivery from './Delivery';
 import Products from './Products';
+import Trending from './Trending';
 
 const Home = () => {
     const products = useSelector(state => state.allProducts.allProducts)
@@ -22,6 +23,7 @@ const Home = () => {
             <Banner></Banner>
             <Categories></Categories>
             <Products products={products}/>
+            <Trending products={products}/>
             <Delivery></Delivery>
             <Article></Article>
             <Brand></Brand>
