@@ -8,9 +8,10 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBrands, fetchCategories } from '../../../Redux/actions';
 import { Box } from '@mui/system';
-
+import Loading from '../Loading/Loading';
 
 const LeftSidebar = ({ setCategory, setGtPrice, setStock, brand, setBrand, setLtPrice, handleClear }) => {
+    
     const brands = useSelector(state => state.brands.brands);
     const categories = useSelector(state => state.category.categories);
 
@@ -20,7 +21,7 @@ const LeftSidebar = ({ setCategory, setGtPrice, setStock, brand, setBrand, setLt
         dispatch(fetchCategories())
     }, [dispatch])
 
-
+    
     return (
         <Box mb={6}>
             <Grid container>

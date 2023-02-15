@@ -14,6 +14,7 @@ import ListView from './ListView';
 const Shop = ({ searchText, setSearchText }) => {
     const products = useSelector(state => state.allProducts.products)
     const searched = useSelector(state => state.allProducts.searchProducts)
+    // const loading = useSelector(state => state.allProducts.loading)
     const user = useSelector(state => state.allUsers.user)
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -103,7 +104,7 @@ const Shop = ({ searchText, setSearchText }) => {
     };
     const page = (Math.ceil(products?.count / 12));
     const skip = (selectedPage - 1) * 12;
-   
+
     const handleClear = () => {
         setSearchText('');
         dispatch(fetchProductsByPagination(selectedPage))
@@ -200,19 +201,22 @@ const Shop = ({ searchText, setSearchText }) => {
         setGrid(true);
         setList(false)
     }
+
     const handleList = () => {
         setGrid(false)
         setList(true);
     }
 
-
     let wishlist = user?.wishlist?.product;
     const handleWishlist = (id) => {
         if (user?.length !== 0) {
             dispatch(getMe())
-            const exists = wishlist?.find(w => w === id)
+            const exists = wishlist?.find(w => w._id === id)
             if (!exists) {
                 wishlist = [...wishlist, id];
+                toast.success('Product added to your wishlist ', {
+                    theme: 'colored',
+                });
             }
             else {
                 toast.warning('Already in your Wishlist ', {
@@ -261,11 +265,13 @@ const Shop = ({ searchText, setSearchText }) => {
 
     }
 
+
     return (
         <>
             <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-                sx={{ mt: 2, px:{ md: 16 , xs: 4 }, }}>
-                <Grid item xs={12} md={3} sx={{ order: { xs: 1, md: 0 }}}>
+                sx={{ mt: 2, px: { md: 16, xs: 4 }, }}>
+
+                <Grid item xs={12} md={3} sx={{ order: { xs: 1, md: 0 } }}>
                     <LeftSidebar category={category} setCategory={setCategory} gtPrice={gtPrice} setGtPrice={setGtPrice} stock={stock} setStock={setStock} brand={brand} setBrand={setBrand} setLtPrice={setLtPrice} ltPrice={ltPrice} handleClear={handleClear} />
                 </Grid>
 
@@ -294,7 +300,7 @@ const Shop = ({ searchText, setSearchText }) => {
                                     onClick={handleList} />
                             </Tooltip>
                         </Box>
-                        <Typography sx={{ color: '#00000066', py: 1 }}> Showing <span style={{ color: 'black'}}>
+                        <Typography sx={{ color: '#00000066', py: 1 }}> Showing <span style={{ color: 'black' }}>
                             {skip + 1} -
                             {skip + products?.result?.length} of {products?.count} </span> Products
                         </Typography>
@@ -315,7 +321,7 @@ const Shop = ({ searchText, setSearchText }) => {
                                         )
                                         :
                                         // <Typography> No search results found </Typography>
-                                        <Loading/>
+                                        <Loading />
                                     :
                                     searched?.length > 0 ?
                                         searched?.map(product =>

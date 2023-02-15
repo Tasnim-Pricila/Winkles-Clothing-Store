@@ -5,12 +5,14 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchBrands, fetchCategories, fetchProducts, searchByCatAndBrand, searchProducts } from '../../../../Redux/actions';
+import Loading from '../../Loading/Loading';
 import AddBrand from './Modal/AddBrand';
 import AddCategory from './Modal/AddCategory';
 import ProductTable from './ProductTable';
 
 const ManageProducts = () => {
     const products = useSelector(state => state.allProducts.allProducts);
+    const loading = useSelector(state => state.allProducts.loading);
     const brands = useSelector(state => state.brands.brands);
     const categories = useSelector(state => state.category.categories);
     const searched = useSelector(state => state.allProducts.searchAllProducts)
@@ -70,7 +72,6 @@ const ManageProducts = () => {
         }
     }
 
-
     return (
         <Box mb={4}>
             <Toolbar sx={{
@@ -84,7 +85,7 @@ const ManageProducts = () => {
             <Box p={3}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={3} height='100%'>
-                        <Card variant="outlined" sx={{ p: {xs: 2, md: 1, lg: 2}, boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
+                        <Card variant="outlined" sx={{ p: { xs: 2, md: 1, lg: 2 }, boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', pb: 2 }}>
                                 <Typography>Filters</Typography>
                                 <Link sx={{ cursor: 'pointer', color: '#4b38b3', fontSize: '14px', textDecorationColor: '#4b38b3' }} onClick={handleClear}>Clear All</Link>
@@ -160,47 +161,51 @@ const ManageProducts = () => {
                                     }}
                                 />
                             </Box>
-                            <TableContainer sx={{ maxHeight: 440 }}>
-                                <Table aria-label="simple table" stickyHeader >
-                                    <TableHead sx={{ bgcolor: '#f3f6f9' }}>
-                                        <TableRow sx={{
-                                            '.MuiTableCell-root': {
-                                                color: '#878a99',
-                                                fontWeight: 'bold',
-                                                textTransform: 'uppercase'
-                                            }
-                                        }}>
-                                            <TableCell> Product </TableCell>
-                                            <TableCell> Stock </TableCell>
-                                            <TableCell> Price </TableCell>
-                                            <TableCell> Brand </TableCell>
-                                            <TableCell> Action </TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {
-                                            search === '' ?
-                                                products?.length > 0 ?
-                                                    products?.map(product =>
-                                                        <ProductTable
-                                                            product={product}
-                                                        ></ProductTable>
-                                                    )
-                                                    :
-                                                    <Typography> No results found </Typography>
-                                                :
-                                                searched?.length > 0 ?
-                                                    searched?.map(product =>
-                                                        <ProductTable
-                                                            product={product}
-                                                        ></ProductTable>
-                                                    )
-                                                    :
-                                                    <Typography> No results found </Typography>
-                                        }
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
+                            {
+                                loading ? <Loading /> :
+
+                                    <TableContainer sx={{ maxHeight: 440 }}>
+                                        <Table aria-label="simple table" stickyHeader >
+                                            <TableHead sx={{ bgcolor: '#f3f6f9' }}>
+                                                <TableRow sx={{
+                                                    '.MuiTableCell-root': {
+                                                        color: '#878a99',
+                                                        fontWeight: 'bold',
+                                                        textTransform: 'uppercase'
+                                                    }
+                                                }}>
+                                                    <TableCell> Product </TableCell>
+                                                    <TableCell> Stock </TableCell>
+                                                    <TableCell> Price </TableCell>
+                                                    <TableCell> Brand </TableCell>
+                                                    <TableCell> Action </TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {
+                                                    search === '' ?
+                                                        products?.length > 0 ?
+                                                            products?.map(product =>
+                                                                <ProductTable
+                                                                    product={product}
+                                                                ></ProductTable>
+                                                            )
+                                                            :
+                                                            <Typography> No results found </Typography>
+                                                        :
+                                                        searched?.length > 0 ?
+                                                            searched?.map(product =>
+                                                                <ProductTable
+                                                                    product={product}
+                                                                ></ProductTable>
+                                                            )
+                                                            :
+                                                            <Typography> No results found </Typography>
+                                                }
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                            }
                         </Card>
                     </Grid>
                 </Grid>

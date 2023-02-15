@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getAllOrders, orderByFilter, searchOrders, updateorder } from '../../../../Redux/actions';
+import Loading from '../../Loading/Loading';
 import OrdersTable from './OrdersTable';
 
 const AllOrders = () => {
@@ -14,6 +15,8 @@ const AllOrders = () => {
     const [search, setSearch] = useState('')
     const orders = useSelector(state => state.orders.allOrder)
     const searched = useSelector(state => state.orders.searchOrders)
+    const loading = useSelector(state => state.allProducts.loading);
+
 
     useEffect(() => {
         dispatch(getAllOrders())
@@ -82,7 +85,7 @@ const AllOrders = () => {
                         <Card variant="outlined" sx={{ p: 2, boxShadow: '0 3px 3px rgba(56,65,74,0.1)' }}>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pb: 2 }}>
                                 <Button variant='contained' sx={addBtn}
-                                onClick={() => navigate('/soon')}> + Create Order </Button>
+                                    onClick={() => navigate('/soon')}> + Create Order </Button>
                                 <TextField
                                     id="standard-search"
                                     type="search"
@@ -100,7 +103,7 @@ const AllOrders = () => {
                                         '.css-1xp6qmi-MuiInputBase-input-MuiOutlinedInput-input': {
                                             fontSize: '14px'
                                         },
-                                        width:'400px'
+                                        width: '400px'
                                     }}
                                 />
                             </Box>
@@ -115,54 +118,56 @@ const AllOrders = () => {
                                 <Tab value="two" label="Paid" onClick={handlePaid} />
                                 <Tab value="three" label="Pending" onClick={handlePending} />
                             </Tabs>
+                            {
+                                loading ? <Loading /> :
+                                    <TableContainer sx={{ maxHeight: 440 }}>
+                                        <Table stickyHeader aria-label="sticky table">
+                                            <TableHead sx={{ bgcolor: '#f3f6f9' }}>
+                                                <TableRow sx={{
+                                                    '.MuiTableCell-root': {
+                                                        color: '#878a99',
+                                                        fontWeight: 'bold'
+                                                    }
+                                                }}>
+                                                    <TableCell> # </TableCell>
+                                                    <TableCell> Order ID </TableCell>
+                                                    <TableCell> Customer </TableCell>
+                                                    <TableCell sx={{ fontWeight: 'bold', minWidth: '150px' }}> Product </TableCell>
+                                                    <TableCell> Order Date </TableCell>
+                                                    <TableCell> Amount </TableCell>
+                                                    <TableCell> Payment Method </TableCell>
+                                                    <TableCell> Payment Status </TableCell>
+                                                    <TableCell> Delivery Status  </TableCell>
+                                                    <TableCell> Order Status  </TableCell>
+                                                    <TableCell> Action </TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody sx={{ fontSize: '12px' }}>
 
-                            <TableContainer sx={{ maxHeight: 440 }}>
-                                <Table stickyHeader aria-label="sticky table">
-                                    <TableHead sx={{ bgcolor: '#f3f6f9' }}>
-                                        <TableRow sx={{
-                                            '.MuiTableCell-root': {
-                                                color: '#878a99',
-                                                fontWeight: 'bold'
-                                            }
-                                        }}>
-                                            <TableCell> # </TableCell>
-                                            <TableCell> Order ID </TableCell>
-                                            <TableCell> Customer </TableCell>
-                                            <TableCell sx={{ fontWeight: 'bold', minWidth: '150px' }}> Product </TableCell>
-                                            <TableCell> Order Date </TableCell>
-                                            <TableCell> Amount </TableCell>
-                                            <TableCell> Payment Method </TableCell>
-                                            <TableCell> Payment Status </TableCell>
-                                            <TableCell> Delivery Status  </TableCell>
-                                            <TableCell> Order Status  </TableCell>
-                                            <TableCell> Action </TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody sx={{ fontSize: '12px' }}>
-                                       
-                                        {
-                                            search === '' ?
-                                                orders?.length > 0 ?
-                                                    orders.map((order, index) =>
-                                                        <OrdersTable order={order} index={index}
-                                                            handleDelivery={handleDelivery} handlePayment={handlePayment}
-                                                        ></OrdersTable>
-                                                    )
-                                                    :
-                                                    <Typography> No results found </Typography>
-                                                :
-                                                searched?.length > 0 ?
-                                                    searched?.map((order, index) =>
-                                                        <OrdersTable order={order} index={index}
-                                                            handleDelivery={handleDelivery} handlePayment={handlePayment}
-                                                        ></OrdersTable>
-                                                    )
-                                                    :
-                                                    <Typography> No results found </Typography>
-                                        }
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
+                                                {
+                                                    search === '' ?
+                                                        orders?.length > 0 ?
+                                                            orders.map((order, index) =>
+                                                                <OrdersTable order={order} index={index}
+                                                                    handleDelivery={handleDelivery} handlePayment={handlePayment}
+                                                                ></OrdersTable>
+                                                            )
+                                                            :
+                                                            <Typography> No results found </Typography>
+                                                        :
+                                                        searched?.length > 0 ?
+                                                            searched?.map((order, index) =>
+                                                                <OrdersTable order={order} index={index}
+                                                                    handleDelivery={handleDelivery} handlePayment={handlePayment}
+                                                                ></OrdersTable>
+                                                            )
+                                                            :
+                                                            <Typography> No results found </Typography>
+                                                }
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                            }
                         </Card>
                     </Grid>
                 </Grid>

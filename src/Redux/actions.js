@@ -5,18 +5,42 @@ import actionTypes from "./constants"
 // Product 
 export const fetchProducts = () => {
     return async (dispatch) => {
-        const response = await Api.get('/products')
-        // console.log(response);
-        dispatch({
-            type: actionTypes.FETCH_PRODUCTS,
-            payload: response.data?.data?.result
-        })
+        // const response = await Api.get('/products')
+        // // console.log(response);
+        // dispatch({
+        //     type: actionTypes.FETCH_PRODUCTS,
+        //     payload: response.data?.data?.result
+        // })
+
+        dispatch({ type: actionTypes.LOADING })
+        await Api.get('/products')
+            .then(data => {
+                // console.log(data.data.data);
+                if (data?.data?.status === 'success') {
+                    dispatch({
+                        type: actionTypes.FETCH_PRODUCTS,
+                        payload: data?.data?.data?.result
+                    })
+                    dispatch({ type: actionTypes.LOADING_STOP })
+                }
+            })
+            .catch(err => {
+                // console.log(err.response.data)
+                if (err.response.data.status === 'fail') {
+                    toast.error(err.response.data.error, {
+                        theme: 'colored',
+                    });
+                    toast.error(err.response.data.message, {
+                        theme: 'colored',
+                    });
+                }
+            })
     }
 }
 export const trendingProducts = () => {
     return async (dispatch) => {
         const response = await Api.get('/products/trending')
-        console.log(response.data?.data);
+        // console.log(response.data?.data);
         dispatch({
             type: actionTypes.TRENDING_PRODUCTS,
             payload: response.data?.data
@@ -26,12 +50,29 @@ export const trendingProducts = () => {
 
 export const fetchProductsByPagination = (page) => {
     return async (dispatch) => {
-        const response = await Api.get(`/products?page=${page}&limit=12`)
-        // console.log(response);
-        dispatch({
-            type: actionTypes.FETCH_PRODUCTS_ByPAGINATION,
-            payload: response.data?.data
-        })
+        dispatch({ type: actionTypes.LOADING })
+        await Api.get(`/products?page=${page}&limit=12`)
+            .then(data => {
+                // console.log(data.data.data);
+                if (data?.data?.status === 'success') {
+                    dispatch({
+                        type: actionTypes.FETCH_PRODUCTS_ByPAGINATION,
+                        payload: data?.data?.data
+                    })
+                    dispatch({ type: actionTypes.LOADING_STOP })
+                }
+            })
+            .catch(err => {
+                // console.log(err.response.data)
+                if (err.response.data.status === 'fail') {
+                    toast.error(err.response.data.error, {
+                        theme: 'colored',
+                    });
+                    toast.error(err.response.data.message, {
+                        theme: 'colored',
+                    });
+                }
+            })
     }
 }
 
@@ -86,30 +127,30 @@ export const updateProduct = (id, data) => {
                 authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
         })
-        .then(data => {
-            // console.log(data);
-            if (data?.data?.status === 'success') {
-                dispatch({
-                    type: actionTypes.UPDATE_PRODUCT,
-                    payload: data?.data
-                })
-                toast.success( data.data.message , {
-                    theme: 'colored',
-                });
-            }
-        })
-        .catch(err => {
-            // console.log(err.response.data)
-            if (err.response.data.status === 'fail') {
-                toast.error(err.response.data.error, {
-                    theme: 'colored',
-                });
-                toast.error(err.response.data.message, {
-                    theme: 'colored',
-                });
-            }
-        })
-       
+            .then(data => {
+                // console.log(data);
+                if (data?.data?.status === 'success') {
+                    dispatch({
+                        type: actionTypes.UPDATE_PRODUCT,
+                        payload: data?.data
+                    })
+                    toast.success(data.data.message, {
+                        theme: 'colored',
+                    });
+                }
+            })
+            .catch(err => {
+                // console.log(err.response.data)
+                if (err.response.data.status === 'fail') {
+                    toast.error(err.response.data.error, {
+                        theme: 'colored',
+                    });
+                    toast.error(err.response.data.message, {
+                        theme: 'colored',
+                    });
+                }
+            })
+
     }
 }
 
@@ -120,32 +161,32 @@ export const deleteProduct = (id) => {
                 authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
         })
-        .then(data => {
-            // console.log(data);
-            if (data?.data?.status === 'success') {
-                dispatch({
-                    type: actionTypes.DELETE_PRODUCT,
-                    payload: {
-                        res: data.data,
-                        id: id
-                    }
-                })
-                toast.success(data.data.message, {
-                    theme: 'colored',
-                });
-            }
-        })
-        .catch(err => {
-            // console.log(err.response.data)
-            if (err.response.data.status === 'fail') {
-                toast.error(err.response.data.error, {
-                    theme: 'colored',
-                });
-                toast.error(err.response.data.message, {
-                    theme: 'colored',
-                });
-            }
-        })
+            .then(data => {
+                // console.log(data);
+                if (data?.data?.status === 'success') {
+                    dispatch({
+                        type: actionTypes.DELETE_PRODUCT,
+                        payload: {
+                            res: data.data,
+                            id: id
+                        }
+                    })
+                    toast.success(data.data.message, {
+                        theme: 'colored',
+                    });
+                }
+            })
+            .catch(err => {
+                // console.log(err.response.data)
+                if (err.response.data.status === 'fail') {
+                    toast.error(err.response.data.error, {
+                        theme: 'colored',
+                    });
+                    toast.error(err.response.data.message, {
+                        theme: 'colored',
+                    });
+                }
+            })
     }
 }
 
@@ -163,60 +204,64 @@ export const addToCart = (userId, data, itemID) => {
                 authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
         })
-        .then(data => {
-            // console.log(data);
-            if (data?.data?.status === 'success') {
-                dispatch({
-                    type: actionTypes.ADD_TO_CART,
-                    payload: {
-                        postCart: data?.data,
-                        id: itemID
-                    }
-                })
-            }
-        })
-        .catch(err => {
-            // console.log(err.response.data)
-            if (err.response.data.status === 'fail') {
-                toast.error(err.response.data.error, {
-                    theme: 'colored',
-                });
-            }
-        })        
+            .then(data => {
+                // console.log(data);
+                if (data?.data?.status === 'success') {
+                    dispatch({
+                        type: actionTypes.ADD_TO_CART,
+                        payload: {
+                            postCart: data?.data,
+                            id: itemID
+                        }
+                    })
+                    dispatch({ type: actionTypes.LOADING_STOP })
+                    // toast.success('Product added to cart', {
+                    //     theme: 'colored',
+                    // });
+                }
+            })
+            .catch(err => {
+                // console.log(err.response.data)
+                if (err.response.data.status === 'fail') {
+                    toast.error(err.response.data.error, {
+                        theme: 'colored',
+                    });
+                }
+            })
     }
 }
 
-
-
 export const addToWishlist = (userId, data) => {
     return async (dispatch) => {
+        dispatch({ type: actionTypes.LOADING })
         await Api.patch(`/users/update/${userId}`, data, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
         })
-        .then(data => {
-            // console.log(data);
-            if (data?.data?.status === 'success') {
-                dispatch({
-                    type: actionTypes.ADD_TO_WISHLIST,
-                    payload: {
-                        wishlist: data?.data,
-                    }
-                })
-            }
-        })
-        .catch(err => {
-            // console.log(err.response.data)
-            if (err.response.data.status === 'fail') {
-                toast.error(err.response.data.error, {
-                    theme: 'colored',
-                });
-            }
-        })   
+            .then(data => {
+                // console.log(data);
+                if (data?.data?.status === 'success') {
+                    dispatch({
+                        type: actionTypes.ADD_TO_WISHLIST,
+                        payload: {
+                            wishlist: data?.data,
+                        }
+                    })
+                    dispatch({ type: actionTypes.LOADING_STOP })
+                }
+            })
+            .catch(err => {
+                // console.log(err.response.data)
+                if (err.response.data.status === 'fail') {
+                    toast.error(err.response.data.error, {
+                        theme: 'colored',
+                    });
+                }
+            })
 
-            
-        
+
+
     }
 }
 
@@ -283,6 +328,7 @@ export const searchProducts = (text) => {
         }
     }
 }
+
 export const searchProductsbyPagination = (text) => {
     return {
         type: actionTypes.SEARCH_PRODUCT_BY_PAGINATION,
@@ -295,23 +341,58 @@ export const searchProductsbyPagination = (text) => {
 export const searchByFilter = (url) => {
     return async (dispatch) => {
         // console.log(url);
-        const response = await Api.get(url)
-        // console.log(response);
-        dispatch({
-            type: actionTypes.SEARCH_BY_FILTER,
-            payload: response.data?.data
-        })
+        dispatch({ type: actionTypes.LOADING })
+        await Api.get(url)
+            .then(data => {
+                // console.log(data.data);
+                if (data?.data?.status === 'success') {
+                    dispatch({
+                        type: actionTypes.SEARCH_BY_FILTER,
+                        payload: data?.data?.data
+                    })
+                    dispatch({ type: actionTypes.LOADING_STOP })
+                }
+            })
+            .catch(err => {
+                // console.log(err.response.data)
+                if (err.response.data.status === 'fail') {
+                    toast.error(err.response.data.error, {
+                        theme: 'colored',
+                    });
+                    toast.error(err.response.data.message, {
+                        theme: 'colored',
+                    });
+                }
+            })
     }
 }
 
 export const searchByCatAndBrand = (url) => {
     return async (dispatch) => {
         // console.log(url);
-        const response = await Api.get(url)
-        dispatch({
-            type: actionTypes.SEARCH_BY_CAT_BRAND,
-            payload: response.data?.data?.result
-        })
+        dispatch({ type: actionTypes.LOADING })
+        await Api.get(url)
+            .then(data => {
+                // console.log(data.data);
+                if (data?.data?.status === 'success') {
+                    dispatch({
+                        type: actionTypes.SEARCH_BY_CAT_BRAND,
+                        payload: data?.data?.data?.result
+                    })
+                    dispatch({ type: actionTypes.LOADING_STOP })
+                }
+            })
+            .catch(err => {
+                // console.log(err.response.data)
+                if (err.response.data.status === 'fail') {
+                    toast.error(err.response.data.error, {
+                        theme: 'colored',
+                    });
+                    toast.error(err.response.data.message, {
+                        theme: 'colored',
+                    });
+                }
+            })
     }
 }
 
@@ -319,49 +400,68 @@ export const searchByCatAndBrand = (url) => {
 
 export const postOrders = (data) => {
     return async (dispatch) => {
+        dispatch({ type: actionTypes.LOADING })
         await Api.post(`/orders`, data, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
         })
-        .then(data => {
-            // console.log(data);
-            if (data?.data?.status === 'success') {
-                dispatch({
-                    type: actionTypes.POST_ORDER,
-                    payload: data.data
-                })
-                toast.success(data.data.message, {
-                    theme: 'colored',
-                });
-            }
-        })
-        .catch(err => {
-            // console.log(err.response.data)
-            if (err.response.data.status === 'fail') {
-                toast.error(err.response.data.error, {
-                    theme: 'colored',
-                });
-                toast.error(err.response.data.message, {
-                    theme: 'colored',
-                });
-            }
-        })
+            .then(data => {
+                // console.log(data);
+                if (data?.data?.status === 'success') {
+                    dispatch({
+                        type: actionTypes.POST_ORDER,
+                        payload: data.data
+                    })
+                    dispatch({ type: actionTypes.LOADING_STOP })
+                    toast.success(data.data.message, {
+                        theme: 'colored',
+                    });
+                }
+            })
+            .catch(err => {
+                // console.log(err.response.data)
+                if (err.response.data.status === 'fail') {
+                    toast.error(err.response.data.error, {
+                        theme: 'colored',
+                    });
+                    toast.error(err.response.data.message, {
+                        theme: 'colored',
+                    });
+                }
+            })
     }
 }
 
 export const getAllOrders = () => {
     return async (dispatch) => {
-        const response = await Api.get(`/orders`, {
+        dispatch({ type: actionTypes.LOADING })
+        await Api.get(`/orders`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
         })
-        // console.log(response.data.data);
-        dispatch({
-            type: actionTypes.GET_ALL_ORDER,
-            payload: response.data.data.result
-        })
+            .then(data => {
+                // console.log(data);
+                if (data?.data?.status === 'success') {
+                    dispatch({
+                        type: actionTypes.GET_ALL_ORDER,
+                        payload: data.data.data.result
+                    })
+                    dispatch({ type: actionTypes.LOADING_STOP })
+                }
+            })
+            .catch(err => {
+                // console.log(err.response.data)
+                if (err.response.data.status === 'fail') {
+                    toast.error(err.response.data.error, {
+                        theme: 'colored',
+                    });
+                    toast.error(err.response.data.message, {
+                        theme: 'colored',
+                    });
+                }
+            })
     }
 }
 
@@ -376,31 +476,65 @@ export const searchOrders = (text) => {
 
 export const orderByFilter = (url) => {
     return async (dispatch) => {
-        // console.log(url);
-        const response = await Api.get(url, {
+        dispatch({ type: actionTypes.LOADING })
+        await Api.get(url, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
         })
-        dispatch({
-            type: actionTypes.ORDER_BY_FILTER,
-            payload: response.data?.data?.result
-        })
+            .then(data => {
+                // console.log(data);
+                if (data?.data?.status === 'success') {
+                    dispatch({
+                        type: actionTypes.ORDER_BY_FILTER,
+                        payload: data.data.data.result
+                    })
+                    dispatch({ type: actionTypes.LOADING_STOP })
+                }
+            })
+            .catch(err => {
+                // console.log(err.response.data)
+                if (err.response.data.status === 'fail') {
+                    toast.error(err.response.data.error, {
+                        theme: 'colored',
+                    });
+                    toast.error(err.response.data.message, {
+                        theme: 'colored',
+                    });
+                }
+            })
     }
 }
 
 export const getOrdersByEmail = (email) => {
     return async (dispatch) => {
-        const response = await Api.get(`/orders/${email}`, {
+        dispatch({ type: actionTypes.LOADING })
+        await Api.get(`/orders/${email}`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
         })
-        // console.log(response.data.data);
-        dispatch({
-            type: actionTypes.GET_ORDER_BY_EMAIl,
-            payload: response.data.data
-        })
+            .then(data => {
+                // console.log(data);
+                if (data?.data?.status === 'success') {
+                    dispatch({
+                        type: actionTypes.GET_ORDER_BY_EMAIl,
+                        payload: data.data.data
+                    })
+                    dispatch({ type: actionTypes.LOADING_STOP })
+                }
+            })
+            .catch(err => {
+                // console.log(err.response.data)
+                if (err.response.data.status === 'fail') {
+                    toast.error(err.response.data.error, {
+                        theme: 'colored',
+                    });
+                    toast.error(err.response.data.message, {
+                        theme: 'colored',
+                    });
+                }
+            })
     }
 }
 
@@ -411,29 +545,29 @@ export const updateorder = (id, data) => {
                 authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
         })
-        .then(data => {
-            // console.log(data);
-            if (data?.data?.status === 'success') {
-                dispatch({
-                    type: actionTypes.UPDATE_ORDER,
-                    payload: data?.data
-                })
-                toast.success(data.data.message, {
-                    theme: 'colored',
-                });
-            }
-        })
-        .catch(err => {
-            // console.log(err.response.data)
-            if (err.response.data.status === 'fail') {
-                toast.error(err.response.data.error, {
-                    theme: 'colored',
-                });
-                toast.error(err.response.data.message, {
-                    theme: 'colored',
-                });
-            }
-        })
+            .then(data => {
+                // console.log(data);
+                if (data?.data?.status === 'success') {
+                    dispatch({
+                        type: actionTypes.UPDATE_ORDER,
+                        payload: data?.data
+                    })
+                    toast.success(data.data.message, {
+                        theme: 'colored',
+                    });
+                }
+            })
+            .catch(err => {
+                // console.log(err.response.data)
+                if (err.response.data.status === 'fail') {
+                    toast.error(err.response.data.error, {
+                        theme: 'colored',
+                    });
+                    toast.error(err.response.data.message, {
+                        theme: 'colored',
+                    });
+                }
+            })
     }
 }
 
@@ -450,32 +584,32 @@ export const deleteOrder = (id) => {
                 authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
         })
-        .then(data => {
-            // console.log(data);
-            if (data?.data?.status === 'success') {
-                dispatch({
-                    type: actionTypes.DELETE_ORDER,
-                    payload: {
-                        res: data.data,
-                        id: id
-                    }
-                })
-                toast.success(data.data.message, {
-                    theme: 'colored',
-                });
-            }
-        })
-        .catch(err => {
-            // console.log(err.response.data)
-            if (err.response.data.status === 'fail') {
-                toast.error(err.response.data.error, {
-                    theme: 'colored',
-                });
-                toast.error(err.response.data.message, {
-                    theme: 'colored',
-                });
-            }
-        })
+            .then(data => {
+                // console.log(data);
+                if (data?.data?.status === 'success') {
+                    dispatch({
+                        type: actionTypes.DELETE_ORDER,
+                        payload: {
+                            res: data.data,
+                            id: id
+                        }
+                    })
+                    toast.success(data.data.message, {
+                        theme: 'colored',
+                    });
+                }
+            })
+            .catch(err => {
+                // console.log(err.response.data)
+                if (err.response.data.status === 'fail') {
+                    toast.error(err.response.data.error, {
+                        theme: 'colored',
+                    });
+                    toast.error(err.response.data.message, {
+                        theme: 'colored',
+                    });
+                }
+            })
     }
 }
 

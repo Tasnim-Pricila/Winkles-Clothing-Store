@@ -11,11 +11,14 @@ import { FavoriteBorder, ShoppingCart } from '@mui/icons-material';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Box, Rating } from '@mui/material';
+import { useSelector } from 'react-redux';
+import Loading from '../Loading/Loading';
 
 
 const AllProducts = ({ product, handleAddToCart, handleWishlist }) => {
 
     const navigate = useNavigate();
+    const loading = useSelector(state => state.allProducts.loading)
     const [avgRating, setAvgRating] = useState(0)
 
     const cart = {
@@ -46,7 +49,7 @@ const AllProducts = ({ product, handleAddToCart, handleWishlist }) => {
     }
     const discount = +product.price * +product.discount / 100
     const discountedPrice = parseFloat(+product.price - discount).toFixed(0);
-
+   
     useEffect(() => {
         let sum = 0;
         product?.reviews?.forEach(r =>
@@ -55,7 +58,10 @@ const AllProducts = ({ product, handleAddToCart, handleWishlist }) => {
         setAvgRating(sum / product.reviews?.length)
         // console.log(avgRating)
     }, [avgRating, product.reviews])
-
+    
+    if (loading) {
+        return <Loading />
+    }
     return (
         <Grid item xs={12} sm={6} lg={4} >
             <Card>

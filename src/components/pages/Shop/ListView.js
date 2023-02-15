@@ -3,12 +3,15 @@ import { Box, Button, Grid, Rating, Typography } from '@mui/material';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../Loading/Loading';
 
 const ListView = ({ product, handleAddToCart, handleWishlist }) => {
     
     const navigate = useNavigate();
-    const [avgRating, setAvgRating] = useState(0)
+    const [avgRating, setAvgRating] = useState(0);
+    const loading = useSelector(state => state.allProducts.loading)
 
     const cart = {
         backgroundColor: '#FF8E78',
@@ -44,6 +47,9 @@ const ListView = ({ product, handleAddToCart, handleWishlist }) => {
         // console.log(avgRating)
     }, [avgRating, product.reviews])
 
+    if (loading) {
+        return <Loading />
+    }
     return (
         <Grid container columnSpacing={{ xs: 2, md: 4 }} pb={4}>
             <Grid item xs={4} >

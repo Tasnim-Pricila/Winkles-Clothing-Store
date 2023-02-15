@@ -4,17 +4,23 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Footer from '../../../shared/Footer';
+import Loading from '../../Loading/Loading';
 import WishlistItem from './WishlistItem';
 
 const Wishlist = () => {
 
     const user = useSelector(state => state.allUsers.user)
+    const loading = useSelector(state => state.allProducts.loading)
     const wishlist = user?.wishlist?.product
     const [countWishlist, setCountWishlist] = useState(0);
 
     useEffect(() => {
         wishlist?.length > 0 && setCountWishlist(wishlist?.length)
     }, [wishlist, countWishlist])
+
+    if (loading) {
+        return <Loading />
+    }
 
     return (
         <>

@@ -24,6 +24,7 @@ const SingleProduct = () => {
     const navigate = useNavigate();
     const user = useSelector(state => state.allUsers.user)
     const state = useSelector(state => state.allProducts);
+    const loading = useSelector(state => state.allProducts.loading)
     const products = state.allProducts;
     let product = state.product;
     const getCart = user?.cart?.product?.find(cart => cart._id === id);
@@ -53,7 +54,6 @@ const SingleProduct = () => {
     // console.log(getCart?.qty, purchaseQuantity);
     useEffect(() => {
         if (getCart?.qty === undefined) {
-            console.log('undefined');
             setQty(0);
         }
         else if (getCart) {
@@ -144,7 +144,7 @@ const SingleProduct = () => {
         alignItems: 'center',
         borderRadius: 0,
     }
-    
+
     const outstock = {
         backgroundColor: '#aca3a178',
         color: '#201f1f70',
@@ -190,9 +190,13 @@ const SingleProduct = () => {
     const handleWishlist = (id) => {
         if (user?.length !== 0) {
             dispatch(getMe())
-            const exists = wishlist?.find(w => w === id)
+            const exists = wishlist?.find(w => w._id === id)
+            // console.log(exists);
             if (!exists) {
                 wishlist = [...wishlist, id];
+                toast.success('Product added to your wishlist ', {
+                    theme: 'colored',
+                });
             }
             else {
                 toast.warning('Already in your Wishlist ', {
@@ -225,6 +229,10 @@ const SingleProduct = () => {
     const discount = +product.price * +product.discount / 100
     const discountedPrice = parseFloat(+product.price - discount).toFixed(0);
 
+    // if (loading) {
+    //     return <Loading />
+    // }
+    // console.log(loading);
     return (
         <>
             {
@@ -369,9 +377,8 @@ const SingleProduct = () => {
                     </>
                     :
                     <Loading></Loading>
+                    
             }
-
-
         </>
     );
 };

@@ -5,7 +5,8 @@ const initialState = {
     orders: [],
     allOrder: [],
     updateOrder: [],
-    searchOrders: []
+    searchOrders: [],
+    loading: false
 }
 
 export const orderReducer = (state = initialState, action) => {

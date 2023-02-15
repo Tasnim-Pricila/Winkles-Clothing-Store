@@ -10,7 +10,8 @@ const Loading = () => {
             justifyContent: 'center',
             alignItems: 'center',
             width: '100%',
-            height: '90vh'
+            height: '80vh',
+            // border: 5
         }}>
             <CircleLoader size={120} color={"#B51BE1"} />
         </Box>

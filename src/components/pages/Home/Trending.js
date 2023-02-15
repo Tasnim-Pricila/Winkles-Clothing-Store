@@ -1,7 +1,5 @@
 import React from 'react';
-import Grid from '@mui/material/Grid';
-import Product from './Product';
-import { Box, Button, CardActions, CardContent, Rating, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import Loading from '../Loading/Loading';
 import { addToCart, addToWishlist, getMe, trendingProducts } from '../../../Redux/actions';
 import { useEffect } from 'react';
@@ -9,13 +7,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Slider from 'react-slick';
 import { FavoriteBorder, ShoppingCart } from '@mui/icons-material';
-import { useState } from 'react';
+// import { useState } from 'react';
 import { toast } from 'react-toastify';
 
 const Trending = ({products}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [avgRating, setAvgRating] = useState(0)
+    // const [avgRating, setAvgRating] = useState(0)
     const user = useSelector(state => state.allUsers.user)
     const trending = useSelector(state => state.allProducts.trending);
 

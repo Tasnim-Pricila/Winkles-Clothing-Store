@@ -7,11 +7,14 @@ import CartItem from './CartItem';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, } from '@mui/material';
 import { Done, Loop } from '@mui/icons-material';
 import Footer from '../../shared/Footer';
+import Loading from '../Loading/Loading';
 
 
 const Cart = () => {
     const navigate = useNavigate();
     const user = useSelector(state => state.allUsers.user)
+    const loading = useSelector(state => state.allProducts.loading)
+
     const cart = user?.cart?.product
 
     const [total, setTotal] = useState(0);
@@ -61,6 +64,9 @@ const Cart = () => {
             backgroundColor: '#4b38b3',
         },
         mt: { xs: 2, md: 0 }
+    }
+    if (loading) {
+        return <Loading />
     }
 
     return (

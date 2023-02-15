@@ -69,7 +69,6 @@ const Checkout = () => {
         });
     }, [cart, total])
 
-
     const subtotal = parseFloat(shipping) + parseFloat(total);
 
     if (loading) {
@@ -93,7 +92,6 @@ const Checkout = () => {
             setError({ paymentMethod: 'Please select your payment method' })
         }
         else {
-            // setLoading(true)
             const orderData = { ...shippingDetails, ...userInfo }
             dispatch(postOrders(orderData))
             dispatch(clearCart())

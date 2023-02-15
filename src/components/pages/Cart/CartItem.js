@@ -7,6 +7,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { IconButton, TableCell, TableRow, } from '@mui/material';
 import styled from '@emotion/styled';
 import { Cancel } from '@mui/icons-material';
+import Loading from '../Loading/Loading';
 
 const CartItem = ({ cartItem }) => {
     const { _id, title, price, qty, quantity, image, discount } = cartItem;
@@ -28,7 +29,7 @@ const CartItem = ({ cartItem }) => {
             },
         }
         dispatch(addToCart(user?._id, cartData));
-        dispatch(removeFromCart(id));
+        // dispatch(removeFromCart(id));
         dispatch(getMe())
     }
 
@@ -67,6 +68,9 @@ const CartItem = ({ cartItem }) => {
         maxHeight: '80px',
         padding: '10px 0px'
     })
+
+    
+
 
     return (
         <TableRow sx={{ p: 0 }}>

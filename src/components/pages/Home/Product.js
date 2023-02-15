@@ -16,12 +16,14 @@ import { toast } from 'react-toastify';
 import { Rating } from '@mui/material';
 import { useState } from 'react';
 import { Box } from '@mui/system';
+import Loading from '../Loading/Loading';
 
 const Product = ({ product, products }) => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector(state => state.allUsers.user)
+    const loading = useSelector(state => state.allProducts.loading)
     const [avgRating, setAvgRating] = useState(0)
 
     // console.log(product);
@@ -63,8 +65,12 @@ const Product = ({ product, products }) => {
         if (user?.length !== 0) {
             dispatch(getMe())
             const exists = wishlist?.find(w => w._id === id)
+            // console.log(exists);
             if (!exists) {
                 wishlist = [...wishlist, id];
+                toast.success('Product added to your wishlist ', {
+                    theme: 'colored',
+                });
             }
             else {
                 toast.warning('Already in your Wishlist ', {
@@ -122,6 +128,10 @@ const Product = ({ product, products }) => {
         setAvgRating(sum / product.reviews?.length)
         // console.log(avgRating)
     }, [avgRating, product.reviews])
+
+    if (loading) {
+        return <Loading />
+    }
 
     return (
         <Grid item xs={12} sm={6} lg={3}>
