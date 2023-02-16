@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import Loading from '../Loading/Loading';
 import { addToCart, addToWishlist, getMe, trendingProducts } from '../../../Redux/actions';
@@ -10,19 +10,17 @@ import { FavoriteBorder, ShoppingCart } from '@mui/icons-material';
 // import { useState } from 'react';
 import { toast } from 'react-toastify';
 
-const Trending = ({products}) => {
+const Trending = ({ products }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     // const [avgRating, setAvgRating] = useState(0)
     const user = useSelector(state => state.allUsers.user)
     const trending = useSelector(state => state.allProducts.trending);
 
-    // console.log(trending);
-
     useEffect(() => {
         dispatch(trendingProducts())
     }, [dispatch])
-    
+
     useEffect(() => {
         dispatch(getMe());
     }, [dispatch])
@@ -94,6 +92,7 @@ const Trending = ({products}) => {
             border: 0
         }
     }
+
     const details = {
         padding: '5px 14px',
         borderRadius: 0,
@@ -117,6 +116,7 @@ const Trending = ({products}) => {
         initialSlide: 0,
         autoplay: true,
         arrows: false,
+        mobileFirst: true,
         responsive: [
             {
                 breakpoint: 1024,
@@ -142,7 +142,7 @@ const Trending = ({products}) => {
             }
         ]
     }
-   
+
     return (
         <Box sx={{ mx: { md: 16, xs: 4 }, mb: 10 }}>
             <Typography sx={{ textAlign: 'center', pb: 10, textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold', fontSize: '26px' }}>
@@ -159,7 +159,8 @@ const Trending = ({products}) => {
                                         backgroundSize: 'cover',
                                         height: '60vh',
                                         backgroundRepeat: 'no-repeat',
-                                        cursor: 'pointer'
+                                        cursor: 'pointer',
+                                        backgroundPosition: 'center'
                                     }}
                                 />
                                 <Box sx={{ pt: 2 }}>
@@ -172,8 +173,8 @@ const Trending = ({products}) => {
                                                 : product.title
                                         }
                                     </Typography>
-                                    
-                                   
+
+
                                     {/* <Rating name="read-only"
                                         size="medium"
                                         value={avgRating}
@@ -204,7 +205,7 @@ const Trending = ({products}) => {
                                                     fontWeight: 'bold',
                                                     pt: 1,
                                                 }}>
-                                                    Tk. { +product.price - (( +product.price * +product.discount) / 100) }
+                                                    Tk. {+product.price - ((+product.price * +product.discount) / 100)}
                                                 </Typography>
                                             </Box>
 
@@ -219,18 +220,18 @@ const Trending = ({products}) => {
                                     }
                                 </Box>
 
-                                <Box sx={{ py: 2, display: 'flex', justifyContent: 'space-around' }}>
+                                <Box sx={{ py: 2, display: 'flex', justifyContent: 'space-around', gap: 1 }}>
                                     <Button size="small"
                                         onClick={() => handleWishlist(product._id)}
-                                        sx={details} 
+                                        sx={details}
                                         startIcon={<FavoriteBorder />} >
                                         Add To Wishlist
                                     </Button>
                                     <Button size="small" variant="outlined"
-                                    sx={cart}
-                                    onClick={() => handleAddToCart(product._id)} 
-                                     startIcon={<ShoppingCart />}
-                                     >
+                                        sx={cart}
+                                        onClick={() => handleAddToCart(product._id)}
+                                        startIcon={<ShoppingCart />}
+                                    >
                                         Add To Cart</Button>
                                 </Box>
                             </Box>

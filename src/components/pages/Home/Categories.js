@@ -37,7 +37,7 @@ const Categories = () => {
         <Box sx={{ px:{ md: 16 , xs: 4 } }} mt={4}>
             <Box sx={{
                 display: 'flex',
-                flexWrap: { xs: 'wrap', sm: 'nowrap'},
+                flexWrap: { xs: 'wrap' , md: 'nowrap'},
                 justifyContent: 'center',
                 alignItems: 'center',
                 gap: '10px',

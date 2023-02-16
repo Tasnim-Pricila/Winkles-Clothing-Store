@@ -28,6 +28,7 @@ const RelatedProducts = ({ product }) => {
         initialSlide: 0,
         autoplay: true,
         arrows: false,
+        mobileFirst: true,
         responsive: [
             {
                 breakpoint: 1024,
@@ -72,7 +73,8 @@ const RelatedProducts = ({ product }) => {
                                         backgroundSize: 'cover',
                                         height: '60vh',
                                         backgroundRepeat: 'no-repeat',
-                                        cursor: 'pointer'
+                                        cursor: 'pointer',
+                                        backgroundPosition: 'center'
                                     }}
                                 />
                                 <Box sx={{ pt: 2, px: 1 }}>

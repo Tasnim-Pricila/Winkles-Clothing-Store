@@ -16,7 +16,7 @@ const MyOrders = () => {
 
     useEffect(() => {
         dispatch(getMe())
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
         dispatch(getOrdersByEmail(user?.email))
