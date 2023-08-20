@@ -1,9 +1,9 @@
-.slick-prev:before, .slick-next:before {
-    color: black !important;
+.slick-prev:before,
+.slick-next:before {
+  color: black !important;
 }
 
-
-.slick-slide > div{
+.slick-slide > div {
   margin: 0 15px;
 }
 .slick-list {

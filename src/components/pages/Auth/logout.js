@@ -1,6 +1,5 @@
-
 const logout = () => {
-    localStorage.removeItem('accessToken');
+  localStorage.removeItem("accessToken");
 };
 
 export default logout;

@@ -2,7 +2,6 @@ import './App.css';
 import Header from './components/shared/Header';
 import { Routes, Route } from 'react-router-dom';
 import Home from './components/pages/Home/Home';
-import SingleProduct from './components/pages/Home/SingleProduct';
 import Cart from './components/pages/Cart/Cart';
 import Login from './components/pages/Login/Login';
 import Register from './components/pages/Register/Register';
@@ -27,13 +26,13 @@ import AllUsers from './components/pages/Dashboard/Admin/AllUsers';
 import EditProfile from './components/pages/Dashboard/EditProfile';
 import EditProduct from './components/pages/Dashboard/Admin/EditProduct';
 import { createTheme, ThemeProvider } from '@mui/material';
-import SingleArticle from './components/pages/Home/SingleArticle';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMe } from './Redux/actions';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Wishlist from './components/pages/Dashboard/Wishlist/Wishlist';
 import CommingSoon from './CommingSoon/CommingSoon';
+import SingleProduct from './components/pages/SingleProduct/SingleProduct';
+import Wishlist from './components/pages/Wishlist/Wishlist';
 
 function App() {
 
@@ -59,49 +58,48 @@ function App() {
       <div className="App">
         <Header setSearchText={setSearchText} searchText={searchText} />
         <Routes>
-          <Route path='/' element={<Home />}></Route>
-          <Route path='/home' element={<Home />}></Route>
+          <Route path='/' element={<Home/>}></Route>
+          <Route path='/home' element={<Home/>}></Route>
           <Route path='/wishlist' element={
-            <RequireAuth> <Wishlist /> </RequireAuth>
+            <RequireAuth> <Wishlist/> </RequireAuth>
           }></Route>
           <Route path='/cart' element={
-            <RequireAuth> <Cart /> </RequireAuth>
+            <RequireAuth> <Cart/> </RequireAuth>
           }></Route>
-          <Route path='/product/:id' element={<SingleProduct />}></Route>
-          <Route path='/login' element={<Login />}></Route>
-          <Route path='/register' element={<Register />}></Route>
+          <Route path='/product/:id' element={<SingleProduct/>}></Route>
+          <Route path='/login' element={<Login/>}></Route>
+          <Route path='/register' element={<Register/>}></Route>
           <Route path='/shop' element={
             <Shop searchText={searchText} setSearchText={setSearchText} />}>
           </Route>
-          <Route path='/blog' element={<Blogs />}></Route>
-          <Route path='/blog/:id' element={<SingleArticle />}></Route>
-          <Route path='/about' element={<About />}></Route>
-          <Route path='/contact' element={<Contact />}></Route>
+          <Route path='/blog' element={<Blogs/>}></Route>
+          <Route path='/about' element={<About/>}></Route>
+          <Route path='/contact' element={<Contact/>}></Route>
           <Route path='/checkout' element={
           <RequireAuth> <Checkout /> </RequireAuth>
           }></Route>
           <Route path='/orderComplete' element={
-          <RequireAuth> <OrderComplete /> </RequireAuth>
+          <RequireAuth> <OrderComplete/> </RequireAuth>
           }></Route>
-          <Route path='/*' element={<Error />}></Route>
-          <Route path='/soon' element={<CommingSoon />}></Route>
+          <Route path='/*' element={<Error/>}></Route>
+          <Route path='/soon' element={<CommingSoon/>}></Route>
 
-          <Route path='/dashboard' element={<RequireAuth><Dashboard /> </RequireAuth> }>
+          <Route path='/dashboard' element={<RequireAuth><Dashboard/> </RequireAuth> }>
             {
               user?.role === 'admin' ?
                 <>
-                  <Route index element={<CreateProduct />}></Route>
-                  <Route path='orderDetails' element={<AllOrders />}></Route>
-                  <Route path='manageProducts' element={<ManageProducts />}></Route>
-                  <Route path='allUsers' element={<AllUsers />}></Route>
-                  <Route path='editProduct/:id' element={<EditProduct />}></Route>
+                  <Route index element={<CreateProduct/>}></Route>
+                  <Route path='orderDetails' element={<AllOrders/>}></Route>
+                  <Route path='manageProducts' element={<ManageProducts/>}></Route>
+                  <Route path='allUsers' element={<AllUsers/>}></Route>
+                  <Route path='editProduct/:id' element={<EditProduct/>}></Route>
                 </>
                 :
-                <Route index element={<MyOrders />}></Route>
+                <Route index element={<MyOrders/>}></Route>
                 
             }
-            <Route path='profile' element={<RequireAuth> <MyProfile /> </RequireAuth>}></Route>
-            <Route path='profile/edit' element={<RequireAuth> <EditProfile /> </RequireAuth>}></Route>
+            <Route path='profile' element={<RequireAuth> <MyProfile/> </RequireAuth>}></Route>
+            <Route path='profile/edit' element={<RequireAuth> <EditProfile/> </RequireAuth>}></Route>
           </Route>
         </Routes>
         <ToastContainer />

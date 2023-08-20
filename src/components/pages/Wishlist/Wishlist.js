@@ -12,8 +12,8 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import Footer from "../../../shared/Footer";
 import WishlistItem from "./WishlistItem";
+import Footer from "../../shared/Footer";
 
 const Wishlist = () => {
   const user = useSelector((state) => state.allUsers.user);

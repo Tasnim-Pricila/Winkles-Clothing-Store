@@ -6,7 +6,6 @@ import {
   fetchProducts,
   fetchReviewbyProductId,
   getMe,
-  removeFromCart,
   removeSelectedProduct,
 } from "../../../Redux/actions";
 import { useSelector, useDispatch } from "react-redux";
@@ -24,7 +23,8 @@ import Loading from "../Loading/Loading";
 import RelatedProducts from "./RelatedProducts";
 import Reviews from "./Reviews";
 import { toast } from "react-toastify";
-import { AddToCart, AddToWishlist } from "../../../utils/commonFunction";
+import { AddToCart, AddToWishlist, decreaseQty } from "../../../utils/commonFunction";
+import { cart, instock, outstock, wishlistBtn } from "../../../utils/design";
 
 const SingleProduct = () => {
   const { id } = useParams();
@@ -90,7 +90,7 @@ const SingleProduct = () => {
       setQty(parseInt(purchaseQuantity) + 1);
       const q = quantity - 1;
       if (purchaseQuantity === q) {
-        toast.warning("Stock is empty", {
+        toast.warning("Stock is empty now", {
           theme: "colored",
         });
       }
@@ -104,49 +104,7 @@ const SingleProduct = () => {
   };
 
   const decrease = () => {
-    dispatch(getMe());
-    setQty(parseInt(purchaseQuantity) - 1);
-    console.log(purchaseQuantity);
-    if (purchaseQuantity === 1) {
-      dispatch(removeFromCart(id));
-    }
-    const cartData = {
-      ...product,
-      qty: purchaseQuantity - 1,
-    };
-    dispatch(adjustQty(product._id, id, purchaseQuantity - 1, cartData));
-    dispatch(getMe());
-  };
-
-  const instock = {
-    backgroundColor: " #FF8E78",
-    color: "white",
-    padding: "5px 10px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 0,
-  };
-
-  const outstock = {
-    backgroundColor: "#aca3a178",
-    color: "#201f1f70",
-    padding: "5px 10px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 0,
-  };
-
-  const cart = {
-    backgroundColor: "#FF8E78",
-    color: "white",
-    padding: "5px 10px",
-    borderRadius: 0,
-    fontWeight: "bold",
-    "&:hover": {
-      backgroundColor: "#df6750",
-    },
+    decreaseQty(dispatch, setQty, purchaseQuantity, id, product)
   };
 
   let allImg = [];
@@ -156,23 +114,12 @@ const SingleProduct = () => {
   if (mainImg && galleryImg) {
     allImg = [...mainImg, ...galleryImg];
   }
-  const details = {
-    padding: "5px 14px",
-    borderRadius: 0,
-    border: 1,
-    borderColor: "#4b38b3",
-    fontWeight: 600,
-    color: "#4b38b3",
-    "&:hover": {
-      backgroundColor: "#4b38b3",
-      color: "white",
-    },
-  };
 
   let wishlist = user?.wishlist?.product;
   const handleWishlist = (id) => {
     AddToWishlist(user, id, wishlist, dispatch, navigate);
   };
+
   useEffect(() => {
     let sum = 0;
     reviews?.length > 0 && reviews?.forEach((r) => (sum = sum + r.rating));
@@ -396,7 +343,7 @@ const SingleProduct = () => {
                 </Button>
                 <Button
                   size="small"
-                  sx={details}
+                  sx={wishlistBtn}
                   startIcon={<FavoriteBorder />}
                   onClick={() => handleWishlist(product._id)}
                 >

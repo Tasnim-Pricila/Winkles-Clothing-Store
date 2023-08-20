@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import { FavoriteBorder, ShoppingCart } from "@mui/icons-material";
 import { AddToCart, AddToWishlist } from "../../../utils/commonFunction";
+import { cart, wishlistBtn } from "../../../utils/design";
 
 const Trending = ({ products }) => {
   const navigate = useNavigate();
@@ -31,34 +32,6 @@ const Trending = ({ products }) => {
   let wishlist = user?.wishlist?.product;
   const handleWishlist = (id) => {
     AddToWishlist(user, id, wishlist, dispatch, navigate);
-  };
-
-  const cart = {
-    backgroundColor: "#FF8E78",
-    color: "white",
-    padding: "5px 10px",
-    borderRadius: 0,
-    border: 0,
-    textTransform: "capitalize",
-    "&:hover": {
-      backgroundColor: "#df6750",
-      color: "white",
-      border: 0,
-    },
-  };
-
-  const details = {
-    padding: "5px 14px",
-    borderRadius: 0,
-    border: 1,
-    borderColor: "#4b38b3",
-    fontWeight: 600,
-    textTransform: "capitalize",
-    color: "#4b38b3",
-    "&:hover": {
-      backgroundColor: "#4b38b3",
-      color: "white",
-    },
   };
 
   const settings = {
@@ -142,17 +115,6 @@ const Trending = ({ products }) => {
                     : product.title}
                 </Typography>
 
-                {/* <Rating name="read-only"
-                                        size="medium"
-                                        value={avgRating}
-                                        precision={0.5}
-                                        readOnly
-                                        sx={{
-                                            width: '100%',
-                                            display: 'flex',
-                                            justifyContent: 'center'
-                                        }}
-                                    /> */}
                 {product?.discount ? (
                   <Box
                     sx={{
@@ -215,7 +177,7 @@ const Trending = ({ products }) => {
                 <Button
                   size="small"
                   onClick={() => handleWishlist(product._id)}
-                  sx={details}
+                  sx={wishlistBtn}
                   startIcon={<FavoriteBorder />}
                 >
                   Add To Wishlist

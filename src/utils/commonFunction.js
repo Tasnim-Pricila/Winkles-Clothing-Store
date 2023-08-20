@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { addToCart, addToWishlist, getMe } from "../Redux/actions";
+import { addToCart, addToWishlist, adjustQty, getMe, removeFromCart } from "../Redux/actions";
 
 export const AddToCart = (user, id, products, newCart, dispatch, navigate) => {
   if (user?.length !== 0) {
@@ -62,4 +62,18 @@ export const AddToWishlist = (user, id, wishlist, dispatch, navigate) => {
   } else {
     navigate("/login");
   }
+};
+
+export const decreaseQty = (dispatch, setQty, purchaseQuantity, id, product) => {
+  dispatch(getMe());
+  setQty(parseInt(purchaseQuantity) - 1);
+  if (purchaseQuantity === 1) {
+    dispatch(removeFromCart(id));
+  }
+  const cartData = {
+    ...product,
+    qty: purchaseQuantity - 1,
+  };
+  dispatch(adjustQty(product._id, id, purchaseQuantity - 1, cartData));
+  dispatch(getMe());
 };

@@ -17,6 +17,7 @@ import { useState } from "react";
 import { Box } from "@mui/system";
 import Loading from "../Loading/Loading";
 import { AddToCart, AddToWishlist } from "../../../utils/commonFunction";
+import { cart, wishlistBtn } from "../../../utils/design";
 
 const Product = ({ product, products }) => {
   const navigate = useNavigate();
@@ -39,33 +40,6 @@ const Product = ({ product, products }) => {
     AddToWishlist(user, id, wishlist, dispatch, navigate);
   };
 
-  const cart = {
-    backgroundColor: "#FF8E78",
-    color: "white",
-    padding: "5px 10px",
-    borderRadius: 0,
-    border: 0,
-    textTransform: "capitalize",
-    "&:hover": {
-      backgroundColor: "#df6750",
-      color: "white",
-      border: 0,
-    },
-  };
-  const details = {
-    padding: "5px 14px",
-    borderRadius: 0,
-    border: 1,
-    borderColor: "#4b38b3",
-    fontWeight: 600,
-    textTransform: "capitalize",
-    color: "#4b38b3",
-    "&:hover": {
-      backgroundColor: "#4b38b3",
-      color: "white",
-    },
-  };
-
   const discount = (+product.price * +product.discount) / 100;
   const discountedPrice = parseFloat(+product.price - discount).toFixed(0);
 
@@ -73,7 +47,6 @@ const Product = ({ product, products }) => {
     let sum = 0;
     product?.reviews?.forEach((r) => (sum = sum + r.rating));
     setAvgRating(sum / product.reviews?.length);
-    // console.log(avgRating)
   }, [avgRating, product.reviews]);
 
   if (loading) {
@@ -176,7 +149,7 @@ const Product = ({ product, products }) => {
           <Button
             size="small"
             onClick={() => handleWishlist(product._id)}
-            sx={details}
+            sx={wishlistBtn}
             startIcon={<FavoriteBorder />}
           >
             Add To Wishlist
