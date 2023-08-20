@@ -8,13 +8,11 @@ import axios from 'axios';
 import avatar from '../../../images/avatar.png'
 import { toast } from 'react-toastify';
 
-
-
 const EditProfile = () => {
     const user = useSelector(state => state.allUsers.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { firstName, lastName, email, status, imageUrl, createdAt } = user;
+    const { firstName, lastName, email, imageUrl, createdAt } = user;
 
     useEffect(() => {
         dispatch(getMe())
