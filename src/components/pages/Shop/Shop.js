@@ -3,17 +3,13 @@ import { Box, Grid, Pagination, Tooltip, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  fetchProductsByPagination,
-  searchByFilter,
-  searchProductsbyPagination,
-} from "../../../Redux/actions";
 import Footer from "../../shared/Footer";
 import Loading from "../Loading/Loading";
 import AllProducts from "./AllProducts";
 import LeftSidebar from "./LeftSidebar";
 import ListView from "./ListView";
 import { AddToCart, AddToWishlist } from "../../../utils/commonFunction";
+import { fetchProductsByPagination, searchByFilter, searchProductsbyPagination } from "../../../Redux/actions/productActions";
 
 const Shop = ({ searchText, setSearchText }) => {
   const products = useSelector((state) => state.allProducts.products);

@@ -4,9 +4,9 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
-import { searchByFilter } from "../../../Redux/actions";
 import Loading from "../Loading/Loading";
 import "./RelatedProducts.css";
+import { searchByFilter } from "../../../Redux/actions/productActions";
 
 const RelatedProducts = ({ product }) => {
   const navigate = useNavigate();

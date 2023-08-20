@@ -12,12 +12,9 @@ import StarIcon from "@mui/icons-material/Star";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import {
-  createReview,
-  fetchReviewbyProductId,
-  getMe,
-} from "../../../Redux/actions";
 import { ratingModalStyle } from "../../../utils/design";
+import { getMe } from "../../../Redux/actions/userActions";
+import { createReview, fetchReviewbyProductId } from "../../../Redux/actions/reviewActions";
 
 const RatingModal = ({ id }) => {
   const [open, setOpen] = useState(false);

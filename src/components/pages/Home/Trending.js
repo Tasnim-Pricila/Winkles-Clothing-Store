@@ -1,7 +1,6 @@
 import React from "react";
 import { Box, Button, Typography } from "@mui/material";
 import Loading from "../Loading/Loading";
-import { getMe, trendingProducts } from "../../../Redux/actions";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +8,8 @@ import Slider from "react-slick";
 import { FavoriteBorder, ShoppingCart } from "@mui/icons-material";
 import { AddToCart, AddToWishlist } from "../../../utils/commonFunction";
 import { cart, wishlistBtn } from "../../../utils/design";
+import { trendingProducts } from "../../../Redux/actions/productActions";
+import { getMe } from "../../../Redux/actions/userActions";
 
 const Trending = ({ products }) => {
   const navigate = useNavigate();

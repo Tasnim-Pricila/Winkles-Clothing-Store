@@ -23,15 +23,11 @@ import { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  getAllOrders,
-  orderByFilter,
-  searchOrders,
-  updateorder,
-} from "../../../../Redux/actions";
+
 import Loading from "../../Loading/Loading";
 import OrdersTable from "./OrdersTable";
 import { successBtn } from "../../../../utils/design";
+import { getAllOrders, orderByFilter, searchOrders, updateorder } from "../../../../Redux/actions/orderActions";
 
 const AllOrders = () => {
   const dispatch = useDispatch();

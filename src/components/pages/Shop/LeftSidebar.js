@@ -16,8 +16,9 @@ import {
 } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBrands, fetchCategories } from "../../../Redux/actions";
 import { Box } from "@mui/system";
+import { fetchBrands } from "../../../Redux/actions/brandActions";
+import { fetchCategories } from "../../../Redux/actions/categoryActions";
 
 const LeftSidebar = ({
   setCategory,

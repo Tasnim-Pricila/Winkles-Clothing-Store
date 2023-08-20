@@ -9,11 +9,11 @@ import {
 } from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getMe } from "../../../Redux/actions";
 import avatar from "../../../images/avatar.png";
 import { Edit } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { successBtn } from "../../../utils/design";
+import { getMe } from "../../../Redux/actions/userActions";
 
 const MyProfile = () => {
   const user = useSelector((state) => state.allUsers.user);

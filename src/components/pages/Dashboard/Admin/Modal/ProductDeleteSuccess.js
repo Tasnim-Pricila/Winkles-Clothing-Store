@@ -3,8 +3,8 @@ import { Button, IconButton, Modal, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { deleteProduct } from "../../../../../Redux/actions";
 import { modalStyle, successBtn } from "../../../../../utils/design";
+import { deleteProduct } from "../../../../../Redux/actions/productActions";
 
 const ProductDeleteSuccess = ({ product, close }) => {
   const dispatch = useDispatch();

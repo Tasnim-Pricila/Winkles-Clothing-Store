@@ -21,18 +21,14 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  fetchBrands,
-  fetchCategories,
-  fetchProducts,
-  searchByCatAndBrand,
-  searchProducts,
-} from "../../../../Redux/actions";
 import Loading from "../../Loading/Loading";
 import AddBrand from "./Modal/AddBrand";
 import AddCategory from "./Modal/AddCategory";
 import ProductTable from "./ProductTable";
 import { successBtn } from "../../../../utils/design";
+import { fetchProducts, searchByCatAndBrand, searchProducts } from "../../../../Redux/actions/productActions";
+import { fetchBrands } from "../../../../Redux/actions/brandActions";
+import { fetchCategories } from "../../../../Redux/actions/categoryActions";
 
 const ManageProducts = () => {
   const products = useSelector((state) => state.allProducts.allProducts);

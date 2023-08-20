@@ -15,17 +15,17 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  fetchBrands,
-  fetchCategories,
-  fetchProduct,
-  removeSelectedProduct,
-  updateProduct,
-} from "../../../../Redux/actions";
 import { Editor } from "@tinymce/tinymce-react";
 import { CameraAlt, CloudUpload } from "@mui/icons-material";
 import axios from "axios";
 import { successBtn } from "../../../../utils/design";
+import {
+  fetchProduct,
+  removeSelectedProduct,
+  updateProduct,
+} from "../../../../Redux/actions/productActions";
+import { fetchBrands } from "../../../../Redux/actions/brandActions";
+import { fetchCategories } from "../../../../Redux/actions/categoryActions";
 
 const EditProduct = () => {
   const { id } = useParams();

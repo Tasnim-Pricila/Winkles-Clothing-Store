@@ -20,13 +20,13 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../Loading/Loading";
+import { successBtn } from "../../../../utils/design";
 import {
   getUsers,
   searchUsers,
   updateUserById,
-} from "../../../../Redux/actions";
-import Loading from "../../Loading/Loading";
-import { successBtn } from "../../../../utils/design";
+} from "../../../../Redux/actions/userActions";
 
 const AllUsers = () => {
   const users = useSelector((state) => state.allUsers.users);

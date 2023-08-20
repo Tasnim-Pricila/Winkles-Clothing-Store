@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
-import { addToCart, addToWishlist, adjustQty, getMe, removeFromCart } from "../Redux/actions";
+import { getMe } from "../Redux/actions/userActions";
+import { addToCart, addToWishlist, adjustQty, removeFromCart } from "../Redux/actions/productActions";
 
 export const AddToCart = (user, id, products, newCart, dispatch, navigate) => {
   if (user?.length !== 0) {

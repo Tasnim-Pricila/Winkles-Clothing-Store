@@ -9,13 +9,13 @@ import { Box } from "@mui/system";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import { createBrand, fetchBrands } from "../../../../../Redux/actions";
 import {
   modalStyle,
   smallAddBtn,
   smallAddIcon,
   successBtn,
 } from "../../../../../utils/design";
+import { createBrand, fetchBrands } from "../../../../../Redux/actions/brandActions";
 
 const AddBrand = () => {
   const [open, setOpen] = React.useState(false);

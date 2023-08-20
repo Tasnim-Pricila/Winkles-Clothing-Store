@@ -3,8 +3,8 @@ import React, { useEffect } from "react";
 import Footer from "../../shared/Footer";
 import { Link as Routerlink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBlogs } from "../../../Redux/actions";
 import Loading from "../Loading/Loading";
+import { fetchBlogs } from "../../../Redux/actions/blogActions";
 
 const Blogs = () => {
   const dispatch = useDispatch();

@@ -1,11 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getMe,
-  getOrdersByEmail,
-  updateorder,
-} from "../../../../Redux/actions";
-import {
   Box,
   Card,
   Divider,
@@ -21,6 +16,8 @@ import {
 import OrderTable from "./OrderTable";
 import { useEffect } from "react";
 import Loading from "../../Loading/Loading";
+import { getMe } from "../../../../Redux/actions/userActions";
+import { getOrdersByEmail, updateorder } from "../../../../Redux/actions/orderActions";
 
 const MyOrders = () => {
   const user = useSelector((state) => state.allUsers.user);

@@ -6,12 +6,10 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Api from "../../../Axios/Api";
-import {
-  addToCart,
-  clearCart,
-  getMe,
-  postOrders,
-} from "../../../Redux/actions";
+import { postOrders } from "../../../Redux/actions/orderActions";
+import { addToCart, clearCart } from "../../../Redux/actions/productActions";
+import { getMe } from "../../../Redux/actions/userActions";
+
 
 const Payment = ({ total, shippingDetails, setError, cart }) => {
   const dispatch = useDispatch();

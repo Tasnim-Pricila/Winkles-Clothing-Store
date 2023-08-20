@@ -27,12 +27,12 @@ import EditProfile from './components/pages/Dashboard/EditProfile';
 import EditProduct from './components/pages/Dashboard/Admin/EditProduct';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMe } from './Redux/actions';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CommingSoon from './CommingSoon/CommingSoon';
 import SingleProduct from './components/pages/SingleProduct/SingleProduct';
 import Wishlist from './components/pages/Wishlist/Wishlist';
+import { getMe } from './Redux/actions/userActions';
 
 function App() {
 

@@ -3,10 +3,11 @@ import { Button, TableCell, TableRow } from "@mui/material";
 import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToWishlist, fetchProducts, getMe } from "../../../Redux/actions";
 import { Img, cart } from "../../../utils/design";
 import { AddToCart } from "../../../utils/commonFunction";
 import { useNavigate } from "react-router-dom";
+import { addToWishlist, fetchProducts } from "../../../Redux/actions/productActions";
+import { getMe } from "../../../Redux/actions/userActions";
 
 const WishlistItem = ({ wishlistItem }) => {
   const navigate = useNavigate();

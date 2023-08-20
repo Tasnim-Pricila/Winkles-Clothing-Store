@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProducts } from '../../../Redux/actions';
 import Footer from '../../shared/Footer';
 import Article from './Article';
 import Banner from './Banner';
@@ -9,6 +8,7 @@ import Categories from './Categories';
 import Delivery from './Delivery';
 import Products from './Products';
 import Trending from './Trending';
+import { fetchProducts } from '../../../Redux/actions/productActions';
 
 const Home = () => {
     const products = useSelector(state => state.allProducts.allProducts)

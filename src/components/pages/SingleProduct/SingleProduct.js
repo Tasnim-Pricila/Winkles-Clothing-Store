@@ -1,13 +1,4 @@
 import React, { useEffect, useState } from "react";
-import {
-  addToCart,
-  adjustQty,
-  fetchProduct,
-  fetchProducts,
-  fetchReviewbyProductId,
-  getMe,
-  removeSelectedProduct,
-} from "../../../Redux/actions";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
@@ -25,6 +16,9 @@ import Reviews from "./Reviews";
 import { toast } from "react-toastify";
 import { AddToCart, AddToWishlist, decreaseQty } from "../../../utils/commonFunction";
 import { cart, instock, outstock, wishlistBtn } from "../../../utils/design";
+import { addToCart, adjustQty, fetchProduct, fetchProducts, removeSelectedProduct } from "../../../Redux/actions/productActions";
+import { getMe } from "../../../Redux/actions/userActions";
+import { fetchReviewbyProductId } from "../../../Redux/actions/reviewActions";
 
 const SingleProduct = () => {
   const { id } = useParams();

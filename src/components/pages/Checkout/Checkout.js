@@ -24,15 +24,13 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  addToCart,
-  clearCart,
-  getMe,
-  postOrders,
-} from "../../../Redux/actions";
+
 import Footer from "../../shared/Footer";
 import Loading from "../Loading/Loading";
 import Payment from "./Payment";
+import { getMe } from "../../../Redux/actions/userActions";
+import { postOrders } from "../../../Redux/actions/orderActions";
+import { addToCart, clearCart } from "../../../Redux/actions/productActions";
 
 const Checkout = () => {
   const navigate = useNavigate();

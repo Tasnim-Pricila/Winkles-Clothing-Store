@@ -25,7 +25,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import logout from "../pages/Auth/logout";
 import { HowToReg, Login, Logout, MoreVert } from "@mui/icons-material";
-import { getCart, getMe } from "../../Redux/actions";
+import { getMe } from "../../Redux/actions/userActions";
+import { getCart } from "../../Redux/actions/productActions";
 
 const Header = ({ setSearchText, searchText }) => {
   const pages = ["home", "shop", "blog", "about", "contact"];

@@ -10,13 +10,13 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getMe, updateUserAction } from "../../../Redux/actions";
 import { useNavigate } from "react-router-dom";
 import { CameraAlt } from "@mui/icons-material";
 import axios from "axios";
 import avatar from "../../../images/avatar.png";
 import { toast } from "react-toastify";
 import { successBtn, dangerBtn } from "../../../utils/design";
+import { getMe, updateUserAction } from "../../../Redux/actions/userActions";
 
 const EditProfile = () => {
   const user = useSelector((state) => state.allUsers.user);

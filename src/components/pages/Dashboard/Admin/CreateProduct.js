@@ -18,12 +18,10 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  fetchBrands,
-  fetchCategories,
-  postProduct,
-} from "../../../../Redux/actions";
 import { successBtn } from "../../../../utils/design";
+import { fetchBrands } from "../../../../Redux/actions/brandActions";
+import { fetchCategories } from "../../../../Redux/actions/categoryActions";
+import { postProduct } from "../../../../Redux/actions/productActions";
 
 const CreateProduct = () => {
   const brands = useSelector((state) => state.brands.brands);

@@ -4,8 +4,8 @@ import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fetchBlogs } from "../../../Redux/actions";
 import Loading from "../Loading/Loading";
+import { fetchBlogs } from "../../../Redux/actions/blogActions";
 
 const Article = () => {
   const dispatch = useDispatch();

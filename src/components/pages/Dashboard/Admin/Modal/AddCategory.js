@@ -9,13 +9,13 @@ import { Box } from "@mui/system";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import { createCategory, fetchCategories } from "../../../../../Redux/actions";
 import {
   modalStyle,
   smallAddBtn,
   smallAddIcon,
   successBtn,
 } from "../../../../../utils/design";
+import { createCategory, fetchCategories } from "../../../../../Redux/actions/categoryActions";
 
 const AddCategory = ({ id }) => {
   const [open, setOpen] = React.useState(false);

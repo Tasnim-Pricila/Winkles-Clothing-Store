@@ -32,8 +32,8 @@ import {
   ShoppingCart,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { getMe } from "../../../Redux/actions";
 import logout from "../Auth/logout";
+import { getMe } from "../../../Redux/actions/userActions";
 
 const Dashboard = (props) => {
   const user = useSelector((state) => state.allUsers.user);

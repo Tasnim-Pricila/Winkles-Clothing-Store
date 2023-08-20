@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import {
-  addToCart,
-  adjustQty,
-  getMe,
-} from "../../../Redux/actions";
+
 import { useDispatch, useSelector } from "react-redux";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
@@ -13,6 +9,8 @@ import { Cancel } from "@mui/icons-material";
 import { decreaseQty } from "../../../utils/commonFunction";
 import { toast } from "react-toastify";
 import { Img } from "../../../utils/design";
+import { getMe } from "../../../Redux/actions/userActions";
+import { addToCart, adjustQty } from "../../../Redux/actions/productActions";
 
 const CartItem = ({ cartItem }) => {
   const { _id, title, price, qty, quantity, image, discount } = cartItem;
@@ -34,7 +32,6 @@ const CartItem = ({ cartItem }) => {
       },
     };
     dispatch(addToCart(user?._id, cartData));
-    // dispatch(removeFromCart(id));
     dispatch(getMe());
   };
 

@@ -10,7 +10,6 @@ import Grid from "@mui/material/Grid";
 
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getMe } from "../../../Redux/actions";
 import { FavoriteBorder, ShoppingCart } from "@mui/icons-material";
 import { Rating } from "@mui/material";
 import { useState } from "react";
@@ -18,6 +17,7 @@ import { Box } from "@mui/system";
 import Loading from "../Loading/Loading";
 import { AddToCart, AddToWishlist } from "../../../utils/commonFunction";
 import { cart, wishlistBtn } from "../../../utils/design";
+import { getMe } from "../../../Redux/actions/userActions";
 
 const Product = ({ product, products }) => {
   const navigate = useNavigate();

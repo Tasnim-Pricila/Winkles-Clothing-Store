@@ -23,10 +23,10 @@ import {
   Visibility,
   VisibilityOff,
 } from "@mui/icons-material";
-import { getMe } from "../../../Redux/actions";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import Loading from "../Loading/Loading";
+import { getMe } from "../../../Redux/actions/userActions";
 
 const Login = () => {
   const location = useLocation();
