@@ -30,7 +30,7 @@ import Loading from "../Loading/Loading";
 import Payment from "./Payment";
 import { getMe } from "../../../Redux/actions/userActions";
 import { postOrders } from "../../../Redux/actions/orderActions";
-import { addToCart, clearCart } from "../../../Redux/actions/productActions";
+import { addToCart } from "../../../Redux/actions/productActions";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -93,8 +93,7 @@ const Checkout = () => {
     return <Loading></Loading>;
   }
 
-  const placeOrder = (e) => {
-    dispatch(getMe());
+  const placeOrder = async (e) => {
     e.preventDefault();
     const userInfo = {
       name: user?.firstName + " " + user?.lastName,
@@ -108,16 +107,15 @@ const Checkout = () => {
       setError({ paymentMethod: "Please select your payment method" });
     } else {
       const orderData = { ...shippingDetails, ...userInfo };
-      dispatch(postOrders(orderData));
-      dispatch(clearCart());
+      await dispatch(postOrders(orderData));
       const cartData = {
         cart: {
           product: [],
         },
       };
-      dispatch(addToCart(user._id, cartData));
+      await dispatch(addToCart(user._id, cartData));
       navigate(`/orderComplete`, { state: { shippingDetails } });
-      dispatch(getMe());
+      await dispatch(getMe());
     }
   };
 

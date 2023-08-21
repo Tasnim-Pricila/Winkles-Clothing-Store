@@ -188,7 +188,7 @@ export const removeSelectedProduct = () => {
   };
 };
 
-export const addToCart = (userId, data, itemID) => {
+export const addToCart = (userId, data) => {
   return async (dispatch) => {
     dispatch({ type: actionTypes.LOADING });
     await Api.patch(`/users/update/${userId}`, data, {
@@ -197,24 +197,13 @@ export const addToCart = (userId, data, itemID) => {
       },
     })
       .then((data) => {
-        // console.log(data);
         if (data?.data?.status === "success") {
-          dispatch({
-            type: actionTypes.ADD_TO_CART,
-            payload: {
-              postCart: data?.data,
-              id: itemID,
-            },
-          });
           dispatch({ type: actionTypes.LOADING_STOP });
-          // toast.success('Product added to cart', {
-          //     theme: 'colored',
-          // });
         }
       })
       .catch((err) => {
-        // console.log(err.response.data)
         if (err.response.data.status === "fail") {
+          dispatch({ type: actionTypes.LOADING_STOP });
           toast.error(err.response.data.error, {
             theme: "colored",
           });
@@ -232,20 +221,13 @@ export const addToWishlist = (userId, data) => {
       },
     })
       .then((data) => {
-        // console.log(data);
         if (data?.data?.status === "success") {
-          dispatch({
-            type: actionTypes.ADD_TO_WISHLIST,
-            payload: {
-              wishlist: data?.data,
-            },
-          });
           dispatch({ type: actionTypes.LOADING_STOP });
         }
       })
       .catch((err) => {
-        // console.log(err.response.data)
         if (err.response.data.status === "fail") {
+          dispatch({ type: actionTypes.LOADING_STOP });
           toast.error(err.response.data.error, {
             theme: "colored",
           });
@@ -254,53 +236,16 @@ export const addToWishlist = (userId, data) => {
   };
 };
 
-export const getCart = () => {
-  return async (dispatch) => {
-    // console.log(data);
-    const response = await Api.get(`/users/me`, {
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    });
-    dispatch({
-      type: actionTypes.GET_CART,
-      payload: response.data.data.cart.product,
-    });
-  };
-};
-
-export const removeFromCart = (itemID) => {
-  return {
-    type: actionTypes.REMOVE_FROM_CART,
-    payload: {
-      id: itemID,
-    },
-  };
-};
-
-export const clearCart = () => {
-  return {
-    type: actionTypes.CLEAR_CART,
-  };
-};
-
-// export const adjustQty = (productId, itemID, qty, data) => {
 export const adjustQty = (productId, data) => {
   return async (dispatch) => {
-    // console.log(data);
     await Api.patch(`/users/me/${productId}`, data, {
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     });
-    // console.log(response);
-    dispatch({
-      type: actionTypes.ADJUST_QTY,
-      // payload: {
-      //   id: itemID,
-      //   qty: qty,
-      // },
-    });
+    // dispatch({
+    //   type: actionTypes.ADJUST_QTY,
+    // });
   };
 };
 

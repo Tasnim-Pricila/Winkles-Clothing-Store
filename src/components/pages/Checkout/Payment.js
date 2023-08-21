@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Api from "../../../Axios/Api";
 import { postOrders } from "../../../Redux/actions/orderActions";
-import { addToCart, clearCart } from "../../../Redux/actions/productActions";
+import { addToCart } from "../../../Redux/actions/productActions";
 import { getMe } from "../../../Redux/actions/userActions";
 
 
@@ -37,7 +37,6 @@ const Payment = ({ total, shippingDetails, setError, cart }) => {
         },
       })
         .then((data) => {
-          console.log(data);
           if (data.data.data.clientSecret) {
             setClientSecret(data.data.data.clientSecret);
           }
@@ -97,7 +96,6 @@ const Payment = ({ total, shippingDetails, setError, cart }) => {
             const payment = {
               transactionID: result.paymentIntent.id,
             };
-            // console.log(payment);
             const orderData = {
               ...shippingDetails,
               ...userInfo,
@@ -113,18 +111,17 @@ const Payment = ({ total, shippingDetails, setError, cart }) => {
               body: JSON.stringify(payment),
             })
               .then((res) => res.json())
-              .then((data) => {
-                dispatch(postOrders(orderData));
+              .then( async (data) => {
+                await dispatch(postOrders(orderData));
                 setProcessing(false);
-                dispatch(clearCart());
                 const cartData = {
                   cart: {
                     product: [],
                   },
                 };
-                dispatch(addToCart(user._id, cartData));
+                await dispatch(addToCart(user._id, cartData));
                 navigate(`/orderComplete`, { state: { shippingDetails } });
-                dispatch(getMe());
+                await dispatch(getMe());
               });
           }
 

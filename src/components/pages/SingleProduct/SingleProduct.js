@@ -114,7 +114,6 @@ const SingleProduct = () => {
 
   const discount = (+product.price * +product.discount) / 100;
   const discountedPrice = parseFloat(+product.price - discount).toFixed(0);
-  console.log(qty, quantity);
   return (
     <>
       {product?.length !== 0 ? (

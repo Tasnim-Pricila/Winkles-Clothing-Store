@@ -67,63 +67,6 @@ const productReducer = (state = initialState, action) => {
         ),
       };
 
-    case actionTypes.ADD_TO_CART:
-      // get the items data from the products array
-      const item = state.allProducts.find(
-        (product) => product._id === action.payload.id
-      );
-      // // check if the item is in cart or not
-      const inCart = state.cart.find((item) =>
-        item._id === action.payload.id ? true : false
-      );
-
-      return {
-        ...state,
-        cart: inCart
-          ? state.cart.map((item) =>
-              item._id === action.payload.id
-                ? { ...item, qty: item.qty + 1 }
-                : item
-            )
-          : [...state.cart, { ...item, qty: 1 }],
-        saveCart: action.payload.postCart,
-        loading: false,
-      };
-
-    case actionTypes.ADD_TO_WISHLIST:
-      return {
-        ...state,
-        wishlist: action.payload.wishlist,
-      };
-
-    case actionTypes.GET_CART:
-      return {
-        ...state,
-        cart: action.payload,
-      };
-
-    case actionTypes.REMOVE_FROM_CART:
-      return {
-        ...state,
-        cart: state.cart.filter((prod) => prod._id !== action.payload.id),
-      };
-
-    case actionTypes.CLEAR_CART:
-      return {
-        ...state,
-        cart: [],
-      };
-
-    case actionTypes.ADJUST_QTY:
-      return {
-        ...state,
-        // cart: state.cart.map((item) =>
-        //   item._id === action.payload.id
-        //     ? { ...item, qty: action.payload.qty }
-        //     : item
-        // ),
-      };
-
     case actionTypes.SEARCH_BY_FILTER:
       return {
         ...state,

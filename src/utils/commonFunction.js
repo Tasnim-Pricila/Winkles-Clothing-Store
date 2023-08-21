@@ -20,21 +20,35 @@ export const AddToCart = async (
     if (!exists) {
       selectedProduct.qty = 1;
       newCart = [...newCart, selectedProduct];
+      const cartData = { cart: { product: newCart } };
+      await dispatch(addToCart(user._id, cartData));
+      await dispatch(getMe());
+      toast.success("Product added to your cart ", {
+        theme: "colored",
+      });
     } else {
       exists.qty = exists.qty + 1;
-      const rest = newCart.filter((c) => c._id !== exists._id);
-      newCart = [...rest, exists];
+      if (exists.qty > exists.quantity) {
+        exists.qty = exists.quantity;
+        toast.warning("Stock is empty.", {
+          theme: "colored",
+        });
+      } else {
+        const rest = newCart.filter((c) => c._id !== exists._id);
+        newCart = [...rest, exists];
+        const cartData = { cart: { product: newCart } };
+        await dispatch(addToCart(user._id, cartData));
+        await dispatch(getMe());
+        toast.success("Product added to your cart ", {
+          theme: "colored",
+        });
+        if (exists.qty === exists.quantity) {
+          toast.warning("Stock is empty now. Can not add this item anymore.", {
+            theme: "colored",
+          });
+        }
+      }
     }
-    const cartData = {
-      cart: {
-        product: newCart,
-      },
-    };
-    await dispatch(addToCart(user._id, cartData, id));
-    dispatch(getMe());
-    toast.success("Product added to your cart ", {
-      theme: "colored",
-    });
   } else {
     navigate("/login");
   }
@@ -79,6 +93,7 @@ export const increaseQty = async (dispatch, qty, product, quantity) => {
     toast.warning("Stock is empty now. Can not add this item anymore.", {
       theme: "colored",
     });
+  } else {
   }
 };
 
