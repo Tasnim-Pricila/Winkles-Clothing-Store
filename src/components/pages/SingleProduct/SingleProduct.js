@@ -14,26 +14,35 @@ import Loading from "../Loading/Loading";
 import RelatedProducts from "./RelatedProducts";
 import Reviews from "./Reviews";
 import { toast } from "react-toastify";
-import { AddToCart, AddToWishlist, decreaseQty } from "../../../utils/commonFunction";
+import {
+  AddToCart,
+  AddToWishlist,
+  decreaseQty,
+  increaseQty,
+} from "../../../utils/commonFunction";
 import { cart, instock, outstock, wishlistBtn } from "../../../utils/design";
-import { addToCart, adjustQty, fetchProduct, fetchProducts, removeSelectedProduct } from "../../../Redux/actions/productActions";
+import {
+  addToCart,
+  fetchProduct,
+  fetchProducts,
+  removeSelectedProduct,
+} from "../../../Redux/actions/productActions";
 import { getMe } from "../../../Redux/actions/userActions";
 import { fetchReviewbyProductId } from "../../../Redux/actions/reviewActions";
 
 const SingleProduct = () => {
   const { id } = useParams();
   const [avgRating, setAvgRating] = useState(0);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.allUsers.user);
   const state = useSelector((state) => state.allProducts);
   const products = state.allProducts;
   let product = state.product;
+  let { quantity } = product;
   const getCart = user?.cart?.product?.find((cart) => cart._id === id);
   const reviews = useSelector((state) => state.reviews.review);
-  const quantity = product?.quantity;
-  const [purchaseQuantity, setQty] = useState(0);
+  const { qty } = getCart ? getCart : {};
 
   useEffect(() => {
     dispatch(fetchReviewbyProductId(id));
@@ -53,14 +62,6 @@ const SingleProduct = () => {
   useEffect(() => {
     dispatch(getMe());
   }, [dispatch]);
-
-  useEffect(() => {
-    if (getCart?.qty === undefined) {
-      setQty(0);
-    } else if (getCart) {
-      setQty(getCart?.qty);
-    }
-  }, [getCart, setQty, purchaseQuantity]);
 
   let newCart = user?.cart?.product;
   const handleAddToCart = (id) => {
@@ -83,28 +84,13 @@ const SingleProduct = () => {
         theme: "colored",
       });
     } else {
-      setQty(parseInt(purchaseQuantity) + 1);
-      const q = quantity - 1;
-      if (purchaseQuantity === q) {
-        toast.warning("Stock is empty now. Can not add this item anymore.", {
-          theme: "colored",
-        });
-      }
-      const cartData = {
-        ...product,
-        qty: purchaseQuantity + 1,
-      };
-      // await dispatch(adjustQty(product._id, id, purchaseQuantity + 1, cartData));
-      await dispatch(adjustQty(product._id, cartData));
-      toast.success("Quantity Increased", {
-        theme: "colored",
-      });
+      increaseQty(dispatch, qty, product, quantity);
     }
-    dispatch(getMe());
+    await dispatch(getMe());
   };
 
   const decrease = () => {
-    decreaseQty(dispatch, setQty, purchaseQuantity, id, product)
+    decreaseQty(dispatch, qty, product);
   };
 
   let allImg = [];
@@ -128,7 +114,7 @@ const SingleProduct = () => {
 
   const discount = (+product.price * +product.discount) / 100;
   const discountedPrice = parseFloat(+product.price - discount).toFixed(0);
-
+  console.log(qty, quantity);
   return (
     <>
       {product?.length !== 0 ? (
@@ -306,7 +292,7 @@ const SingleProduct = () => {
               >
                 <Typography fontWeight="bold"> Qty: </Typography>
                 <Button
-                  disabled={purchaseQuantity === quantity}
+                  disabled={qty === quantity}
                   onClick={increase}
                   variant="outlined"
                   sx={{ border: "2px solid" }}
@@ -314,8 +300,7 @@ const SingleProduct = () => {
                   <AddIcon />
                 </Button>
                 <TextField
-                  label={purchaseQuantity}
-                  onChange={(e) => setQty(e.target.value)}
+                  label={qty === undefined ? 0 : qty}
                   size="small"
                   InputProps={{
                     readOnly: true,
@@ -332,12 +317,11 @@ const SingleProduct = () => {
                       },
                   }}
                 />
-
                 <Button
                   onClick={decrease}
                   sx={{ border: "2px solid" }}
                   variant="outlined"
-                  disabled={purchaseQuantity === 0}
+                  disabled={qty === undefined}
                 >
                   <RemoveIcon />
                 </Button>

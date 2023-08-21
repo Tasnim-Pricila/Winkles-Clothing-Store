@@ -9,6 +9,7 @@ export const cart = {
   textTransform: "capitalize",
   "&:hover": {
     backgroundColor: "#df6750",
+    borderColor: "white"
   },
 };
 export const wishlistBtn = {

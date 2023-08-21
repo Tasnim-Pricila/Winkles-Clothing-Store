@@ -4,7 +4,6 @@ import {
   addToCart,
   addToWishlist,
   adjustQty,
-  removeFromCart,
 } from "../Redux/actions/productActions";
 
 export const AddToCart = async (
@@ -66,34 +65,40 @@ export const AddToWishlist = async (user, id, wishlist, dispatch, navigate) => {
   }
 };
 
-export const decreaseQty = async (
-  dispatch,
-  setQty,
-  qty,
-  id,
-  product
-) => {
+export const increaseQty = async (dispatch, qty, product, quantity) => {
+  const cartData = {
+    ...product,
+    qty: qty + 1,
+  };
+  await dispatch(adjustQty(product._id, cartData));
+  await dispatch(getMe());
+  toast.success("Quantity Increased", {
+    theme: "colored",
+  });
+  if (qty + 1 === quantity) {
+    toast.warning("Stock is empty now. Can not add this item anymore.", {
+      theme: "colored",
+    });
+  }
+};
+
+export const decreaseQty = async (dispatch, qty, product) => {
   if (qty === 1) {
-    // await dispatch(removeFromCart(id));
-    
     const cartData = {
       ...product,
       qty: qty - 1,
     };
-    // await dispatch(adjustQty(product._id, id, qty - 1, cartData));
-    await dispatch(adjustQty(id, cartData));
+    await dispatch(adjustQty(product._id, cartData));
     dispatch(getMe());
     toast.success("Product removed from the cart", {
       theme: "colored",
     });
   } else {
-    // setQty(parseInt(qty) - 1);
     const cartData = {
       ...product,
       qty: qty - 1,
     };
-    // await dispatch(adjustQty(product._id, id, qty - 1, cartData));
-    await dispatch(adjustQty(id, cartData));
+    await dispatch(adjustQty(product._id, cartData));
     await dispatch(getMe());
     toast.success("Quantity decreased", {
       theme: "colored",
