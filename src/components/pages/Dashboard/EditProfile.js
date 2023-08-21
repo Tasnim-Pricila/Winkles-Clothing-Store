@@ -37,7 +37,7 @@ const EditProfile = () => {
 
   const getImage = (e) => {
     setImage(e.target.files[0]);
-    setPreview(URL.createObjectURL(e.target.files[0])); //set preview
+    setPreview(URL.createObjectURL(e.target.files[0])); 
   };
 
   const handleUpdate = async (e) => {
@@ -45,11 +45,11 @@ const EditProfile = () => {
     const formData = new FormData();
     formData.append("image", myImage);
     if (myImage) {
-      await axios.post(url, formData).then((response) => {
+      await axios.post(url, formData).then(async (response) => {
         // console.log(response)
         if (response?.data?.success) {
           const imgUrl = response?.data?.data?.url;
-          dispatch(
+          await dispatch(
             updateUserAction({
               firstName: e.target.firstName.value,
               lastName: e.target.lastName.value,
@@ -66,7 +66,7 @@ const EditProfile = () => {
         }
       });
     } else {
-      dispatch(
+      await dispatch(
         updateUserAction({
           firstName: e.target.firstName.value,
           lastName: e.target.lastName.value,
@@ -86,8 +86,8 @@ const EditProfile = () => {
     navigate("/dashboard/profile");
   };
 
-  const removePhoto = () => {
-    dispatch(
+  const removePhoto = async () => {
+    await dispatch(
       updateUserAction({
         imageUrl: "",
       })

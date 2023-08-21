@@ -15,7 +15,10 @@ import {
   smallAddIcon,
   successBtn,
 } from "../../../../../utils/design";
-import { createCategory, fetchCategories } from "../../../../../Redux/actions/categoryActions";
+import {
+  createCategory,
+  fetchCategories,
+} from "../../../../../Redux/actions/categoryActions";
 
 const AddCategory = ({ id }) => {
   const [open, setOpen] = React.useState(false);
@@ -27,10 +30,9 @@ const AddCategory = ({ id }) => {
   });
   const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(fetchCategories());
-    dispatch(createCategory(category));
+    await dispatch(createCategory(category));
     dispatch(fetchCategories());
     handleClose();
   };

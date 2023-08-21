@@ -26,7 +26,11 @@ import AddBrand from "./Modal/AddBrand";
 import AddCategory from "./Modal/AddCategory";
 import ProductTable from "./ProductTable";
 import { successBtn } from "../../../../utils/design";
-import { fetchProducts, searchByCatAndBrand, searchProducts } from "../../../../Redux/actions/productActions";
+import {
+  fetchProducts,
+  searchByCatAndBrand,
+  searchProducts,
+} from "../../../../Redux/actions/productActions";
 import { fetchBrands } from "../../../../Redux/actions/brandActions";
 import { fetchCategories } from "../../../../Redux/actions/categoryActions";
 
@@ -43,27 +47,16 @@ const ManageProducts = () => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
-
-  useEffect(() => {
     if (search !== "") {
       dispatch(searchProducts(search));
     }
   }, [dispatch, search]);
 
   useEffect(() => {
+    dispatch(fetchProducts());
     dispatch(fetchBrands());
     dispatch(fetchCategories());
   }, [dispatch]);
-
-  const handleAddproduct = () => {
-    nav("/dashboard");
-  };
-
-  const handleClear = () => {
-    dispatch(fetchProducts());
-  };
 
   const handleCategory = (e) => {
     setValue(e.target.value);
@@ -114,7 +107,7 @@ const ManageProducts = () => {
                     fontSize: "14px",
                     textDecorationColor: "#4b38b3",
                   }}
-                  onClick={handleClear}
+                  onClick={() => dispatch(fetchProducts())}
                 >
                   Clear All
                 </Link>
@@ -201,7 +194,7 @@ const ManageProducts = () => {
                 <Button
                   variant="contained"
                   sx={successBtn}
-                  onClick={() => handleAddproduct()}
+                  onClick={() => nav("/dashboard")}
                 >
                   {" "}
                   + Add Product{" "}

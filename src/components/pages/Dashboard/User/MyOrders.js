@@ -17,13 +17,15 @@ import OrderTable from "./OrderTable";
 import { useEffect } from "react";
 import Loading from "../../Loading/Loading";
 import { getMe } from "../../../../Redux/actions/userActions";
-import { getOrdersByEmail, updateorder } from "../../../../Redux/actions/orderActions";
+import {
+  getOrdersByEmail,
+  updateorder,
+} from "../../../../Redux/actions/orderActions";
 
 const MyOrders = () => {
   const user = useSelector((state) => state.allUsers.user);
   const orders = useSelector((state) => state.orders.orders);
   const loading = useSelector((state) => state.allProducts.loading);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -34,9 +36,8 @@ const MyOrders = () => {
     dispatch(getOrdersByEmail(user?.email));
   }, [dispatch, user?.email]);
 
-  const handleOrder = (id) => {
-    dispatch(getMe());
-    dispatch(
+  const handleOrder = async (id) => {
+    await dispatch(
       updateorder(id, {
         orderStatus: "Cancelled",
       })

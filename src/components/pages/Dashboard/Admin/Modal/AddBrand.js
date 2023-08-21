@@ -15,7 +15,10 @@ import {
   smallAddIcon,
   successBtn,
 } from "../../../../../utils/design";
-import { createBrand, fetchBrands } from "../../../../../Redux/actions/brandActions";
+import {
+  createBrand,
+  fetchBrands,
+} from "../../../../../Redux/actions/brandActions";
 
 const AddBrand = () => {
   const [open, setOpen] = React.useState(false);
@@ -27,10 +30,9 @@ const AddBrand = () => {
   });
   const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(fetchBrands());
-    dispatch(createBrand(brand));
+    await dispatch(createBrand(brand));
     dispatch(fetchBrands());
     handleClose();
   };

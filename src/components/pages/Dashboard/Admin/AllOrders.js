@@ -62,18 +62,16 @@ const AllOrders = () => {
     dispatch(orderByFilter("/orders?paymentStatus=Pending"));
   };
 
-  const handleDelivery = (id) => {
-    dispatch(getAllOrders());
-    dispatch(
+  const handleDelivery = async (id) => {
+    await dispatch(
       updateorder(id, {
         deliveryStatus: "Shipped",
       })
     );
     dispatch(getAllOrders());
   };
-  const handlePayment = (id) => {
-    dispatch(getAllOrders());
-    dispatch(
+  const handlePayment = async (id) => {
+    await dispatch(
       updateorder(id, {
         paymentStatus: "Paid",
       })

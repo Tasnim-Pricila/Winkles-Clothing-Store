@@ -112,7 +112,6 @@ const EditProduct = () => {
                     brand: e.target.brand.value,
                     stock: e.target.stock.value,
                   };
-                  // console.log(data)
                   dispatch(updateProduct(id, data));
                   nav("/dashboard/manageProducts");
                 }
@@ -138,7 +137,6 @@ const EditProduct = () => {
             brand: e.target.brand.value,
             stock: e.target.stock.value,
           };
-          // console.log(data)
           dispatch(updateProduct(id, data));
           nav("/dashboard/manageProducts");
         }

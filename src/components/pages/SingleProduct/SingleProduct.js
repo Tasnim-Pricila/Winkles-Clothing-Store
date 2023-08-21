@@ -67,8 +67,7 @@ const SingleProduct = () => {
     AddToCart(user, id, products, newCart, dispatch, navigate);
   };
 
-  const increase = () => {
-    dispatch(getMe());
+  const increase = async () => {
     const selectedProduct = products?.find((p) => p._id === id);
     const exists = newCart?.find((c) => c._id === selectedProduct._id);
     if (!exists) {
@@ -79,12 +78,15 @@ const SingleProduct = () => {
           product: newCart,
         },
       };
-      dispatch(addToCart(user._id, cartData));
+      await dispatch(addToCart(user._id, cartData));
+      toast.success("Product added to cart", {
+        theme: "colored",
+      });
     } else {
       setQty(parseInt(purchaseQuantity) + 1);
       const q = quantity - 1;
       if (purchaseQuantity === q) {
-        toast.warning("Stock is empty now", {
+        toast.warning("Stock is empty now. Can not add this item anymore.", {
           theme: "colored",
         });
       }
@@ -92,7 +94,11 @@ const SingleProduct = () => {
         ...product,
         qty: purchaseQuantity + 1,
       };
-      dispatch(adjustQty(product._id, id, purchaseQuantity + 1, cartData));
+      // await dispatch(adjustQty(product._id, id, purchaseQuantity + 1, cartData));
+      await dispatch(adjustQty(product._id, cartData));
+      toast.success("Quantity Increased", {
+        theme: "colored",
+      });
     }
     dispatch(getMe());
   };

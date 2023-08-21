@@ -284,7 +284,8 @@ export const clearCart = () => {
   };
 };
 
-export const adjustQty = (productId, itemID, qty, data) => {
+// export const adjustQty = (productId, itemID, qty, data) => {
+export const adjustQty = (productId, data) => {
   return async (dispatch) => {
     // console.log(data);
     await Api.patch(`/users/me/${productId}`, data, {
@@ -295,10 +296,10 @@ export const adjustQty = (productId, itemID, qty, data) => {
     // console.log(response);
     dispatch({
       type: actionTypes.ADJUST_QTY,
-      payload: {
-        id: itemID,
-        qty: qty,
-      },
+      // payload: {
+      //   id: itemID,
+      //   qty: qty,
+      // },
     });
   };
 };

@@ -62,7 +62,6 @@ const productReducer = (state = initialState, action) => {
     case actionTypes.DELETE_PRODUCT:
       return {
         ...state,
-        // products: state.products.filter(product => product._id !== action.payload.id),
         allProducts: state.allProducts.filter(
           (product) => product._id !== action.payload.id
         ),
@@ -118,11 +117,11 @@ const productReducer = (state = initialState, action) => {
     case actionTypes.ADJUST_QTY:
       return {
         ...state,
-        cart: state.cart.map((item) =>
-          item._id === action.payload.id
-            ? { ...item, qty: action.payload.qty }
-            : item
-        ),
+        // cart: state.cart.map((item) =>
+        //   item._id === action.payload.id
+        //     ? { ...item, qty: action.payload.qty }
+        //     : item
+        // ),
       };
 
     case actionTypes.SEARCH_BY_FILTER:

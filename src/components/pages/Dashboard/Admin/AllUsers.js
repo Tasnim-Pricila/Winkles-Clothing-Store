@@ -45,18 +45,16 @@ const AllUsers = () => {
     }
   }, [dispatch, search]);
 
-  const handleBlock = (id) => {
-    dispatch(getUsers());
-    dispatch(
+  const handleBlock = async (id) => {
+    await dispatch(
       updateUserById(id, {
         status: "blocked",
       })
     );
     dispatch(getUsers());
   };
-  const handleActive = (id) => {
-    dispatch(getUsers());
-    dispatch(
+  const handleActive = async (id) => {
+    await dispatch(
       updateUserById(id, {
         status: "active",
       })
