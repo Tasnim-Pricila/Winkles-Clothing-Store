@@ -7,7 +7,6 @@ export const fetchProducts = () => {
     dispatch({ type: actionTypes.LOADING });
     await Api.get("/products")
       .then((data) => {
-        // console.log(data.data.data);
         if (data?.data?.status === "success") {
           dispatch({
             type: actionTypes.FETCH_PRODUCTS,
@@ -17,7 +16,6 @@ export const fetchProducts = () => {
         }
       })
       .catch((err) => {
-        // console.log(err.response.data)
         if (err.response.data.status === "fail") {
           toast.error(err.response.data.error, {
             theme: "colored",
@@ -46,7 +44,6 @@ export const fetchProductsByPagination = (page) => {
     dispatch({ type: actionTypes.LOADING });
     await Api.get(`/products?page=${page}&limit=12`)
       .then((data) => {
-        // console.log(data.data.data);
         if (data?.data?.status === "success") {
           dispatch({
             type: actionTypes.FETCH_PRODUCTS_ByPAGINATION,
@@ -56,7 +53,6 @@ export const fetchProductsByPagination = (page) => {
         }
       })
       .catch((err) => {
-        // console.log(err.response.data)
         if (err.response.data.status === "fail") {
           toast.error(err.response.data.error, {
             theme: "colored",
@@ -255,59 +251,11 @@ export const searchProducts = (text) => {
   };
 };
 
-export const setStock = (data) => {
-  return {
-    type: actionTypes.SET_STOCK,
-    payload: data,
-  };
-};
-export const setSearchText = (data) => {
-  return {
-    type: actionTypes.SET_SEARCHTEXT,
-    payload: data,
-  };
-};
-export const setBrand = (data) => {
-  return {
-    type: actionTypes.SET_BRAND,
-    payload: data,
-  };
-};
-export const setCategory = (data) => {
-  return {
-    type: actionTypes.SET_CATEGORY,
-    payload: data,
-  };
-};
-export const setLtPrice = (data) => {
-  return {
-    type: actionTypes.SET_LTPRICE,
-    payload: data,
-  };
-};
-export const setGtPrice = (data) => {
-  return {
-    type: actionTypes.SET_GTPRICE,
-    payload: data,
-  };
-};
-
-export const searchProductsbyPagination = (text) => {
-  return {
-    type: actionTypes.SEARCH_PRODUCT_BY_PAGINATION,
-    payload: {
-      searchText: text,
-    },
-  };
-};
-
 export const searchByFilter = (url) => {
   return async (dispatch) => {
-    // console.log(url);
     dispatch({ type: actionTypes.LOADING });
     await Api.get(url)
       .then((data) => {
-        // console.log(data.data);
         if (data?.data?.status === "success") {
           dispatch({
             type: actionTypes.SEARCH_BY_FILTER,
@@ -317,7 +265,6 @@ export const searchByFilter = (url) => {
         }
       })
       .catch((err) => {
-        // console.log(err.response.data)
         if (err.response.data.status === "fail") {
           toast.error(err.response.data.error, {
             theme: "colored",
@@ -356,5 +303,42 @@ export const searchByCatAndBrand = (url) => {
           });
         }
       });
+  };
+};
+
+export const setStock = (data) => {
+  return {
+    type: actionTypes.SET_STOCK,
+    payload: data,
+  };
+};
+export const setSearchText = (data) => {
+  return {
+    type: actionTypes.SET_SEARCHTEXT,
+    payload: data,
+  };
+};
+export const setBrand = (data) => {
+  return {
+    type: actionTypes.SET_BRAND,
+    payload: data,
+  };
+};
+export const setCategory = (data) => {
+  return {
+    type: actionTypes.SET_CATEGORY,
+    payload: data,
+  };
+};
+export const setLtPrice = (data) => {
+  return {
+    type: actionTypes.SET_LTPRICE,
+    payload: data,
+  };
+};
+export const setGtPrice = (data) => {
+  return {
+    type: actionTypes.SET_GTPRICE,
+    payload: data,
   };
 };

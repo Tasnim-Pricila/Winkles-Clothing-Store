@@ -12,7 +12,7 @@ import Shop from './components/pages/Shop/Shop';
 import Checkout from './components/pages/Checkout/Checkout';
 import Error from './components/pages/NotFound/Error';
 import OrderComplete from './components/pages/Checkout/OrderComplete';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import RequireAuth from './components/pages/Auth/RequireAuth';
 import Dashboard from './components/pages/Dashboard/Dashboard';
 import MyOrders from './components/pages/Dashboard/User/MyOrders';
@@ -44,19 +44,16 @@ function App() {
     },
   });
 
-  const [searchText, setSearchText] = useState('')
-
   const user = useSelector(state => state.allUsers.user);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getMe())
   }, [dispatch])
 
-
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
-        <Header setSearchText={setSearchText} searchText={searchText} />
+        <Header/>
         <Routes>
           <Route path='/' element={<Home/>}></Route>
           <Route path='/home' element={<Home/>}></Route>
@@ -70,7 +67,7 @@ function App() {
           <Route path='/login' element={<Login/>}></Route>
           <Route path='/register' element={<Register/>}></Route>
           <Route path='/shop' element={
-            <Shop searchText={searchText} setSearchText={setSearchText} />}>
+            <Shop/>}>
           </Route>
           <Route path='/blog' element={<Blogs/>}></Route>
           <Route path='/about' element={<About/>}></Route>
@@ -96,7 +93,6 @@ function App() {
                 </>
                 :
                 <Route index element={<MyOrders/>}></Route>
-                
             }
             <Route path='profile' element={<RequireAuth> <MyProfile/> </RequireAuth>}></Route>
             <Route path='profile/edit' element={<RequireAuth> <EditProfile/> </RequireAuth>}></Route>

@@ -2,15 +2,11 @@ import actionTypes from "../constants";
 
 const initialState = {
   products: [],
-  cart: [],
   filter: [],
-  searchProducts: [],
   searchAllProducts: [],
   addProduct: [],
   product: [],
   allProducts: [],
-  saveCart: [],
-  wishlist: [],
   loading: false,
   trending: [],
   stock: "",
@@ -18,7 +14,7 @@ const initialState = {
   category: "",
   ltPrice: "",
   gtPrice: "",
-  searchText: ""
+  searchText: "",
 };
 
 const productReducer = (state = initialState, action) => {
@@ -85,20 +81,15 @@ const productReducer = (state = initialState, action) => {
         allProducts: action.payload,
       };
 
-    case actionTypes.SEARCH_PRODUCT_BY_PAGINATION:
-      return {
-        ...state,
-        searchProducts: state.products.result.filter((product) =>
-          product.title.includes(action.payload.searchText.toLowerCase())
-        ),
-      };
-
     case actionTypes.SEARCH_PRODUCT:
       return {
         ...state,
         searchAllProducts: state.allProducts.filter((product) =>
           product.title.includes(action.payload.searchText.toLowerCase())
         ),
+        // allProducts: state.allProducts.filter((product) =>
+        //   product.title.includes(action.payload.searchText.toLowerCase())
+        // ),
       };
 
     case actionTypes.LOADING:

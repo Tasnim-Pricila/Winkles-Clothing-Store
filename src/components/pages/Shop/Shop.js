@@ -2,192 +2,167 @@ import { GridView, TableRows } from "@mui/icons-material";
 import { Box, Grid, Pagination, Tooltip, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Footer from "../../shared/Footer";
-import Loading from "../Loading/Loading";
 import AllProducts from "./AllProducts";
 import LeftSidebar from "./LeftSidebar";
 import ListView from "./ListView";
 import { AddToCart, AddToWishlist } from "../../../utils/commonFunction";
 import {
+  fetchProducts,
   fetchProductsByPagination,
   searchByFilter,
-  searchProductsbyPagination,
+  searchProducts,
+  setBrand,
+  setCategory,
+  setGtPrice,
+  setLtPrice,
+  setSearchText,
+  setStock,
 } from "../../../Redux/actions/productActions";
 
-const Shop = ({ searchText, setSearchText }) => {
+const Shop = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // const products = useSelector((state) => state.allProducts.products);
-  const searched = useSelector((state) => state.allProducts.searchProducts);
-  const { products, stock, brand, category, ltPrice, gtPrice } = useSelector(
-    (state) => state.allProducts
-  );
+  const {
+    products,
+    searchAllProducts,
+    stock,
+    brand,
+    category,
+    ltPrice,
+    gtPrice,
+    searchText,
+  } = useSelector((state) => state.allProducts);
   const user = useSelector((state) => state.allUsers.user);
   const [grid, setGrid] = useState(true);
   const [list, setList] = useState(false);
-  const location = useLocation();
   const [selectedPage, setSelectedPage] = useState(1);
-  console.log(selectedPage);
-
-  const handleChange = (value) => {
-    setSelectedPage(value);
-    if (
-      location?.state?.value &&
-      !stock &&
-      !gtPrice &&
-      !ltPrice &&
-      !category &&
-      !brand &&
-      searchText === ""
-    ) {
-      const url = `/products?page=${value}&limit=12&category=${location?.state?.value}`;
-      dispatch(searchByFilter(url));
-    } else if (!gtPrice && !ltPrice && !stock && !brand && !category) {
-      dispatch(fetchProductsByPagination(value));
-    } else if (stock && gtPrice && ltPrice && category && brand) {
-      setSearchText("");
-      const url = `/products?page=${value}&limit=12&stock=${stock}&price[gte]=${gtPrice}&price[lte]=${ltPrice}&category=${category}&brand=${brand}`;
-      dispatch(searchByFilter(url));
-    } else if (gtPrice && ltPrice && category && brand) {
-      setSearchText("");
-      const url = `/products?page=${value}&limit=12&price[gte]=${gtPrice}&price[lte]=${ltPrice}&category=${category}&brand=${brand}`;
-      dispatch(searchByFilter(url));
-    } else if (gtPrice && ltPrice && category) {
-      setSearchText("");
-      const url = `/products?page=${value}&limit=12&price[gte]=${gtPrice}&price[lte]=${ltPrice}&category=${category}`;
-      dispatch(searchByFilter(url));
-    } else if (stock && gtPrice && ltPrice) {
-      setSearchText("");
-      const url = `/products?page=${value}&limit=12&stock=${stock}&price[gte]=${gtPrice}&price[lte]=${ltPrice}`;
-      dispatch(searchByFilter(url));
-    } else if (gtPrice && ltPrice) {
-      setSearchText("");
-      const url = `/products?page=${value}&limit=12&price[gte]=${gtPrice}&price[lte]=${ltPrice}`;
-      dispatch(searchByFilter(url));
-    } else if (gtPrice) {
-      setSearchText("");
-      const url = `/products?page=${value}&limit=12&price[gte]=${gtPrice}`;
-      dispatch(searchByFilter(url));
-    } else if (ltPrice) {
-      setSearchText("");
-      const url = `/products?page=${value}&limit=12&price[lte]=${ltPrice}`;
-      dispatch(searchByFilter(url));
-    } else if (stock && category && brand) {
-      setSearchText("");
-      const url = `/products?page=${value}&limit=12&stock=${stock}&category=${category}&brand=${brand}`;
-      dispatch(searchByFilter(url));
-    } else if (stock) {
-      setSearchText("");
-      const url = `/products?page=${value}&limit=12&stock=${stock}`;
-      dispatch(searchByFilter(url));
-    } else if (category && brand) {
-      setSearchText("");
-      const url = `/products?page=${value}&limit=12&category=${category}&brand=${brand}`;
-      dispatch(searchByFilter(url));
-    } else if (category) {
-      setSearchText("");
-      const url = `/products?page=${value}&limit=12&category=${category}`;
-      dispatch(searchByFilter(url));
-    } else if (brand) {
-      setSearchText("");
-      const url = `/products?page=${value}&limit=12&brand=${brand}`;
-      dispatch(searchByFilter(url));
-    }
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-  const page = Math.ceil(products?.count / 12);
-  const skip = (selectedPage - 1) * 12;
-
-  const handleClear = () => {
-    setSearchText("");
-    dispatch(fetchProductsByPagination(selectedPage));
-  };
 
   useEffect(() => {
-    if (
-      location?.state?.value &&
-      !stock &&
-      !gtPrice &&
-      !ltPrice &&
-      !category &&
-      !brand &&
-      searchText === ""
-    ) {
-      const url = `/products?page=${selectedPage}&limit=12&category=${location?.state?.value}`;
-      dispatch(searchByFilter(url));
-    } else if (
-      searchText === "" &&
-      !location?.state?.value &&
-      !gtPrice &&
-      !ltPrice &&
-      !stock &&
-      !brand &&
-      !category
-    ) {
-      dispatch(fetchProductsByPagination(selectedPage));
-    } else if (stock && gtPrice && ltPrice && category && brand) {
-      setSearchText("");
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (stock && gtPrice && ltPrice && category && brand) {
+      dispatch(setSearchText(""));
       const url = `/products?page=${selectedPage}&limit=12&stock=${stock}&price[gte]=${gtPrice}&price[lte]=${ltPrice}&category=${category}&brand=${brand}`;
       dispatch(searchByFilter(url));
+    } else if (stock && gtPrice && ltPrice && brand) {
+      dispatch(setSearchText(""));
+      const url = `/products?page=${selectedPage}&limit=12&stock=${stock}&price[gte]=${gtPrice}&price[lte]=${ltPrice}&brand=${brand}`;
+      dispatch(searchByFilter(url));
+    } else if (stock && gtPrice && ltPrice && category) {
+      dispatch(setSearchText(""));
+      const url = `/products?page=${selectedPage}&limit=12&stock=${stock}&price[gte]=${gtPrice}&price[lte]=${ltPrice}&category=${category}`;
+      dispatch(searchByFilter(url));
     } else if (gtPrice && ltPrice && category && brand) {
-      setSearchText("");
+      dispatch(setSearchText(""));
       const url = `/products?page=${selectedPage}&limit=12&price[gte]=${gtPrice}&price[lte]=${ltPrice}&category=${category}&brand=${brand}`;
       dispatch(searchByFilter(url));
-    } else if (gtPrice && ltPrice && category) {
-      setSearchText("");
-      const url = `/products?page=${selectedPage}&limit=12&price[gte]=${gtPrice}&price[lte]=${ltPrice}&category=${category}`;
+    } else if (stock && gtPrice && category) {
+      dispatch(setSearchText(""));
+      const url = `/products?page=${selectedPage}&limit=12&stock=${stock}&price[gte]=${gtPrice}&category=${category}`;
+      dispatch(searchByFilter(url));
+    } else if (stock && gtPrice && brand) {
+      dispatch(setSearchText(""));
+      const url = `/products?page=${selectedPage}&limit=12&stock=${stock}&price[gte]=${gtPrice}&brand=${brand}`;
       dispatch(searchByFilter(url));
     } else if (stock && gtPrice && ltPrice) {
-      setSearchText("");
+      dispatch(setSearchText(""));
       const url = `/products?page=${selectedPage}&limit=12&stock=${stock}&price[gte]=${gtPrice}&price[lte]=${ltPrice}`;
       dispatch(searchByFilter(url));
-    } else if (gtPrice && ltPrice) {
-      setSearchText("");
-      const url = `/products?page=${selectedPage}&limit=12&price[gte]=${gtPrice}&price[lte]=${ltPrice}`;
+    } else if (stock && ltPrice && category) {
+      dispatch(setSearchText(""));
+      const url = `/products?page=${selectedPage}&limit=12&stock=${stock}&price[lte]=${ltPrice}&category=${category}`;
       dispatch(searchByFilter(url));
-    } else if (gtPrice) {
-      setSearchText("");
-      const url = `/products?page=${selectedPage}&limit=12&price[gte]=${gtPrice}`;
-      dispatch(searchByFilter(url));
-    } else if (ltPrice) {
-      setSearchText("");
-      const url = `/products?page=${selectedPage}&limit=12&price[lte]=${ltPrice}`;
+    } else if (stock && ltPrice && brand) {
+      dispatch(setSearchText(""));
+      const url = `/products?page=${selectedPage}&limit=12&stock=${stock}&price[lte]=${ltPrice}&brand=${brand}`;
       dispatch(searchByFilter(url));
     } else if (stock && category && brand) {
-      setSearchText("");
+      dispatch(setSearchText(""));
       const url = `/products?page=${selectedPage}&limit=12&stock=${stock}&category=${category}&brand=${brand}`;
       dispatch(searchByFilter(url));
+    } else if (gtPrice && category && brand) {
+      dispatch(setSearchText(""));
+      const url = `/products?page=${selectedPage}&limit=12&price[gte]=${gtPrice}&category=${category}&brand=${brand}`;
+      dispatch(searchByFilter(url));
+    } else if (gtPrice && ltPrice && category) {
+      dispatch(setSearchText(""));
+      const url = `/products?page=${selectedPage}&limit=12&price[gte]=${gtPrice}&price[lte]=${ltPrice}&category=${category}`;
+      dispatch(searchByFilter(url));
+    } else if (gtPrice && ltPrice && brand) {
+      dispatch(setSearchText(""));
+      const url = `/products?page=${selectedPage}&limit=12&price[gte]=${gtPrice}&price[lte]=${ltPrice}&brand=${brand}`;
+      dispatch(searchByFilter(url));
+    } else if (ltPrice && category && brand) {
+      dispatch(setSearchText(""));
+      const url = `/products?page=${selectedPage}&limit=12&price[lte]=${ltPrice}&category=${category}&brand=${brand}`;
+      dispatch(searchByFilter(url));
+    } else if (stock && gtPrice) {
+      dispatch(setSearchText(""));
+      const url = `/products?page=${selectedPage}&limit=12&stock=${stock}&price[gte]=${gtPrice}`;
+      dispatch(searchByFilter(url));
+    } else if (stock && ltPrice) {
+      dispatch(setSearchText(""));
+      const url = `/products?page=${selectedPage}&limit=12&stock=${stock}&price[lte]=${ltPrice}`;
+      dispatch(searchByFilter(url));
     } else if (stock && category) {
-      setSearchText("");
+      dispatch(setSearchText(""));
       const url = `/products?page=${selectedPage}&limit=12&stock=${stock}&category=${category}`;
       dispatch(searchByFilter(url));
     } else if (stock && brand) {
-      setSearchText("");
+      dispatch(setSearchText(""));
       const url = `/products?page=${selectedPage}&limit=12&stock=${stock}&brand=${brand}`;
       dispatch(searchByFilter(url));
-    } else if (stock) {
-      setSearchText("");
-      const url = `/products?page=${selectedPage}&limit=12&stock=${stock}`;
+    } else if (gtPrice && category) {
+      dispatch(setSearchText(""));
+      const url = `/products?page=${selectedPage}&limit=12&price[gte]=${gtPrice}&category=${category}`;
+      dispatch(searchByFilter(url));
+    } else if (gtPrice && brand) {
+      dispatch(setSearchText(""));
+      const url = `/products?page=${selectedPage}&limit=12&price[gte]=${gtPrice}&brand=${brand}`;
+      dispatch(searchByFilter(url));
+    } else if (gtPrice && ltPrice) {
+      dispatch(setSearchText(""));
+      const url = `/products?page=${selectedPage}&limit=12&price[gte]=${gtPrice}&price[lte]=${ltPrice}`;
+      dispatch(searchByFilter(url));
+    } else if (ltPrice && category) {
+      dispatch(setSearchText(""));
+      const url = `/products?page=${selectedPage}&limit=12&price[lte]=${ltPrice}&category=${category}`;
+      dispatch(searchByFilter(url));
+    } else if (ltPrice && brand) {
+      dispatch(setSearchText(""));
+      const url = `/products?page=${selectedPage}&limit=12&price[lte]=${ltPrice}&brand=${brand}`;
       dispatch(searchByFilter(url));
     } else if (category && brand) {
-      setSearchText("");
+      dispatch(setSearchText(""));
       const url = `/products?page=${selectedPage}&limit=12&category=${category}&brand=${brand}`;
       dispatch(searchByFilter(url));
+    } else if (stock) {
+      dispatch(setSearchText(""));
+      const url = `/products?page=${selectedPage}&limit=12&stock=${stock}`;
+      dispatch(searchByFilter(url));
     } else if (category) {
-      setSearchText("");
+      dispatch(setSearchText(""));
       const url = `/products?page=${selectedPage}&limit=12&category=${category}`;
       dispatch(searchByFilter(url));
     } else if (brand) {
-      setSearchText("");
+      dispatch(setSearchText(""));
       const url = `/products?page=${selectedPage}&limit=12&brand=${brand}`;
       dispatch(searchByFilter(url));
+    } else if (gtPrice) {
+      dispatch(setSearchText(""));
+      const url = `/products?page=${selectedPage}&limit=12&price[gte]=${gtPrice}`;
+      dispatch(searchByFilter(url));
+    } else if (ltPrice) {
+      dispatch(setSearchText(""));
+      const url = `/products?page=${selectedPage}&limit=12&price[lte]=${ltPrice}`;
+      dispatch(searchByFilter(url));
+    } else {
+      dispatch(fetchProductsByPagination(selectedPage));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     dispatch,
     stock,
@@ -195,15 +170,20 @@ const Shop = ({ searchText, setSearchText }) => {
     ltPrice,
     category,
     brand,
-    setSearchText,
-    location?.state?.value,
+    searchText,
+    selectedPage,
   ]);
 
   useEffect(() => {
-    if (searchText !== "") {
-      dispatch(searchProductsbyPagination(searchText));
+    if (searchText) {
+      dispatch(setStock(""));
+      dispatch(setBrand(""));
+      dispatch(setCategory(""));
+      dispatch(setLtPrice(""));
+      dispatch(setGtPrice(""));
+      dispatch(searchProducts(searchText));
     }
-  }, [searchText, dispatch, location?.state?.value]);
+  }, [searchText, dispatch]);
 
   const handleGrid = () => {
     setGrid(true);
@@ -214,6 +194,32 @@ const Shop = ({ searchText, setSearchText }) => {
     setGrid(false);
     setList(true);
   };
+
+  const handleChange = (event, value) => {
+    setSelectedPage(value);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+  const page = Math.ceil(products?.count / 12);
+  const skip = (selectedPage - 1) * 12;
+
+  const handleClear = () => {
+    dispatch(setSearchText(""));
+    dispatch(setStock(""));
+    dispatch(setBrand(""));
+    dispatch(setCategory(""));
+    dispatch(setLtPrice(""));
+    dispatch(setGtPrice(""));
+    dispatch(fetchProductsByPagination(selectedPage));
+  };
+
+  useEffect(() => {
+    if (stock || gtPrice || ltPrice || category || brand) {
+      setSelectedPage(1);
+    }
+  }, [stock, gtPrice, ltPrice, category, brand]);
 
   let wishlist = user?.wishlist?.product;
   const handleWishlist = (id) => {
@@ -306,10 +312,22 @@ const Shop = ({ searchText, setSearchText }) => {
                     />
                   ))
                 ) : (
-                  <Loading />
+                  <Typography
+                    sx={{
+                      height: "50vh",
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {" "}
+                    No search results found{" "}
+                  </Typography>
                 )
-              ) : searched?.length > 0 ? (
-                searched?.map((product) => (
+              ) : searchAllProducts?.length > 0 ? (
+                searchAllProducts?.map((product) => (
                   <AllProducts
                     key={product._id}
                     product={product}
@@ -354,8 +372,8 @@ const Shop = ({ searchText, setSearchText }) => {
                 ) : (
                   <Typography> No search results found </Typography>
                 )
-              ) : searched.length > 0 ? (
-                searched.map((product) => (
+              ) : searchAllProducts.length > 0 ? (
+                searchAllProducts.map((product) => (
                   <ListView
                     key={product._id}
                     product={product}

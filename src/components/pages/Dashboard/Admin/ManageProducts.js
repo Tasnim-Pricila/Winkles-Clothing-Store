@@ -18,7 +18,6 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect } from "react";
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../Loading/Loading";
@@ -30,27 +29,32 @@ import {
   fetchProducts,
   searchByCatAndBrand,
   searchProducts,
+  setBrand,
+  setCategory,
+  setSearchText,
 } from "../../../../Redux/actions/productActions";
 import { fetchBrands } from "../../../../Redux/actions/brandActions";
 import { fetchCategories } from "../../../../Redux/actions/categoryActions";
 
 const ManageProducts = () => {
-  const products = useSelector((state) => state.allProducts.allProducts);
-  const loading = useSelector((state) => state.allProducts.loading);
+  const nav = useNavigate();
+  const dispatch = useDispatch();
   const brands = useSelector((state) => state.brands.brands);
   const categories = useSelector((state) => state.category.categories);
-  const searched = useSelector((state) => state.allProducts.searchAllProducts);
-  const nav = useNavigate();
-
-  const dispatch = useDispatch();
-  const [value, setValue] = useState("");
-  const [search, setSearch] = useState("");
+  const {
+    allProducts,
+    searchAllProducts,
+    loading,
+    brand,
+    category,
+    searchText,
+  } = useSelector((state) => state.allProducts);
 
   useEffect(() => {
-    if (search !== "") {
-      dispatch(searchProducts(search));
+    if (searchText) {
+      dispatch(searchProducts(searchText));
     }
-  }, [dispatch, search]);
+  }, [dispatch, searchText]);
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -59,21 +63,27 @@ const ManageProducts = () => {
   }, [dispatch]);
 
   const handleCategory = (e) => {
-    setValue(e.target.value);
+    dispatch(setCategory(e.target.value));
     document.getElementById("standard-search").value = "";
-    setSearch("");
+    dispatch(setSearchText(""));
     const url = `/products?category=${e.target.value}`;
     dispatch(searchByCatAndBrand(url));
   };
 
   const handleBrand = (e) => {
-    setValue(e.target.value);
+    dispatch(setBrand(e.target.value));
     document.getElementById("standard-search").value = "";
-    setSearch("");
+    dispatch(setSearchText(""));
     const url = `/products?brand=${e.target.value}`;
     dispatch(searchByCatAndBrand(url));
   };
 
+  const handleClear = () => {
+    dispatch(setSearchText(''));
+    dispatch(setBrand(''));
+    dispatch(setCategory(''));
+    dispatch(fetchProducts())
+  };
   return (
     <Box mb={4}>
       <Toolbar
@@ -107,7 +117,7 @@ const ManageProducts = () => {
                     fontSize: "14px",
                     textDecorationColor: "#4b38b3",
                   }}
-                  onClick={() => dispatch(fetchProducts())}
+                  onClick={() => handleClear()}
                 >
                   Clear All
                 </Link>
@@ -130,8 +140,8 @@ const ManageProducts = () => {
                     key={cat?._id}
                     variant="text"
                     sx={{
-                      color: value === cat?.name ? "#4b38b3" : "#495057",
-                      fontWeight: value === cat?.name && "700",
+                      color: category === cat?.name ? "#4b38b3" : "#495057",
+                      fontWeight: category === cat?.name && "700",
                       fontSize: "14px",
                       display: "block",
                       textTransform: "capitalize",
@@ -159,22 +169,22 @@ const ManageProducts = () => {
                   </Typography>
                   <AddBrand></AddBrand>
                 </Box>
-                {brands?.map((brand) => (
+                {brands?.map((b) => (
                   <Button
-                    key={brand?._id}
+                    key={b?._id}
                     sx={{
-                      color: value === brand?.name ? "#4b38b3" : "#495057",
-                      fontWeight: value === brand?.name && "700",
+                      color: brand === b?.name ? "#4b38b3" : "#495057",
+                      fontWeight: brand === b?.name && "700",
                       fontSize: "14px",
                       display: "block",
                       textTransform: "capitalize",
                       minWidth: 0,
                       paddingBottom: "0",
                     }}
-                    value={brand?.name}
+                    value={b?.name}
                     onClick={handleBrand}
                   >
-                    {brand?.name}
+                    {b?.name}
                   </Button>
                 ))}
               </Box>
@@ -213,7 +223,7 @@ const ManageProducts = () => {
                       </InputAdornment>
                     ),
                   }}
-                  onChange={(e) => setSearch(e.target.value)}
+                  onChange={(e) => dispatch(setSearchText(e.target.value))}
                   sx={{
                     ".css-1xp6qmi-MuiInputBase-input-MuiOutlinedInput-input": {
                       fontSize: "14px",
@@ -244,17 +254,23 @@ const ManageProducts = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {search === "" ? (
-                        products?.length > 0 ? (
-                          products?.map((product) => (
-                            <ProductTable product={product} key={product?._id}></ProductTable>
+                      {!searchText ? (
+                        allProducts?.length > 0 ? (
+                          allProducts?.map((product) => (
+                            <ProductTable
+                              product={product}
+                              key={product?._id}
+                            ></ProductTable>
                           ))
                         ) : (
                           <Typography> No results found </Typography>
                         )
-                      ) : searched?.length > 0 ? (
-                        searched?.map((product) => (
-                          <ProductTable product={product} key={product?._id}></ProductTable>
+                      ) : searchAllProducts?.length > 0 ? (
+                        searchAllProducts?.map((product) => (
+                          <ProductTable
+                            product={product}
+                            key={product?._id}
+                          ></ProductTable>
                         ))
                       ) : (
                         <Typography> No results found </Typography>

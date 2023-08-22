@@ -26,8 +26,9 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import logout from "../pages/Auth/logout";
 import { HowToReg, Login, Logout, MoreVert } from "@mui/icons-material";
 import { getMe } from "../../Redux/actions/userActions";
+import { setSearchText } from "../../Redux/actions/productActions";
 
-const Header = ({ setSearchText, searchText }) => {
+const Header = () => {
   const pages = ["home", "shop", "blog", "about", "contact"];
 
   const user = useSelector((state) => state.allUsers.user);
@@ -102,7 +103,7 @@ const Header = ({ setSearchText, searchText }) => {
     px: 60,
   };
   const handleSearch = (e) => {
-    setSearchText(e.target.value);
+    dispatch(setSearchText(e.target.value));
     if (e.key === "Enter") {
       setOpen(!open);
       navigate("/shop");
