@@ -7,7 +7,7 @@ import Footer from "../../shared/Footer";
 import AllProducts from "./AllProducts";
 import LeftSidebar from "./LeftSidebar";
 import ListView from "./ListView";
-import { AddToCart, AddToWishlist } from "../../../utils/commonFunction";
+import { AddToCart, AddToWishlist, goToTop } from "../../../utils/commonFunction";
 import {
   fetchProducts,
   fetchProductsByPagination,
@@ -197,10 +197,7 @@ const Shop = () => {
 
   const handleChange = (event, value) => {
     setSelectedPage(value);
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    goToTop()
   };
   const page = Math.ceil(products?.count / 12);
   const skip = (selectedPage - 1) * 12;

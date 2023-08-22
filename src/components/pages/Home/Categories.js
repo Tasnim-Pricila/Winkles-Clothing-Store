@@ -6,18 +6,16 @@ import men from "../../../images/men.png";
 import kids from "../../../images/kids.png";
 import { useDispatch } from "react-redux";
 import { setCategory } from "../../../Redux/actions/productActions";
+import { goToTop } from "../../../utils/commonFunction";
 
 const Categories = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   const handleCollections = (value) => {
     dispatch(setCategory(value));
     navigate("/shop");
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    goToTop();
   };
 
   const categories = [

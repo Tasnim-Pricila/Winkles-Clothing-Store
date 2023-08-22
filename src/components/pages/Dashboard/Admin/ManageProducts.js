@@ -79,13 +79,13 @@ const ManageProducts = () => {
   };
 
   const handleClear = () => {
-    dispatch(setSearchText(''));
-    dispatch(setBrand(''));
-    dispatch(setCategory(''));
-    dispatch(fetchProducts())
+    dispatch(setSearchText(""));
+    dispatch(setBrand(""));
+    dispatch(setCategory(""));
+    dispatch(fetchProducts());
   };
   return (
-    <Box mb={4}>
+    <Box>
       <Toolbar
         sx={{
           boxShadow: "0 3px 3px rgba(56,65,74,0.1)",
@@ -107,7 +107,7 @@ const ManageProducts = () => {
               }}
             >
               <Box
-                sx={{ display: "flex", justifyContent: "space-between", pb: 2 }}
+                sx={{ display: "flex", justifyContent: "space-between", pb: 1 }}
               >
                 <Typography>Filters</Typography>
                 <Link
@@ -135,25 +135,27 @@ const ManageProducts = () => {
                   <Typography sx={{ fontWeight: "600" }}>Categories</Typography>
                   <AddCategory></AddCategory>
                 </Box>
-                {categories?.map((cat) => (
-                  <Button
-                    key={cat?._id}
-                    variant="text"
-                    sx={{
-                      color: category === cat?.name ? "#4b38b3" : "#495057",
-                      fontWeight: category === cat?.name && "700",
-                      fontSize: "14px",
-                      display: "block",
-                      textTransform: "capitalize",
-                      minWidth: 0,
-                      paddingBottom: "0",
-                    }}
-                    value={cat?.name}
-                    onClick={handleCategory}
-                  >
-                    {cat?.name}
-                  </Button>
-                ))}
+                <Box sx={{ height: "25vh", overflowY: "scroll" }}>
+                  {categories?.map((cat) => (
+                    <Button
+                      key={cat?._id}
+                      variant="text"
+                      sx={{
+                        color: category === cat?.name ? "#4b38b3" : "#495057",
+                        fontWeight: category === cat?.name && "700",
+                        fontSize: "14px",
+                        display: "block",
+                        textTransform: "capitalize",
+                        minWidth: 0,
+                        paddingBottom: "0",
+                      }}
+                      value={cat?.name}
+                      onClick={handleCategory}
+                    >
+                      {cat?.name}
+                    </Button>
+                  ))}
+                </Box>
               </Box>
               <Divider></Divider>
               <Box my={2}>
@@ -169,24 +171,26 @@ const ManageProducts = () => {
                   </Typography>
                   <AddBrand></AddBrand>
                 </Box>
-                {brands?.map((b) => (
-                  <Button
-                    key={b?._id}
-                    sx={{
-                      color: brand === b?.name ? "#4b38b3" : "#495057",
-                      fontWeight: brand === b?.name && "700",
-                      fontSize: "14px",
-                      display: "block",
-                      textTransform: "capitalize",
-                      minWidth: 0,
-                      paddingBottom: "0",
-                    }}
-                    value={b?.name}
-                    onClick={handleBrand}
-                  >
-                    {b?.name}
-                  </Button>
-                ))}
+                <Box sx={{ height: "25vh", overflowY: "scroll" }}>
+                  {brands?.map((b) => (
+                    <Button
+                      key={b?._id}
+                      sx={{
+                        color: brand === b?.name ? "#4b38b3" : "#495057",
+                        fontWeight: brand === b?.name && "700",
+                        fontSize: "14px",
+                        display: "block",
+                        textTransform: "capitalize",
+                        minWidth: 0,
+                        paddingBottom: "0",
+                      }}
+                      value={b?.name}
+                      onClick={handleBrand}
+                    >
+                      {b?.name}
+                    </Button>
+                  ))}
+                </Box>
               </Box>
             </Card>
           </Grid>

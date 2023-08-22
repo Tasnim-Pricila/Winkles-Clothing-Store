@@ -131,7 +131,7 @@ const LeftSidebar = ({ handleClear }) => {
         >
           <Typography>Categories</Typography>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails sx={{ height: "28vh", overflowY: "scroll" }}>
           <FormControl>
             <RadioGroup
               aria-labelledby="demo-radio-buttons-group-label"
@@ -160,7 +160,7 @@ const LeftSidebar = ({ handleClear }) => {
         >
           <Typography>Brands</Typography>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails sx={{ height: "28vh", overflowY: "scroll" }}>
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
             defaultValue="female"

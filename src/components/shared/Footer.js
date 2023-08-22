@@ -9,6 +9,7 @@ import {
   Phone,
 } from "@mui/icons-material";
 import { footerBtn } from "../../utils/design";
+import { goToTop } from "../../utils/commonFunction";
 
 const Footer = () => {
   const style = {
@@ -29,13 +30,6 @@ const Footer = () => {
       }
     });
   }, []);
-
-  const goToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
 
   return (
     <>
