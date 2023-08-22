@@ -141,6 +141,7 @@ const LeftSidebar = ({
             >
               {categories.map((category) => (
                 <FormControlLabel
+                  key={category?._id}
                   value={category.name}
                   label={category.name}
                   sx={{ textTransform: "capitalize" }}
@@ -168,6 +169,7 @@ const LeftSidebar = ({
           >
             {brands.map((brand) => (
               <FormControlLabel
+                key={brand?._id}
                 value={brand.name}
                 label={brand.name}
                 sx={{ textTransform: "capitalize" }}

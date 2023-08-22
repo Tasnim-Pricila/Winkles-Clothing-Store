@@ -82,112 +82,45 @@ const EditProduct = () => {
 
   const handleEdit = async (e) => {
     e.preventDefault();
-    let imgGalleryUrl = [];
     let imgUrl = "";
+    let imgGalleryUrl = [];
 
     const formData = new FormData();
     formData.append("image", myImage);
+    const formGallery = new FormData();
 
-    if (myImage && galleryImg?.gallery) {
+    if (myImage) {
       await axios.post(url, formData).then((response) => {
         if (response?.data?.success) {
           imgUrl = response?.data?.data?.url;
-          const formGallery = new FormData();
-          [...galleryImg?.gallery].forEach((image, i) => {
-            formGallery.append("image", image);
-            axios.post(url, formGallery).then((response) => {
-              if (response?.data?.success) {
-                imgGalleryUrl.push(response?.data?.data?.url);
-                if (i === galleryImg?.gallery?.length - 1) {
-                  const data = {
-                    title: e.target.title.value,
-                    description: e.target.description.value,
-                    price: e.target.price.value,
-                    discount: e.target.discount.value,
-                    quantity: e.target.quantity.value,
-                    unit: e.target.unit.value,
-                    image: imgUrl,
-                    imageGallery: imgGalleryUrl,
-                    category: e.target.category.value,
-                    brand: e.target.brand.value,
-                    stock: e.target.stock.value,
-                  };
-                  dispatch(updateProduct(id, data));
-                  nav("/dashboard/manageProducts");
-                }
-              }
-            });
-          });
         }
       });
-    } else if (myImage) {
-      await axios.post(url, formData).then((response) => {
-        if (response?.data?.success) {
-          imgUrl = response?.data?.data?.url;
-          const data = {
-            title: e.target.title.value,
-            description: e.target.description.value,
-            price: e.target.price.value,
-            discount: e.target.discount.value,
-            quantity: e.target.quantity.value,
-            unit: e.target.unit.value,
-            image: imgUrl,
-            imageGallery: images,
-            category: e.target.category.value,
-            brand: e.target.brand.value,
-            stock: e.target.stock.value,
-          };
-          dispatch(updateProduct(id, data));
-          nav("/dashboard/manageProducts");
-        }
-      });
-    } else if (galleryImg?.gallery) {
-      const formGallery = new FormData();
-      [...galleryImg?.gallery].forEach((image, i) => {
-        formGallery.append("image", image);
-        axios.post(url, formGallery).then((response) => {
-          // console.log('second one', response)
-          if (response?.data?.success) {
-            imgGalleryUrl.push(response?.data?.data?.url);
-            if (i === galleryImg?.gallery?.length - 1) {
-              const data = {
-                title: e.target.title.value,
-                description: e.target.description.value,
-                price: e.target.price.value,
-                discount: e.target.discount.value,
-                quantity: e.target.quantity.value,
-                unit: e.target.unit.value,
-                image: product?.image,
-                imageGallery: imgGalleryUrl,
-                category: e.target.category.value,
-                brand: e.target.brand.value,
-                stock: e.target.stock.value,
-              };
-              // console.log(data)
-              dispatch(updateProduct(id, data));
-              nav("/dashboard/manageProducts");
-            }
-          }
-        });
-      });
-    } else {
-      const data = {
-        title: e.target.title.value,
-        description: e.target.description.value,
-        price: e.target.price.value,
-        discount: e.target.discount.value,
-        quantity: e.target.quantity.value,
-        unit: e.target.unit.value,
-        image: product?.image,
-        imageGallery: images,
-        category: e.target.category.value,
-        brand: e.target.brand.value,
-        stock: e.target.stock.value,
-      };
-      // console.log(data)
-      dispatch(updateProduct(id, data));
-      nav("/dashboard/manageProducts");
     }
+    if (galleryImg?.gallery) {
+      const galleryPromises = [...galleryImg?.gallery].map(async (image) => {
+        formGallery.append("image", image);
+        const response = await axios.post(url, formGallery);
+        if (response?.data?.success) {
+          imgGalleryUrl.push(response?.data?.data?.url);
+        }
+      });
+      await Promise.all(galleryPromises);
+    }
+    const productData = {
+      title: e.target.title.value,
+      description: e.target.description.value,
+      price: e.target.price.value,
+      discount: e.target.discount.value,
+      quantity: e.target.quantity.value,
+      unit: e.target.unit.value,
+      category: e.target.category.value,
+      brand: e.target.brand.value,
+      stock: e.target.stock.value,
+      image: imgUrl ? imgUrl : product?.image,
+      imageGallery: imgGalleryUrl.length > 0 ? imgGalleryUrl : images,
+    };
+    dispatch(updateProduct(id, productData));
+    nav("/dashboard/manageProducts");
   };
 
   return (
@@ -410,8 +343,9 @@ const EditProduct = () => {
                       >
                         {!galleryImg?.galleryPreview && (
                           <Box sx={{ display: "flex" }}>
-                            {images.map((image) => (
+                            {images.map((image, i) => (
                               <img
+                                key={i}
                                 src={image}
                                 alt=""
                                 style={{
@@ -454,6 +388,7 @@ const EditProduct = () => {
                       {galleryImg?.gallery ? (
                         galleryImg?.galleryPreview?.map((g, i) => (
                           <Box
+                            key={i}
                             sx={{
                               display: "flex",
                               gap: "5px",
@@ -669,6 +604,7 @@ const EditProduct = () => {
                       </MenuItem>
                       {brands?.map((brand) => (
                         <MenuItem
+                          key={brand?._id}
                           value={brand?.name}
                           sx={{ textTransform: "capitalize" }}
                         >
@@ -709,6 +645,7 @@ const EditProduct = () => {
                       </MenuItem>
                       {categories?.map((category) => (
                         <MenuItem
+                          key={category?._id}
                           value={category?.name}
                           sx={{ textTransform: "capitalize" }}
                         >

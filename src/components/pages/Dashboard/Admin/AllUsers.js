@@ -163,7 +163,7 @@ const AllUsers = () => {
                     <TableBody>
                       {search === "" ? (
                         users?.map((user, i) => (
-                          <TableRow>
+                          <TableRow key={user?._id}>
                             <TableCell> {i + 1} </TableCell>
                             <TableCell>
                               {" "}
@@ -226,7 +226,7 @@ const AllUsers = () => {
                         ))
                       ) : searchedUser?.length > 0 ? (
                         searchedUser?.map((user, i) => (
-                          <TableRow>
+                          <TableRow key={user?._id}>
                             <TableCell> {i + 1} </TableCell>
                             <TableCell>
                               {" "}

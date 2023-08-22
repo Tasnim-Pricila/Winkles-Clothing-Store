@@ -27,7 +27,12 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../../Loading/Loading";
 import OrdersTable from "./OrdersTable";
 import { successBtn } from "../../../../utils/design";
-import { getAllOrders, orderByFilter, searchOrders, updateorder } from "../../../../Redux/actions/orderActions";
+import {
+  getAllOrders,
+  orderByFilter,
+  searchOrders,
+  updateorder,
+} from "../../../../Redux/actions/orderActions";
 
 const AllOrders = () => {
   const dispatch = useDispatch();
@@ -183,6 +188,7 @@ const AllOrders = () => {
                         orders?.length > 0 ? (
                           orders.map((order, index) => (
                             <OrdersTable
+                              key={index}
                               order={order}
                               index={index}
                               handleDelivery={handleDelivery}
@@ -195,6 +201,7 @@ const AllOrders = () => {
                       ) : searched?.length > 0 ? (
                         searched?.map((order, index) => (
                           <OrdersTable
+                            key={index}
                             order={order}
                             index={index}
                             handleDelivery={handleDelivery}

@@ -41,7 +41,7 @@ const OrdersTable = ({ order, index, handlePayment, handleDelivery }) => {
       <TableCell> {order.name} </TableCell>
       <TableCell>
         {order?.products?.map((product) => (
-          <Typography sx={{ textTransform: "capitalize", fontSize: "12px" }}>
+          <Typography key={product?._id} sx={{ textTransform: "capitalize", fontSize: "12px" }}>
             {" "}
             {product.title}
           </Typography>

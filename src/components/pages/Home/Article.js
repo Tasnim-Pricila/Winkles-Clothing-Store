@@ -54,6 +54,7 @@ const Article = () => {
               <Grid
                 item
                 md={4}
+                key={blog._id}
                 sx={{
                   "&:hover img": {
                     transform: "scale(1.2)",

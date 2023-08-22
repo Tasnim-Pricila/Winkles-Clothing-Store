@@ -59,7 +59,6 @@ const CreateProduct = () => {
     gallery: "",
   });
 
-  // main image
   const [myImage, setImage] = useState("");
   const [imagePreview, setPreview] = useState();
   const getImage = (e) => {
@@ -67,7 +66,6 @@ const CreateProduct = () => {
     setPreview(URL.createObjectURL(e.target.files[0])); //set preview
   };
 
-  // gallery image
   let gallery = [];
   let galleryPreview = [];
   const [galleryImg, setGalleryImg] = useState([
@@ -89,16 +87,19 @@ const CreateProduct = () => {
   const url = `https://api.imgbb.com/1/upload?key=${imgStorageKey}`;
 
   const addProduct = async (e) => {
-    let imgGalleryUrl = [];
     e.preventDefault();
+    let imgGalleryUrl = [];
+    let imgUrl = "";
+    const formData = new FormData();
+    formData.append("image", myImage);
+    const formGallery = new FormData();
     if (productDetails.title === "") {
       setError({ title: "This field is required" });
     } else if (productDetails.description === "") {
       setError({ description: "This field is required" });
     } else if (myImage === "") {
       setError({ myImage: "This field is required" });
-    }
-    else if (productDetails.quantity === "") {
+    } else if (productDetails.quantity === "") {
       setError({ quantity: "This field is required" });
     } else if (productDetails.unit === "") {
       setError({ unit: "This field is required" });
@@ -115,41 +116,32 @@ const CreateProduct = () => {
     } else if (productDetails.stock === "") {
       setError({ stock: "This field is required" });
     } else {
-      const formData = new FormData();
-      formData.append("image", myImage);
-      await axios.post(url, formData).then((response) => {
-        if (response?.data?.success) {
-          const imgUrl = response?.data?.data?.url;
-          // gallery image
-          const formGallery = new FormData();
-          if (galleryImg[0]?.gallery !== "") {
-            [...galleryImg?.gallery]?.forEach((image, i) => {
-              formGallery.append("image", image);
-              axios.post(url, formGallery).then((response) => {
-                if (response?.data?.success) {
-                  imgGalleryUrl.push(response?.data?.data?.url);
-                  if (i === galleryImg?.gallery?.length - 1) {
-                    const data = {
-                      ...productDetails,
-                      image: imgUrl,
-                      imageGallery: imgGalleryUrl,
-                    };
-                    dispatch(postProduct(data));
-                    nav("/dashboard/manageProducts");
-                  }
-                }
-              });
-            });
-          } else {
-            const data = {
-              ...productDetails,
-              image: imgUrl,
-            };
-            dispatch(postProduct(data));
-            nav("/dashboard/manageProducts");
+      if (myImage) {
+        await axios.post(url, formData).then(async (response) => {
+          if (response?.data?.success) {
+            imgUrl = response?.data?.data?.url;
           }
-        }
-      });
+        });
+      }
+      if (galleryImg[0]?.gallery !== "") {
+        const galleryPromises = [...galleryImg?.gallery]?.map(
+          async (image, i) => {
+            formGallery.append("image", image);
+            const response = await axios.post(url, formGallery);
+            if (response?.data?.success) {
+              imgGalleryUrl.push(response?.data?.data?.url);
+            }
+          }
+        );
+        await Promise.all(galleryPromises);
+      }
+      const data = {
+        ...productDetails,
+        image: imgUrl,
+        imageGallery: imgGalleryUrl,
+      };
+      dispatch(postProduct(data));
+      nav("/dashboard/manageProducts");
     }
   };
 
@@ -412,6 +404,7 @@ const CreateProduct = () => {
                 </FormHelperText>
                 {galleryImg?.galleryPreview?.map((g, i) => (
                   <Box
+                    key={i}
                     sx={{
                       display: "flex",
                       gap: "5px",
@@ -662,6 +655,7 @@ const CreateProduct = () => {
                 </MenuItem>
                 {brands?.map((brand) => (
                   <MenuItem
+                    key={brand?._id}
                     value={brand?.name}
                     sx={{ textTransform: "capitalize" }}
                   >
@@ -709,6 +703,7 @@ const CreateProduct = () => {
                 </MenuItem>
                 {categories?.map((category) => (
                   <MenuItem
+                    key={category?._id}
                     value={category?.name}
                     sx={{ textTransform: "capitalize" }}
                   >

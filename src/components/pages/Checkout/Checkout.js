@@ -348,7 +348,7 @@ const Checkout = () => {
                 <TableBody>
                   {cart?.length > 0 &&
                     cart.map((c) => (
-                      <TableRow>
+                      <TableRow key={c?._id}>
                         <TableCell>
                           <img
                             src={c.image}
@@ -391,7 +391,7 @@ const Checkout = () => {
                     </TableCell>
                     <TableCell
                       align="right"
-                      colspan="2"
+                      colSpan={2}
                       sx={{ fontWeight: "bold" }}
                     >
                       TK. {total}
@@ -405,7 +405,7 @@ const Checkout = () => {
                     >
                       Shipping
                     </TableCell>
-                    <TableCell align="right" colspan="2" sx={{ color: "gray" }}>
+                    <TableCell align="right" colSpan="2" sx={{ color: "gray" }}>
                       TK. {shipping}
                     </TableCell>
                   </TableRow>
@@ -419,7 +419,7 @@ const Checkout = () => {
                     </TableCell>
                     <TableCell
                       align="right"
-                      colspan="2"
+                      colSpan={2}
                       sx={{ color: "#c62828", fontWeight: "bold" }}
                     >
                       TK. {subtotal}{" "}

@@ -102,6 +102,7 @@ const MyOrders = () => {
                       >
                         {orders?.map((order, index) => (
                           <OrderTable
+                            key={order?._id}
                             order={order}
                             index={index}
                             handleOrder={handleOrder}

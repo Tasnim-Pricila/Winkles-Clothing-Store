@@ -286,8 +286,9 @@ const Header = ({ setSearchText, searchText }) => {
                   display: { xs: "block", md: "none" },
                 }}
               >
-                {pages.map((page) => (
+                {pages?.map((page) => (
                   <Typography
+                    key={page}
                     component={NavLink}
                     onClick={handleCloseNavMenu}
                     to={`/${page}`}
@@ -343,6 +344,7 @@ const Header = ({ setSearchText, searchText }) => {
             >
               {pages.map((page) => (
                 <Typography
+                  key={page}
                   component={NavLink}
                   to={`/${page}`}
                   sx={{

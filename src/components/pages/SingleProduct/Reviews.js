@@ -42,48 +42,44 @@ const Reviews = ({ reviews, id, user }) => {
       )}
       <Box mt={4}>
         {reviews?.length > 0 ? (
-          reviews?.slice(0, 5).map((review, i) => (
-            <>
-              <Box mb={3}>
+          reviews?.slice(0, 5).map((review) => (
+            <Box mb={3} key={review?._id}>
+              <Box sx={{ display: "flex", gap: "16px", alignItems: "center" }}>
+                <Avatar src={review?.avatar ? review?.avatar : ""} />
                 <Box
-                  sx={{ display: "flex", gap: "16px", alignItems: "center" }}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                  }}
                 >
-                  <Avatar src={review?.avatar ? review?.avatar : ""} />
-                  <Box
+                  <Typography fontWeight="bold" sx={{ fontSize: "15px" }}>
+                    {review.postedBy}
+                  </Typography>
+                  <Typography
                     sx={{
                       display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
+                      fontSize: "14px",
+                      alignItems: "center",
+                      gap: "10px",
                     }}
                   >
-                    <Typography fontWeight="bold" sx={{ fontSize: "15px" }}>
-                      {review.postedBy}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        display: "flex",
-                        fontSize: "14px",
-                        alignItems: "center",
-                        gap: "10px",
-                      }}
-                    >
-                      <Rating
-                        name="read-only"
-                        size="small"
-                        value={review.rating}
-                        precision={0.5}
-                        readOnly
-                      />
-                      {review.summary}
-                    </Typography>
-                  </Box>
+                    <Rating
+                      name="read-only"
+                      size="small"
+                      value={review.rating}
+                      precision={0.5}
+                      readOnly
+                    />
+                    {review.summary}
+                  </Typography>
                 </Box>
-                <Typography mt={1} sx={{ fontSize: "15px" }}>
-                  {" "}
-                  {review?.review}{" "}
-                </Typography>
               </Box>
-            </>
+              <Typography mt={1} sx={{ fontSize: "15px" }}>
+                {" "}
+                {review?.review}{" "}
+              </Typography>
+            </Box>
           ))
         ) : (
           <Typography sx={{ textAlign: "center", fontWeight: "bold" }}>
@@ -103,48 +99,44 @@ const Reviews = ({ reviews, id, user }) => {
           </Typography>
         )}
         {allReviews &&
-          reviews?.slice(5)?.map((review, i) => (
-            <>
-              <Box mb={3}>
+          reviews?.slice(5)?.map((review) => (
+            <Box mb={3} key={review?._id}>
+              <Box sx={{ display: "flex", gap: "16px", alignItems: "center" }}>
+                <Avatar src={review?.avatar ? review?.avatar : ""} />
                 <Box
-                  sx={{ display: "flex", gap: "16px", alignItems: "center" }}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                  }}
                 >
-                  <Avatar src={review?.avatar ? review?.avatar : ""} />
-                  <Box
+                  <Typography fontWeight="bold" sx={{ fontSize: "15px" }}>
+                    {review.postedBy}
+                  </Typography>
+                  <Typography
                     sx={{
                       display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
+                      fontSize: "14px",
+                      alignItems: "center",
+                      gap: "10px",
                     }}
                   >
-                    <Typography fontWeight="bold" sx={{ fontSize: "15px" }}>
-                      {review.postedBy}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        display: "flex",
-                        fontSize: "14px",
-                        alignItems: "center",
-                        gap: "10px",
-                      }}
-                    >
-                      <Rating
-                        name="read-only"
-                        size="small"
-                        value={review.rating}
-                        precision={0.5}
-                        readOnly
-                      />
-                      {review.summary}
-                    </Typography>
-                  </Box>
+                    <Rating
+                      name="read-only"
+                      size="small"
+                      value={review.rating}
+                      precision={0.5}
+                      readOnly
+                    />
+                    {review.summary}
+                  </Typography>
                 </Box>
-                <Typography mt={1} sx={{ fontSize: "15px" }}>
-                  {" "}
-                  {review?.review}{" "}
-                </Typography>
               </Box>
-            </>
+              <Typography mt={1} sx={{ fontSize: "15px" }}>
+                {" "}
+                {review?.review}{" "}
+              </Typography>
+            </Box>
           ))}
       </Box>
     </Card>

@@ -80,7 +80,7 @@ const RelatedProducts = ({ product }) => {
       <Slider {...settings}>
         {categoryWiseProducts?.result?.length > 0 ? (
           categoryWiseProducts?.result?.map((product, i) => (
-            <Box className="slick-list">
+            <Box className="slick-list" key={product._id}>
               <Box
                 onClick={() => navigate(`/product/${product._id}`)}
                 sx={{

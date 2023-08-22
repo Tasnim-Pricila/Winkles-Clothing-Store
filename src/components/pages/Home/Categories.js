@@ -44,8 +44,8 @@ const Categories = () => {
           gap: "10px",
         }}
       >
-        {categories.map((category) => (
-          <Box
+        {categories.map((category, i) => (
+          <Box key={i}
             sx={{
               backgroundImage: `url(${category.image})`,
               backgroundSize: "cover",

@@ -55,7 +55,7 @@ const Blogs = () => {
       >
         {blogs?.length > 0 ? (
           blogs?.map((blog) => (
-            <Grid
+            <Grid key={blog?._id}
               item
               md={4}
               sx={{

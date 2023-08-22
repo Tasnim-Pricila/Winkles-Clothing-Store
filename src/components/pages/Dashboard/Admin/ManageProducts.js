@@ -127,6 +127,7 @@ const ManageProducts = () => {
                 </Box>
                 {categories?.map((cat) => (
                   <Button
+                    key={cat?._id}
                     variant="text"
                     sx={{
                       color: value === cat?.name ? "#4b38b3" : "#495057",
@@ -160,6 +161,7 @@ const ManageProducts = () => {
                 </Box>
                 {brands?.map((brand) => (
                   <Button
+                    key={brand?._id}
                     sx={{
                       color: value === brand?.name ? "#4b38b3" : "#495057",
                       fontWeight: value === brand?.name && "700",
@@ -245,14 +247,14 @@ const ManageProducts = () => {
                       {search === "" ? (
                         products?.length > 0 ? (
                           products?.map((product) => (
-                            <ProductTable product={product}></ProductTable>
+                            <ProductTable product={product} key={product?._id}></ProductTable>
                           ))
                         ) : (
                           <Typography> No results found </Typography>
                         )
                       ) : searched?.length > 0 ? (
                         searched?.map((product) => (
-                          <ProductTable product={product}></ProductTable>
+                          <ProductTable product={product} key={product?._id}></ProductTable>
                         ))
                       ) : (
                         <Typography> No results found </Typography>

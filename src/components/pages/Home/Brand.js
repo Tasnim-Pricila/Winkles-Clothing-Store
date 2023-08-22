@@ -84,7 +84,7 @@ const Brand = () => {
     >
       <Slider {...settings}>
         {image.map((i) => (
-          <Box>
+          <Box key={i}>
             <div
               style={{
                 display: " flex",

@@ -32,7 +32,7 @@ const Delivery = () => {
     <Box sx={{ px: { md: 16, xs: 4 } }} py={16} bgcolor="whitesmoke">
       <Grid container>
         {delivery.map((d, index) => (
-          <Grid
+          <Grid key={index}
             item
             xs={12}
             md={4}

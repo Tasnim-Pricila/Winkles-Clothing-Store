@@ -87,8 +87,8 @@ const Trending = ({ products }) => {
       </Typography>
       <Slider {...settings}>
         {trending?.length > 0 ? (
-          trending?.map((product, i) => (
-            <Box className="slick-list">
+          trending?.map((product) => (
+            <Box className="slick-list" key={product._id}>
               <Box
                 onClick={() => navigate(`/product/${product._id}`)}
                 sx={{

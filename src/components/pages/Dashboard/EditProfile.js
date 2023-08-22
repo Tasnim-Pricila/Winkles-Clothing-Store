@@ -37,53 +37,35 @@ const EditProfile = () => {
 
   const getImage = (e) => {
     setImage(e.target.files[0]);
-    setPreview(URL.createObjectURL(e.target.files[0])); 
+    setPreview(URL.createObjectURL(e.target.files[0]));
   };
 
   const handleUpdate = async (e) => {
     e.preventDefault();
+    let imgUrl = "";
     const formData = new FormData();
     formData.append("image", myImage);
+
     if (myImage) {
       await axios.post(url, formData).then(async (response) => {
-        // console.log(response)
         if (response?.data?.success) {
-          const imgUrl = response?.data?.data?.url;
-          await dispatch(
-            updateUserAction({
-              firstName: e.target.firstName.value,
-              lastName: e.target.lastName.value,
-              phone: e.target.phone.value,
-              address: e.target.address.value,
-              country: e.target.country.value,
-              imageUrl: imgUrl,
-            })
-          );
-          navigate("/dashboard/profile");
-          toast.success("Profile Updated Successfully ", {
-            theme: "colored",
-          });
+          imgUrl = response?.data?.data?.url;
         }
       });
-    } else {
-      await dispatch(
-        updateUserAction({
-          firstName: e.target.firstName.value,
-          lastName: e.target.lastName.value,
-          phone: e.target.phone.value,
-          address: e.target.address.value,
-          country: e.target.country.value,
-        })
-      );
-      navigate("/dashboard/profile");
-      toast.success("Profile Updated Successfully ", {
-        theme: "colored",
-      });
     }
-  };
-
-  const handleCancel = () => {
+    const data = {
+      firstName: e.target.firstName.value,
+      lastName: e.target.lastName.value,
+      phone: e.target.phone.value,
+      address: e.target.address.value,
+      country: e.target.country.value,
+      imageUrl: imgUrl ? imgUrl : imageUrl,
+    };
+    await dispatch(updateUserAction(data));
     navigate("/dashboard/profile");
+    toast.success("Profile Updated Successfully ", {
+      theme: "colored",
+    });
   };
 
   const removePhoto = async () => {
@@ -442,7 +424,7 @@ const EditProfile = () => {
                       <Button
                         variant="contained"
                         sx={dangerBtn}
-                        onClick={handleCancel}
+                        onClick={() => navigate("/dashboard/profile")}
                       >
                         {" "}
                         Cancel{" "}
