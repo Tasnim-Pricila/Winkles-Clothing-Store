@@ -233,7 +233,6 @@ const CreateProduct = () => {
                 </Typography>
               </Box>
             </Card>
-
             <Card
               variant="outlined"
               sx={{ p: 2, boxShadow: "0 3px 3px rgba(56,65,74,0.1)", mt: 3 }}
@@ -445,7 +444,6 @@ const CreateProduct = () => {
                 ))}
               </Box>
             </Card>
-
             <Card
               variant="outlined"
               sx={{ p: 2, boxShadow: "0 3px 3px rgba(56,65,74,0.1)", mt: 3 }}
@@ -619,7 +617,6 @@ const CreateProduct = () => {
               </Button>
             </Box>
           </Grid>
-
           <Grid item xs={12} md={5} height="100%">
             <Card
               variant="outlined"

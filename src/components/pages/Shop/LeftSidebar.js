@@ -19,16 +19,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { Box } from "@mui/system";
 import { fetchBrands } from "../../../Redux/actions/brandActions";
 import { fetchCategories } from "../../../Redux/actions/categoryActions";
-
-const LeftSidebar = ({
+import {
+  setBrand,
   setCategory,
   setGtPrice,
-  setStock,
-  brand,
-  setBrand,
   setLtPrice,
-  handleClear,
-}) => {
+  setStock,
+} from "../../../Redux/actions/productActions";
+
+const LeftSidebar = ({ handleClear }) => {
   const brands = useSelector((state) => state.brands.brands);
   const categories = useSelector((state) => state.category.categories);
 
@@ -77,13 +76,13 @@ const LeftSidebar = ({
                 value="In Stock"
                 control={<Radio />}
                 label="In Stock"
-                onChange={(e) => setStock(e.target.value)}
+                onChange={(e) => dispatch(setStock(e.target.value))}
               />
               <FormControlLabel
                 value="Out of Stock"
                 control={<Radio />}
                 label="Out of Stock"
-                onChange={(e) => setStock(e.target.value)}
+                onChange={(e) => dispatch(setStock(e.target.value))}
               />
             </RadioGroup>
           </FormControl>
@@ -103,7 +102,7 @@ const LeftSidebar = ({
             <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
             <OutlinedInput
               id="outlined-adornment-amount"
-              onChange={(e) => setGtPrice(e.target.value)}
+              onChange={(e) => dispatch(setGtPrice(e.target.value))}
               startAdornment={
                 <InputAdornment position="start">$</InputAdornment>
               }
@@ -115,7 +114,7 @@ const LeftSidebar = ({
             <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
             <OutlinedInput
               id="outlined-adornment-amount"
-              onChange={(e) => setLtPrice(e.target.value)}
+              onChange={(e) => dispatch(setLtPrice(e.target.value))}
               startAdornment={
                 <InputAdornment position="start">$</InputAdornment>
               }
@@ -146,7 +145,7 @@ const LeftSidebar = ({
                   label={category.name}
                   sx={{ textTransform: "capitalize" }}
                   control={<Radio />}
-                  onChange={(e) => setCategory(e.target.value)}
+                  onChange={(e) => dispatch(setCategory(e.target.value))}
                 />
               ))}
             </RadioGroup>
@@ -174,7 +173,7 @@ const LeftSidebar = ({
                 label={brand.name}
                 sx={{ textTransform: "capitalize" }}
                 control={<Radio />}
-                onChange={(e) => setBrand(e.target.value)}
+                onChange={(e) => dispatch(setBrand(e.target.value))}
               />
             ))}
           </RadioGroup>

@@ -13,6 +13,12 @@ const initialState = {
   wishlist: [],
   loading: false,
   trending: [],
+  stock: "",
+  brand: "",
+  category: "",
+  ltPrice: "",
+  gtPrice: "",
+  searchText: ""
 };
 
 const productReducer = (state = initialState, action) => {
@@ -104,6 +110,36 @@ const productReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
+      };
+    case actionTypes.SET_STOCK:
+      return {
+        ...state,
+        stock: action.payload,
+      };
+    case actionTypes.SET_BRAND:
+      return {
+        ...state,
+        brand: action.payload,
+      };
+    case actionTypes.SET_CATEGORY:
+      return {
+        ...state,
+        category: action.payload,
+      };
+    case actionTypes.SET_LTPRICE:
+      return {
+        ...state,
+        ltPrice: action.payload,
+      };
+    case actionTypes.SET_GTPRICE:
+      return {
+        ...state,
+        gtPrice: action.payload,
+      };
+    case actionTypes.SET_SEARCHTEXT:
+      return {
+        ...state,
+        searchText: action.payload,
       };
     default:
       return state;

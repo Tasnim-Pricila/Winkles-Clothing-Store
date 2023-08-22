@@ -243,9 +243,6 @@ export const adjustQty = (productId, data) => {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     });
-    // dispatch({
-    //   type: actionTypes.ADJUST_QTY,
-    // });
   };
 };
 
@@ -255,6 +252,43 @@ export const searchProducts = (text) => {
     payload: {
       searchText: text,
     },
+  };
+};
+
+export const setStock = (data) => {
+  return {
+    type: actionTypes.SET_STOCK,
+    payload: data,
+  };
+};
+export const setSearchText = (data) => {
+  return {
+    type: actionTypes.SET_SEARCHTEXT,
+    payload: data,
+  };
+};
+export const setBrand = (data) => {
+  return {
+    type: actionTypes.SET_BRAND,
+    payload: data,
+  };
+};
+export const setCategory = (data) => {
+  return {
+    type: actionTypes.SET_CATEGORY,
+    payload: data,
+  };
+};
+export const setLtPrice = (data) => {
+  return {
+    type: actionTypes.SET_LTPRICE,
+    payload: data,
+  };
+};
+export const setGtPrice = (data) => {
+  return {
+    type: actionTypes.SET_GTPRICE,
+    payload: data,
   };
 };
 

@@ -9,25 +9,29 @@ import AllProducts from "./AllProducts";
 import LeftSidebar from "./LeftSidebar";
 import ListView from "./ListView";
 import { AddToCart, AddToWishlist } from "../../../utils/commonFunction";
-import { fetchProductsByPagination, searchByFilter, searchProductsbyPagination } from "../../../Redux/actions/productActions";
+import {
+  fetchProductsByPagination,
+  searchByFilter,
+  searchProductsbyPagination,
+} from "../../../Redux/actions/productActions";
 
 const Shop = ({ searchText, setSearchText }) => {
-  const products = useSelector((state) => state.allProducts.products);
-  const searched = useSelector((state) => state.allProducts.searchProducts);
-  const user = useSelector((state) => state.allUsers.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [category, setCategory] = useState("");
-  const [brand, setBrand] = useState("");
-  const [gtPrice, setGtPrice] = useState("");
-  const [ltPrice, setLtPrice] = useState("");
-  const [stock, setStock] = useState("");
+
+  // const products = useSelector((state) => state.allProducts.products);
+  const searched = useSelector((state) => state.allProducts.searchProducts);
+  const { products, stock, brand, category, ltPrice, gtPrice } = useSelector(
+    (state) => state.allProducts
+  );
+  const user = useSelector((state) => state.allUsers.user);
   const [grid, setGrid] = useState(true);
   const [list, setList] = useState(false);
   const location = useLocation();
   const [selectedPage, setSelectedPage] = useState(1);
+  console.log(selectedPage);
 
-  const handleChange = (event, value) => {
+  const handleChange = (value) => {
     setSelectedPage(value);
     if (
       location?.state?.value &&
@@ -230,19 +234,7 @@ const Shop = ({ searchText, setSearchText }) => {
         sx={{ mt: 2, px: { md: 16, xs: 4 } }}
       >
         <Grid item xs={12} md={3} sx={{ order: { xs: 1, md: 0 } }}>
-          <LeftSidebar
-            category={category}
-            setCategory={setCategory}
-            gtPrice={gtPrice}
-            setGtPrice={setGtPrice}
-            stock={stock}
-            setStock={setStock}
-            brand={brand}
-            setBrand={setBrand}
-            setLtPrice={setLtPrice}
-            ltPrice={ltPrice}
-            handleClear={handleClear}
-          />
+          <LeftSidebar handleClear={handleClear} />
         </Grid>
 
         <Grid item xs={12} md={9}>

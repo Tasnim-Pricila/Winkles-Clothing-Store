@@ -4,11 +4,16 @@ import { useNavigate } from "react-router-dom";
 import women from "../../../images/women.png";
 import men from "../../../images/men.png";
 import kids from "../../../images/kids.png";
+import { useDispatch } from "react-redux";
+import { setCategory } from "../../../Redux/actions/productActions";
 
 const Categories = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  
   const handleCollections = (value) => {
-    navigate("/shop", { state: { value } });
+    dispatch(setCategory(value));
+    navigate("/shop");
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -45,7 +50,8 @@ const Categories = () => {
         }}
       >
         {categories.map((category, i) => (
-          <Box key={i}
+          <Box
+            key={i}
             sx={{
               backgroundImage: `url(${category.image})`,
               backgroundSize: "cover",
@@ -93,7 +99,7 @@ const Categories = () => {
                 <Typography
                   pt={2}
                   sx={{ cursor: "pointer", fontWeight: "bold" }}
-                  onClick={() => handleCollections(category.link)}
+                  onClick={() => handleCollections(category?.link)}
                 >
                   {" "}
                   view collection{" "}
