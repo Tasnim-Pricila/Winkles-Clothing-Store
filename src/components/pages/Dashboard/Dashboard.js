@@ -18,7 +18,7 @@ import React, { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
   AccountCircle,
   Add,
@@ -40,6 +40,7 @@ const Dashboard = (props) => {
   const { user, loading: userLoading } = useSelector((state) => state.allUsers);
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const drawerWidth = 240;
@@ -301,6 +302,7 @@ const Dashboard = (props) => {
     handleClose();
     logout();
     await dispatch(getMe());
+    navigate('/login')
   };
 
   if (userLoading) {
@@ -439,23 +441,18 @@ const Dashboard = (props) => {
                 </NavLink>
 
                 <Divider />
-                <NavLink
-                  to="/login"
-                  onClick={handleLogout}
-                  style={{
-                    textDecoration: "none",
-                    color: "black",
-                  }}
-                >
+               
                   <Button
                     sx={{
                       color: "black",
+                      mt: 1,
+                      width: "100%"
                     }}
+                    onClick={handleLogout}
                     startIcon={<Logout sx={{ color: "#878a99" }} />}
                   >
                     Logout
                   </Button>
-                </NavLink>
                 <br />
               </Typography>
             </Popover>

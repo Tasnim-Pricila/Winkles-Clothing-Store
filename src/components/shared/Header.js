@@ -109,6 +109,7 @@ const Header = () => {
     handleCloseUserMenu();
     logout();
     await dispatch(getMe());
+    navigate("/login");
   };
   const location = useLocation();
   const token = localStorage.getItem("accessToken");
@@ -446,24 +447,17 @@ const Header = () => {
                           My Dashboard
                         </Typography>
                       </NavLink>
-                      <NavLink
-                        to="/login"
-                        style={{
-                          textDecoration: "none",
-                          textTransform: "uppercase",
+                      <Button
+                        onClick={handleLogout}
+                        sx={{
                           color: "black",
+                          mt: 1,
+                          width: "100%",
                         }}
+                        startIcon={<Logout sx={{ color: "#878a99" }} />}
                       >
-                        <Button
-                          onClick={handleLogout}
-                          sx={{
-                            color: "black",
-                          }}
-                          startIcon={<Logout sx={{ color: "#878a99" }} />}
-                        >
-                          Logout
-                        </Button>
-                      </NavLink>
+                        Logout
+                      </Button>
                     </>
                   )}
                 </MenuItem>
