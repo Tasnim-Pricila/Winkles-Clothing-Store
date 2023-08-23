@@ -6,30 +6,37 @@ import { useDispatch, useSelector } from "react-redux";
 import { Img, cart } from "../../../utils/design";
 import { AddToCart } from "../../../utils/commonFunction";
 import { useNavigate } from "react-router-dom";
-import { addToWishlist, fetchProducts } from "../../../Redux/actions/productActions";
+import {
+  addToWishlist,
+  fetchProducts,
+} from "../../../Redux/actions/productActions";
 import { getMe } from "../../../Redux/actions/userActions";
+import { toast } from "react-toastify";
 
 const WishlistItem = ({ wishlistItem }) => {
   const navigate = useNavigate();
-  const { _id, title, price, quantity, image } = wishlistItem;
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.allUsers.user);
+  const { _id, title, price, quantity, image } = wishlistItem;
+  const { user } = useSelector((state) => state.allUsers);
   const wishlist = user?.wishlist?.product;
   const products = useSelector((state) => state.allProducts.allProducts);
+
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  const handleRemove = (id) => {
-    dispatch(getMe());
+  const handleRemove = async (id) => {
     const newWishlist = wishlist?.filter((w) => w._id !== id);
     const wishlistData = {
       wishlist: {
         product: newWishlist,
       },
     };
-    dispatch(addToWishlist(user?._id, wishlistData));
-    dispatch(getMe());
+    await dispatch(addToWishlist(user?._id, wishlistData));
+    await dispatch(getMe());
+    toast.success("Product Removed from Cart", {
+      theme: "colored",
+    });
   };
 
   let newCart = user?.cart?.product;

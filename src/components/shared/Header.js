@@ -40,10 +40,6 @@ const Header = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getMe());
-  }, [dispatch]);
-
-  useEffect(() => {
     let count = 0;
     cart?.length > 0 &&
       cart.forEach((item) => {
@@ -109,11 +105,10 @@ const Header = () => {
       navigate("/shop");
     }
   };
-  const handleLogout = () => {
-    dispatch(getMe());
+  const handleLogout = async () => {
     handleCloseUserMenu();
     logout();
-    dispatch(getMe());
+    await dispatch(getMe());
   };
   const location = useLocation();
   const token = localStorage.getItem("accessToken");

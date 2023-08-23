@@ -17,6 +17,7 @@ export const fetchProducts = () => {
       })
       .catch((err) => {
         if (err.response.data.status === "fail") {
+          dispatch({ type: actionTypes.LOADING_STOP });
           toast.error(err.response.data.error, {
             theme: "colored",
           });
@@ -31,7 +32,6 @@ export const fetchProducts = () => {
 export const trendingProducts = () => {
   return async (dispatch) => {
     const response = await Api.get("/products/trending");
-    // console.log(response.data?.data);
     dispatch({
       type: actionTypes.TRENDING_PRODUCTS,
       payload: response.data?.data,
@@ -54,6 +54,7 @@ export const fetchProductsByPagination = (page) => {
       })
       .catch((err) => {
         if (err.response.data.status === "fail") {
+          dispatch({ type: actionTypes.LOADING_STOP });
           toast.error(err.response.data.error, {
             theme: "colored",
           });
@@ -234,10 +235,24 @@ export const addToWishlist = (userId, data) => {
 
 export const adjustQty = (productId, data) => {
   return async (dispatch) => {
+    dispatch({ type: actionTypes.LOADING });
     await Api.patch(`/users/me/${productId}`, data, {
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
+    })
+    .then((data) => {
+      if (data?.data?.status === "success") {
+        dispatch({ type: actionTypes.LOADING_STOP });
+      }
+    })
+    .catch((err) => {
+      if (err.response.data.status === "fail") {
+        dispatch({ type: actionTypes.LOADING_STOP });
+        toast.error(err.response.data.error, {
+          theme: "colored",
+        });
+      }
     });
   };
 };
@@ -253,7 +268,7 @@ export const searchProducts = (text) => {
 
 export const searchByFilter = (url) => {
   return async (dispatch) => {
-    dispatch({ type: actionTypes.LOADING });
+    // dispatch({ type: actionTypes.LOADING });
     await Api.get(url)
       .then((data) => {
         if (data?.data?.status === "success") {
@@ -261,7 +276,7 @@ export const searchByFilter = (url) => {
             type: actionTypes.SEARCH_BY_FILTER,
             payload: data?.data?.data,
           });
-          dispatch({ type: actionTypes.LOADING_STOP });
+          // dispatch({ type: actionTypes.LOADING_STOP });
         }
       })
       .catch((err) => {
@@ -279,11 +294,9 @@ export const searchByFilter = (url) => {
 
 export const searchByCatAndBrand = (url) => {
   return async (dispatch) => {
-    // console.log(url);
     dispatch({ type: actionTypes.LOADING });
     await Api.get(url)
       .then((data) => {
-        // console.log(data.data);
         if (data?.data?.status === "success") {
           dispatch({
             type: actionTypes.SEARCH_BY_CAT_BRAND,
@@ -293,8 +306,8 @@ export const searchByCatAndBrand = (url) => {
         }
       })
       .catch((err) => {
-        // console.log(err.response.data)
         if (err.response.data.status === "fail") {
+          dispatch({ type: actionTypes.LOADING_STOP });
           toast.error(err.response.data.error, {
             theme: "colored",
           });

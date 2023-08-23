@@ -17,18 +17,13 @@ import { Box } from "@mui/system";
 import Loading from "../Loading/Loading";
 import { AddToCart, AddToWishlist } from "../../../utils/commonFunction";
 import { cart, wishlistBtn } from "../../../utils/design";
-import { getMe } from "../../../Redux/actions/userActions";
 
 const Product = ({ product, products }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.allUsers.user);
+  const {user, loading: userLoading} = useSelector((state) => state.allUsers);
   const loading = useSelector((state) => state.allProducts.loading);
   const [avgRating, setAvgRating] = useState(0);
-
-  useEffect(() => {
-    dispatch(getMe());
-  }, [dispatch]);
 
   let newCart = user?.cart?.product;
   const handleAddToCart = (id) => {
@@ -49,7 +44,7 @@ const Product = ({ product, products }) => {
     setAvgRating(sum / product.reviews?.length);
   }, [avgRating, product.reviews]);
 
-  if (loading) {
+  if (loading || userLoading) {
     return <Loading />;
   }
 

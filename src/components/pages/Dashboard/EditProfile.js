@@ -8,7 +8,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CameraAlt } from "@mui/icons-material";
@@ -16,17 +16,13 @@ import axios from "axios";
 import avatar from "../../../images/avatar.png";
 import { toast } from "react-toastify";
 import { successBtn, dangerBtn } from "../../../utils/design";
-import { getMe, updateUserAction } from "../../../Redux/actions/userActions";
+import { updateUserAction } from "../../../Redux/actions/userActions";
 
 const EditProfile = () => {
-  const user = useSelector((state) => state.allUsers.user);
+  const { user } = useSelector((state) => state.allUsers);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { firstName, lastName, email, imageUrl, createdAt } = user;
-
-  useEffect(() => {
-    dispatch(getMe());
-  }, [dispatch]);
 
   // image upload
   const imgStorageKey = "966d2411c1e18d4935625f7409fb75e7";

@@ -14,11 +14,11 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 import {
   AccountCircle,
   Add,
@@ -34,19 +34,15 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import logout from "../Auth/logout";
 import { getMe } from "../../../Redux/actions/userActions";
+import Loading from "../Loading/Loading";
 
 const Dashboard = (props) => {
-  const user = useSelector((state) => state.allUsers.user);
+  const { user, loading: userLoading } = useSelector((state) => state.allUsers);
   const dispatch = useDispatch();
   const location = useLocation();
-  const navigate = useNavigate();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const drawerWidth = 240;
-
-  useEffect(() => {
-    dispatch(getMe());
-  }, [dispatch]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -77,8 +73,8 @@ const Dashboard = (props) => {
       <Divider />
       <List>
         {/* Admin   */}
-        {user.length !== 0 ? (
-          user?.role === "admin" ? (
+        {user?.email &&
+          (user?.role === "admin" ? (
             <>
               <ListItem disablePadding>
                 <ListItemButton>
@@ -251,10 +247,7 @@ const Dashboard = (props) => {
                 </ListItemButton>
               </ListItem>
             </>
-          )
-        ) : (
-          navigate("/login")
-        )}
+          ))}
 
         {/* All  */}
         <ListItem disablePadding>
@@ -304,13 +297,15 @@ const Dashboard = (props) => {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
-  const handleLogout = () => {
-    dispatch(getMe());
+  const handleLogout = async () => {
     handleClose();
     logout();
-    dispatch(getMe());
+    await dispatch(getMe());
   };
 
+  if (userLoading) {
+    return <Loading />;
+  }
   return (
     <div>
       <Box sx={{ display: "flex" }}>

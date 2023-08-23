@@ -2,7 +2,6 @@ import actionTypes from "../constants";
 
 const initialState = {
   products: [],
-  filter: [],
   searchAllProducts: [],
   addProduct: [],
   product: [],
@@ -87,9 +86,6 @@ const productReducer = (state = initialState, action) => {
         searchAllProducts: state.allProducts.filter((product) =>
           product.title.includes(action.payload.searchText.toLowerCase())
         ),
-        // allProducts: state.allProducts.filter((product) =>
-        //   product.title.includes(action.payload.searchText.toLowerCase())
-        // ),
       };
 
     case actionTypes.LOADING:

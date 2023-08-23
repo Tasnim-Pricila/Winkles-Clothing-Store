@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 const CartItem = ({ cartItem }) => {
   const { _id, title, price, qty, quantity, image, discount } = cartItem;
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.allUsers.user);
+  const {user} = useSelector((state) => state.allUsers);
   const cart = user?.cart?.product;
 
   const discountAmount = discount && (+price * +discount) / 100;
@@ -42,6 +42,8 @@ const CartItem = ({ cartItem }) => {
   const decrease = () => {
     decreaseQty(dispatch, qty, cartItem);
   };
+  
+ 
 
   return (
     <TableRow sx={{ p: 0 }}>

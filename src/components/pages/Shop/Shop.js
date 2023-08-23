@@ -20,6 +20,7 @@ import {
   setSearchText,
   setStock,
 } from "../../../Redux/actions/productActions";
+import Loading from "../Loading/Loading";
 
 const Shop = () => {
   const dispatch = useDispatch();
@@ -379,7 +380,7 @@ const Shop = () => {
                   />
                 ))
               ) : (
-                <Typography> No search results found </Typography>
+                <Loading/>
               )}
             </Box>
           )}

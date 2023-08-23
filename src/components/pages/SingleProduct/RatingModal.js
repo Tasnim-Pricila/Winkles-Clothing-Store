@@ -11,25 +11,24 @@ import React from "react";
 import StarIcon from "@mui/icons-material/Star";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import { ratingModalStyle } from "../../../utils/design";
-import { getMe } from "../../../Redux/actions/userActions";
-import { createReview, fetchReviewbyProductId } from "../../../Redux/actions/reviewActions";
+import {
+  createReview,
+  fetchReviewbyProductId,
+} from "../../../Redux/actions/reviewActions";
+import { toast } from "react-toastify";
 
 const RatingModal = ({ id }) => {
+  const dispatch = useDispatch();
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [value, setValue] = useState(0);
   const [hover, setHover] = useState(0);
   const [review, setReview] = useState("");
-  const user = useSelector((state) => state.allUsers.user);
-  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.allUsers);
   const { firstName, lastName, imageUrl } = user;
-
-  useEffect(() => {
-    dispatch(getMe());
-  }, [dispatch]);
 
   const labels = {
     0.5: "Useless",
@@ -48,8 +47,7 @@ const RatingModal = ({ id }) => {
     return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
   };
 
-  const handleReview = () => {
-    dispatch(fetchReviewbyProductId(id));
+  const handleReview = async () => {
     const data = {
       rating: value,
       summary: labels[value],
@@ -58,11 +56,14 @@ const RatingModal = ({ id }) => {
       avatar: imageUrl,
       productId: id,
     };
-    dispatch(createReview(data));
+    await dispatch(createReview(data));
     handleClose();
     setValue(0);
     setReview("");
     dispatch(fetchReviewbyProductId(id));
+    toast.success("Review Submitted", {
+      theme: "colored",
+    });
   };
 
   return (

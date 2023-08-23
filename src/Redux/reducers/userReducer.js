@@ -5,6 +5,7 @@ const initialState = {
   user: [],
   updateUser: [],
   searchUsers: [],
+  loading: false,
 };
 
 const userReducer = (state = initialState, action) => {
@@ -39,6 +40,16 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         updateUser: action.payload,
+      };
+    case actionTypes.USER_LOADING:
+      return {
+        ...state,
+        loading: true,
+      };
+    case actionTypes.USER_LOADING_STOP:
+      return {
+        ...state,
+        loading: false,
       };
 
     default:

@@ -27,6 +27,7 @@ export const searchUsers = (text) => {
 export const getMe = () => {
   return async (dispatch) => {
     try {
+      dispatch({ type: actionTypes.USER_LOADING });
       const response = await Api.get(`/users/me`, {
         headers: {
           authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -37,10 +38,11 @@ export const getMe = () => {
           type: actionTypes.GET_ME,
           payload: response.data.data,
         });
+        dispatch({ type: actionTypes.USER_LOADING_STOP });
       }
     } catch (error) {
-      // console.log(error.response.data.status)
       if (error.response.data.status === "fail") {
+        dispatch({ type: actionTypes.USER_LOADING_STOP });
         dispatch({
           type: actionTypes.GET_ME,
           payload: [],

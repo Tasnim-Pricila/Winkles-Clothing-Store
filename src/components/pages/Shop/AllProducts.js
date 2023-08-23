@@ -18,6 +18,7 @@ import { cart, wishlistBtn } from "../../../utils/design";
 const AllProducts = ({ product, handleAddToCart, handleWishlist }) => {
   const navigate = useNavigate();
   const loading = useSelector((state) => state.allProducts.loading);
+  const userLoading = useSelector((state) => state.allUsers.loading);
   const [avgRating, setAvgRating] = useState(0);
 
   const discount = (+product.price * +product.discount) / 100;
@@ -29,7 +30,7 @@ const AllProducts = ({ product, handleAddToCart, handleWishlist }) => {
     setAvgRating(sum / product.reviews?.length);
   }, [avgRating, product.reviews]);
 
-  if (loading) {
+  if (loading || userLoading) {
     return <Loading />;
   }
   return (

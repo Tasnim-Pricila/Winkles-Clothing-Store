@@ -114,7 +114,7 @@ export const decreaseQty = async (dispatch, qty, product) => {
       qty: qty - 1,
     };
     await dispatch(adjustQty(product._id, cartData));
-    await dispatch(getMe());
+    dispatch(getMe());
     toast.success("Quantity decreased", {
       theme: "colored",
     });

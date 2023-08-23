@@ -9,22 +9,18 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
 import { useSelector } from "react-redux";
 import WishlistItem from "./WishlistItem";
 import Footer from "../../shared/Footer";
+import Loading from "../Loading/Loading";
 
 const Wishlist = () => {
-  const user = useSelector((state) => state.allUsers.user);
+  const { user, loading: userLoading } = useSelector((state) => state.allUsers);
   const wishlist = user?.wishlist?.product;
-  const [countWishlist, setCountWishlist] = useState(0);
 
-  useEffect(() => {
-    wishlist?.length > 0 && setCountWishlist(wishlist?.length);
-  }, [wishlist, countWishlist]);
-
-  return (
+  return userLoading ? (
+    <Loading />
+  ) : (
     <>
       <Box
         sx={{

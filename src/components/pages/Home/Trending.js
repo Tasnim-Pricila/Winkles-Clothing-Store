@@ -9,20 +9,15 @@ import { FavoriteBorder, ShoppingCart } from "@mui/icons-material";
 import { AddToCart, AddToWishlist } from "../../../utils/commonFunction";
 import { cart, wishlistBtn } from "../../../utils/design";
 import { trendingProducts } from "../../../Redux/actions/productActions";
-import { getMe } from "../../../Redux/actions/userActions";
 
 const Trending = ({ products }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.allUsers.user);
-  const trending = useSelector((state) => state.allProducts.trending);
+  const {user, loading: userLoading} = useSelector((state) => state.allUsers);
+  const {trending, loading} = useSelector((state) => state.allProducts);
 
   useEffect(() => {
     dispatch(trendingProducts());
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(getMe());
   }, [dispatch]);
 
   let newCart = user?.cart?.product;
@@ -70,6 +65,9 @@ const Trending = ({ products }) => {
       },
     ],
   };
+  if (loading || userLoading) {
+    return <Loading />;
+  }
 
   return (
     <Box sx={{ mx: { md: 16, xs: 4 }, mb: 10 }}>

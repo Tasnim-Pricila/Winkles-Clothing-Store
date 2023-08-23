@@ -19,13 +19,12 @@ import { continueButton, checkout } from "../../../utils/design";
 
 const Cart = () => {
   const navigate = useNavigate();
-  const user = useSelector((state) => state.allUsers.user);
+  const {user, loading: userLoading} = useSelector((state) => state.allUsers);
   const loading = useSelector((state) => state.allProducts.loading);
 
   const cart = user?.cart?.product;
-
   const [total, setTotal] = useState(0);
-
+  
   useEffect(() => {
     let total = 0;
     cart?.forEach((item) => {
@@ -50,7 +49,7 @@ const Cart = () => {
     navigate("/shop");
   };
 
-  if (loading) {
+  if (loading || userLoading) {
     return <Loading />;
   }
 

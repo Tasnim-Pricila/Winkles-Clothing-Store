@@ -35,21 +35,20 @@ const SingleProduct = () => {
   const [avgRating, setAvgRating] = useState(0);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.allUsers.user);
-  const state = useSelector((state) => state.allProducts);
-  const products = state.allProducts;
-  let product = state.product;
+  const { user, loading: userLoading } = useSelector((state) => state.allUsers);
+  const {
+    allProducts: products,
+    product,
+    loading,
+  } = useSelector((state) => state.allProducts);
   let { quantity } = product;
   const getCart = user?.cart?.product?.find((cart) => cart._id === id);
   const reviews = useSelector((state) => state.reviews.review);
   const { qty } = getCart ? getCart : {};
 
   useEffect(() => {
-    dispatch(fetchReviewbyProductId(id));
-  }, [dispatch, id]);
-
-  useEffect(() => {
     dispatch(fetchProduct(id));
+    dispatch(fetchReviewbyProductId(id));
     return () => {
       dispatch(removeSelectedProduct());
     };
@@ -57,10 +56,6 @@ const SingleProduct = () => {
 
   useEffect(() => {
     dispatch(fetchProducts());
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(getMe());
   }, [dispatch]);
 
   let newCart = user?.cart?.product;
@@ -74,11 +69,7 @@ const SingleProduct = () => {
     if (!exists) {
       selectedProduct.qty = 1;
       newCart = [...newCart, selectedProduct];
-      const cartData = {
-        cart: {
-          product: newCart,
-        },
-      };
+      const cartData = { cart: { product: newCart } };
       await dispatch(addToCart(user._id, cartData));
       toast.success("Product added to cart", {
         theme: "colored",
@@ -114,6 +105,11 @@ const SingleProduct = () => {
 
   const discount = (+product.price * +product.discount) / 100;
   const discountedPrice = parseFloat(+product.price - discount).toFixed(0);
+
+  if (loading || userLoading) {
+    return <Loading />;
+  }
+
   return (
     <>
       {product?.length !== 0 ? (

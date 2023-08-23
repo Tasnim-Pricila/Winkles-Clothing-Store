@@ -12,8 +12,8 @@ const RelatedProducts = ({ product }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const categoryWiseProducts = useSelector(
-    (state) => state.allProducts.products
+  const { products: categoryWiseProducts, loading } = useSelector(
+    (state) => state.allProducts
   );
 
   useEffect(() => {
@@ -62,7 +62,7 @@ const RelatedProducts = ({ product }) => {
     ],
   };
 
-  return (
+  return loading ? <Loading/> : (
     <Box py={6} mb={8} sx={{ mx: { md: 16, xs: 4 } }}>
       <Typography
         variant="h5"
