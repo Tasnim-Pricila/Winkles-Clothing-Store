@@ -310,19 +310,20 @@ const Shop = () => {
                     />
                   ))
                 ) : (
-                  <Typography
-                    sx={{
-                      height: "50vh",
-                      width: "100%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {" "}
-                    No search results found{" "}
-                  </Typography>
+                  // <Typography
+                  //   sx={{
+                  //     height: "50vh",
+                  //     width: "100%",
+                  //     display: "flex",
+                  //     alignItems: "center",
+                  //     justifyContent: "center",
+                  //     fontWeight: "bold",
+                  //   }}
+                  // >
+                  //   {" "}
+                  //   No search results found{" "}
+                  // </Typography>
+                  <Loading/>
                 )
               ) : searchAllProducts?.length > 0 ? (
                 searchAllProducts?.map((product) => (
