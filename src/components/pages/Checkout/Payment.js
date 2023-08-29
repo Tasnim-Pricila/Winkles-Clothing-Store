@@ -102,7 +102,7 @@ const Payment = ({ total, shippingDetails, setError, cart }) => {
               payment,
             };
 
-            fetch(`https://winkles-server.onrender.com/payment`, {
+            fetch(`https://winkles-server-side.vercel.app/payment`, {
               method: "POST",
               headers: {
                 "content-type": "application/json",

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const Api = axios.create({
-    baseURL : 'https://winkles-server.onrender.com/'
+    baseURL : 'https://winkles-server-side.vercel.app/'
 })
 
 export default Api;
