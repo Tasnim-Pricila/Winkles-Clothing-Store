@@ -7,33 +7,25 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { FavoriteBorder, ShoppingCart } from "@mui/icons-material";
 import { Rating } from "@mui/material";
 import { useState } from "react";
 import { Box } from "@mui/system";
 import Loading from "../Loading/Loading";
-import { AddToCart, AddToWishlist } from "../../../utils/commonFunction";
 import { cart, wishlistBtn } from "../../../utils/design";
+import { useLocation } from "react-router-dom";
 
-const Product = ({ product, products }) => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const {user, loading: userLoading} = useSelector((state) => state.allUsers);
+const Product = ({
+  product,
+  handleAddToCart,
+  handleWishlist,
+  handleDetails,
+}) => {
+  const location = useLocation();
+  const { loading: userLoading } = useSelector((state) => state.allUsers);
   const loading = useSelector((state) => state.allProducts.loading);
   const [avgRating, setAvgRating] = useState(0);
-
-  let newCart = user?.cart?.product;
-  const handleAddToCart = (id) => {
-    AddToCart(user, id, products, newCart, dispatch, navigate);
-  };
-
-  let wishlist = user?.wishlist?.product;
-  const handleWishlist = (id) => {
-    AddToWishlist(user, id, wishlist, dispatch, navigate);
-  };
 
   const discount = (+product.price * +product.discount) / 100;
   const discountedPrice = parseFloat(+product.price - discount).toFixed(0);
@@ -49,10 +41,10 @@ const Product = ({ product, products }) => {
   }
 
   return (
-    <Grid item xs={12} sm={6} lg={3}>
+    <Grid item xs={12} sm={6} lg={location?.pathname === "/shop" ? 4 : 3}>
       <Card sx={{ border: 0 }}>
         <CardMedia
-          onClick={() => navigate(`/product/${product._id}`)}
+          onClick={() => handleDetails(product._id)}
           sx={{
             backgroundImage: `url(${product?.image})`,
             backgroundSize: "cover",
@@ -66,16 +58,17 @@ const Product = ({ product, products }) => {
           <Typography
             gutterBottom
             variant="h6"
-            onClick={() => navigate(`/product/${product._id}`)}
+            onClick={() => handleDetails(product._id)}
             sx={{
               textAlign: "center",
               textTransform: "capitalize",
               cursor: "pointer",
+              textOverflow: "ellipsis",
+              overflow: "hidden",
+              whiteSpace: "nowrap",
             }}
           >
-            {product.title.length > 20
-              ? `${product.title.slice(0, 20)}...`
-              : product.title}
+            {product.title}
           </Typography>
           <Rating
             name="read-only"
@@ -151,7 +144,6 @@ const Product = ({ product, products }) => {
           </Button>
           <Button
             size="small"
-            variant="outlined"
             sx={cart}
             onClick={() => handleAddToCart(product._id)}
             startIcon={<ShoppingCart />}

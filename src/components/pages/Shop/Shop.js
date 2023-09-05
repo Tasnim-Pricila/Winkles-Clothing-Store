@@ -1,13 +1,16 @@
 import { GridView, TableRows } from "@mui/icons-material";
 import { Box, Grid, Pagination, Tooltip, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Footer from "../../shared/Footer";
-import AllProducts from "./AllProducts";
 import LeftSidebar from "./LeftSidebar";
 import ListView from "./ListView";
-import { AddToCart, AddToWishlist, goToTop } from "../../../utils/commonFunction";
+import {
+  AddToCart,
+  AddToWishlist,
+  goToTop,
+} from "../../../utils/commonFunction";
 import {
   fetchProducts,
   fetchProductsByPagination,
@@ -21,6 +24,7 @@ import {
   setStock,
 } from "../../../Redux/actions/productActions";
 import Loading from "../Loading/Loading";
+import Product from "../Home/Product";
 
 const Shop = () => {
   const dispatch = useDispatch();
@@ -198,12 +202,13 @@ const Shop = () => {
 
   const handleChange = (event, value) => {
     setSelectedPage(value);
-    goToTop()
+    goToTop();
   };
   const page = Math.ceil(products?.count / 12);
   const skip = (selectedPage - 1) * 12;
 
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
+    setSelectedPage(1);
     dispatch(setSearchText(""));
     dispatch(setStock(""));
     dispatch(setBrand(""));
@@ -211,7 +216,7 @@ const Shop = () => {
     dispatch(setLtPrice(""));
     dispatch(setGtPrice(""));
     dispatch(fetchProductsByPagination(selectedPage));
-  };
+  }, [selectedPage, dispatch]);
 
   useEffect(() => {
     if (stock || gtPrice || ltPrice || category || brand) {
@@ -228,6 +233,12 @@ const Shop = () => {
   const handleAddToCart = (id) => {
     AddToCart(user, id, allPro, newCart, dispatch, navigate);
   };
+  const handleDetails = useCallback(
+    (id) => {
+      navigate(`/product/${id}`);
+    },
+    [navigate]
+  );
 
   return (
     <>
@@ -301,37 +312,25 @@ const Shop = () => {
               {searchText === "" ? (
                 products?.result?.length > 0 ? (
                   products?.result?.map((product, i) => (
-                    <AllProducts
+                    <Product
                       key={product._id}
                       product={product}
-                      handleAddToCart={handleAddToCart}
                       handleWishlist={handleWishlist}
-                      user={user}
+                      handleAddToCart={handleAddToCart}
+                      handleDetails={handleDetails}
                     />
                   ))
                 ) : (
-                  // <Typography
-                  //   sx={{
-                  //     height: "50vh",
-                  //     width: "100%",
-                  //     display: "flex",
-                  //     alignItems: "center",
-                  //     justifyContent: "center",
-                  //     fontWeight: "bold",
-                  //   }}
-                  // >
-                  //   {" "}
-                  //   No search results found{" "}
-                  // </Typography>
-                  <Loading/>
+                  <Loading />
                 )
               ) : searchAllProducts?.length > 0 ? (
                 searchAllProducts?.map((product) => (
-                  <AllProducts
+                  <Product
                     key={product._id}
                     product={product}
-                    handleAddToCart={handleAddToCart}
                     handleWishlist={handleWishlist}
+                    handleAddToCart={handleAddToCart}
+                    handleDetails={handleDetails}
                   />
                 ))
               ) : (
@@ -369,7 +368,7 @@ const Shop = () => {
                     />
                   ))
                 ) : (
-                  <Typography> No search results found </Typography>
+                  <Loading />
                 )
               ) : searchAllProducts.length > 0 ? (
                 searchAllProducts.map((product) => (
@@ -381,10 +380,23 @@ const Shop = () => {
                   />
                 ))
               ) : (
-                <Loading/>
+                <Typography
+                  sx={{
+                    height: "50vh",
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {" "}
+                  No search results found{" "}
+                </Typography>
               )}
             </Box>
           )}
+
           <Pagination
             count={page}
             color="primary"

@@ -103,4 +103,4 @@ const Brand = () => {
   );
 };
 
-export default Brand;
+export default React.memo(Brand) ;

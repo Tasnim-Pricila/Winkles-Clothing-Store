@@ -17,7 +17,6 @@ const ListView = ({ product, handleAddToCart, handleWishlist }) => {
     let sum = 0;
     product?.reviews?.forEach((r) => (sum = sum + r.rating));
     setAvgRating(sum / product.reviews?.length);
-    // console.log(avgRating)
   }, [avgRating, product.reviews]);
 
   if (loading) {

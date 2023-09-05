@@ -4,7 +4,7 @@ import Product from "./Product";
 import { Typography } from "@mui/material";
 import Loading from "../Loading/Loading";
 
-const Products = ({ products }) => {
+const Products = ({ products, handleAddToCart, handleWishlist, handleDetails }) => {
   return (
     <>
       <Typography
@@ -38,7 +38,9 @@ const Products = ({ products }) => {
               <Product
                 key={product._id}
                 product={product}
-                products={products}
+                handleWishlist={handleWishlist}
+                handleAddToCart={handleAddToCart}
+                handleDetails={handleDetails}
               />
             ))
         ) : (
@@ -49,4 +51,4 @@ const Products = ({ products }) => {
   );
 };
 
-export default Products;
+export default React.memo(Products);

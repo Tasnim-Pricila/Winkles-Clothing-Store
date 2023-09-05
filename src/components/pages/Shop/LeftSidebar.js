@@ -26,12 +26,13 @@ import {
   setLtPrice,
   setStock,
 } from "../../../Redux/actions/productActions";
+import { memo } from "react";
 
 const LeftSidebar = ({ handleClear }) => {
+  const dispatch = useDispatch();
   const brands = useSelector((state) => state.brands.brands);
   const categories = useSelector((state) => state.category.categories);
 
-  const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchBrands());
     dispatch(fetchCategories());
@@ -183,4 +184,4 @@ const LeftSidebar = ({ handleClear }) => {
   );
 };
 
-export default LeftSidebar;
+export default memo(LeftSidebar) ;

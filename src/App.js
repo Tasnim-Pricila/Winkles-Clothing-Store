@@ -45,7 +45,7 @@ function App() {
 
   const { user } = useSelector((state) => state.allUsers);
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     dispatch(getMe());
   }, [dispatch]);

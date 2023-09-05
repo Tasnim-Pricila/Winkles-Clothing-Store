@@ -26,7 +26,11 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import logout from "../pages/Auth/logout";
 import { HowToReg, Login, Logout, MoreVert } from "@mui/icons-material";
 import { getMe } from "../../Redux/actions/userActions";
-import { setCategory, setSearchText } from "../../Redux/actions/productActions";
+import {
+  setBrand,
+  setCategory,
+  setSearchText,
+} from "../../Redux/actions/productActions";
 
 const Header = () => {
   const pages = ["home", "shop", "blog", "about", "contact"];
@@ -62,7 +66,11 @@ const Header = () => {
 
   const handleCloseNavMenu = (page) => {
     setAnchorElNav(null);
-    page === "shop" && dispatch(setCategory(""))
+    if (page === "shop") {
+      dispatch(setCategory(""));
+      dispatch(setSearchText(""));
+      dispatch(setBrand(""));
+    }
   };
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
@@ -347,6 +355,8 @@ const Header = () => {
                   to={`/${page}`}
                   onClick={() => {
                     page === "shop" && dispatch(setCategory(""));
+                    dispatch(setSearchText(""));
+                    dispatch(setBrand(""));
                   }}
                   sx={{
                     textDecoration: "none",

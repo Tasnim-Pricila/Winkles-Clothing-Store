@@ -1,34 +1,18 @@
 import React from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Loading from "../Loading/Loading";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
-import { FavoriteBorder, ShoppingCart } from "@mui/icons-material";
-import { AddToCart, AddToWishlist } from "../../../utils/commonFunction";
-import { cart, wishlistBtn } from "../../../utils/design";
-import { trendingProducts } from "../../../Redux/actions/productActions";
+import { useSelector } from "react-redux";
+import ProductSlider from "../../../UI/ProductSlider";
 
-const Trending = ({ products }) => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const {user, loading: userLoading} = useSelector((state) => state.allUsers);
-  const {trending, loading} = useSelector((state) => state.allProducts);
-
-  useEffect(() => {
-    dispatch(trendingProducts());
-  }, [dispatch]);
-
-  let newCart = user?.cart?.product;
-  const handleAddToCart = (id) => {
-    AddToCart(user, id, products, newCart, dispatch, navigate);
-  };
-
-  let wishlist = user?.wishlist?.product;
-  const handleWishlist = (id) => {
-    AddToWishlist(user, id, wishlist, dispatch, navigate);
-  };
+const Trending = ({
+  handleAddToCart,
+  handleWishlist,
+  trending,
+  handleDetails
+}) => {
+  const userLoading = useSelector((state) => state.allUsers.loading);
+  const productLoading = useSelector((state) => state.allProducts.loading);
 
   const settings = {
     dots: false,
@@ -42,14 +26,14 @@ const Trending = ({ products }) => {
     mobileFirst: true,
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 1200,
         settings: {
           slidesToShow: 3,
           slidesToScroll: 1,
         },
       },
       {
-        breakpoint: 600,
+        breakpoint: 850,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
@@ -65,7 +49,8 @@ const Trending = ({ products }) => {
       },
     ],
   };
-  if (loading || userLoading) {
+
+  if (userLoading || productLoading) {
     return <Loading />;
   }
 
@@ -83,122 +68,23 @@ const Trending = ({ products }) => {
       >
         Trending Now
       </Typography>
-      <Slider {...settings}>
-        {trending?.length > 0 ? (
-          trending?.map((product) => (
-            <Box className="slick-list" key={product._id}>
-              <Box
-                onClick={() => navigate(`/product/${product._id}`)}
-                sx={{
-                  backgroundImage: `url(${product?.image})`,
-                  backgroundSize: "cover",
-                  height: "60vh",
-                  backgroundRepeat: "no-repeat",
-                  cursor: "pointer",
-                  backgroundPosition: "center",
-                }}
-              />
-              <Box sx={{ pt: 2 }}>
-                <Typography
-                  gutterBottom
-                  variant="h6"
-                  onClick={() => navigate(`/product/${product._id}`)}
-                  sx={{
-                    textAlign: "center",
-                    textTransform: "capitalize",
-                    cursor: "pointer",
-                  }}
-                >
-                  {product.title.length > 20
-                    ? `${product.title.slice(0, 20)}...`
-                    : product.title}
-                </Typography>
-
-                {product?.discount ? (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      gap: 2,
-                    }}
-                  >
-                    <Typography
-                      gutterBottom
-                      variant="h6"
-                      sx={{
-                        textAlign: "center",
-                        fontWeight: "bold",
-                        pt: 1,
-                        textDecoration: "line-through",
-                        color: "gray",
-                      }}
-                    >
-                      Tk. {product.price}
-                    </Typography>
-                    <Typography
-                      gutterBottom
-                      variant="h6"
-                      sx={{
-                        textAlign: "center",
-                        fontWeight: "bold",
-                        pt: 1,
-                      }}
-                    >
-                      Tk.{" "}
-                      {+product.price -
-                        (+product.price * +product.discount) / 100}
-                    </Typography>
-                  </Box>
-                ) : (
-                  <Typography
-                    gutterBottom
-                    variant="h6"
-                    sx={{
-                      textAlign: "center",
-                      fontWeight: "bold",
-                      pt: 1,
-                    }}
-                  >
-                    Tk. {product.price}
-                  </Typography>
-                )}
-              </Box>
-
-              <Box
-                sx={{
-                  py: 2,
-                  display: "flex",
-                  justifyContent: "space-around",
-                  gap: 1,
-                }}
-              >
-                <Button
-                  size="small"
-                  onClick={() => handleWishlist(product._id)}
-                  sx={wishlistBtn}
-                  startIcon={<FavoriteBorder />}
-                >
-                  Add To Wishlist
-                </Button>
-                <Button
-                  size="small"
-                  variant="outlined"
-                  sx={cart}
-                  onClick={() => handleAddToCart(product._id)}
-                  startIcon={<ShoppingCart />}
-                >
-                  Add To Cart
-                </Button>
-              </Box>
-            </Box>
-          ))
-        ) : (
-          <Loading />
-        )}
-      </Slider>
+      {trending.length > 0 ? (
+        <Slider {...settings}>
+          {trending?.map((product) => (
+            <ProductSlider
+              key={product._id}
+              product={product}
+              handleWishlist={handleWishlist}
+              handleAddToCart={handleAddToCart}
+              handleDetails={handleDetails}
+            />
+          ))}
+        </Slider>
+      ) : (
+        <Loading />
+      )}
     </Box>
   );
 };
 
-export default Trending;
+export default React.memo(Trending);

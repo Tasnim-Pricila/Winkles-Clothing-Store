@@ -69,7 +69,6 @@ export const fetchProductsByPagination = (page) => {
 export const fetchProduct = (id) => {
   return async (dispatch) => {
     const response = await Api.get(`/products/${id}`);
-    // console.log(response.data.data);
     dispatch({
       type: actionTypes.FETCH_PRODUCT,
       payload: response.data?.data,
@@ -241,19 +240,19 @@ export const adjustQty = (productId, data) => {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     })
-    .then((data) => {
-      if (data?.data?.status === "success") {
-        dispatch({ type: actionTypes.LOADING_STOP });
-      }
-    })
-    .catch((err) => {
-      if (err.response.data.status === "fail") {
-        dispatch({ type: actionTypes.LOADING_STOP });
-        toast.error(err.response.data.error, {
-          theme: "colored",
-        });
-      }
-    });
+      .then((data) => {
+        if (data?.data?.status === "success") {
+          dispatch({ type: actionTypes.LOADING_STOP });
+        }
+      })
+      .catch((err) => {
+        if (err.response.data.status === "fail") {
+          dispatch({ type: actionTypes.LOADING_STOP });
+          toast.error(err.response.data.error, {
+            theme: "colored",
+          });
+        }
+      });
   };
 };
 
@@ -268,18 +267,19 @@ export const searchProducts = (text) => {
 
 export const searchByFilter = (url) => {
   return async (dispatch) => {
-    // dispatch({ type: actionTypes.LOADING });
+    dispatch({ type: actionTypes.LOADING });
     await Api.get(url)
       .then((data) => {
         if (data?.data?.status === "success") {
+          dispatch({ type: actionTypes.LOADING_STOP });
           dispatch({
             type: actionTypes.SEARCH_BY_FILTER,
             payload: data?.data?.data,
           });
-          // dispatch({ type: actionTypes.LOADING_STOP });
         }
       })
       .catch((err) => {
+        dispatch({ type: actionTypes.LOADING_STOP });
         if (err.response.data.status === "fail") {
           toast.error(err.response.data.error, {
             theme: "colored",

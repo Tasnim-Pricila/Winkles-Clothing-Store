@@ -1,23 +1,10 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import women from "../../../images/women.png";
 import men from "../../../images/men.png";
 import kids from "../../../images/kids.png";
-import { useDispatch } from "react-redux";
-import { setCategory } from "../../../Redux/actions/productActions";
-import { goToTop } from "../../../utils/commonFunction";
 
-const Categories = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const handleCollections = (value) => {
-    dispatch(setCategory(value));
-    navigate("/shop");
-    goToTop();
-  };
-
+const Categories = ({ handleCollections }) => {
   const categories = [
     {
       title: "Sharee",
@@ -111,4 +98,4 @@ const Categories = () => {
   );
 };
 
-export default Categories;
+export default React.memo(Categories);

@@ -5,6 +5,7 @@ import { Link as Routerlink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../Loading/Loading";
 import { fetchBlogs } from "../../../Redux/actions/blogActions";
+import BlogCard from "../../../UI/BlogCard";
 
 const Blogs = () => {
   const dispatch = useDispatch();
@@ -55,52 +56,7 @@ const Blogs = () => {
       >
         {blogs?.length > 0 ? (
           blogs?.map((blog) => (
-            <Grid key={blog?._id}
-              item
-              md={4}
-              sx={{
-                "&:hover img": {
-                  transform: "scale(1.2)",
-                },
-              }}
-            >
-              <Box sx={{ overflow: "hidden" }}>
-                <img
-                  src={blog?.imageUrl}
-                  alt=""
-                  width="100%"
-                  style={{
-                    transition: "3s ease-in-out",
-                    cursor: "pointer",
-                  }}
-                />
-              </Box>
-              <Typography color="#A4A4A4" pt={1} pb={2}>
-                {blog?.createdAt}
-              </Typography>
-              <Typography
-                variant="h5"
-                sx={{
-                  "&:hover": { color: "#FF8E78", transitionDuration: ".5s" },
-                  cursor: "pointer",
-                  pr: 4,
-                }}
-              >
-                {blog?.title}
-              </Typography>
-              <Typography py={2}>{blog?.description}</Typography>
-              <Link
-                onClick={() => handleClick(blog?._id)}
-                sx={{
-                  color: "#A4A4A4",
-                  textDecorationColor: "#A4A4A4",
-                  cursor: "pointer",
-                  "&:hover": { color: "#FF8E78", transitionDuration: ".5s" },
-                }}
-              >
-                Read More
-              </Link>
-            </Grid>
+            <BlogCard blog={blog} handleClick={handleClick} />
           ))
         ) : (
           <Loading />

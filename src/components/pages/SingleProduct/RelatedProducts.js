@@ -1,26 +1,16 @@
 import { Box, Typography } from "@mui/material";
-import React from "react";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import Loading from "../Loading/Loading";
 import "./RelatedProducts.css";
-import { searchByFilter } from "../../../Redux/actions/productActions";
+import { memo } from "react";
+import ProductSlider from "../../../UI/ProductSlider";
 
-const RelatedProducts = ({ product }) => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const { products: categoryWiseProducts, loading } = useSelector(
-    (state) => state.allProducts
-  );
-
-  useEffect(() => {
-    const url = `/products?category=${product?.category}`;
-    dispatch(searchByFilter(url));
-  }, [dispatch, product?.category]);
-
+const RelatedProducts = ({
+  categoryWiseProducts,
+  handleAddToCart,
+  handleWishlist,
+  handleDetails,
+}) => {
   const settings = {
     dots: false,
     infinite: true,
@@ -62,7 +52,7 @@ const RelatedProducts = ({ product }) => {
     ],
   };
 
-  return loading ? <Loading/> : (
+  return (
     <Box py={6} mb={8} sx={{ mx: { md: 16, xs: 4 } }}>
       <Typography
         variant="h5"
@@ -79,44 +69,14 @@ const RelatedProducts = ({ product }) => {
 
       <Slider {...settings}>
         {categoryWiseProducts?.result?.length > 0 ? (
-          categoryWiseProducts?.result?.map((product, i) => (
-            <Box className="slick-list" key={product._id}>
-              <Box
-                onClick={() => navigate(`/product/${product._id}`)}
-                sx={{
-                  backgroundImage: `url(${product?.image})`,
-                  backgroundSize: "cover",
-                  height: "60vh",
-                  backgroundRepeat: "no-repeat",
-                  cursor: "pointer",
-                  backgroundPosition: "center",
-                }}
-              />
-              <Box sx={{ pt: 2, px: 1 }}>
-                <Typography
-                  gutterBottom
-                  variant="h6"
-                  onClick={() => navigate(`/product/${product._id}`)}
-                  sx={{
-                    textTransform: "capitalize",
-                    fontWeight: "bold",
-                    mb: 0,
-                    cursor: "pointer",
-                  }}
-                >
-                  {product.title.length > 20
-                    ? `${product.title.slice(0, 20)}...`
-                    : product.title}
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: "16px",
-                  }}
-                >
-                  Tk. {product.price}
-                </Typography>
-              </Box>
-            </Box>
+          categoryWiseProducts?.result?.map((product) => (
+            <ProductSlider
+              key={product._id}
+              product={product}
+              handleWishlist={handleWishlist}
+              handleAddToCart={handleAddToCart}
+              handleDetails={handleDetails}
+            />
           ))
         ) : (
           <Loading />
@@ -126,4 +86,4 @@ const RelatedProducts = ({ product }) => {
   );
 };
 
-export default RelatedProducts;
+export default memo(RelatedProducts);
