@@ -306,7 +306,7 @@ const Header = () => {
                       display: "block",
                       py: 1,
                       px: 6,
-                      ...(location.pathname === `/${page}` && {
+                      ...(location?.pathname === `/${page}` && {
                         color: "#FF8E78",
                       }),
                     }}
@@ -363,7 +363,7 @@ const Header = () => {
                     fontWeight: "bold",
                     color: "white",
                     textTransform: "uppercase",
-                    ...(location.pathname === `/${page}` && {
+                    ...(location?.pathname === `/${page}` && {
                       color: "#FF8E78",
                     }),
                   }}
